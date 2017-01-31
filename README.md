@@ -21,7 +21,7 @@ To start using ONLYOFFICE Document Server with ownCloud, the following steps mus
 1. Place ownCloud ONLYOFFICE integration app to your ownCloud server into the _/apps_ (or some other) directory, [used](https://doc.owncloud.org/server/9.0/admin_manual/installation/apps_management_installation.html#using-custom-app-directories) to connect applications:
 ```
 cd apps/
-git clone https://github.com/ONLYOFFICE/onlyoffice-owncloud.git onlyoffic
+git clone https://github.com/ONLYOFFICE/onlyoffice-owncloud.git onlyoffice
 ```
 
 2. In ownCloud open the `~/index.php/settings/apps?category=disabled` page with _Not enabled_ apps by administrator and click _Enable_ for the **ONLYOFFICE** application.

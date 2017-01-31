@@ -28,7 +28,7 @@ git clone https://github.com/ONLYOFFICE/onlyoffice-owncloud.git onlyoffic
 
 
 
-## Configuring ownCloud CONLYOFFICE integration app
+## Configuring ownCloud ONLYOFFICE integration app
 
 In ownCloud open the `~/index.php/settings/admin#onlyoffice` page with administrative settings for **ONLYOFFICE** section and enter the address 
 

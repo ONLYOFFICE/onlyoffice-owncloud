@@ -44,17 +44,7 @@
         window.addEventListener('DOMContentLoaded', function() {
 	        (function($) {
 	                $(document).ready(function() {
-				OCA.Onlyoffice.OpenEditor ({
-				    error: "<?php empty($_["error"]) ? "" : p($_["error"]) ?>",
-
-				    callbackUrl: "<?php print_unescaped($_["callback"]) ?>",
-				    key: "<?php p($_["key"]) ?>",
-				    title: "<?php p($_["fileName"]) ?>",
-				    url: "<?php print_unescaped($_["url"]) ?>",
-				    userId: "<?php p($_["userId"]) ?>",
-				    userName: "<?php p($_["userName"]) ?>",
-				    documentType: "<?php p($_["documentType"]) ?>",
-				});
+				OCA.Onlyoffice.OpenEditor("<?php p($_["fileId"]) ?>", "<?php empty($_["error"]) ? "" : p($_["error"]) ?>");
             		});
         	})(jQuery);
 	});

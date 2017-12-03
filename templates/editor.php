@@ -41,7 +41,13 @@
     } ?>
 
     <script type="text/javascript" nonce="<?php p(base64_encode($_["requesttoken"])) ?>">
-        OCA.Onlyoffice.OpenEditor("<?php p($_["fileId"]) ?>", "<?php empty($_["error"]) ? "" : p($_["error"]) ?>");
+        window.addEventListener('DOMContentLoaded', function() {
+	        (function($) {
+	                $(document).ready(function() {
+				OCA.Onlyoffice.OpenEditor("<?php p($_["fileId"]) ?>", "<?php empty($_["error"]) ? "" : p($_["error"]) ?>");
+            		});
+        	})(jQuery);
+	});
     </script>
 
 </div>

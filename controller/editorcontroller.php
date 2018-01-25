@@ -406,7 +406,10 @@ class EditorController extends Controller {
                 "user" => [
                     "id" => $userId,
                     "name" => $this->userSession->getUser()->getDisplayName()
-                ]
+                ],
+		"customization" => [
+			"forcesave" => $this->config->GetForceSave()
+		]
             ],
             "type" => $type
         ];

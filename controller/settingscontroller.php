@@ -126,6 +126,7 @@ class SettingsController extends Controller {
             "currentServer" => $this->urlGenerator->getAbsoluteURL("/"),
             "defFormats" => $defFormats,
             "sameTab" => $this->config->GetSameTab(),
+            "forceSave" => $this->config->GetForceSave(),
             "encryption" => $this->checkEncryptionModule()
         ];
         return new TemplateResponse($this->appName, "settings", $data, "blank");
@@ -147,7 +148,8 @@ class SettingsController extends Controller {
                                     $storageUrl,
                                     $secret,
                                     $defFormats,
-                                    $sameTab
+                                    $sameTab,
+                                    $forceSave
                                     ) {
         $this->config->SetDocumentServerUrl($documentserver);
         $this->config->SetDocumentServerInternalUrl($documentserverInternal);
@@ -164,6 +166,7 @@ class SettingsController extends Controller {
 
         $this->config->SetDefaultFormats($defFormats);
         $this->config->SetSameTab($sameTab);
+        $this->config->SetForceSave($forceSave);
 
         if ($this->checkEncryptionModule()) {
             $this->logger->info("SaveSettings when encryption is enabled", array("app" => $this->appName));
@@ -188,7 +191,8 @@ class SettingsController extends Controller {
     public function GetSettings() {
         $result = [
             "formats" => $this->formats(),
-            "sameTab" => $this->config->GetSameTab()
+            "sameTab" => $this->config->GetSameTab(),
+            "forceSave" => $this->config->GetForceSave()
         ];
         return $result;
     }

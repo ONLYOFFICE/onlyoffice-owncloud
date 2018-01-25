@@ -108,7 +108,9 @@ class CallbackController extends Controller {
         1 => "Editing",
         2 => "MustSave",
         3 => "Corrupted",
-        4 => "Closed"
+        4 => "Closed",
+        6 => "ForceSave",
+        7 => "ForceSaveError"
     );
 
     /**
@@ -330,6 +332,8 @@ class CallbackController extends Controller {
         switch ($trackerStatus) {
             case "MustSave":
             case "Corrupted":
+            case "ForceSave":
+            case "ForceError":
                 if (empty($url)) {
                     $this->logger->info("Track without url: " . $fileId . " status " . $trackerStatus, array("app" => $this->appName));
                     return new JSONResponse(["message" => $this->trans->t("Url not found")], Http::STATUS_BAD_REQUEST);

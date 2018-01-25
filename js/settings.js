@@ -65,6 +65,7 @@
             });
 
             var sameTab = $("#onlyofficeSameTab").is(":checked");
+            var forceSave = $("#onlyofficeForceSave").is(":checked");
 
             $.ajax({
                 method: "PUT",
@@ -75,7 +76,8 @@
                     storageUrl: onlyofficeStorageUrl,
                     secret: onlyofficeSecret,
                     defFormats: defFormats,
-                    sameTab: sameTab
+                    sameTab: sameTab,
+                    forceSave: forceSave
                 },
                 success: function onSuccess(response) {
                     $(".section-onlyoffice").removeClass("icon-loading");

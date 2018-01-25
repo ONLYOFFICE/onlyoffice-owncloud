@@ -100,6 +100,13 @@ class AppConfig {
     private $_sameTab = "sameTab";
 
     /**
+     * The config key for the setting force save
+     *
+     * @var string
+     */
+    private $_forceSave = "forceSave";
+
+    /**
      * The config key for the verification
      *
      * @var string
@@ -343,6 +350,26 @@ class AppConfig {
      */
     public function GetSameTab() {
         return $this->config->getAppValue($this->appName, $this->_sameTab, "false") === "true";
+    }
+
+    /**
+     * Save the setting force save
+     *
+     * @param boolean $value - force save
+     */
+    public function SetForceSave($value) {
+        $this->logger->info("Set force save: " . $value, array("app" => $this->appName));
+
+        $this->config->setAppValue($this->appName, $this->_forceSave, $value);
+    }
+
+    /**
+     * Get the setting force save
+     *
+     * @return boolean
+     */
+    public function GetForceSave() {
+        return $this->config->getAppValue($this->appName, $this->_forceSave, "false") === "true";
     }
 
     /**

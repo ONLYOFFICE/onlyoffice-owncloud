@@ -63,6 +63,13 @@
     </p>
     <br />
 
+    <p class="onlyoffice-header">
+        <input type="checkbox" class="checkbox" id="onlyofficeForceSave"
+            <?php if ($_["forceSave"]) { ?>checked="checked"<?php } ?> />
+        <label for="onlyofficeForceSave"><?php p($l->t("Upload document to ownCloud when user clicks save in ONLYOFFICE")) ?></label>
+    </p>
+    <br />
+
     <h3 class="onlyoffice-header"><?php p($l->t("The default application for opening the format")) ?></h3>
     <?php foreach ($_["defFormats"] as $format => $setting) { ?>
     <p>

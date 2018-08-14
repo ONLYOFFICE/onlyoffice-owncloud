@@ -37,6 +37,14 @@
             $("#onlyofficeSecretPanel, #onlyofficeSaveBreak").toggleClass("onlyoffice-hide");
         };
 
+        // This script is loaded on all settings pages, but the elements are only rendered
+        // on the OnlyOffice admin page, therefore there's nothing to do when the expected
+        // elements don't exist.
+        if ($("#onlyofficeInternalUrl").length === 0) {
+            console.info('Cannot start OnlyOffice settings script');
+            return;
+        }
+
         if ($("#onlyofficeInternalUrl").val().length
             || $("#onlyofficeSecret").val().length
             || $("#onlyofficeStorageUrl").val().length) {

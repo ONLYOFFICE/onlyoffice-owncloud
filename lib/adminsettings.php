@@ -61,27 +61,6 @@ class AdminSettings implements ISettings {
     }
 
     /**
-     * Print config section (Nextcloud)
-     *
-     * @return TemplateResponse
-     */
-    public function getForm() {
-        $app = new Application();
-        $container = $app->getContainer();
-        $response = $container->query(SettingsController::class)->index();
-        return $response;
-    }
-
-    /**
-     * Get section ID (Nextcloud)
-     *
-     * @return string
-     */
-    public function getSection() {
-        return "onlyoffice";
-    }
-
-    /**
      * Get priority order
      *
      * @return int

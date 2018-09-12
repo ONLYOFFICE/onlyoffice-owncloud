@@ -34,13 +34,28 @@
             AppName: "onlyoffice"
         };
     }
+    if (window["AscDesktopEditor"]) {
+        OCA.Onlyoffice.Desktop = true;
+        $("html").addClass("AscDesktopEditor");
+
+        var domain = location.href.split(OC.generateUrl(""))[0];
+
+        var data = {
+            displayName: oc_user.displayName,
+            domain: domain,
+            email: oc_user.email,
+            provider: "ownCloud",
+        };
+
+        window.AscDesktopEditor.execCommand("portal:login", JSON.stringify(data));
+    }
 
     OCA.Onlyoffice.setting = {};
 
     OCA.Onlyoffice.CreateFile = function (name, fileList) {
         var dir = fileList.getCurrentDirectory();
 
-        if (!OCA.Onlyoffice.setting.sameTab) {
+        if (!OCA.Onlyoffice.setting.sameTab || OCA.Onlyoffice.Desktop) {
             var winEditor = window.open("");
             if (winEditor) {
                 winEditor.document.write(t(OCA.Onlyoffice.AppName, "Loading, please wait."));
@@ -88,7 +103,7 @@
 
         if (winEditor && winEditor.location) {
             winEditor.location.href = url;
-        } else if (!OCA.Onlyoffice.setting.sameTab) {
+        } else if (!OCA.Onlyoffice.setting.sameTab || OCA.Onlyoffice.Desktop) {
             winEditor = window.open(url, "_blank");
         } else {
             location.href = url;

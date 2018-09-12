@@ -30,7 +30,14 @@
     position: absolute;
     vertical-align: top;
 }
-
 #iframeEditor.error {
     color: red;
 }
+
+.AscDesktopEditor #header {
+    display: none;
+}
+.AscDesktopEditor #content-wrapper {
+    padding-top: 0;
+}
+

@@ -37,7 +37,16 @@
 
     OCA.Onlyoffice.InitEditor = function () {
         var displayError = function (error) {
-            $("#iframeEditor").text(error).addClass("error");
+            if ($('.ooErrorContainer')) { 
+                $('.ooErrorContainer').remove();
+            }
+            $("<div></div>").addClass('ooErrorContainer').appendTo("#app");
+            $("<div></div>").addClass('ooErrorContent').appendTo(".ooErrorContainer");
+            $("<div></div>").addClass('ooErrorLogo').appendTo(".ooErrorContent");
+            $("<img></img>").attr('src', OC.imagePath('onlyoffice', 'app')).appendTo(".ooErrorLogo");
+            $("<div></div>").addClass('ooErrorMessage').appendTo(".ooErrorContent");
+            $("<p></p>").text("An error occurred:").appendTo(".ooErrorMessage");
+            $("<p></p>").text(error).appendTo(".ooErrorMessage");
         };
 
         var fileId = $("#iframeEditor").data("id");

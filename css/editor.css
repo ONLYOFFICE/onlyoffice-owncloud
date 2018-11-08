@@ -31,6 +31,39 @@
     vertical-align: top;
 }
 
-#iframeEditor.error {
-    color: red;
+.app-onlyoffice {
+    background: #F4F4F4;
 }
+
+.ooErrorContainer {
+    width: 50rem;
+    text-align: center;
+    margin: auto;
+}
+
+.ooErrorContent {
+    display: inline-block;
+    margin-top: 170px;
+    background: #616161;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.ooErrorLogo {
+    display: inline-block;
+}
+
+.ooErrorLogo img {
+    width: 2rem;
+}
+
+.ooErrorMessage {
+    display: inline-block;
+    margin-left: 1rem;
+}
+
+.ooErrorMessage p {
+    text-align: left;
+    color: #fff;
+}
+

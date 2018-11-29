@@ -35,3 +35,20 @@
 .icon-onlyoffice-new-pptx {
     background-image: url("../img/new-pptx.svg");
 }
+
+.AscDesktopEditor #header {
+    display: none;
+}
+.AscDesktopEditor #content-wrapper {
+    padding-top: 0;
+}
+.AscDesktopEditor #controls,
+.AscDesktopEditor #app-sidebar {
+    top: 0;
+}
+.AscDesktopEditor #body-user table.multiselect thead {
+    top: 44px;
+}
+.AscDesktopEditor #body-user #gallery-button {
+    display: none;
+}

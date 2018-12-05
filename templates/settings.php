@@ -60,6 +60,16 @@
     <br id="onlyofficeSaveBreak" />
 
     <p class="onlyoffice-header">
+        <input type="checkbox" class="checkbox" id="onlyofficeGroups"
+            <?php if (count($_["limitGroups"]) > 0) { ?>checked="checked"<?php } ?> />
+        <label for="onlyofficeGroups"><?php p($l->t("Restrict access to editors to following groups")) ?></label>
+        <br />
+        <input type="hidden" id="onlyofficeLimitGroups" value="<?php p(implode("|", $_["limitGroups"])) ?>"
+            style="display: block; margin-top: 6px; width: 265px;" />
+    </p>
+    <br />
+
+    <p class="onlyoffice-header">
         <input type="checkbox" class="checkbox" id="onlyofficeSameTab"
             <?php if ($_["sameTab"]) { ?>checked="checked"<?php } ?> />
         <label for="onlyofficeSameTab"><?php p($l->t("Open file in the same tab")) ?></label>

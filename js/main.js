@@ -151,6 +151,9 @@
                 var formats = OCA.Onlyoffice.setting.formats;
 
                 $.each(formats, function (ext, attr) {
+                    if (!attr.mime) {
+                        return true;
+                    }
                     fileList.fileActions.registerAction({
                         name: "onlyofficeOpen",
                         displayName: t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE"),

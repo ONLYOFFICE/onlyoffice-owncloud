@@ -1,5 +1,13 @@
 # Change Log
 
+## 2.1.3
+## Added
+- restricting access for groups
+- goback from editor to shared folder by link
+
+## Changed
+- using notification methods
+
 ## 2.1.1
 ## Added
 - Swedish translation

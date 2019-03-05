@@ -433,7 +433,7 @@ class AppConfig {
     /**
      * Save the list of groups
      *
-     * @param array $value - the list of groups
+     * @param array $groups - the list of groups
      */
     public function SetLimitGroups($groups) {
         if (!is_array($groups)) {

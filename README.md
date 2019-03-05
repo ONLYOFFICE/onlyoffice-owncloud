@@ -12,7 +12,6 @@ This allows multiple users to collaborate in real time and to save back those ch
 You can also use our **[Docker installation](https://github.com/ONLYOFFICE/docker-onlyoffice-owncloud)** to get installed and configured Document Server and ownCloud installation with a couple of commands.
 
 
-
 ## Installing ONLYOFFICE Document Server
 
 You will need an instance of ONLYOFFICE Document Server that is resolvable and connectable both from ownCloud and any end clients (version 4.2.7 and later are supported for use with the app).
@@ -23,7 +22,6 @@ In case you select the latter variant, you will need to set up a custom port for
 Or you can use Document Server behind a proxy, please refer to [this article](https://helpcenter.onlyoffice.com/server/document/document-server-proxy.aspx) to learn how you can configure it.
 
 The easiest way to start an instance of ONLYOFFICE Document Server is to use [Docker](https://github.com/ONLYOFFICE/Docker-DocumentServer).
-
 
 
 ## Installing ownCloud ONLYOFFICE integration app
@@ -62,7 +60,6 @@ There are several ways to do that:
 3. In ownCloud open the `~/index.php/settings/apps?category=disabled` page with _Not enabled_ apps by administrator and click _Enable_ for the **ONLYOFFICE** application.
 
 
-
 ## Configuring ownCloud ONLYOFFICE integration app
 
 In ownCloud open the `~/index.php/settings/admin#onlyoffice` page with administrative settings for **ONLYOFFICE** section.
@@ -88,7 +85,6 @@ Enable or disable the _Open file in the same tab_ setting.
 
 The **Open in ONLYOFFICE** action will be added to the file context menu.
 You can specify this action as default and it will be used when the file name is clicked for the selected file types.
-
 
 
 ## How it works
@@ -127,7 +123,6 @@ This method adds the copy of the file from the assets folder to the folder the u
 * After [10 seconds](https://api.onlyoffice.com/editors/save#savedelay) of inactivity, ONLYOFFICE Document Server sends a POST to the _callback_ URL letting ownCloud know that the clients have finished editing the document and closed it.
 
 * ownCloud downloads the new version of the document, replacing the old one.
-
 
 
 ## Known issues

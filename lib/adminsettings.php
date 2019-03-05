@@ -43,7 +43,7 @@ class AdminSettings implements ISettings {
     }
 
     /**
-     * Print config section (ownCloud 10)
+     * Print config section
      *
      * @return TemplateResponse
      */
@@ -52,7 +52,7 @@ class AdminSettings implements ISettings {
     }
 
     /**
-     * Get section ID (ownCloud 10)
+     * Get section ID
      *
      * @return string
      */

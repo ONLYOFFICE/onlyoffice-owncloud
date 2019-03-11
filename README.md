@@ -140,3 +140,11 @@ But if the encryption with the _per-user encryption keys_ (used by default in ow
 The ONLYOFFICE section of the administrative settings page will display a notification about it.
 However if you set the encryption with the _master key_, ONLYOFFICE application will work as intended.
 The instruction on enabling _master key_ based encryption is available in the official documentation on [ownCloud](https://doc.owncloud.org/server/administration_manual/configuration/files/encryption_configuration.html#enabling-encryption-from-the-command-line) websites.
+
+* If you are using a self-signed certificate for your **Document Server**, ownCloud will not validate such a certificate and will not allow connection to/from **Document Server**. This issue can be solved the following way: locate the ownCloud config file (_/owncloud/config/config.php_) and open it. Insert the following section to it:
+    ```
+    'onlyoffice' => array (
+        'verify_peer_off' => true
+    )
+    ```
+    This will disable the certificate verification and allow ownCloud to establish connection with **Document Server**, but you must remember that this is a temporary insecure solution and we strongly recommend that you replace the certificate with the one issued by some CA. Once you do that, do not forget to remove the above section from ownCloud config file.

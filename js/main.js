@@ -1,6 +1,6 @@
 /**
  *
- * (c) Copyright Ascensio System Limited 2010-2018
+ * (c) Copyright Ascensio System SIA 2019
  *
  * This program is a free software product.
  * You can redistribute it and/or modify it under the terms of the GNU Affero General Public License
@@ -45,11 +45,17 @@
             }
         }
 
+        var createData = {
+            name: name,
+            dir: dir
+        };
+
+        if ($("#isPublic").val()) {
+            createData.token = encodeURIComponent($("#sharingToken").val());
+        }
+
         $.post(OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/new"),
-            {
-                name: name,
-                dir: dir
-            },
+            createData,
             function onSuccess(response) {
                 if (response.error) {
                     if (winEditor) {
@@ -63,7 +69,7 @@
                 }
 
                 fileList.add(response, { animate: true });
-                OCA.Onlyoffice.OpenEditor(response.id, winEditor);
+                OCA.Onlyoffice.OpenEditor(response.id, dir, response.name, winEditor);
 
                 OC.Notification.show(t(OCA.Onlyoffice.AppName, "File created"), {
                     timeout: 3
@@ -72,14 +78,20 @@
         );
     };
 
-    OCA.Onlyoffice.OpenEditor = function (fileId, winEditor) {
-        var url = OC.generateUrl("/apps/" + OCA.Onlyoffice.AppName + "/{fileId}",
+    OCA.Onlyoffice.OpenEditor = function (fileId, fileDir, fileName, winEditor) {
+        var filePath = fileDir.replace(new RegExp("\/$"), "") + "/" + fileName;
+        var url = OC.generateUrl("/apps/" + OCA.Onlyoffice.AppName + "/{fileId}?filePath={filePath}",
             {
-                fileId: fileId
+                fileId: fileId,
+                filePath: filePath
             });
 
         if ($("#isPublic").val()) {
-            url = OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/s/" + encodeURIComponent($("#sharingToken").val())) + "?fileId=" + fileId;
+            url = OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/s/{token}?fileId={fileId}",
+                {
+                    token: encodeURIComponent($("#sharingToken").val()),
+                    fileId: fileId
+                });
         }
 
         if (winEditor && winEditor.location) {
@@ -93,17 +105,23 @@
 
     OCA.Onlyoffice.FileClick = function (fileName, context) {
         var fileInfoModel = context.fileInfoModel || context.fileList.getModelForFile(fileName);
-        OCA.Onlyoffice.OpenEditor(fileInfoModel.id);
+        OCA.Onlyoffice.OpenEditor(fileInfoModel.id, context.dir, fileName);
     };
 
     OCA.Onlyoffice.FileConvertClick = function (fileName, context) {
         var fileInfoModel = context.fileInfoModel || context.fileList.getModelForFile(fileName);
         var fileList = context.fileList;
 
+        var convertData = {
+            fileId: fileInfoModel.id
+        };
+
+        if ($("#isPublic").val()) {
+            convertData.token = encodeURIComponent($("#sharingToken").val());
+        }
+
         $.post(OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/convert"),
-            {
-                fileId: fileInfoModel.id
-            },
+            convertData,
             function onSuccess(response) {
                 if (response.error) {
                     OC.Notification.show(response.error, {
@@ -151,14 +169,15 @@
                 var formats = OCA.Onlyoffice.setting.formats;
 
                 $.each(formats, function (ext, attr) {
+                    if (!attr.mime) {
+                        return true;
+                    }
                     fileList.fileActions.registerAction({
                         name: "onlyofficeOpen",
                         displayName: t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE"),
                         mime: attr.mime,
                         permissions: OC.PERMISSION_READ,
-                        icon: function () {
-                            return OC.imagePath(OCA.Onlyoffice.AppName, "app-dark");
-                        },
+                        iconClass: "icon-onlyoffice-open",
                         actionHandler: OCA.Onlyoffice.FileClick
                     });
 
@@ -166,15 +185,13 @@
                         fileList.fileActions.setDefault(attr.mime, "onlyofficeOpen");
                     }
 
-                    if (!$("#isPublic").val() && attr.conv) {
+                    if (attr.conv) {
                         fileList.fileActions.registerAction({
                             name: "onlyofficeConvert",
                             displayName: t(OCA.Onlyoffice.AppName, "Convert with ONLYOFFICE"),
                             mime: attr.mime,
-                            permissions: OC.PERMISSION_READ,
-                            icon: function () {
-                                return OC.imagePath(OCA.Onlyoffice.AppName, "app-dark");
-                            },
+                            permissions: ($("#isPublic").val() ? OC.PERMISSION_UPDATE : OC.PERMISSION_READ),
+                            iconClass: "icon-onlyoffice-convert",
                             actionHandler: OCA.Onlyoffice.FileConvertClick
                         });
                     }
@@ -189,7 +206,7 @@
         attach: function (menu) {
             var fileList = menu.fileList;
 
-            if (fileList.id !== "files") {
+            if (fileList.id !== "files" && fileList.id !== "files.public") {
                 return;
             }
 
@@ -229,7 +246,7 @@
     };
 
     var initPage = function(){
-        if ($("#isPublic").val() && !$("#dir").val().length) {
+        if ($("#isPublic").val() === "1" && !$("#filestable").length) {
             var fileName = $("#filename").val();
             var extension = fileName.substr(fileName.lastIndexOf(".") + 1).toLowerCase();
 

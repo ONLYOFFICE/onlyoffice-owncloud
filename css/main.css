@@ -1,6 +1,6 @@
 /**
  *
- * (c) Copyright Ascensio System Limited 2010-2018
+ * (c) Copyright Ascensio System SIA 2019
  *
  * This program is a free software product.
  * You can redistribute it and/or modify it under the terms of the GNU Affero General Public License
@@ -34,6 +34,10 @@
 }
 .icon-onlyoffice-new-pptx {
     background-image: url("../img/new-pptx.svg");
+}
+.icon-onlyoffice-open,
+.icon-onlyoffice-convert {
+    background-image: url("../img/app-dark.svg");
 }
 
 .AscDesktopEditor #header {

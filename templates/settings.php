@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System Limited 2010-2018
+ * (c) Copyright Ascensio System SIA 2019
  *
  * This program is a free software product.
  * You can redistribute it and/or modify it under the terms of the GNU Affero General Public License
@@ -84,7 +84,7 @@
                 <input type="checkbox" class="checkbox"
                     id="onlyofficeDefFormat<?php p($format) ?>"
                     name="<?php p($format) ?>"
-                    <?php if ($setting["def"]) { ?>checked="checked"<?php } ?> />
+                    <?php if (array_key_exists("def", $setting) && $setting["def"]) { ?>checked="checked"<?php } ?> />
                 <label for="onlyofficeDefFormat<?php p($format) ?>"><?php p($format) ?></label>
             </div>
             <?php } ?>
@@ -100,7 +100,7 @@
                 <input type="checkbox" class="checkbox"
                     id="onlyofficeEditFormat<?php p($format) ?>"
                     name="<?php p($format) ?>"
-                    <?php if ($setting["edit"]) { ?>checked="checked"<?php } ?> />
+                    <?php if (array_key_exists("edit", $setting) && $setting["edit"]) { ?>checked="checked"<?php } ?> />
                 <label for="onlyofficeEditFormat<?php p($format) ?>"><?php p($format) ?></label>
             </div>
             <?php } ?>

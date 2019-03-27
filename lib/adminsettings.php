@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System Limited 2010-2018
+ * (c) Copyright Ascensio System SIA 2019
  *
  * This program is a free software product.
  * You can redistribute it and/or modify it under the terms of the GNU Affero General Public License
@@ -43,7 +43,7 @@ class AdminSettings implements ISettings {
     }
 
     /**
-     * Print config section (ownCloud 10)
+     * Print config section
      *
      * @return TemplateResponse
      */
@@ -52,7 +52,7 @@ class AdminSettings implements ISettings {
     }
 
     /**
-     * Get section ID (ownCloud 10)
+     * Get section ID
      *
      * @return string
      */

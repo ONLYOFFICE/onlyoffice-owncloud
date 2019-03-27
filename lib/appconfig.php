@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System Limited 2010-2018
+ * (c) Copyright Ascensio System SIA 2019
  *
  * This program is a free software product.
  * You can redistribute it and/or modify it under the terms of the GNU Affero General Public License
@@ -86,7 +86,7 @@ class AppConfig {
      *
      * @var string
      */
-    private $_cryptSecret = "skey";
+    private $_cryptSecret = "secret";
 
     /**
      * The config key for the default formats
@@ -357,19 +357,7 @@ class AppConfig {
      * @return string
      */
     public function GetSKey() {
-        $skey = $this->config->getAppValue($this->appName, $this->_cryptSecret, "");
-        if (empty($skey)) {
-            $skey = number_format(round(microtime(true) * 1000), 0, ".", "");
-            $this->config->setAppValue($this->appName, $this->_cryptSecret, $skey);
-        }
-        return $skey;
-    }
-
-    /**
-     * Regenerate the secret key
-     */
-    public function DropSKey() {
-        $this->config->setAppValue($this->appName, $this->_cryptSecret, "");
+        return $this->config->getSystemValue($this->_cryptSecret, true);
     }
 
     /**
@@ -445,9 +433,12 @@ class AppConfig {
     /**
      * Save the list of groups
      *
-     * @param array $value - same tab
+     * @param array $groups - the list of groups
      */
     public function SetLimitGroups($groups) {
+        if (!is_array($groups)) {
+            $groups = array();
+        }
         $value = json_encode($groups);
         $this->logger->info("Set groups: " . $value, array("app" => $this->appName));
 
@@ -464,7 +455,11 @@ class AppConfig {
         if (empty($value)) {
             return array();
         }
-        return json_decode($value, true);
+        $groups = json_decode($value, true);
+        if (!is_array($groups)) {
+            $groups = array();
+        }
+        return $groups;
     }
 
     /**

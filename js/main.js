@@ -298,6 +298,28 @@
                     ]
                 });
             }
+
+            if (config.comment) {
+                model.registerShareAttribute({
+                    "scope": OCA.Onlyoffice.AppName,
+                    "key": "commentOnly",
+                    "default": false,
+                    "label": t(OCA.Onlyoffice.AppName, "comment only"),
+                    "requiredPermissions": [OC.PERMISSION_UPDATE],
+                    "incompatibleAttributes": [
+                        {
+                            "scope": OCA.Onlyoffice.AppName,
+                            "key": "reviewOnly",
+                            "enabled": true
+                        },
+                        {
+                            "scope": OCA.Onlyoffice.AppName,
+                            "key": "fillFormsOnly",
+                            "enabled": true
+                        }
+                    ]
+                });
+            }
         }
     };
 

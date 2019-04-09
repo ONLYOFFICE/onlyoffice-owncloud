@@ -245,6 +245,35 @@
         }
     };
 
+    OCA.Onlyoffice.Share = {
+        attach: function (model) {
+            if (_.isUndefined(model)) {
+                return;
+            }
+            var fileName = model.getFileInfo().attributes.name;
+
+            var extension = getFileExtension(fileName);
+
+            var formats = OCA.Onlyoffice.setting.formats;
+
+            var config = formats[extension];
+            if (!config) {
+                return;
+            }
+
+            var addDownload = model.getRegisteredShareAttributeLabel("permissions", "download") === null;
+
+            if (addDownload) {
+                model.registerShareAttribute({
+                    "scope": "permissions",
+                    "key": "download",
+                    "default": true,
+                    "label": t(OCA.Onlyoffice.AppName, "download"),
+                });
+            }
+        }
+    };
+
     var getFileExtension = function (fileName) {
         var extension = fileName.substr(fileName.lastIndexOf(".") + 1).toLowerCase();
         return extension;
@@ -279,6 +308,7 @@
         } else {
             OC.Plugins.register("OCA.Files.FileList", OCA.Onlyoffice.FileList);
             OC.Plugins.register("OCA.Files.NewFileMenu", OCA.Onlyoffice.NewFileMenu);
+            OC.Plugins.register("OC.Share.ShareItemModel", OCA.Onlyoffice.Share);
         }
     };
 

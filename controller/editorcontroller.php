@@ -495,6 +495,16 @@ class EditorController extends Controller {
             ]
         ];
 
+        $fileStorage = $file->getStorage();
+        if (empty($token) && $fileStorage->instanceOfStorage("\OCA\Files_Sharing\SharedStorage")) {
+            $share = $fileStorage->getShare();
+
+            $permissionsDownload = $share->getAttributes()->getAttribute("permissions", "download");
+            if ($permissionsDownload !== null) {
+                $params["document"]["permissions"]["download"] = $params["document"]["permissions"]["print"] = $permissionsDownload === true;
+            }
+        }
+
         $permissions_modifyFilter = $this->config->getSystemValue($this->config->_permissions_modifyFilter);
         if (isset($permissions_modifyFilter)) {
             $params["document"]["permissions"]["modifyFilter"] = $permissions_modifyFilter;

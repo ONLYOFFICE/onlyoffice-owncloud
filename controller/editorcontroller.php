@@ -503,6 +503,14 @@ class EditorController extends Controller {
             if ($permissionsDownload !== null) {
                 $params["document"]["permissions"]["download"] = $params["document"]["permissions"]["print"] = $permissionsDownload === true;
             }
+
+            if (isset($format["review"]) && $format["review"]) {
+                $permissionsReviewOnly = $share->getAttributes()->getAttribute($this->appName, "reviewOnly");
+                if ($permissionsReviewOnly !== null && $permissionsReviewOnly === true) {
+                    $params["document"]["permissions"]["edit"] = false;
+                    $params["document"]["permissions"]["review"] = true;
+                }
+            }
         }
 
         $permissions_modifyFilter = $this->config->getSystemValue($this->config->_permissions_modifyFilter);

@@ -271,6 +271,16 @@
                     "label": t(OCA.Onlyoffice.AppName, "download"),
                 });
             }
+
+            if (config.review) {
+                model.registerShareAttribute({
+                    "scope": OCA.Onlyoffice.AppName,
+                    "key": "reviewOnly",
+                    "default": false,
+                    "label": t(OCA.Onlyoffice.AppName, "review only"),
+                    "requiredPermissions": [OC.PERMISSION_UPDATE],
+                });
+            }
         }
     };
 

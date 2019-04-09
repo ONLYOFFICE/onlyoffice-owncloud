@@ -511,6 +511,14 @@ class EditorController extends Controller {
                     $params["document"]["permissions"]["review"] = true;
                 }
             }
+
+            if (isset($format["fillForms"]) && $format["fillForms"]) {
+                $permissionsFillFormsOnly = $share->getAttributes()->getAttribute($this->appName, "fillFormsOnly");
+                if ($permissionsFillFormsOnly !== null && $permissionsFillFormsOnly === true) {
+                    $params["document"]["permissions"]["edit"] = false;
+                    $params["document"]["permissions"]["fillForms"] = true;
+                }
+            }
         }
 
         $permissions_modifyFilter = $this->config->getSystemValue($this->config->_permissions_modifyFilter);

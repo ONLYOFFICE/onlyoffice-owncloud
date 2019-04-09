@@ -575,7 +575,7 @@ class AppConfig {
         "csv" => [ "mime" => "text/csv", "type" => "spreadsheet", "edit" => true, "editable" => true ],
         "doc" => [ "mime" => "application/msword", "type" => "text", "conv" => true ],
         "docm" => [ "mime" => "application/vnd.ms-word.document.macroEnabled.12", "type" => "text", "conv" => true ],
-        "docx" => [ "mime" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "type" => "text", "edit" => true, "def" => true, "review" => true ],
+        "docx" => [ "mime" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "type" => "text", "edit" => true, "def" => true, "review" => true, "fillForms" => true ],
         "dot" => [ "type" => "text", "conv" => true ],
         "dotx" => [ "mime" => "application/vnd.openxmlformats-officedocument.wordprocessingml.template", "type" => "text", "conv" => true ],
         "epub" => [ "mime" => "application/epub+zip", "type" => "text", "conv" => true ],

@@ -281,6 +281,23 @@
                     "requiredPermissions": [OC.PERMISSION_UPDATE],
                 });
             }
+
+            if (config.fillForms) {
+                model.registerShareAttribute({
+                    "scope": OCA.Onlyoffice.AppName,
+                    "key": "fillFormsOnly",
+                    "default": false,
+                    "label": t(OCA.Onlyoffice.AppName, "filling forms only"),
+                    "requiredPermissions": [OC.PERMISSION_UPDATE],
+                    "incompatibleAttributes": [
+                        {
+                            "scope": OCA.Onlyoffice.AppName,
+                            "key": "reviewOnly",
+                            "enabled": true
+                        }
+                    ]
+                });
+            }
         }
     };
 

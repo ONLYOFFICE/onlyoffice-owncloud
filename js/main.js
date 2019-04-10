@@ -321,6 +321,23 @@
                     ]
                 });
             }
+
+            if (config.modifyFilter) {
+                model.registerShareAttribute({
+                    "scope": OCA.Onlyoffice.AppName,
+                    "key": "modifyFilter",
+                    "default": true,
+                    "label": t(OCA.Onlyoffice.AppName, "modify filter"),
+                    "requiredPermissions": [OC.PERMISSION_UPDATE],
+                    "incompatibleAttributes": [
+                        {
+                            "scope": OCA.Onlyoffice.AppName,
+                            "key": "commentOnly",
+                            "enabled": true
+                        }
+                    ]
+                });
+            }
         }
     };
 

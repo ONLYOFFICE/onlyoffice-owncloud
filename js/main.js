@@ -269,6 +269,7 @@
                     "key": "download",
                     "default": true,
                     "label": t(OCA.Onlyoffice.AppName, "download"),
+                    "incompatiblePermissions": [OC.PERMISSION_UPDATE]
                 });
             }
 

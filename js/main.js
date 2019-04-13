@@ -261,64 +261,65 @@
                 return;
             }
 
-            var addDownload = model.getRegisteredShareAttributeLabel("permissions", "download") === null;
+            var addDownload = model.getRegisteredShareAttribute("permissions", "download") === null;
 
             if (addDownload) {
                 model.registerShareAttribute({
-                    "scope": "permissions",
-                    "key": "download",
-                    "default": true,
-                    "label": t(OCA.Onlyoffice.AppName, "download"),
-                    "incompatiblePermissions": [OC.PERMISSION_UPDATE]
+					scope: "permissions",
+					key: "download",
+					default: true,
+					label: t(OCA.Onlyoffice.AppName, "can download"),
+					incompatiblePermissions: [OC.PERMISSION_UPDATE],
+					requiredPermissions: [],
+					incompatibleAttributes: []
                 });
             }
 
             if (config.review) {
                 model.registerShareAttribute({
-                    "scope": OCA.Onlyoffice.AppName,
-                    "key": "reviewOnly",
-                    "default": false,
-                    "label": t(OCA.Onlyoffice.AppName, "review only"),
-                    "requiredPermissions": [OC.PERMISSION_UPDATE],
+					scope: OCA.Onlyoffice.AppName,
+					key: "review",
+					default: false,
+					label: t(OCA.Onlyoffice.AppName, "can review"),
+					incompatiblePermissions: [OC.PERMISSION_UPDATE],
+					requiredPermissions: [],
+					incompatibleAttributes: [
+						{
+							scope: OCA.Onlyoffice.AppName,
+							key: "comment",
+							enabled: true
+						}
+					]
                 });
             }
 
             if (config.fillForms) {
                 model.registerShareAttribute({
-                    "scope": OCA.Onlyoffice.AppName,
-                    "key": "fillFormsOnly",
-                    "default": false,
-                    "label": t(OCA.Onlyoffice.AppName, "filling forms only"),
-                    "requiredPermissions": [OC.PERMISSION_UPDATE],
-                    "incompatibleAttributes": [
-                        {
-                            "scope": OCA.Onlyoffice.AppName,
-                            "key": "reviewOnly",
-                            "enabled": true
-                        }
-                    ]
+					scope: OCA.Onlyoffice.AppName,
+					key: "fillForms",
+					default: false,
+					label: t(OCA.Onlyoffice.AppName, "can fill forms"),
+					incompatiblePermissions: [OC.PERMISSION_UPDATE],
+					requiredPermissions: [],
+					incompatibleAttributes: []
                 });
             }
 
             if (config.comment) {
                 model.registerShareAttribute({
-                    "scope": OCA.Onlyoffice.AppName,
-                    "key": "commentOnly",
-                    "default": false,
-                    "label": t(OCA.Onlyoffice.AppName, "comment only"),
-                    "requiredPermissions": [OC.PERMISSION_UPDATE],
-                    "incompatibleAttributes": [
-                        {
-                            "scope": OCA.Onlyoffice.AppName,
-                            "key": "reviewOnly",
-                            "enabled": true
-                        },
-                        {
-                            "scope": OCA.Onlyoffice.AppName,
-                            "key": "fillFormsOnly",
-                            "enabled": true
-                        }
-                    ]
+					scope: OCA.Onlyoffice.AppName,
+					key: "comment",
+					default: false,
+					label: t(OCA.Onlyoffice.AppName, "can comment"),
+					incompatiblePermissions: [OC.PERMISSION_UPDATE],
+					requiredPermissions: [],
+					incompatibleAttributes: [
+						{
+							scope: OCA.Onlyoffice.AppName,
+							key: "review",
+							enabled: true
+						}
+					]
                 });
             }
         }

@@ -495,6 +495,10 @@ class EditorController extends Controller {
             ]
         ];
 
+
+        $userCanEdit = $userCanReview = $file->isUpdateable() &&
+			(empty($token) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE);
+
         $fileStorage = $file->getStorage();
         if (empty($token) && $fileStorage->instanceOfStorage("\OCA\Files_Sharing\SharedStorage")) {
             $share = $fileStorage->getShare();
@@ -509,7 +513,7 @@ class EditorController extends Controller {
                 if ($permissionsReviewOnly !== null && $permissionsReviewOnly === true) {
                     $params["document"]["permissions"]["edit"] = false;
                     $params["document"]["permissions"]["review"] = true;
-
+                    $userCanReview = true;
                 }
             }
 
@@ -518,6 +522,7 @@ class EditorController extends Controller {
                 if ($permissionsFillFormsOnly !== null && $permissionsFillFormsOnly === true) {
                     $params["document"]["permissions"]["edit"] = false;
                     $params["document"]["permissions"]["fillForms"] = true;
+                    $userCanReview = true;
                 }
             }
 
@@ -526,6 +531,7 @@ class EditorController extends Controller {
                 if ($permissionsCommentOnly !== null && $permissionsCommentOnly === true) {
                     $params["document"]["permissions"]["edit"] = false;
                     $params["document"]["permissions"]["comment"] = true;
+                    $userCanReview = true;
                 }
             }
         }
@@ -536,12 +542,6 @@ class EditorController extends Controller {
         }
 
         $canEdit = isset($format["edit"]) && $format["edit"];
-        $userCanEdit = $file->isUpdateable() && (empty($token) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE);
-        $userCanReview = $params["document"]["permissions"]["edit"] === false &&
-			($params["document"]["permissions"]["comment"] === true ||
-				$params["document"]["permissions"]["fillForms"] === true ||
-				$params["document"]["permissions"]["review"] === true);
-
         if ($canEdit && ($userCanEdit || $userCanReview)) {
             $ownerId = NULL;
             $owner = $file->getOwner();

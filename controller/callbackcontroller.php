@@ -373,26 +373,29 @@ class CallbackController extends Controller {
                 }
 
                 try {
+                    $token = isset($hashData->token) ? $hashData->token : NULL;
+                    $ownerId = $hashData->ownerId;
+                    if (empty($ownerId)) {
+                        $this->logger->error("Track without owner: " . $fileId . " status " . $trackerStatus, array("app" => $this->appName));
+                        return new JSONResponse(["message" => $this->trans->t("File owner is empty")], Http::STATUS_BAD_REQUEST);
+                    }
+
                     $userId = $users[0];
                     $user = $this->userManager->get($userId);
                     if (!empty($user)) {
-                        \OC_Util::tearDownFS();
-                        \OC_Util::setupFS($userId);
-
+                        // Login user to allow audit
                         $this->userSession->setUser($user);
-                    } else {
-                        $ownerId = $hashData->ownerId;
-
-                        \OC_Util::tearDownFS();
-                        if (!empty($ownerId)) {
-                            \OC_Util::setupFS($ownerId);
-                        }
                     }
 
-                    $token = isset($hashData->token) ? $hashData->token : NULL;
-                    list ($file, $error) = empty($token) ? $this->getFile($userId, $fileId) : $this->getFileByToken($fileId, $token);
+                    // Setup fs of file owner
+                    \OC_Util::tearDownFS();
+                    \OC_Util::setupFS($ownerId);
+
+                    // retrieve file,/user-share,group-share by fileid or link share by token
+                    list ($file, $error) = empty($token) ? $this->getFile($ownerId, $fileId) : $this->getFileByToken($fileId, $token);
 
                     if (isset($error)) {
+                        $this->logger->error("track error" . $fileId ." " . $error,  array("app" => $this->appName));
                         return $error;
                     }
 
@@ -430,6 +433,8 @@ class CallbackController extends Controller {
                     }
 
                     $newData = $documentService->Request($url);
+
+                    $this->logger->debug("Track put content " . $file->getPath(), array("app" => $this->appName));
                     $file->putContent($newData);
                     $error = 0;
                 } catch (\Exception $e) {

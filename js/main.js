@@ -276,24 +276,24 @@
             if (config.review) {
                 model.registerShareAttribute({
                     "scope": OCA.Onlyoffice.AppName,
-                    "key": "reviewOnly",
+                    "key": "review",
                     "default": false,
-                    "label": t(OCA.Onlyoffice.AppName, "review only"),
-                    "requiredPermissions": [OC.PERMISSION_UPDATE],
+                    "label": t(OCA.Onlyoffice.AppName, "review"),
+                    "incompatiblePermissions": [OC.PERMISSION_UPDATE],
                 });
             }
 
             if (config.fillForms) {
                 model.registerShareAttribute({
                     "scope": OCA.Onlyoffice.AppName,
-                    "key": "fillFormsOnly",
+                    "key": "fillForms",
                     "default": false,
-                    "label": t(OCA.Onlyoffice.AppName, "filling forms only"),
-                    "requiredPermissions": [OC.PERMISSION_UPDATE],
+                    "label": t(OCA.Onlyoffice.AppName, "form filling"),
+                    "incompatiblePermissions": [OC.PERMISSION_UPDATE],
                     "incompatibleAttributes": [
                         {
                             "scope": OCA.Onlyoffice.AppName,
-                            "key": "reviewOnly",
+                            "key": "review",
                             "enabled": true
                         }
                     ]
@@ -303,19 +303,19 @@
             if (config.comment) {
                 model.registerShareAttribute({
                     "scope": OCA.Onlyoffice.AppName,
-                    "key": "commentOnly",
+                    "key": "comment",
                     "default": false,
-                    "label": t(OCA.Onlyoffice.AppName, "comment only"),
-                    "requiredPermissions": [OC.PERMISSION_UPDATE],
+                    "label": t(OCA.Onlyoffice.AppName, "comment"),
+                    "incompatiblePermissions": [OC.PERMISSION_UPDATE],
                     "incompatibleAttributes": [
                         {
                             "scope": OCA.Onlyoffice.AppName,
-                            "key": "reviewOnly",
+                            "key": "review",
                             "enabled": true
                         },
                         {
                             "scope": OCA.Onlyoffice.AppName,
-                            "key": "fillFormsOnly",
+                            "key": "fillForms",
                             "enabled": true
                         }
                     ]

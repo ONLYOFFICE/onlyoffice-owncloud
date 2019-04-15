@@ -495,6 +495,7 @@ class EditorController extends Controller {
             ]
         ];
 
+        $restrictedEditing = false;
         $fileStorage = $file->getStorage();
         if (empty($token) && $fileStorage->instanceOfStorage("\OCA\Files_Sharing\SharedStorage")) {
             $share = $fileStorage->getShare();
@@ -505,24 +506,27 @@ class EditorController extends Controller {
             }
 
             if (isset($format["review"]) && $format["review"]) {
-                $permissionsReviewOnly = $share->getAttributes()->getAttribute($this->appName, "reviewOnly");
+                $permissionsReviewOnly = $share->getAttributes()->getAttribute($this->appName, "review");
                 if ($permissionsReviewOnly !== null && $permissionsReviewOnly === true) {
+                    $restrictedEditing = true;
                     $params["document"]["permissions"]["edit"] = false;
                     $params["document"]["permissions"]["review"] = true;
                 }
             }
 
             if (isset($format["fillForms"]) && $format["fillForms"]) {
-                $permissionsFillFormsOnly = $share->getAttributes()->getAttribute($this->appName, "fillFormsOnly");
+                $permissionsFillFormsOnly = $share->getAttributes()->getAttribute($this->appName, "fillForms");
                 if ($permissionsFillFormsOnly !== null && $permissionsFillFormsOnly === true) {
+                    $restrictedEditing = true;
                     $params["document"]["permissions"]["edit"] = false;
                     $params["document"]["permissions"]["fillForms"] = true;
                 }
             }
 
             if (isset($format["comment"]) && $format["comment"]) {
-                $permissionsCommentOnly = $share->getAttributes()->getAttribute($this->appName, "commentOnly");
+                $permissionsCommentOnly = $share->getAttributes()->getAttribute($this->appName, "comment");
                 if ($permissionsCommentOnly !== null && $permissionsCommentOnly === true) {
+                    $restrictedEditing = true;
                     $params["document"]["permissions"]["edit"] = false;
                     $params["document"]["permissions"]["comment"] = true;
                 }
@@ -537,7 +541,7 @@ class EditorController extends Controller {
         $canEdit = isset($format["edit"]) && $format["edit"];
         $editable = $file->isUpdateable()
                     && (empty($token) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE);
-        if ($editable && $canEdit) {
+        if (($editable || $restrictedEditing) && $canEdit) {
             $ownerId = NULL;
             $owner = $file->getOwner();
             if (!empty($owner)) {

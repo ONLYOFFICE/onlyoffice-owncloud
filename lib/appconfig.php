@@ -145,13 +145,6 @@ class AppConfig {
     private $_settingsError = "settings_error";
 
     /**
-     * The config key for the modifyFilter
-     *
-     * @var string
-     */
-    public $_permissions_modifyFilter = "permissions_modifyFilter";
-
-    /**
      * The config key for the customer
      *
      * @var string

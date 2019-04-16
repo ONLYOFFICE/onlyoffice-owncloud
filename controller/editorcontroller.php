@@ -537,11 +537,6 @@ class EditorController extends Controller {
             }
         }
 
-        $permissions_modifyFilter = $this->config->getSystemValue($this->config->_permissions_modifyFilter);
-        if (isset($permissions_modifyFilter)) {
-            $params["document"]["permissions"]["modifyFilter"] = $permissions_modifyFilter;
-        }
-
         $canEdit = isset($format["edit"]) && $format["edit"];
         $editable = $file->isUpdateable()
                     && (empty($token) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE);

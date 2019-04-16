@@ -509,7 +509,6 @@ class EditorController extends Controller {
                 $permissionsReviewOnly = $share->getAttributes()->getAttribute($this->appName, "review");
                 if ($permissionsReviewOnly !== null && $permissionsReviewOnly === true) {
                     $restrictedEditing = true;
-                    $params["document"]["permissions"]["edit"] = false;
                     $params["document"]["permissions"]["review"] = true;
                 }
             }
@@ -518,7 +517,6 @@ class EditorController extends Controller {
                 $permissionsFillFormsOnly = $share->getAttributes()->getAttribute($this->appName, "fillForms");
                 if ($permissionsFillFormsOnly !== null && $permissionsFillFormsOnly === true) {
                     $restrictedEditing = true;
-                    $params["document"]["permissions"]["edit"] = false;
                     $params["document"]["permissions"]["fillForms"] = true;
                 }
             }
@@ -527,7 +525,6 @@ class EditorController extends Controller {
                 $permissionsCommentOnly = $share->getAttributes()->getAttribute($this->appName, "comment");
                 if ($permissionsCommentOnly !== null && $permissionsCommentOnly === true) {
                     $restrictedEditing = true;
-                    $params["document"]["permissions"]["edit"] = false;
                     $params["document"]["permissions"]["comment"] = true;
                 }
             }
@@ -541,6 +538,7 @@ class EditorController extends Controller {
         $canEdit = isset($format["edit"]) && $format["edit"];
         $editable = $file->isUpdateable()
                     && (empty($token) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE);
+        $params["document"]["permissions"]["edit"] = $editable;
         if (($editable || $restrictedEditing) && $canEdit) {
             $ownerId = NULL;
             $owner = $file->getOwner();

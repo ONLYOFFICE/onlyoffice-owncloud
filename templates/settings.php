@@ -67,58 +67,60 @@
     <br />
 
     <p><button id="onlyofficeAddrSave" class="button"><?php p($l->t("Save")) ?></button></p>
-    <br />
 
-    <h3><?php p($l->t("Common settings")) ?></h3>
-
-    <p>
-        <input type="checkbox" class="checkbox" id="onlyofficeGroups"
-            <?php if (count($_["limitGroups"]) > 0) { ?>checked="checked"<?php } ?> />
-        <label for="onlyofficeGroups"><?php p($l->t("Restrict access to editors to following groups")) ?></label>
+    <div class="section-onlyoffice-2 <?php if (empty($_["documentserver"]) || !$_["successful"]) { ?>onlyoffice-hide<?php } ?>">
         <br />
-        <input type="hidden" id="onlyofficeLimitGroups" value="<?php p(implode("|", $_["limitGroups"])) ?>"
-            style="display: block; margin-top: 6px; width: 265px;" />
-    </p>
+        <h3><?php p($l->t("Common settings")) ?></h3>
 
-    <p>
-        <input type="checkbox" class="checkbox" id="onlyofficeSameTab"
-            <?php if ($_["sameTab"]) { ?>checked="checked"<?php } ?> />
-        <label for="onlyofficeSameTab"><?php p($l->t("Open file in the same tab")) ?></label>
-    </p>
+        <p>
+            <input type="checkbox" class="checkbox" id="onlyofficeGroups"
+                <?php if (count($_["limitGroups"]) > 0) { ?>checked="checked"<?php } ?> />
+            <label for="onlyofficeGroups"><?php p($l->t("Restrict access to editors to following groups")) ?></label>
+            <br />
+            <input type="hidden" id="onlyofficeLimitGroups" value="<?php p(implode("|", $_["limitGroups"])) ?>"
+                style="display: block; margin-top: 6px; width: 265px;" />
+        </p>
 
-    <p class="onlyoffice-header"><?php p($l->t("The default application for opening the format")) ?></p>
-    <div class="onlyoffice-exts">
-        <?php foreach ($_["formats"] as $format => $setting) { ?>
-            <?php if (array_key_exists("mime", $setting)) { ?>
-            <div>
-                <input type="checkbox" class="checkbox"
-                    id="onlyofficeDefFormat<?php p($format) ?>"
-                    name="<?php p($format) ?>"
-                    <?php if (array_key_exists("def", $setting) && $setting["def"]) { ?>checked="checked"<?php } ?> />
-                <label for="onlyofficeDefFormat<?php p($format) ?>"><?php p($format) ?></label>
-            </div>
+        <p>
+            <input type="checkbox" class="checkbox" id="onlyofficeSameTab"
+                <?php if ($_["sameTab"]) { ?>checked="checked"<?php } ?> />
+            <label for="onlyofficeSameTab"><?php p($l->t("Open file in the same tab")) ?></label>
+        </p>
+
+        <p class="onlyoffice-header"><?php p($l->t("The default application for opening the format")) ?></p>
+        <div class="onlyoffice-exts">
+            <?php foreach ($_["formats"] as $format => $setting) { ?>
+                <?php if (array_key_exists("mime", $setting)) { ?>
+                <div>
+                    <input type="checkbox" class="checkbox"
+                        id="onlyofficeDefFormat<?php p($format) ?>"
+                        name="<?php p($format) ?>"
+                        <?php if (array_key_exists("def", $setting) && $setting["def"]) { ?>checked="checked"<?php } ?> />
+                    <label for="onlyofficeDefFormat<?php p($format) ?>"><?php p($format) ?></label>
+                </div>
+                <?php } ?>
             <?php } ?>
-        <?php } ?>
-    </div>
+        </div>
 
-    <p class="onlyoffice-header">
-        <?php p($l->t("Open the file for editing (due to format restrictions, the data might be lost when saving to the formats from the list below)")) ?>
-        <a target="_blank" class="icon-info svg" title="" href="https://api.onlyoffice.com/editors/owncloud#editable" data-original-title="<?php p($l->t("View details")) ?>"></a>
-    </p>
-    <div class="onlyoffice-exts">
-        <?php foreach ($_["formats"] as $format => $setting) { ?>
-            <?php if (array_key_exists("editable", $setting)) { ?>
-            <div>
-                <input type="checkbox" class="checkbox"
-                    id="onlyofficeEditFormat<?php p($format) ?>"
-                    name="<?php p($format) ?>"
-                    <?php if (array_key_exists("edit", $setting) && $setting["edit"]) { ?>checked="checked"<?php } ?> />
-                <label for="onlyofficeEditFormat<?php p($format) ?>"><?php p($format) ?></label>
-            </div>
+        <p class="onlyoffice-header">
+            <?php p($l->t("Open the file for editing (due to format restrictions, the data might be lost when saving to the formats from the list below)")) ?>
+            <a target="_blank" class="icon-info svg" title="" href="https://api.onlyoffice.com/editors/owncloud#editable" data-original-title="<?php p($l->t("View details")) ?>"></a>
+        </p>
+        <div class="onlyoffice-exts">
+            <?php foreach ($_["formats"] as $format => $setting) { ?>
+                <?php if (array_key_exists("editable", $setting)) { ?>
+                <div>
+                    <input type="checkbox" class="checkbox"
+                        id="onlyofficeEditFormat<?php p($format) ?>"
+                        name="<?php p($format) ?>"
+                        <?php if (array_key_exists("edit", $setting) && $setting["edit"]) { ?>checked="checked"<?php } ?> />
+                    <label for="onlyofficeEditFormat<?php p($format) ?>"><?php p($format) ?></label>
+                </div>
+                <?php } ?>
             <?php } ?>
-        <?php } ?>
-    </div>
-    <br />
+        </div>
+        <br />
 
-    <p><button id="onlyofficeSave" class="button"><?php p($l->t("Save")) ?></button></p>
+        <p><button id="onlyofficeSave" class="button"><?php p($l->t("Save")) ?></button></p>
+    </div>
 </div>

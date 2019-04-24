@@ -124,8 +124,10 @@ class SettingsController extends Controller {
             "encryption" => $this->checkEncryptionModule(),
             "limitGroups" => $this->config->GetLimitGroups(),
             "chat" => $this->config->GetCustomizationChat(),
+            "compactHeader" => $this->config->GetCustomizationCompactHeader(),
             "feedback" => $this->config->GetCustomizationFeedback(),
             "help" => $this->config->GetCustomizationHelp(),
+            "toolbarNoTabs" => $this->config->GetCustomizationToolbarNoTabs(),
             "successful" => $this->config->SettingsAreSuccessful()
         ];
         return new TemplateResponse($this->appName, "settings", $data, "blank");
@@ -183,8 +185,10 @@ class SettingsController extends Controller {
      * @param bool $sameTab - open in the same tab
      * @param array $limitGroups - list of groups
      * @param bool $chat - display chat
+     * @param bool $compactHeader - display compact header
      * @param bool $feedback - display feedback
      * @param bool $help - display help
+     * @param bool $toolbarNoTabs - display toolbar tab
      *
      * @return array
      */
@@ -193,8 +197,10 @@ class SettingsController extends Controller {
                                     $sameTab,
                                     $limitGroups,
                                     $chat,
+                                    $compactHeader,
                                     $feedback,
-                                    $help
+                                    $help,
+                                    $toolbarNoTabs
                                     ) {
 
         $this->config->SetDefaultFormats($defFormats);
@@ -202,8 +208,10 @@ class SettingsController extends Controller {
         $this->config->SetSameTab($sameTab);
         $this->config->SetLimitGroups($limitGroups);
         $this->config->SetCustomizationChat($chat);
+        $this->config->SetCustomizationCompactHeader($compactHeader);
         $this->config->SetCustomizationFeedback($feedback);
         $this->config->SetCustomizationHelp($help);
+        $this->config->SetCustomizationToolbarNoTabs($toolbarNoTabs);
 
         return [
             ];

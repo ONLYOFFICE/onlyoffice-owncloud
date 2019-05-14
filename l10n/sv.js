@@ -45,6 +45,9 @@ OC.L10N.register(
     "View details" : "Visa detaljer",
     "Save" : "Spara",
     "Mixed Active Content is not allowed. HTTPS address for Document Server is required." : "Blandat aktivt innehåll är inte tillåtet. HTTPS-adress till dokumentserver krävs.",
-    "Restrict access to editors to following groups" : "Begränsa åtkomst till följande grupper"
+    "Restrict access to editors to following groups" : "Begränsa åtkomst till följande grupper",
+    "review" : "granska",
+    "comment" : "kommentar",
+    "download" : "ladda ner"
 },
 "nplurals=2; plural=(n != 1);");

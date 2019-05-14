@@ -261,7 +261,7 @@
                 return;
             }
 
-            var addDownload = model.getRegisteredShareAttributeLabel("permissions", "download") === null;
+            var addDownload = model.getRegisteredShareAttribute("permissions", "download") === null;
 
             if (addDownload) {
                 model.registerShareAttribute({

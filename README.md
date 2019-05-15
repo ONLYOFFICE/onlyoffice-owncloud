@@ -1,3 +1,11 @@
+* [ownCloud-ONLYOFFICE integration app](#-owncloud-onlyoffice-integration-app)
+* [Installing ONLYOFFICE Document Server](#installing-onlyoffice-document-server)
+* [ONLYOFFICE Document Server editions](#onlyoffice-document-server-editions)
+* [Installing ownCloud ONLYOFFICE integration app](#installing-owncloud-onlyoffice-integration-app)
+* [Configuring ownCloud-ONLYOFFICE integration app](#configuring-owncloud-onlyoffice-integration-app)
+* [How it works](#how-it-works)
+* [Known issues](#known-issues)
+
 # ![](screenshots/icon.png) ownCloud ONLYOFFICE integration app
 
 This app enables users to edit office documents from [ownCloud](https://owncloud.com) using ONLYOFFICE Document Server.

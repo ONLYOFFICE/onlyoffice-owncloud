@@ -45,6 +45,10 @@ OC.L10N.register(
     "View details" : "Ver detalles",
     "Save" : "Guardar",
     "Mixed Active Content is not allowed. HTTPS address for Document Server is required." : "Contenido Mixto Activo no está permitido. Se requiere la dirección HTTPS para Servidor de Documentos.",
-    "Restrict access to editors to following groups" : "Restringir el acceso a editores a siguientes grupos"
+    "Restrict access to editors to following groups" : "Restringir el acceso a editores a siguientes grupos",
+    "review" : "revista",
+    "form filling" : "relleno de formulario",
+    "comment" : "comentarios",
+    "download" : "descargar"
 },
 "nplurals=2; plural=(n != 1);");

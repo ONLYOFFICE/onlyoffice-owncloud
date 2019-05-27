@@ -168,28 +168,28 @@
             var register = function() {
                 var formats = OCA.Onlyoffice.setting.formats;
 
-                $.each(formats, function (ext, attr) {
-                    if (!attr.mime) {
+                $.each(formats, function (ext, config) {
+                    if (!config.mime) {
                         return true;
                     }
                     fileList.fileActions.registerAction({
                         name: "onlyofficeOpen",
                         displayName: t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE"),
-                        mime: attr.mime,
+                        mime: config.mime,
                         permissions: OC.PERMISSION_READ,
                         iconClass: "icon-onlyoffice-open",
                         actionHandler: OCA.Onlyoffice.FileClick
                     });
 
-                    if (attr.def) {
-                        fileList.fileActions.setDefault(attr.mime, "onlyofficeOpen");
+                    if (config.def) {
+                        fileList.fileActions.setDefault(config.mime, "onlyofficeOpen");
                     }
 
-                    if (attr.conv) {
+                    if (config.conv) {
                         fileList.fileActions.registerAction({
                             name: "onlyofficeConvert",
                             displayName: t(OCA.Onlyoffice.AppName, "Convert with ONLYOFFICE"),
-                            mime: attr.mime,
+                            mime: config.mime,
                             permissions: ($("#isPublic").val() ? OC.PERMISSION_UPDATE : OC.PERMISSION_READ),
                             iconClass: "icon-onlyoffice-convert",
                             actionHandler: OCA.Onlyoffice.FileConvertClick
@@ -245,33 +245,137 @@
         }
     };
 
-    var initPage = function(){
+    OCA.Onlyoffice.Share = {
+        attach: function (model) {
+            if (_.isUndefined(model)) {
+                return;
+            }
+            var fileName = model.getFileInfo().attributes.name;
+
+            var extension = getFileExtension(fileName);
+
+            var formats = OCA.Onlyoffice.setting.formats;
+
+            var config = formats[extension];
+            if (!config) {
+                return;
+            }
+
+            var addDownload = model.getRegisteredShareAttribute("permissions", "download") === null;
+
+            if (addDownload) {
+                model.registerShareAttribute({
+                    "scope": "permissions",
+                    "key": "download",
+                    "default": true,
+                    "label": t(OCA.Onlyoffice.AppName, "download"),
+                    "incompatiblePermissions": [OC.PERMISSION_UPDATE]
+                });
+            }
+
+            if (config.review) {
+                model.registerShareAttribute({
+                    "scope": OCA.Onlyoffice.AppName,
+                    "key": "review",
+                    "default": false,
+                    "label": t(OCA.Onlyoffice.AppName, "review"),
+                    "incompatiblePermissions": [OC.PERMISSION_UPDATE],
+                });
+            }
+
+            if (config.fillForms) {
+                model.registerShareAttribute({
+                    "scope": OCA.Onlyoffice.AppName,
+                    "key": "fillForms",
+                    "default": false,
+                    "label": t(OCA.Onlyoffice.AppName, "form filling"),
+                    "incompatiblePermissions": [OC.PERMISSION_UPDATE],
+                    "incompatibleAttributes": [
+                        {
+                            "scope": OCA.Onlyoffice.AppName,
+                            "key": "review",
+                            "enabled": true
+                        }
+                    ]
+                });
+            }
+
+            if (config.comment) {
+                model.registerShareAttribute({
+                    "scope": OCA.Onlyoffice.AppName,
+                    "key": "comment",
+                    "default": false,
+                    "label": t(OCA.Onlyoffice.AppName, "comment"),
+                    "incompatiblePermissions": [OC.PERMISSION_UPDATE],
+                    "incompatibleAttributes": [
+                        {
+                            "scope": OCA.Onlyoffice.AppName,
+                            "key": "review",
+                            "enabled": true
+                        },
+                        {
+                            "scope": OCA.Onlyoffice.AppName,
+                            "key": "fillForms",
+                            "enabled": true
+                        }
+                    ]
+                });
+            }
+
+            if (config.modifyFilter) {
+                model.registerShareAttribute({
+                    "scope": OCA.Onlyoffice.AppName,
+                    "key": "modifyFilter",
+                    "default": true,
+                    "label": t(OCA.Onlyoffice.AppName, "modify filter"),
+                    "requiredPermissions": [OC.PERMISSION_UPDATE],
+                    "incompatibleAttributes": [
+                        {
+                            "scope": OCA.Onlyoffice.AppName,
+                            "key": "commentOnly",
+                            "enabled": true
+                        }
+                    ]
+                });
+            }
+        }
+    };
+
+    var getFileExtension = function (fileName) {
+        var extension = fileName.substr(fileName.lastIndexOf(".") + 1).toLowerCase();
+        return extension;
+    }
+
+    var initPage = function () {
         if ($("#isPublic").val() === "1" && !$("#filestable").length) {
             var fileName = $("#filename").val();
-            var extension = fileName.substr(fileName.lastIndexOf(".") + 1).toLowerCase();
+            var extension = getFileExtension(fileName);
 
             var initSharedButton = function() {
                 var formats = OCA.Onlyoffice.setting.formats;
 
-                var conf = formats[extension];
-                if (conf) {
-                    var button = document.createElement("a");
-                    button.href = OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/s/" + encodeURIComponent($("#sharingToken").val()));
-                    button.className = "button";
-                    button.innerText = t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE")
-
-                    if (!OCA.Onlyoffice.setting.sameTab) {
-                        button.target = "_blank";
-                    }
-
-                    $("#preview").append(button);
+                var config = formats[extension];
+                if (!config) {
+                    return;
                 }
+
+                var button = document.createElement("a");
+                button.href = OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/s/" + encodeURIComponent($("#sharingToken").val()));
+                button.className = "button";
+                button.innerText = t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE")
+
+                if (!OCA.Onlyoffice.setting.sameTab) {
+                    button.target = "_blank";
+                }
+
+                $("#preview").append(button);
             };
 
             OCA.Onlyoffice.GetSettings(initSharedButton);
         } else {
             OC.Plugins.register("OCA.Files.FileList", OCA.Onlyoffice.FileList);
             OC.Plugins.register("OCA.Files.NewFileMenu", OCA.Onlyoffice.NewFileMenu);
+            OC.Plugins.register("OC.Share.ShareItemModel", OCA.Onlyoffice.Share);
         }
     };
 

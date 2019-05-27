@@ -1,4 +1,12 @@
-# ![](screenshots/icon.png) ownCloud ONLYOFFICE integration app
+* [ownCloud-ONLYOFFICE integration app](#-owncloud-onlyoffice-integration-app)
+* [Installing ONLYOFFICE Document Server](#installing-onlyoffice-document-server)
+* [ONLYOFFICE Document Server editions](#onlyoffice-document-server-editions)
+* [Installing ownCloud ONLYOFFICE integration app](#installing-owncloud-onlyoffice-integration-app)
+* [Configuring ownCloud-ONLYOFFICE integration app](#configuring-owncloud-onlyoffice-integration-app)
+* [How it works](#how-it-works)
+* [Known issues](#known-issues)
+
+# ![onlyoffice icon](screenshots/icon.png) ownCloud ONLYOFFICE integration app
 
 This app enables users to edit office documents from [ownCloud](https://owncloud.com) using ONLYOFFICE Document Server.
 Currently the following document formats can be edited with this app: csv, docx, pptx, txt, xlsx.
@@ -11,7 +19,6 @@ This allows multiple users to collaborate in real time and to save back those ch
 
 You can also use our **[Docker installation](https://github.com/ONLYOFFICE/docker-onlyoffice-owncloud)** to get installed and configured Document Server and ownCloud installation with a couple of commands.
 
-
 ## Installing ONLYOFFICE Document Server
 
 You will need an instance of ONLYOFFICE Document Server that is resolvable and connectable both from ownCloud and any end clients (version 4.2.7 and later are supported for use with the app).
@@ -23,6 +30,73 @@ Or you can use Document Server behind a proxy, please refer to [this article](ht
 
 The easiest way to start an instance of ONLYOFFICE Document Server is to use [Docker](https://github.com/ONLYOFFICE/Docker-DocumentServer).
 
+## ONLYOFFICE Document Server editions
+
+ONLYOFFICE offers different versions of its online document editors that can be deployed on your own servers.
+
+ONLYOFFICE Document Server:
+
+* Community Edition (`onlyoffice-documentserver` package)
+
+* Integration Edition (`onlyoffice-documentserver-ie` package)
+
+The table below will help you to make the right choice.
+
+| Pricing and licensing | Community Edition | Integration Edition |
+| ------------- | ------------- | ------------- |
+| | [Get it now](https://www.onlyoffice.com/download.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwncloud)  | [Start Free Trial](https://www.onlyoffice.com/connectors-request.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwncloud)  |
+| Cost  | FREE  | [Go to the pricing page](https://www.onlyoffice.com/integration-edition-prices.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwncloud)  |
+| Simultaneous connections | up to 20 maximum  | As in chosen pricing plan |
+| Number of users | up to 20 recommended | As in chosen pricing plan |
+| License | GNU AGPL v.3 | Proprietary |
+| **Support** | **Community Edition** | **Integration Edition** |
+| Documentation | [Help Center](https://helpcenter.onlyoffice.com/server/docker/opensource/index.aspx) | [Help Center](https://helpcenter.onlyoffice.com/server/integration-edition/index.aspx) |
+| Standard support | [GitHub](https://github.com/ONLYOFFICE/DocumentServer/issues) or paid | One year support included |
+| Premium support | [Buy Now](https://www.onlyoffice.com/support.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwncloud) | [Buy Now](https://www.onlyoffice.com/support.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwncloud) |
+| **Services** | **Community Edition** | **Integration Edition** |
+| Conversion Service                | + | + |
+| Document Builder Service          | - | + |
+| **Interface** | **Community Edition** | **Integration Edition** |
+| Tabbed interface                       | - | + |
+| White Label                            | - | - |
+| Integrated test example (node.js)*     | - | + |
+| **Plugins & Macros** | **Community Edition** | **Integration Edition** |
+| Plugins                           | + | + |
+| Macros                            | + | + |
+| **Collaborative capabilities** | **Community Edition** | **Integration Edition** |
+| Two co-editing modes              | + | + |
+| Comments                          | + | + |
+| Built-in chat                     | + | + |
+| Review and tracking changes       | + | + |
+| Display modes of tracking changes | - | + |
+| Version history                   | + | + |
+| **Document Editor features** | **Community Edition** | **Integration Edition** |
+| Font and paragraph formatting   | + | + |
+| Object insertion                | + | + |
+| Content control                 | - | + |
+| Layout tools                    | + | + |
+| Table of contents               | + | + |
+| Navigation panel                | - | + |
+| Mail Merge                      | + | + |
+| **Spreadsheet Editor features** | **Community Edition** | **Integration Edition** |
+| Font and paragraph formatting   | + | + |
+| Object insertion                | + | + |
+| Functions, formulas, equations  | + | + |
+| Table templates                 | + | + |
+| Pivot tables                    | - | +** |
+| **Presentation Editor features** | **Community Edition** | **Integration Edition** |
+| Font and paragraph formatting   | + | + |
+| Object insertion                | + | + |
+| Animations                      | + | + |
+| Presenter mode                  | - | + |
+| Notes                           | + | + |
+| | [Get it now](https://www.onlyoffice.com/download.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwncloud)  | [Start Free Trial](https://www.onlyoffice.com/connectors-request.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwncloud)  |
+
+\* Note that by default DocumentServer Community Edition does not contain any document management system.  
+Integration Edition and Developer Edition versions include integrated test examples (simplest DMS to test the editors).
+For Community version, please use the [ONLYOFFICE Community Server](https://github.com/ONLYOFFICE/CommunityServer/) or [check out integration](https://www.onlyoffice.com/connectors.aspx) with 3rd party platforms, e.g. ownCloud/Nextcloud
+
+\** Changing style and deleting (Full support coming soon)
 
 ## Installing ownCloud ONLYOFFICE integration app
 
@@ -34,7 +108,8 @@ If the server with the ownCloud installed does not have an Internet access, or i
 To start using ONLYOFFICE Document Server with ownCloud, the following steps must be performed:
 
 1. Go to the ownCloud server _apps/_ directory (or some other directory [used](https://doc.owncloud.org/server/administration_manual/installation/apps_management_installation.html#using-custom-app-directories)):
-    ```
+
+    ```bash
     cd apps/
     ```
 
@@ -45,27 +120,28 @@ There are several ways to do that:
 
     b. Or you can download the latest signed version from the application [release page](https://github.com/ONLYOFFICE/onlyoffice-owncloud/releases) on GitHub.
 
-    c. Or you can clone the application source code and compile it yourself: 
-    ```
+    c. Or you can clone the application source code and compile it yourself:
+
+    ```bash
     git clone https://github.com/ONLYOFFICE/onlyoffice-owncloud.git onlyoffice
     ```
 
     > ownCloud does not work with unsigned applications giving an alert, so you will need to use either option **a** or **b** to get the application.
 
-2. Change the owner to update the application right from ownCloud web interface:
-    ```
+3. Change the owner to update the application right from ownCloud web interface:
+
+    ```bash
     chown -R www-data:www-data onlyoffice
     ```
 
-3. In ownCloud open the `~/index.php/settings/apps?category=disabled` page with _Not enabled_ apps by administrator and click _Enable_ for the **ONLYOFFICE** application.
-
+4. In ownCloud open the `~/index.php/settings/apps?category=disabled` page with _Not enabled_ apps by administrator and click _Enable_ for the **ONLYOFFICE** application.
 
 ## Configuring ownCloud ONLYOFFICE integration app
 
 In ownCloud open the `~/index.php/settings/admin#onlyoffice` page with administrative settings for **ONLYOFFICE** section.
 Enter the following address to connect ONLYOFFICE Document Server:
 
-```
+```bash
 https://<documentserver>/
 ```
 
@@ -86,10 +162,9 @@ Enable or disable the _Open file in the same tab_ setting.
 The **Open in ONLYOFFICE** action will be added to the file context menu.
 You can specify this action as default and it will be used when the file name is clicked for the selected file types.
 
-
 ## How it works
 
-The ONLYOFFICE integration follows the API documented here https://api.onlyoffice.com/editors/basic:
+The ONLYOFFICE integration follows the API documented [here](https://api.onlyoffice.com/editors/basic):
 
 * When creating a new file, the user navigates to a document folder within ownCloud and clicks the **Document**, **Spreadsheet** or **Presentation** item in the _new_ (+) menu.
 
@@ -124,7 +199,6 @@ This method adds the copy of the file from the assets folder to the folder the u
 
 * ownCloud downloads the new version of the document, replacing the old one.
 
-
 ## Known issues
 
 * If the document is shared using the **Federated Cloud Sharing** app, the co-editing among the servers will not be avaialble.
@@ -142,9 +216,11 @@ However if you set the encryption with the _master key_, ONLYOFFICE application 
 The instruction on enabling _master key_ based encryption is available in the official documentation on [ownCloud](https://doc.owncloud.org/server/administration_manual/configuration/files/encryption_configuration.html#enabling-encryption-from-the-command-line) websites.
 
 * If you are using a self-signed certificate for your **Document Server**, ownCloud will not validate such a certificate and will not allow connection to/from **Document Server**. This issue can be solved the following way: locate the ownCloud config file (_/owncloud/config/config.php_) and open it. Insert the following section to it:
-    ```
+
+    ```php
     'onlyoffice' => array (
         'verify_peer_off' => true
     )
     ```
+
     This will disable the certificate verification and allow ownCloud to establish connection with **Document Server**, but you must remember that this is a temporary insecure solution and we strongly recommend that you replace the certificate with the one issued by some CA. Once you do that, do not forget to remove the above section from ownCloud config file.

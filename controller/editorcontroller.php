@@ -528,11 +528,13 @@ class EditorController extends Controller {
                     $params["document"]["permissions"]["comment"] = true;
                 }
             }
-        }
 
-        $permissions_modifyFilter = $this->config->getSystemValue($this->config->_permissions_modifyFilter);
-        if (isset($permissions_modifyFilter)) {
-            $params["document"]["permissions"]["modifyFilter"] = $permissions_modifyFilter;
+            if (isset($format["modifyFilter"]) && $format["modifyFilter"]) {
+                $permissionsModifyFilter = $share->getAttributes()->getAttribute($this->appName, "modifyFilter");
+                if ($permissionsModifyFilter !== null) {
+                    $params["document"]["permissions"]["modifyFilter"] = $permissionsModifyFilter === true;
+                }
+            }
         }
 
         $canEdit = isset($format["edit"]) && $format["edit"];

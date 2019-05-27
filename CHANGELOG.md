@@ -1,5 +1,17 @@
 # Change Log
 
+## 2.2.1
+## Added
+- download permission
+- review permission
+- filling forms permission
+- comment permission
+- modify filter permission
+
+## Changed
+- fix getting domain for desktop
+- title in the convertation request
+
 ## 2.1.7
 ## Added
 - file creation in public folder

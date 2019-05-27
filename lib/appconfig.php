@@ -145,13 +145,6 @@ class AppConfig {
     private $_settingsError = "settings_error";
 
     /**
-     * The config key for the modifyFilter
-     *
-     * @var string
-     */
-    public $_permissions_modifyFilter = "permissions_modifyFilter";
-
-    /**
      * The config key for the customer
      *
      * @var string
@@ -575,7 +568,8 @@ class AppConfig {
         "csv" => [ "mime" => "text/csv", "type" => "spreadsheet", "edit" => true, "editable" => true ],
         "doc" => [ "mime" => "application/msword", "type" => "text", "conv" => true ],
         "docm" => [ "mime" => "application/vnd.ms-word.document.macroEnabled.12", "type" => "text", "conv" => true ],
-        "docx" => [ "mime" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "type" => "text", "edit" => true, "def" => true ],
+        "docx" => [ "mime" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "type" => "text", "edit" => true, "def" => true, "review" => true, "fillForms" => true ],
+        "docx" => [ "mime" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "type" => "text", "edit" => true, "def" => true, "review" => true, "fillForms" => true, "comment" => true ],
         "dot" => [ "type" => "text", "conv" => true ],
         "dotx" => [ "mime" => "application/vnd.openxmlformats-officedocument.wordprocessingml.template", "type" => "text", "conv" => true ],
         "epub" => [ "mime" => "application/epub+zip", "type" => "text", "conv" => true ],
@@ -593,12 +587,12 @@ class AppConfig {
         "ppsx" => [ "mime" => "application/vnd.openxmlformats-officedocument.presentationml.slideshow", "type" => "presentation", "conv" => true ],
         "ppt" => [ "mime" => "application/vnd.ms-powerpoint", "type" => "presentation", "conv" => true ],
         "pptm" => [ "mime" => "application/vnd.ms-powerpoint.presentation.macroEnabled.12", "type" => "presentation", "conv" => true ],
-        "pptx" => [ "mime" => "application/vnd.openxmlformats-officedocument.presentationml.presentation", "type" => "presentation", "edit" => true, "def" => true ],
+        "pptx" => [ "mime" => "application/vnd.openxmlformats-officedocument.presentationml.presentation", "type" => "presentation", "edit" => true, "def" => true, "comment" => true ],
         "rtf" => [ "mime" => "text/rtf", "type" => "text", "conv" => true, "editable" => true ],
         "txt" => [ "mime" => "text/plain", "type" => "text", "edit" => true, "editable" => true ],
         "xls" => [ "mime" => "application/vnd.ms-excel", "type" => "spreadsheet", "conv" => true ],
         "xlsm" => [ "mime" => "application/vnd.ms-excel.sheet.macroEnabled.12", "type" => "spreadsheet", "conv" => true ],
-        "xlsx" => [ "mime" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "type" => "spreadsheet", "edit" => true, "def" => true ],
+        "xlsx" => [ "mime" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "type" => "spreadsheet", "edit" => true, "def" => true, "comment" => true, "modifyFilter" => true ],
         "xlt" => [ "type" => "spreadsheet", "conv" => true ],
         "xltm" => [ "mime" => "application/vnd.ms-excel.template.macroEnabled.12", "type" => "spreadsheet", "conv" => true ],
         "xltx" => [ "mime" => "application/vnd.openxmlformats-officedocument.spreadsheetml.template", "type" => "spreadsheet", "conv" => true ]

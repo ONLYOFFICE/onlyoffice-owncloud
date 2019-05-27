@@ -45,6 +45,11 @@ OC.L10N.register(
     "View details" : "Подробнее",
     "Save" : "Сохранить",
     "Mixed Active Content is not allowed. HTTPS address for Document Server is required." : "Смешанное активное содержимое запрещено. Для Сервера документов необходимо использовать HTTPS-адрес.",
-    "Restrict access to editors to following groups" : "Дать доступ к редакторам только следующим группам"
+    "Restrict access to editors to following groups" : "Дать доступ к редакторам только следующим группам",
+    "review" : "рецензирование",
+    "form filling" : "заполнение форм",
+    "comment" : "комментирование",
+    "modify filter" : "изменять фильтр",
+    "download" : "скачивание"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

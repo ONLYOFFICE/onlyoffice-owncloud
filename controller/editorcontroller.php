@@ -499,40 +499,42 @@ class EditorController extends Controller {
         $fileStorage = $file->getStorage();
         if (empty($token) && $fileStorage->instanceOfStorage("\OCA\Files_Sharing\SharedStorage")) {
             $share = $fileStorage->getShare();
-
-            $permissionsDownload = $share->getAttributes()->getAttribute("permissions", "download");
-            if ($permissionsDownload !== null) {
-                $params["document"]["permissions"]["download"] = $params["document"]["permissions"]["print"] = $permissionsDownload === true;
-            }
-
-            if (isset($format["review"]) && $format["review"]) {
-                $permissionsReviewOnly = $share->getAttributes()->getAttribute($this->appName, "review");
-                if ($permissionsReviewOnly !== null && $permissionsReviewOnly === true) {
-                    $restrictedEditing = true;
-                    $params["document"]["permissions"]["review"] = true;
+            if (method_exists($share, "getAttributes"))
+            {
+                $permissionsDownload = $share->getAttributes()->getAttribute("permissions", "download");
+                if ($permissionsDownload !== null) {
+                    $params["document"]["permissions"]["download"] = $params["document"]["permissions"]["print"] = $permissionsDownload === true;
                 }
-            }
 
-            if (isset($format["fillForms"]) && $format["fillForms"]) {
-                $permissionsFillFormsOnly = $share->getAttributes()->getAttribute($this->appName, "fillForms");
-                if ($permissionsFillFormsOnly !== null && $permissionsFillFormsOnly === true) {
-                    $restrictedEditing = true;
-                    $params["document"]["permissions"]["fillForms"] = true;
+                if (isset($format["review"]) && $format["review"]) {
+                    $permissionsReviewOnly = $share->getAttributes()->getAttribute($this->appName, "review");
+                    if ($permissionsReviewOnly !== null && $permissionsReviewOnly === true) {
+                        $restrictedEditing = true;
+                        $params["document"]["permissions"]["review"] = true;
+                    }
                 }
-            }
 
-            if (isset($format["comment"]) && $format["comment"]) {
-                $permissionsCommentOnly = $share->getAttributes()->getAttribute($this->appName, "comment");
-                if ($permissionsCommentOnly !== null && $permissionsCommentOnly === true) {
-                    $restrictedEditing = true;
-                    $params["document"]["permissions"]["comment"] = true;
+                if (isset($format["fillForms"]) && $format["fillForms"]) {
+                    $permissionsFillFormsOnly = $share->getAttributes()->getAttribute($this->appName, "fillForms");
+                    if ($permissionsFillFormsOnly !== null && $permissionsFillFormsOnly === true) {
+                        $restrictedEditing = true;
+                        $params["document"]["permissions"]["fillForms"] = true;
+                    }
                 }
-            }
 
-            if (isset($format["modifyFilter"]) && $format["modifyFilter"]) {
-                $permissionsModifyFilter = $share->getAttributes()->getAttribute($this->appName, "modifyFilter");
-                if ($permissionsModifyFilter !== null) {
-                    $params["document"]["permissions"]["modifyFilter"] = $permissionsModifyFilter === true;
+                if (isset($format["comment"]) && $format["comment"]) {
+                    $permissionsCommentOnly = $share->getAttributes()->getAttribute($this->appName, "comment");
+                    if ($permissionsCommentOnly !== null && $permissionsCommentOnly === true) {
+                        $restrictedEditing = true;
+                        $params["document"]["permissions"]["comment"] = true;
+                    }
+                }
+
+                if (isset($format["modifyFilter"]) && $format["modifyFilter"]) {
+                    $permissionsModifyFilter = $share->getAttributes()->getAttribute($this->appName, "modifyFilter");
+                    if ($permissionsModifyFilter !== null) {
+                        $params["document"]["permissions"]["modifyFilter"] = $permissionsModifyFilter === true;
+                    }
                 }
             }
         }

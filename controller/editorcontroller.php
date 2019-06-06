@@ -498,16 +498,18 @@ class EditorController extends Controller {
         $restrictedEditing = false;
         $fileStorage = $file->getStorage();
         if (empty($token) && $fileStorage->instanceOfStorage("\OCA\Files_Sharing\SharedStorage")) {
-            $share = $fileStorage->getShare();
-            if (method_exists($share, "getAttributes"))
+            $storageShare = $fileStorage->getShare();
+            if (method_exists($storageShare, "getAttributes"))
             {
-                $permissionsDownload = $share->getAttributes()->getAttribute("permissions", "download");
+                $attributes = $storageShare->getAttributes();
+
+                $permissionsDownload = $attributes->getAttribute("permissions", "download");
                 if ($permissionsDownload !== null) {
                     $params["document"]["permissions"]["download"] = $params["document"]["permissions"]["print"] = $permissionsDownload === true;
                 }
 
                 if (isset($format["review"]) && $format["review"]) {
-                    $permissionsReviewOnly = $share->getAttributes()->getAttribute($this->appName, "review");
+                    $permissionsReviewOnly = $attributes->getAttribute($this->appName, "review");
                     if ($permissionsReviewOnly !== null && $permissionsReviewOnly === true) {
                         $restrictedEditing = true;
                         $params["document"]["permissions"]["review"] = true;
@@ -515,7 +517,7 @@ class EditorController extends Controller {
                 }
 
                 if (isset($format["fillForms"]) && $format["fillForms"]) {
-                    $permissionsFillFormsOnly = $share->getAttributes()->getAttribute($this->appName, "fillForms");
+                    $permissionsFillFormsOnly = $attributes->getAttribute($this->appName, "fillForms");
                     if ($permissionsFillFormsOnly !== null && $permissionsFillFormsOnly === true) {
                         $restrictedEditing = true;
                         $params["document"]["permissions"]["fillForms"] = true;
@@ -523,7 +525,7 @@ class EditorController extends Controller {
                 }
 
                 if (isset($format["comment"]) && $format["comment"]) {
-                    $permissionsCommentOnly = $share->getAttributes()->getAttribute($this->appName, "comment");
+                    $permissionsCommentOnly = $attributes->getAttribute($this->appName, "comment");
                     if ($permissionsCommentOnly !== null && $permissionsCommentOnly === true) {
                         $restrictedEditing = true;
                         $params["document"]["permissions"]["comment"] = true;
@@ -531,7 +533,7 @@ class EditorController extends Controller {
                 }
 
                 if (isset($format["modifyFilter"]) && $format["modifyFilter"]) {
-                    $permissionsModifyFilter = $share->getAttributes()->getAttribute($this->appName, "modifyFilter");
+                    $permissionsModifyFilter = $attributes->getAttribute($this->appName, "modifyFilter");
                     if ($permissionsModifyFilter !== null) {
                         $params["document"]["permissions"]["modifyFilter"] = $permissionsModifyFilter === true;
                     }

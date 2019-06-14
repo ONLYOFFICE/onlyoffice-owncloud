@@ -47,6 +47,15 @@
     "review" : "revista",
     "form filling" : "relleno de formulario",
     "comment" : "comentarios",
-    "download" : "descargar"
+    "download" : "descargar",
+    "Server settings" : "Ajustes de servidor",
+    "Common settings" : "Ajustes comunes",
+    "Editor customization settings" : "Ajustes del editor",
+    "The customization section allows to customize the editor interface" : "La sección de personalización permite customizar la interfaz del editor",
+    "Display Chat menu button" : "Mostrar el botón de Chat",
+    "Display the header more compact" : "Mostrar el encabezado más compacto",
+    "Display Feedback & Support menu button" : "Mostrar el botón de Feedback y Soporte",
+    "Display Help menu button" : "Mostrar el botón de Ayuda",
+    "Display toolbar tabs" : "Mostrar pestañas de barra de herramientas"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

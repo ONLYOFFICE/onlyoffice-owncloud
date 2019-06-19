@@ -29,7 +29,6 @@
 
 namespace OCA\Onlyoffice;
 
-use OCP\App;
 use OCP\IConfig;
 use OCP\ILogger;
 
@@ -673,7 +672,7 @@ class AppConfig {
      * @return string|bool
     */
     public function checkEncryptionModule() {
-        if (!App::isEnabled("encryption")) {
+        if (!\OC::$server->getAppManager()->isInstalled("encryption")) {
             return false;
         }
         if (!\OC::$server->getEncryptionManager()->isEnabled()) {

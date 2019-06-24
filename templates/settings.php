@@ -31,10 +31,12 @@
     script("onlyoffice", "settings");
 ?>
 <div class="section section-onlyoffice">
-    <h2>ONLYOFFICE</h2>
-    <a target="_blank" class="icon-info svg" title="" href="https://api.onlyoffice.com/editors/owncloud" data-original-title="<?php p($l->t("Documentation")) ?>"></a>
+    <h2>
+        ONLYOFFICE
+        <a target="_blank" class="icon-info svg" title="" href="https://api.onlyoffice.com/editors/owncloud" data-original-title="<?php p($l->t("Documentation")) ?>"></a>
+    </h2>
 
-    <p><?php p($l->t("ONLYOFFICE Document Service Location specifies the address of the server with the document services installed. Please change the '<documentserver>' for the server address in the below line.")) ?></p>
+    <h3><?php p($l->t("Server settings")) ?></h3>
 
     <?php if ($_["encryption"]) { ?>
     <p class="onlyoffice-error">
@@ -43,69 +45,122 @@
     </p>
     <?php } ?>
 
-    <p class="onlyoffice-header"><?php p($l->t("Document Editing Service address")) ?></p>
-    <input id="onlyofficeUrl" value="<?php p($_["documentserver"]) ?>" placeholder="https://<documentserver>/" type="text">
+    <p><?php p($l->t("ONLYOFFICE Document Service Location specifies the address of the server with the document services installed. Please change the '<documentserver>' for the server address in the below line.")) ?></p>
 
-    <a id="onlyofficeAdv" class="onlyoffice-link-action onlyoffice-header"><?php p($l->t("Advanced server settings")) ?></a>
+    <p><?php p($l->t("Document Editing Service address")) ?></p>
+    <p><input id="onlyofficeUrl" value="<?php p($_["documentserver"]) ?>" placeholder="https://<documentserver>/" type="text"></p>
+
+    <p class="onlyoffice-header"><?php p($l->t("Secret key (leave blank to disable)")) ?></p>
+    <p><input id="onlyofficeSecret" value="<?php p($_["secret"]) ?>" placeholder="secret" type="text"></p>
+
+    <p>
+        <a id="onlyofficeAdv" class="onlyoffice-header">
+            <?php p($l->t("Advanced server settings")) ?>
+            <span class="icon icon-triangle-s"></span>
+        </a>
+    </p>
     <div id="onlyofficeSecretPanel" class="onlyoffice-hide">
         <p class="onlyoffice-header"><?php p($l->t("Document Editing Service address for internal requests from the server")) ?></p>
-        <input id="onlyofficeInternalUrl" value="<?php p($_["documentserverInternal"]) ?>" placeholder="https://<documentserver>/" type="text">
+        <p><input id="onlyofficeInternalUrl" value="<?php p($_["documentserverInternal"]) ?>" placeholder="https://<documentserver>/" type="text"></p>
 
         <p class="onlyoffice-header"><?php p($l->t("Server address for internal requests from the Document Editing Service")) ?></p>
-        <input id="onlyofficeStorageUrl" value="<?php p($_["storageUrl"]) ?>" placeholder="<?php p($_["currentServer"]) ?>" type="text">
-
-        <p class="onlyoffice-header"><?php p($l->t("Secret key (leave blank to disable)")) ?></p>
-        <input id="onlyofficeSecret" value="<?php p($_["secret"]) ?>" placeholder="secret" type="text">
+        <p><input id="onlyofficeStorageUrl" value="<?php p($_["storageUrl"]) ?>" placeholder="<?php p($_["currentServer"]) ?>" type="text"></p>
     </div>
-    <br id="onlyofficeSaveBreak" />
+    <br />
 
-    <p class="onlyoffice-header">
-        <input type="checkbox" class="checkbox" id="onlyofficeGroups"
-            <?php if (count($_["limitGroups"]) > 0) { ?>checked="checked"<?php } ?> />
-        <label for="onlyofficeGroups"><?php p($l->t("Restrict access to editors to following groups")) ?></label>
+    <p><button id="onlyofficeAddrSave" class="button"><?php p($l->t("Save")) ?></button></p>
+
+    <div class="section-onlyoffice-2 <?php if (empty($_["documentserver"]) || !$_["successful"]) { ?>onlyoffice-hide<?php } ?>">
         <br />
-        <input type="hidden" id="onlyofficeLimitGroups" value="<?php p(implode("|", $_["limitGroups"])) ?>"
-            style="display: block; margin-top: 6px; width: 265px;" />
-    </p>
-    <br />
+        <h3><?php p($l->t("Common settings")) ?></h3>
 
-    <p class="onlyoffice-header">
-        <input type="checkbox" class="checkbox" id="onlyofficeSameTab"
-            <?php if ($_["sameTab"]) { ?>checked="checked"<?php } ?> />
-        <label for="onlyofficeSameTab"><?php p($l->t("Open file in the same tab")) ?></label>
-    </p>
-    <br />
+        <p>
+            <input type="checkbox" class="checkbox" id="onlyofficeGroups"
+                <?php if (count($_["limitGroups"]) > 0) { ?>checked="checked"<?php } ?> />
+            <label for="onlyofficeGroups"><?php p($l->t("Restrict access to editors to following groups")) ?></label>
+            <br />
+            <input type="hidden" id="onlyofficeLimitGroups" value="<?php p(implode("|", $_["limitGroups"])) ?>"
+                style="display: block; margin-top: 6px; width: 265px;" />
+        </p>
 
-    <h3 class="onlyoffice-header"><?php p($l->t("The default application for opening the format")) ?></h3>
-    <div class="onlyoffice-exts">
-        <?php foreach ($_["formats"] as $format => $setting) { ?>
-            <?php if (array_key_exists("mime", $setting)) { ?>
-            <div>
-                <input type="checkbox" class="checkbox"
-                    id="onlyofficeDefFormat<?php p($format) ?>"
-                    name="<?php p($format) ?>"
-                    <?php if (array_key_exists("def", $setting) && $setting["def"]) { ?>checked="checked"<?php } ?> />
-                <label for="onlyofficeDefFormat<?php p($format) ?>"><?php p($format) ?></label>
-            </div>
+        <p>
+            <input type="checkbox" class="checkbox" id="onlyofficeSameTab"
+                <?php if ($_["sameTab"]) { ?>checked="checked"<?php } ?> />
+            <label for="onlyofficeSameTab"><?php p($l->t("Open file in the same tab")) ?></label>
+        </p>
+
+        <p class="onlyoffice-header"><?php p($l->t("The default application for opening the format")) ?></p>
+        <div class="onlyoffice-exts">
+            <?php foreach ($_["formats"] as $format => $setting) { ?>
+                <?php if (array_key_exists("mime", $setting)) { ?>
+                <div>
+                    <input type="checkbox" class="checkbox"
+                        id="onlyofficeDefFormat<?php p($format) ?>"
+                        name="<?php p($format) ?>"
+                        <?php if (array_key_exists("def", $setting) && $setting["def"]) { ?>checked="checked"<?php } ?> />
+                    <label for="onlyofficeDefFormat<?php p($format) ?>"><?php p($format) ?></label>
+                </div>
+                <?php } ?>
             <?php } ?>
-        <?php } ?>
-    </div>
+        </div>
 
-    <h3 class="onlyoffice-header"><?php p($l->t("Open the file for editing (due to format restrictions, the data might be lost when saving to the formats from the list below)")) ?></h3>
-    <a target="_blank" class="icon-info svg" title="" href="https://api.onlyoffice.com/editors/owncloud#editable" data-original-title="<?php p($l->t("View details")) ?>"></a>
-    <div class="onlyoffice-exts">
-        <?php foreach ($_["formats"] as $format => $setting) { ?>
-            <?php if (array_key_exists("editable", $setting)) { ?>
-            <div>
-                <input type="checkbox" class="checkbox"
-                    id="onlyofficeEditFormat<?php p($format) ?>"
-                    name="<?php p($format) ?>"
-                    <?php if (array_key_exists("edit", $setting) && $setting["edit"]) { ?>checked="checked"<?php } ?> />
-                <label for="onlyofficeEditFormat<?php p($format) ?>"><?php p($format) ?></label>
-            </div>
+        <p class="onlyoffice-header">
+            <?php p($l->t("Open the file for editing (due to format restrictions, the data might be lost when saving to the formats from the list below)")) ?>
+            <a target="_blank" class="icon-info svg" title="" href="https://api.onlyoffice.com/editors/owncloud#editable" data-original-title="<?php p($l->t("View details")) ?>"></a>
+        </p>
+        <div class="onlyoffice-exts">
+            <?php foreach ($_["formats"] as $format => $setting) { ?>
+                <?php if (array_key_exists("editable", $setting)) { ?>
+                <div>
+                    <input type="checkbox" class="checkbox"
+                        id="onlyofficeEditFormat<?php p($format) ?>"
+                        name="<?php p($format) ?>"
+                        <?php if (array_key_exists("edit", $setting) && $setting["edit"]) { ?>checked="checked"<?php } ?> />
+                    <label for="onlyofficeEditFormat<?php p($format) ?>"><?php p($format) ?></label>
+                </div>
+                <?php } ?>
             <?php } ?>
-        <?php } ?>
-    </div>
+        </div>
+        <br />
 
-    <a id="onlyofficeSave" class="button onlyoffice-header"><?php p($l->t("Save")) ?></a>
+        <h3>
+            <?php p($l->t("Editor customization settings")) ?>
+            <a target="_blank" class="icon-info svg" title="" href="https://api.onlyoffice.com/editors/config/editor/customization" data-original-title="<?php p($l->t("View details")) ?>"></a>
+        </h3>
+
+        <p><?php p($l->t("The customization section allows to customize the editor interface")) ?></p>
+
+        <p>
+            <input type="checkbox" class="checkbox" id="onlyofficeChat"
+                <?php if ($_["chat"]) { ?>checked="checked"<?php } ?> />
+            <label for="onlyofficeChat"><?php p($l->t("Display Chat menu button")) ?></label>
+        </p>
+
+        <p>
+            <input type="checkbox" class="checkbox" id="onlyofficeCompactHeader"
+                <?php if ($_["compactHeader"]) { ?>checked="checked"<?php } ?> />
+            <label for="onlyofficeCompactHeader"><?php p($l->t("Display the header more compact")) ?></label>
+        </p>
+
+        <p>
+            <input type="checkbox" class="checkbox" id="onlyofficeFeedback"
+                <?php if ($_["feedback"]) { ?>checked="checked"<?php } ?> />
+            <label for="onlyofficeFeedback"><?php p($l->t("Display Feedback & Support menu button")) ?></label>
+        </p>
+
+        <p>
+            <input type="checkbox" class="checkbox" id="onlyofficeHelp"
+                <?php if ($_["help"]) { ?>checked="checked"<?php } ?> />
+            <label for="onlyofficeHelp"><?php p($l->t("Display Help menu button")) ?></label>
+        </p>
+
+        <p>
+            <input type="checkbox" class="checkbox" id="onlyofficeToolbarNoTabs"
+                <?php if (!$_["toolbarNoTabs"]) { ?>checked="checked"<?php } ?> />
+            <label for="onlyofficeToolbarNoTabs"><?php p($l->t("Display toolbar tabs")) ?></label>
+        </p>
+        <br />
+
+        <p><button id="onlyofficeSave" class="button"><?php p($l->t("Save")) ?></button></p>
+    </div>
 </div>

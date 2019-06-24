@@ -363,7 +363,7 @@ class CallbackController extends Controller {
 
         $trackerStatus = $this->_trackerStatus[$status];
 
-        $error = 1;
+        $result = 1;
         switch ($trackerStatus) {
             case "MustSave":
             case "Corrupted":
@@ -386,6 +386,10 @@ class CallbackController extends Controller {
                         $this->userSession->setUser($user);
                     } else {
                         $this->logger->debug("Track by anonymous " . $userId, array("app" => $this->appName));
+                    }
+
+                    if ($this->config->checkEncryptionModule() === "master") {
+                        \OC_User::setIncognitoMode(true);
                     }
 
                     \OC_Util::tearDownFS();
@@ -437,7 +441,7 @@ class CallbackController extends Controller {
 
                     $this->logger->debug("Track put content " . $file->getPath(), array("app" => $this->appName));
                     $file->putContent($newData);
-                    $error = 0;
+                    $result = 0;
                 } catch (\Exception $e) {
                     $this->logger->error("Track " . $trackerStatus . " error: " . $e->getMessage(), array("app" => $this->appName));
                 }
@@ -445,13 +449,13 @@ class CallbackController extends Controller {
 
             case "Editing":
             case "Closed":
-                $error = 0;
+                $result = 0;
                 break;
         }
 
         $this->logger->debug("Track: " . $fileId . " status " . $status . " result " . $error, array("app" => $this->appName));
 
-        return new JSONResponse(["error" => $error], Http::STATUS_OK);
+        return new JSONResponse(["error" => $result], Http::STATUS_OK);
     }
 
 

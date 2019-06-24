@@ -1,5 +1,13 @@
 # Change Log
 
+## 2.3.1
+## Added
+- editor customization
+
+## Changed
+- the settings page is splitted into two sections
+- support master key encryption
+
 ## 2.2.1
 ## Added
 - download permission

@@ -360,9 +360,6 @@ class DocumentService {
         if ($method === "post") {
             $response = $client->post($url, $opts);
         } else {
-            //todo: remove after release v5.3.0
-            $url = str_replace("==&expires=", "&expires=", $url);
-
             $response = $client->get($url, $opts);
         }
 

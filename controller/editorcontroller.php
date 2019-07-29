@@ -408,6 +408,8 @@ class EditorController extends Controller {
             return ["error" => $this->trans->t("Download failed")];
         }
 
+        $name = $folder->getNonExistingName($name);
+
         try {
             $file = $folder->newFile($name);
 

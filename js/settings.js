@@ -29,12 +29,9 @@
 (function ($, OC) {
 
     $(document).ready(function () {
-        OCA.Onlyoffice = _.extend({}, OCA.Onlyoffice);
-        if (!OCA.Onlyoffice.AppName) {
-            OCA.Onlyoffice = {
+        OCA.Onlyoffice = _.extend({
                 AppName: "onlyoffice"
-            };
-        }
+            }, OCA.Onlyoffice)
 
         var advToogle = function () {
             $("#onlyofficeSecretPanel").toggleClass("onlyoffice-hide");

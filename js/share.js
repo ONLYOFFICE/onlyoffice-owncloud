@@ -94,6 +94,7 @@
          */
         addShareProperties: function(properties) {
             var extendedProperties = properties;
+            extendedProperties.attributes = properties.attributes || {};
 
             // get default permissions
             extendedProperties.permissions = this.model.getDefaultPermissions();
@@ -103,9 +104,30 @@
                 extendedProperties.permissions, OC.PERMISSION_SHARE
             );
 
+            // if resharing unset all attributes
+            // as resharing is not compatible
+            if (!_.isUndefined(this.model.getReshareOwner())) {
+                extendedProperties.attributes = this._updateAttributes(
+                    extendedProperties.attributes, "permissions", "download", null
+                );
+                extendedProperties.attributes = this._updateAttributes(
+                    extendedProperties.attributes, OCA.Onlyoffice.AppName, "review", null
+                );
+                extendedProperties.attributes = this._updateAttributes(
+                    extendedProperties.attributes, OCA.Onlyoffice.AppName, "fillForms", null
+                );
+                extendedProperties.attributes = this._updateAttributes(
+                    extendedProperties.attributes, OCA.Onlyoffice.AppName, "comment", null
+                );
+                extendedProperties.attributes = this._updateAttributes(
+                    extendedProperties.attributes, OCA.Onlyoffice.AppName, "modifyFilter", null
+                );
+
+                return extendedProperties;
+            }
+
             // if edit permission got enabled set only modify filter,
             // otherwise set review, fillForms, download, comment
-            extendedProperties.attributes = properties.attributes || {};
             if (this._hasPermission(extendedProperties.permissions, OC.PERMISSION_UPDATE)
                 || this._hasPermission(extendedProperties.permissions, OC.PERMISSION_CREATE)
                 || this._hasPermission(extendedProperties.permissions, OC.PERMISSION_DELETE)) {
@@ -163,11 +185,12 @@
          */
         updateShareProperties: function(shareId, properties) {
             var updatedProperties = properties;
+            updatedProperties.attributes = properties.attributes || {};
 
-            // if reshare permission got enabled unset all attributes
+            // if reshare permission got enabled or if resharing unset all attributes
             // as resharing is not compatible
-            if (this._hasPermission(updatedProperties.permissions, OC.PERMISSION_SHARE)) {
-                updatedProperties.attributes = properties.attributes || {};
+            if (this._hasPermission(updatedProperties.permissions, OC.PERMISSION_SHARE)
+                || !_.isUndefined(this.model.getReshareOwner())) {
                 updatedProperties.attributes = this._updateAttributes(
                     updatedProperties.attributes, "permissions", "download", null
                 );

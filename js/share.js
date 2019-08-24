@@ -42,49 +42,6 @@
 
         config: null,
 
-        _shareOptions: [
-            {
-                name: "onlyoffice-download",
-                label: t(OCA.Onlyoffice.AppName, "download"),
-                attribute: {
-                    scope: "permissions",
-                    key: "download"
-                }
-            },
-            {
-                name: "onlyoffice-review",
-                label: t(OCA.Onlyoffice.AppName, "review"),
-                attribute: {
-                    scope: OCA.Onlyoffice.AppName,
-                    key: "review"
-                }
-            },
-            {
-                name: "onlyoffice-fill-forms",
-                label: t(OCA.Onlyoffice.AppName, "form filling"),
-                attribute: {
-                    scope: OCA.Onlyoffice.AppName,
-                    key: "fillForms"
-                }
-            },
-            {
-                name: "onlyoffice-comment",
-                label: t(OCA.Onlyoffice.AppName, "comment"),
-                attribute: {
-                    scope: OCA.Onlyoffice.AppName,
-                    key: "comment"
-                }
-            },
-            {
-                name: "onlyoffice-modify-filter",
-                label: t(OCA.Onlyoffice.AppName, "modify filter"),
-                attribute: {
-                    scope: OCA.Onlyoffice.AppName,
-                    key: "modifyFilter"
-                }
-            }
-        ],
-
         _shareOptionsTemplate: null,
 
         /**
@@ -178,19 +135,21 @@
         },
 
         /**
-         * Extend ShareItemModel.updateShare with onlyoffice attributes
+         * Extend ShareItemModel.updateShare with onlyoffice attributes. This
+         * is triggered on click on call to updateShare from core or other app
          *
          * @param shareId
          * @param properties
          */
         updateShareProperties: function(shareId, properties) {
+            var that = this;
+
             var updatedProperties = properties;
             updatedProperties.attributes = properties.attributes || {};
 
             // if reshare permission got enabled or if resharing unset all attributes
             // as resharing is not compatible
-            if (this._hasPermission(updatedProperties.permissions, OC.PERMISSION_SHARE)
-                || !_.isUndefined(this.model.getReshareOwner())) {
+            if (that._hasPermission(properties.permissions, OC.PERMISSION_SHARE) || !_.isUndefined(this.model.getReshareOwner())) {
                 updatedProperties.attributes = this._updateAttributes(
                     updatedProperties.attributes, "permissions", "download", null
                 );
@@ -211,9 +170,9 @@
             }
 
             // if edit permission got enabled, enable only modifyFilter
-            if (this._hasPermission(updatedProperties.permissions, OC.PERMISSION_UPDATE)
-                || this._hasPermission(updatedProperties.permissions, OC.PERMISSION_CREATE)
-                || this._hasPermission(updatedProperties.permissions, OC.PERMISSION_DELETE)) {
+            if (that._hasPermission(properties.permissions, OC.PERMISSION_UPDATE)
+                || that._hasPermission(properties.permissions, OC.PERMISSION_CREATE)
+                || that._hasPermission(properties.permissions, OC.PERMISSION_DELETE)) {
                 updatedProperties.attributes = properties.attributes || {};
                 updatedProperties.attributes = this._updateAttributes(
                     updatedProperties.attributes, "permissions", "download", null
@@ -236,47 +195,33 @@
                 return updatedProperties;
             }
 
-            // edit and resharing is disabled,
-            // if attributes not set then reset to default the attributes,
-            // otherwise just update attributes
-            if (this._getAttribute(updatedProperties.attributes, "permissions", "download") === null
-                && this._getAttribute(updatedProperties.attributes, OCA.Onlyoffice.AppName, "review") === null
-                && this._getAttribute(updatedProperties.attributes, OCA.Onlyoffice.AppName, "fillForms") === null
-                && this._getAttribute(updatedProperties.attributes, OCA.Onlyoffice.AppName, "comment") === null
-                ) {
-                updatedProperties.attributes = properties.attributes || {};
-
+            // default checkboxes on permission update
+            updatedProperties.attributes = this._updateAttributes(
+                updatedProperties.attributes, "permissions", "download", true
+            );
+            updatedProperties.attributes = this._updateAttributes(
+                updatedProperties.attributes, OCA.Onlyoffice.AppName, "review", false
+            );
+            if (this.config.fillForms) {
                 updatedProperties.attributes = this._updateAttributes(
-                    updatedProperties.attributes, "permissions", "download", true
+                    updatedProperties.attributes, OCA.Onlyoffice.AppName, "fillForms", false
                 );
-                if (this.config.review) {
-                    updatedProperties.attributes = this._updateAttributes(
-                        updatedProperties.attributes, OCA.Onlyoffice.AppName, "review", false
-                    );
-                }
-                if (this.config.fillForms) {
-                    updatedProperties.attributes = this._updateAttributes(
-                        updatedProperties.attributes, OCA.Onlyoffice.AppName, "fillForms", false
-                    );
-                }
-                if (this.config.comment) {
-                    updatedProperties.attributes = this._updateAttributes(
-                        updatedProperties.attributes, OCA.Onlyoffice.AppName, "comment", false
-                    );
-                }
-                updatedProperties.attributes = this._updateAttributes(
-                    updatedProperties.attributes, OCA.Onlyoffice.AppName, "modifyFilter", null
-                );
-            } else {
-                updatedProperties.attributes = properties.attributes || {};
             }
+            if (this.config.comment) {
+                updatedProperties.attributes = this._updateAttributes(
+                    updatedProperties.attributes, OCA.Onlyoffice.AppName, "comment", false
+                );
+            }
+            updatedProperties.attributes = this._updateAttributes(
+                updatedProperties.attributes, OCA.Onlyoffice.AppName, "modifyFilter", null
+            );
 
             return updatedProperties;
         },
 
         /**
          * Click on custom checkbox handler. Adjust required app/core attributes and
-         * permissions
+         * permissions. This is triggered only on click on onlyoffice attribute
          *
          * @param event
          */
@@ -285,6 +230,7 @@
             var $element = $(event.target);
             var $li = $element.closest("li");
             var shareId = $li.data("share-id");
+            var that = this;
 
             var shares = this.model.getSharesWithCurrentItem();
             for (var shareIndex = 0; shareIndex < shares.length; shareIndex++) {
@@ -299,8 +245,17 @@
                 return;
             }
 
-            // retrieve currently set checkboxes
-            var attributes = this._getAttributesForShareOptions(share.attributes, shareId);
+            // parse current checkboxes
+            var attributes = share.attributes || {};
+            $("li[data-share-id='" + shareId + "'] .onlyOfficeShareOption").each(function(index, checkbox) {
+                var shareOptionAttrKey = $(checkbox).data("attr-key");
+                var shareOptionAttrScope = $(checkbox).data("attr-scope");
+                var shareOptionChecked = $(checkbox).is(":checked");
+
+                attributes = that._updateAttributes(
+                    attributes, shareOptionAttrScope, shareOptionAttrKey, shareOptionChecked
+                );
+            });
 
             var review = this._getAttribute(attributes, OCA.Onlyoffice.AppName, "review");
             var fillForms = this._getAttribute(attributes, OCA.Onlyoffice.AppName, "fillForms");
@@ -347,7 +302,9 @@
                     permissions: share.permissions,
                     attributes: attributes
                 },
-                {}
+                {
+                    onlyofficeUpdatedShareProperties: true
+                }
             );
         },
 
@@ -364,22 +321,47 @@
                 // get existing share element if already initialized
                 var $share = view.$el.find("li[data-share-id=" + share.id + "]");
                 if ($share) {
-                    // extend with share options for the onlyoffice
-                    var shareOptions = this._getShareOptionsForAttributes(
-                        share.attributes
-                    );
-
                     var shareOptionsData = [];
-                    for (var optionIndex = 0; optionIndex < shareOptions.length; optionIndex++) {
-                        var shareOption = shareOptions[optionIndex];
+                    var attributes = [
+                        { key: "review", scope: OCA.Onlyoffice.AppName },
+                        { key: "fillForms", scope: OCA.Onlyoffice.AppName },
+                        { key: "comment", scope: OCA.Onlyoffice.AppName },
+                        { key: "modifyFilter", scope: OCA.Onlyoffice.AppName },
+                        { key: "download", scope: "permissions"}
+                    ];
+                    for (var attributeIndex = 0; attributeIndex < attributes.length; attributeIndex++) {
+                        var attribute = this._getAttribute(
+                            share.attributes, attributes[attributeIndex].scope, attributes[attributeIndex].key
+                        );
+
+                        if (attribute === null || attribute.enabled === null) {
+                            continue;
+                        }
+
+                        var label;
+                        if (attribute.key === "download") {
+                            label = t(OCA.Onlyoffice.AppName, "download");
+                        } else if (attribute.key === "review") {
+                            label = t(OCA.Onlyoffice.AppName, "review");
+                        } else if (attribute.key === "fillForms") {
+                            label = t(OCA.Onlyoffice.AppName, "form filling");
+                        } else if (attribute.key === "comment") {
+                            label = t(OCA.Onlyoffice.AppName, "comment");
+                        } else if (attribute.key === "modifyFilter") {
+                            label = t(OCA.Onlyoffice.AppName, "modifyFilter");
+                        } else {
+                            continue;
+                        }
 
                         shareOptionsData.push({
                             cid: view.cid,
                             shareId: share.id,
                             shareWith: share.share_with,
-                            name: shareOption.name,
-                            label: shareOption.label,
-                            checked: shareOption.checked
+                            attrScope: attribute.scope,
+                            attrKey: attribute.key,
+                            name: OCA.Onlyoffice.AppName + "-" + attribute.key,
+                            label: label,
+                            checked: attribute.enabled
                         });
                     }
 
@@ -394,79 +376,6 @@
             // On click trigger logic to update for new richdocuments attributes
             $(".onlyOfficeShareOption").on("click", $.proxy(this.onOnlyOfficeOptionChange, this));
         },
-
-        /**
-         * Get attributes for the currently rendered checkboxes
-         *
-         * @param attributes
-         * @param shareId
-         * @returns {Array}
-         * @private
-         */
-        _getAttributesForShareOptions: function(attributes, shareId) {
-            var that = this;
-
-            var attributes = attributes || [];
-            $("li[data-share-id='" + shareId + "'] .onlyOfficeShareOption").each(function(index, checkbox) {
-                var shareOptionName = $(checkbox).attr("name");
-                var shareOptionChecked = $(checkbox).is(":checked");
-
-                for (var optionIndex = 0; optionIndex < that._shareOptions.length; optionIndex++) {
-                    var shareOption = that._shareOptions[optionIndex];
-                    if (shareOption.name === shareOptionName) {
-                        attributes = that._updateAttributes(
-                            attributes, shareOption.attribute.scope, shareOption.attribute.key, shareOptionChecked
-                        );
-                    }
-                }
-            });
-
-            return attributes;
-        },
-
-        /**
-         * Get template share options for given share attributes
-         *
-         * @param attributes
-         * @returns {array}
-         * @private
-         */
-        _getShareOptionsForAttributes: function(attributes) {
-            var options = [];
-
-            if (attributes) {
-
-                // for each option, determine if share option is enabled based on required attributes
-                for (var optionIndex = 0; optionIndex < this._shareOptions.length; optionIndex++) {
-                    var shareOption = this._shareOptions[optionIndex];
-
-                    var shareOptionAttribute = shareOption.attribute;
-
-                    // determine if share option is enabled
-                    // looping over required and current attributes
-                    var enabled = null;
-                    for (var attrIndex = 0; attrIndex < attributes.length; attrIndex++) {
-                        var currentAttribute = attributes[attrIndex];
-                        if (currentAttribute.scope === shareOptionAttribute.scope
-                            && currentAttribute.key === shareOptionAttribute.key) {
-                            enabled = currentAttribute.enabled;
-                        }
-                    }
-
-                    // set option
-                    if (enabled !== null) {
-                        options.push({
-                            name: shareOption.name,
-                            label: shareOption.label,
-                            checked: enabled
-                        });
-                    }
-                }
-            }
-
-            return options;
-        },
-
 
         _getAttribute: function(attributes, scope, key) {
             for (var i in attributes) {
@@ -526,7 +435,7 @@
                     '<div class="onlyOfficeShareOptions">' +
                     '{{#each shareOptions}}' +
                     '<span class="shareOption">' +
-                    '<input id="attr-{{name}}-{{cid}}-{{shareWith}}" type="checkbox" name="{{name}}" class="onlyOfficeShareOption checkbox" {{#if checked}}checked="checked"{{/if}} data-share-id="{{shareId}}"/>' +
+                    '<input id="attr-{{name}}-{{cid}}-{{shareWith}}" type="checkbox" name="{{name}}" class="onlyOfficeShareOption checkbox" {{#if checked}}checked="checked"{{/if}} data-attr-scope="{{attrScope}}" data-attr-key="{{attrKey}}" data-share-id="{{shareId}}"/>' +
                     '<label for="attr-{{name}}-{{cid}}-{{shareWith}}">{{label}}</label>' +
                     '</span>' +
                     '{{/each}}' +
@@ -535,12 +444,12 @@
             }
             return this._shareOptionsTemplate(data);
         }
-
     };
 
+    // v10.3
     OCA.Onlyoffice.ShareDialogView = {
         attach: function (view) {
-            if (_.isUndefined(view) || _.isUndefined(view.model) || !!view.model.getRegisteredShareAttribute) {
+            if (_.isUndefined(view) || _.isUndefined(view.model) || OCA.Onlyoffice.setting.shareAttributesVersion !== "v2") {
                 return;
             }
             var fileName = view.model.getFileInfo().attributes.name;
@@ -553,6 +462,7 @@
             if (!config) {
                 return;
             }
+
             OCA.Onlyoffice.ShareOptions.config = config;
 
             OCA.Onlyoffice.ShareOptions.model = view.model;
@@ -576,10 +486,17 @@
 
             var baseUpdateShareCall = model.updateShare;
             model.updateShare = function(shareId, properties, options) {
-                // update for onlyoffice attributes
-                var newProperties = OCA.Onlyoffice.ShareOptions.updateShareProperties(shareId, properties);
+                var newProperties = properties || {};
+                var newOptions = options || {};
 
-                baseUpdateShareCall.call(model, shareId, newProperties, options || {});
+                // update for onlyoffice attributes
+                if (!options.hasOwnProperty('onlyofficeUpdatedShareProperties')) {
+                    newProperties = OCA.Onlyoffice.ShareOptions.updateShareProperties(shareId, properties);
+                    _.extend(newOptions, { onlyofficeUpdatedShareProperties: true });
+                }
+
+
+                baseUpdateShareCall.call(model, shareId, newProperties, newOptions);
             };
 
             // Add call to watch for changes of shares
@@ -592,7 +509,7 @@
     // v10.2
     OCA.Onlyoffice.ShareItemModel = {
         attach: function (model) {
-            if (_.isUndefined(model) || !model.getRegisteredShareAttribute) {
+            if (_.isUndefined(model) || OCA.Onlyoffice.setting.shareAttributesVersion !== "v1") {
                 return;
             }
             var fileName = model.getFileInfo().attributes.name;

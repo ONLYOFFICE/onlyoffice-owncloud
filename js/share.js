@@ -453,7 +453,7 @@
     // v10.3
     OCA.Onlyoffice.ShareDialogView = {
         attach: function (view) {
-            if (_.isUndefined(view) || _.isUndefined(view.model) || !!view.model.getRegisteredShareAttribute) {
+            if (_.isUndefined(view) || _.isUndefined(view.model) || OCA.Onlyoffice.setting.shareAttributesVersion !== "v2") {
                 return;
             }
             var fileName = view.model.getFileInfo().attributes.name;
@@ -512,7 +512,7 @@
     // v10.2
     OCA.Onlyoffice.ShareItemModel = {
         attach: function (model) {
-            if (_.isUndefined(model) || !model.getRegisteredShareAttribute) {
+            if (_.isUndefined(model) || OCA.Onlyoffice.setting.shareAttributesVersion !== "v1") {
                 return;
             }
             var fileName = model.getFileInfo().attributes.name;

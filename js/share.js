@@ -12,7 +12,7 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * For details, see the GNU AGPL at: http://www.gnu.org/licenses/agpl-3.0.html
  *
- * You can contact Ascensio System SIA at 17-2 Elijas street, Riga, Latvia, EU, LV-1021.
+ * You can contact Ascensio System SIA atÂ 17-2 Elijas street,Â Riga, Latvia, EU,Â LV-1021.
  *
  * The interactive user interfaces in modified source and object code versions of the Program
  * must display Appropriate Legal Notices, as required under Section 5 of the GNU AGPL version 3.
@@ -32,7 +32,7 @@
             AppName: "onlyoffice"
         }, OCA.Onlyoffice);
 
-    // v10.3
+    // api v2
     OCA.Onlyoffice.ShareOptions = {
 
         /**
@@ -450,7 +450,7 @@
         }
     };
 
-    // v10.3
+    // api v2
     OCA.Onlyoffice.ShareDialogView = {
         attach: function (view) {
             if (_.isUndefined(view) || _.isUndefined(view.model) || OCA.Onlyoffice.setting.shareAttributesVersion !== "v2") {
@@ -509,7 +509,7 @@
         }
     };
 
-    // v10.2
+    // api v1
     OCA.Onlyoffice.ShareItemModel = {
         attach: function (model) {
             if (_.isUndefined(model) || OCA.Onlyoffice.setting.shareAttributesVersion !== "v1") {
@@ -607,10 +607,10 @@
     };
 
     OCA.Onlyoffice.Share = function () {
-        // v10.3
+        // api v2
         OC.Plugins.register("OC.Share.ShareDialogView", OCA.Onlyoffice.ShareDialogView);
 
-        // v10.2
+        // api v1
         OC.Plugins.register("OC.Share.ShareItemModel", OCA.Onlyoffice.ShareItemModel);
     };
 

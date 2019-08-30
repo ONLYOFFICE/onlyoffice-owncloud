@@ -271,7 +271,7 @@ class AppConfig {
     public function GetDocumentServerUrl() {
         $url = $this->config->getAppValue($this->appName, $this->_documentserver, "");
         if (empty($url)) {
-            $url = $this->getSystemValue($this->_documentserver);
+            $url = $this->GetSystemValue($this->_documentserver);
         }
         if ($url !== "/") {
             $url = rtrim($url, "/");
@@ -311,7 +311,7 @@ class AppConfig {
     public function GetDocumentServerInternalUrl($origin) {
         $url = $this->config->getAppValue($this->appName, $this->_documentserverInternal, "");
         if (empty($url)) {
-            $url = $this->getSystemValue($this->_documentserverInternal);
+            $url = $this->GetSystemValue($this->_documentserverInternal);
         }
         if (!$origin && empty($url)) {
             $url = $this->GetDocumentServerUrl();
@@ -346,7 +346,7 @@ class AppConfig {
     public function GetStorageUrl() {
         $url = $this->config->getAppValue($this->appName, $this->_storageUrl, "");
         if (empty($url)) {
-            $url = $this->getSystemValue($this->_storageUrl);
+            $url = $this->GetSystemValue($this->_storageUrl);
         }
         return $url;
     }
@@ -374,7 +374,7 @@ class AppConfig {
     public function GetDocumentServerSecret() {
         $secret = $this->config->getAppValue($this->appName, $this->_jwtSecret, "");
         if (empty($secret)) {
-            $secret = $this->getSystemValue($this->_jwtSecret);
+            $secret = $this->GetSystemValue($this->_jwtSecret);
         }
         return $secret;
     }
@@ -631,7 +631,7 @@ class AppConfig {
      * @return bool
      */
     public function TurnOffVerification() {
-        $turnOff = $this->getSystemValue($this->_verification);
+        $turnOff = $this->GetSystemValue($this->_verification);
         return $turnOff === true;
     }
 
@@ -641,7 +641,7 @@ class AppConfig {
      * @return string
      */
     public function JwtHeader() {
-        $header = $this->getSystemValue($this->_jwtHeader);
+        $header = $this->GetSystemValue($this->_jwtHeader);
         if (empty($header)) {
             $header = "Authorization";
         }

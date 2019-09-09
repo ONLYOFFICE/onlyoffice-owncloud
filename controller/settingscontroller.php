@@ -139,10 +139,6 @@ class SettingsController extends Controller {
      * @param string $documentserverInternal - document service address available from ownCloud
      * @param string $storageUrl - ownCloud address available from document server
      * @param string $secret - secret key for signature
-     * @param array $defFormats - formats array with default action
-     * @param array $editFormats - editable formats array
-     * @param bool $sameTab - open in same tab
-     * @param array $limitGroups - list of groups
      *
      * @return array
      */

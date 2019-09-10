@@ -88,7 +88,7 @@
         </div>
     </div>
 
-    <div class="section-onlyoffice-2 <?php if (empty($_["documentserver"]) || !$_["successful"]) { ?>onlyoffice-hide<?php } ?>">
+    <div class="section-onlyoffice-2 <?php if (empty($_["documentserver"]) && !$_["demo"]["enabled"] || !$_["successful"]) { ?>onlyoffice-hide<?php } ?>">
         <br />
         <h3><?php p($l->t("Common settings")) ?></h3>
 

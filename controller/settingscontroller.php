@@ -150,7 +150,9 @@ class SettingsController extends Controller {
                                     $secret,
                                     $demo
                                     ) {
-        $error = $this->config->SelectDemo($demo === true);
+        if (!$this->config->SelectDemo($demo === true)) {
+            $error = $this->trans->t("Demo is not available");
+        }
         if ($demo !== true) {
             $this->config->SetDocumentServerUrl($documentserver);
             $this->config->SetDocumentServerInternalUrl($documentserverInternal);
@@ -158,14 +160,16 @@ class SettingsController extends Controller {
         }
         $this->config->SetStorageUrl($storageUrl);
 
-        $documentserver = $this->config->GetDocumentServerUrl();
-        if (!empty($documentserver)) {
-            $error = $this->checkDocServiceUrl();
-            $this->config->SetSettingsError($error);
-        }
+        if (empty($error)) {
+            $documentserver = $this->config->GetDocumentServerUrl();
+            if (!empty($documentserver)) {
+                $error = $this->checkDocServiceUrl();
+                $this->config->SetSettingsError($error);
+            }
 
-        if ($this->config->checkEncryptionModule() === true) {
-            $this->logger->info("SaveSettings when encryption is enabled", array("app" => $this->appName));
+            if ($this->config->checkEncryptionModule() === true) {
+                $this->logger->info("SaveSettings when encryption is enabled", array("app" => $this->appName));
+            }
         }
 
         return [

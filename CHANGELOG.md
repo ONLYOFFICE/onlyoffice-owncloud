@@ -1,5 +1,15 @@
 # Change Log
 
+## 3.0.1
+## Added
+- "save as" to the folder
+- inserting images from the folder
+- Mail Merge
+- connection to the demo server
+
+## Changed
+- updated files for compatibility with MS Office v2016
+
 ## 2.3.1
 ## Added
 - editor customization

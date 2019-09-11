@@ -44,6 +44,32 @@
 
         _shareOptionsTemplate: null,
 
+        validateShareProperties: function(properties) {
+            if (this.model.hasReshare()) {
+                // it is enough to check the parent share attributes
+                // if these are set to avoid privilege escalation
+                var parentShareAttributes = this.model.getReshareAttributes();
+
+                var download = this._getAttribute(parentShareAttributes, "permissions", "download");
+                var review = this._getAttribute(parentShareAttributes, OCA.Onlyoffice.AppName, "review");
+                var fillForms = this._getAttribute(parentShareAttributes, OCA.Onlyoffice.AppName, "fillForms");
+                var comment = this._getAttribute(parentShareAttributes, OCA.Onlyoffice.AppName, "comment");
+                var modifyFilter = this._getAttribute(parentShareAttributes, OCA.Onlyoffice.AppName, "modifyFilter");
+                if (review !== null || fillForms !== null || comment !== null || modifyFilter !== null ||
+                    (download !== null && download.enabled === false)) {
+                    OC.dialogs.alert(
+                        t(OCA.Onlyoffice.AppName, 'This file is shared with you using ' +
+                            'permissions lower than the requested update. ' +
+                            'Please ask share owner to reshare the file with you ' +
+                            'using correct permissions.'),
+                        t(OCA.Onlyoffice.AppName, 'Error while sharing')
+                    );
+                    return false;
+                }
+            }
+            return true;
+        },
+
         /**
          * Extend ShareItemModel.addShare with onlyoffice attributes
          *
@@ -51,6 +77,7 @@
          */
         addShareProperties: function(properties) {
             var extendedProperties = properties;
+
             extendedProperties.attributes = properties.attributes || {};
 
             // get default permissions
@@ -60,28 +87,6 @@
             extendedProperties.permissions = this._removePermission(
                 extendedProperties.permissions, OC.PERMISSION_SHARE
             );
-
-            // if resharing unset all attributes
-            // as resharing is not compatible
-            if (!_.isUndefined(this.model.getReshareOwner())) {
-                extendedProperties.attributes = this._updateAttributes(
-                    extendedProperties.attributes, "permissions", "download", null
-                );
-                extendedProperties.attributes = this._updateAttributes(
-                    extendedProperties.attributes, OCA.Onlyoffice.AppName, "review", null
-                );
-                extendedProperties.attributes = this._updateAttributes(
-                    extendedProperties.attributes, OCA.Onlyoffice.AppName, "fillForms", null
-                );
-                extendedProperties.attributes = this._updateAttributes(
-                    extendedProperties.attributes, OCA.Onlyoffice.AppName, "comment", null
-                );
-                extendedProperties.attributes = this._updateAttributes(
-                    extendedProperties.attributes, OCA.Onlyoffice.AppName, "modifyFilter", null
-                );
-
-                return extendedProperties;
-            }
 
             // if edit permission got enabled set only modify filter,
             // otherwise set review, fillForms, download, comment
@@ -147,10 +152,9 @@
             var updatedProperties = properties;
             updatedProperties.attributes = properties.attributes || {};
 
-            // if reshare permission got enabled or if resharing unset all attributes
+            // if share permission got enabled unset all attributes
             // as resharing is not compatible
-            if (that._hasPermission(properties.permissions, OC.PERMISSION_SHARE)
-                || !_.isUndefined(this.model.getReshareOwner())) {
+            if (that._hasPermission(properties.permissions, OC.PERMISSION_SHARE)) {
                 updatedProperties.attributes = this._updateAttributes(
                     updatedProperties.attributes, "permissions", "download", null
                 );
@@ -197,9 +201,13 @@
             }
 
             // default checkboxes on permission update
-            updatedProperties.attributes = this._updateAttributes(
-                updatedProperties.attributes, "permissions", "download", true
-            );
+            var canDownload = that._getAttribute(properties.attributes, "permissions", "download");
+            if (canDownload === null) {
+                // if this attribute has not been set by other app, set to tru as default
+                updatedProperties.attributes = this._updateAttributes(
+                    updatedProperties.attributes, "permissions", "download", true
+                );
+            }
             if (this.config.review) {
                 updatedProperties.attributes = this._updateAttributes(
                     updatedProperties.attributes, OCA.Onlyoffice.AppName, "review", false
@@ -319,6 +327,7 @@
          */
         render: function (view) {
             var shares = this.model.getSharesWithCurrentItem();
+
             for (var shareIndex = 0; shareIndex < shares.length; shareIndex++) {
                 var share = shares[shareIndex];
 
@@ -485,6 +494,13 @@
                 // add onlyoffice attributes
                 var newProperties = OCA.Onlyoffice.ShareOptions.addShareProperties(properties);
 
+                if (!OCA.Onlyoffice.ShareOptions.validateShareProperties(newProperties)) {
+                    if (_.isFunction(options.error)) {
+                        options.error(model, t(OCA.Onlyoffice.AppName, 'Error while sharing'));
+                    }
+                    return;
+                }
+
                 baseAddShareCall.call(model, newProperties, options || {});
             };
 
@@ -497,6 +513,13 @@
                 if (!options.hasOwnProperty("onlyofficeUpdatedShareProperties")) {
                     newProperties = OCA.Onlyoffice.ShareOptions.updateShareProperties(shareId, properties);
                     _.extend(newOptions, { onlyofficeUpdatedShareProperties: true });
+                }
+
+                if (!OCA.Onlyoffice.ShareOptions.validateShareProperties(newProperties)) {
+                    if (_.isFunction(options.error)) {
+                        options.error(model, t(OCA.Onlyoffice.AppName, 'Error while sharing'));
+                    }
+                    return;
                 }
 
                 baseUpdateShareCall.call(model, shareId, newProperties, newOptions);

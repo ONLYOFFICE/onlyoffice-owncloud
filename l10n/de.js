@@ -53,11 +53,19 @@ OC.L10N.register(
     "Server settings" : "Servereinstellungen",
     "Common settings" : "Allgemeine Einstellungen",
     "Editor customization settings" : "Editor-Einstellungen",
-    "The customization section allows to customize the editor interface" : "Die Anpassungssektion ermöglicht die Anpassung der Editoroberfläche",
+    "The customization section allows personalizing the editor interface" : "Die Anpassungssektion ermöglicht die Anpassung der Editoroberfläche",
     "Display Chat menu button" : "Chat-Taste anzeigen",
     "Display the header more compact" : "Kompakten Header anzeigen",
     "Display Feedback & Support menu button" : "Feedback-& Support-Taste anzeigen",
     "Display Help menu button" : "Hilfetaste anzeigen",
-    "Display toolbar tabs" : "Symbolleiste-Registerkarten anzeigen"
+    "Display toolbar tabs" : "Symbolleiste-Registerkarten anzeigen",
+    "Save as" : "Speichern als",
+    "File saved" : "Datei wurde gespeichert",
+    "Insert image" : "Bild einfügen",
+    "Select recipients" : "Empfänger auswählen",
+    "Connect to demo ONLYOFFICE Document Server" : "Verbindung zu Demo ONLYOFFICE Document Server herstellen",
+    "This is a public test server, please do not use it for private sensitive data. The server will be available during a 30-day period." : "Dies ist ein öffentlicher Testserver. Bitte verwende beim Testen keine privaten sensiblen Daten. Der Server ist 30 Tage lang verfügbar.",
+    "The 30-day test period is over, you can no longer connect to demo ONLYOFFICE Document Server." : "Der 30-tägige Testzeitraum ist abgelaufen. Du kannst keine Verbindung mehr zu Demo ONLYOFFICE Document Server herstellen.",
+    "You are using public demo ONLYOFFICE Document Server. Please do not store private sensitive data." : "Du verwendest den öffentlichen Demo ONLYOFFICE Document Server. Bitte benutze ihn nicht zum Speichern von Deinen privaten sensiblen Daten."
 },
 "nplurals=2; plural=(n != 1);");

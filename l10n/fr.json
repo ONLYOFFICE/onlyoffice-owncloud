@@ -51,11 +51,15 @@
     "Server settings" : "Paramètres du serveur",
     "Common settings" : "Paramètres communs",
     "Editor customization settings" : "Paramètres de personnalisation de l'éditeur",
-    "The customization section allows to customize the editor interface" : "La section de personnalisation permet de personnaliser l'interface de l'éditeur",
+    "The customization section allows personalizing the editor interface" : "La section de personnalisation permet de personnaliser l'interface de l'éditeur",
     "Display Chat menu button" : "Afficher le bouton du menu du chat",
     "Display the header more compact" : "Afficher l'en-tête plus compact",
     "Display Feedback & Support menu button" : "Afficher le bouton du menu 'Feedback & Support'",
     "Display Help menu button" : "Afficher le bouton du menu 'Aide'",
-    "Display toolbar tabs" : "Afficher les onglets de la barre d'outils"
+    "Display toolbar tabs" : "Afficher les onglets de la barre d'outils",
+    "Save as" : "Enregistrer sous",
+    "File saved" : "Le fichier a été enregistré",
+    "Insert image" : "Insérer une image",
+    "Select recipients" : "Sélectionner les destinataires"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

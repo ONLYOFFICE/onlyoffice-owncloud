@@ -49,6 +49,10 @@ OC.L10N.register(
     "review" : "преглед",
     "form filling" : "попълване на формуляр",
     "comment" : "коментар",
-    "download" : "изтегли"
+    "download" : "изтегли",
+    "Save as" : "Запази като",
+    "File saved" : "Файлът е запазен",
+    "Insert image" : "Вмъкване на изображение",
+    "Select recipients" : "Изберете получатели"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

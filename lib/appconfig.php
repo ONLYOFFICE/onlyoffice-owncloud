@@ -332,7 +332,7 @@ class AppConfig {
             }
         }
 
-        $this->logger->info("SetDocumentServerUrl: " . $documentServer, array("app" => $this->appName));
+        $this->logger->info("SetDocumentServerUrl: $documentServer", array("app" => $this->appName));
 
         $this->config->setAppValue($this->appName, $this->_documentserver, $documentServer);
     }
@@ -376,7 +376,7 @@ class AppConfig {
             }
         }
 
-        $this->logger->info("SetDocumentServerInternalUrl: " . $documentServerInternal, array("app" => $this->appName));
+        $this->logger->info("SetDocumentServerInternalUrl: $documentServerInternal", array("app" => $this->appName));
 
         $this->config->setAppValue($this->appName, $this->_documentserverInternal, $documentServerInternal);
     }
@@ -422,7 +422,7 @@ class AppConfig {
 
             if ($from !== $documentServerUrl)
             {
-                $this->logger->debug("Replace url from " . $from . " to " . $documentServerUrl, array("app" => $this->appName));
+                $this->logger->debug("Replace url from $from to $documentServerUrl", array("app" => $this->appName));
                 $url = str_replace($from, $documentServerUrl, $url);
             }
         }
@@ -444,7 +444,7 @@ class AppConfig {
             }
         }
 
-        $this->logger->info("SetStorageUrl: " . $storageUrl, array("app" => $this->appName));
+        $this->logger->info("SetStorageUrl: $storageUrl", array("app" => $this->appName));
 
         $this->config->setAppValue($this->appName, $this->_storageUrl, $storageUrl);
     }
@@ -516,7 +516,7 @@ class AppConfig {
      */
     public function SetDefaultFormats($formats) {
         $value = json_encode($formats);
-        $this->logger->info("Set default formats: " . $value, array("app" => $this->appName));
+        $this->logger->info("Set default formats: $value", array("app" => $this->appName));
 
         $this->config->setAppValue($this->appName, $this->_defFormats, $value);
     }
@@ -541,7 +541,7 @@ class AppConfig {
      */
     public function SetEditableFormats($formats) {
         $value = json_encode($formats);
-        $this->logger->info("Set editing formats: " . $value, array("app" => $this->appName));
+        $this->logger->info("Set editing formats: $value", array("app" => $this->appName));
 
         $this->config->setAppValue($this->appName, $this->_editFormats, $value);
     }
@@ -689,7 +689,7 @@ class AppConfig {
             $groups = array();
         }
         $value = json_encode($groups);
-        $this->logger->info("Set groups: " . $value, array("app" => $this->appName));
+        $this->logger->info("Set groups: $value", array("app" => $this->appName));
 
         $this->config->setAppValue($this->appName, $this->_groups, $value);
     }
@@ -735,7 +735,7 @@ class AppConfig {
             // group unknown -> error and allow nobody
             $group = \OC::$server->getGroupManager()->get($groupName);
             if ($group === null) {
-                \OC::$server->getLogger()->error("Group is unknown " . $groupName, ["app" => $this->appName]);
+                \OC::$server->getLogger()->error("Group is unknown $groupName", ["app" => $this->appName]);
             } else {
                 if ($group->inGroup($user)) {
                     return true;

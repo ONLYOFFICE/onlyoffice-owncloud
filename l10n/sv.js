@@ -61,6 +61,10 @@ OC.L10N.register(
     "Save as" : "Spara som",
     "File saved" : "Filen har sparats",
     "Insert image" : "Infoga bild",
-    "Select recipients" : "Välj mottagare"
+    "Select recipients" : "Välj mottagare",
+    "Connect to demo ONLYOFFICE Document Server" : "Anslut till demo ONLYOFFICE Dokumentserver",
+    "This is a public test server, please do not use it for private sensitive data. The server will be available during a 30-day period." : "Detta är en offentlig testserver, använd den inte för privat känslig information. Servern kommer att finnas tillgänglig under en 30-dagarsperiod.",
+    "The 30-day test period is over, you can no longer connect to demo ONLYOFFICE Document Server." : "När 30-dagars testperioden är över, kan du inte längre ansluta till demo ONLYOFFICE Dokumentserver.",
+    "You are using public demo ONLYOFFICE Document Server. Please do not store private sensitive data." : "Du använder en offentlig demo ONLYOFFICE Dokumentserver. Lagra inte privat känslig information.",
 },
 "nplurals=2; plural=(n != 1);");

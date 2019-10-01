@@ -1,5 +1,9 @@
 # Change Log
 
+## 3.0.3
+## Changed
+- federated share saving fixed
+
 ## 3.0.1
 ## Added
 - "save as" to the folder

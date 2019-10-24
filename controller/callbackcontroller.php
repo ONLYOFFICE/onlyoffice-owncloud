@@ -384,15 +384,15 @@ class CallbackController extends Controller {
 
                     $userId = $users[0];
                     $user = $this->userManager->get($userId);
+
                     if (!empty($user)) {
                         $this->userSession->setUser($user);
                     } else {
                         if (empty($shareToken)) {
-                            $this->logger->error("Track without access: $fileId status $trackerStatus", array("app" => $this->appName));
-                            return new JSONResponse(["message" => "User and token is empty"], Http::STATUS_BAD_REQUEST);
+                            $this->logger->debug("Track without token: $fileId status $trackerStatus", array("app" => $this->appName));
+                        } else {
+                            $this->logger->debug("Track $fileId by token for $userId", array("app" => $this->appName));
                         }
-
-                        $this->logger->debug("Track by anonymous userId", array("app" => $this->appName));
                     }
 
                     if ($this->config->checkEncryptionModule() === "master") {
@@ -400,7 +400,9 @@ class CallbackController extends Controller {
                     }
 
                     $ownerId = $hashData->ownerId;
-                    if (!empty($this->userManager->get($ownerId))) {
+                    $owner = $this->userManager->get($ownerId);
+
+                    if (!empty($owner)) {
                         $userId = $ownerId;
                     }
 

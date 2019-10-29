@@ -81,7 +81,7 @@
 
             var onlyofficeInternalUrl = ($("#onlyofficeInternalUrl:visible").val() || "").trim();
             var onlyofficeStorageUrl = ($("#onlyofficeStorageUrl:visible").val() || "").trim();
-            var onlyofficeSecret = $("#onlyofficeSecret:visible").val() || "";
+            var onlyofficeSecret = ($("#onlyofficeSecret:visible").val() || "").trim();
             var demo = $("#onlyofficeDemo").prop("checked");
 
             $.ajax({

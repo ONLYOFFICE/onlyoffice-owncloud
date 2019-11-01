@@ -159,7 +159,7 @@ class EditorController extends Controller {
         $this->config = $config;
         $this->crypt = $crypt;
 
-        $this->fileUtility = new FileUtility($AppName, $trans, $logger, $shareManager, $session);
+        $this->fileUtility = new FileUtility($AppName, $trans, $logger, $config, $shareManager, $session);
     }
 
     /**
@@ -319,7 +319,7 @@ class EditorController extends Controller {
 
         $newFileUri;
         $documentService = new DocumentService($this->trans, $this->config);
-        $key = $this->getKey($file);
+        $key = $this->fileUtility->getKey($file);
         $fileUrl = $this->getUrl($file, $shareToken);
         try {
             $newFileUri = $documentService->GetConvertedUri($fileUrl, $ext, $internalExtension, $key);
@@ -578,7 +578,7 @@ class EditorController extends Controller {
         }
 
         $fileUrl = $this->getUrl($file, $shareToken);
-        $key = $this->getKey($file);
+        $key = $this->fileUtility->getKey($file);
 
         $params = [
             "document" => [
@@ -772,23 +772,6 @@ class EditorController extends Controller {
         }
 
         return [$file, NULL, NULL];
-    }
-
-    /**
-     * Generate unique document identifier
-     *
-     * @param File $file - file
-     *
-     * @return string
-     */
-    private function getKey($file) {
-        $instanceId = $this->config->GetSystemValue("instanceid", true);
-
-        $fileId = $file->getId();
-
-        $key = $instanceId . "_" . $fileId . "_" . $file->getMtime();
-
-        return $key;
     }
 
     /**

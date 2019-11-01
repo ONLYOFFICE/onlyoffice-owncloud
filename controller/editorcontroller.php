@@ -670,7 +670,7 @@ class EditorController extends Controller {
 
         if (!empty($userId)) {
             $params["editorConfig"]["user"] = [
-                "id" => $userId,
+                "id" => $this->buildUserId($userId),
                 "name" => $user->getDisplayName()
             ];
         }
@@ -800,6 +800,19 @@ class EditorController extends Controller {
         }
 
         return $fileUrl;
+    }
+
+    /**
+     * Generate unique user identifier
+     *
+     * @param string $userId - current user identifier
+     *
+     * @return string
+     */
+    private function buildUserId($userId) {
+        $instanceId = $this->config->GetSystemValue("instanceid", true);
+        $userId = $instanceId . "_" . $userId;
+        return $userId;
     }
 
     /**

@@ -382,7 +382,7 @@ class CallbackController extends Controller {
                 try {
                     $shareToken = isset($hashData->shareToken) ? $hashData->shareToken : NULL;
 
-                    $userId = $users[0];
+                    $userId = $this->parseUserId($users[0]);
                     $user = $this->userManager->get($userId);
 
                     if (!empty($user)) {
@@ -566,5 +566,18 @@ class CallbackController extends Controller {
         }
 
         return [$share, NULL];
+    }
+
+    /**
+     * Parse user identifier for current instance
+     *
+     * @param string $userId - unique user identifier
+     *
+     * @return string
+     */
+    private function parseUserId($uniqueUserId) {
+        $instanceId = $this->config->GetSystemValue("instanceid", true);
+        $userId = ltrim($uniqueUserId, $instanceId . "_");
+        return $userId;
     }
 }

@@ -42,5 +42,8 @@ return [
        ["name" => "settings#save_address", "url" => "/ajax/settings/address", "verb" => "PUT"],
        ["name" => "settings#save_common", "url" => "/ajax/settings/common", "verb" => "PUT"],
        ["name" => "settings#get_settings", "url" => "/ajax/settings", "verb" => "GET"],
+    ],
+    "ocs" => [
+        ["name" => "federation#key", "url" => "/api/v1/key", "verb" => "POST"]
     ]
 ];

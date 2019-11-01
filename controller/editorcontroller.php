@@ -578,12 +578,13 @@ class EditorController extends Controller {
         }
 
         $fileUrl = $this->getUrl($file, $shareToken);
-        $key = $this->fileUtility->getKey($file);
+        $key = $this->fileUtility->getKey($file, true);
+        $key = DocumentService::GenerateRevisionId($key);
 
         $params = [
             "document" => [
                 "fileType" => $ext,
-                "key" => DocumentService::GenerateRevisionId($key),
+                "key" => $key,
                 "permissions" => [],
                 "title" => $fileName,
                 "url" => $fileUrl,

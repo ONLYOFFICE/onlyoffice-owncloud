@@ -657,7 +657,7 @@ class EditorController extends Controller {
                 $ownerId = $owner->getUID();
             }
 
-            $hashCallback = $this->crypt->GetHash(["fileId" => $file->getId(), "ownerId" => $ownerId, "shareToken" => $shareToken, "action" => "track"]);
+            $hashCallback = $this->crypt->GetHash(["fileId" => $file->getId(), "userId" => $userId, "ownerId" => $ownerId, "shareToken" => $shareToken, "action" => "track"]);
             $callback = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".callback.track", ["doc" => $hashCallback]);
 
             if (!empty($this->config->GetStorageUrl())) {

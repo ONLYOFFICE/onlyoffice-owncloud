@@ -212,14 +212,13 @@ class CallbackController extends Controller {
         if ($this->userSession->isLoggedIn()) {
             $userId = $this->userSession->getUser()->getUID();
         } else {
-            $userId = $hashData->ownerId;
+            $userId = $hashData->userId;
+            $user = $this->userManager->get($userId);
 
-            if (empty($this->userManager->get($userId))) {
-                $userId = $hashData->userId;
-            }
+            if (!empty($user)) {
+                $this->userSession->setUser($user);
 
-            \OC_Util::tearDownFS();
-            if (!empty($userId)) {
+                \OC_Util::tearDownFS();
                 \OC_Util::setupFS($userId);
             }
         }
@@ -385,15 +384,15 @@ class CallbackController extends Controller {
 
                     $userId = $users[0];
                     $user = $this->userManager->get($userId);
+
                     if (!empty($user)) {
                         $this->userSession->setUser($user);
                     } else {
                         if (empty($shareToken)) {
-                            $this->logger->error("Track without access: $fileId status $trackerStatus", array("app" => $this->appName));
-                            return new JSONResponse(["message" => "User and token is empty"], Http::STATUS_BAD_REQUEST);
+                            $this->logger->debug("Track without token: $fileId status $trackerStatus", array("app" => $this->appName));
+                        } else {
+                            $this->logger->debug("Track $fileId by token for $userId", array("app" => $this->appName));
                         }
-
-                        $this->logger->debug("Track by anonymous userId", array("app" => $this->appName));
                     }
 
                     if ($this->config->checkEncryptionModule() === "master") {
@@ -401,8 +400,17 @@ class CallbackController extends Controller {
                     }
 
                     $ownerId = $hashData->ownerId;
-                    if (!empty($this->userManager->get($ownerId))) {
+                    $owner = $this->userManager->get($ownerId);
+
+                    if (!empty($owner)) {
                         $userId = $ownerId;
+                    } else {
+                        $callbackUserId = $hashData->userId;
+                        $callbackUser = $this->userManager->get($callbackUserId);
+
+                        if (!empty($callbackUser)) {
+                            $userId = $callbackUserId;
+                        }
                     }
 
                     \OC_Util::tearDownFS();

@@ -102,6 +102,7 @@ class FederationController extends OCSController {
      * Returns the origin document key for editor
      *
      * @param string $shareToken - access token
+     * @param string $path - file path
      *
      * @return Result
      *
@@ -109,8 +110,8 @@ class FederationController extends OCSController {
      * @NoCSRFRequired
      * @PublicPage
      */
-    public function key($shareToken) {
-        list ($file, $error, $share) = $this->fileUtility->getFileByToken(null, $shareToken);
+    public function key($shareToken, $path) {
+        list ($file, $error, $share) = $this->fileUtility->getFileByToken(null, $shareToken, $path);
 
         if (isset($error)) {
             $this->logger->error("Federated getFileByToken: $error", array("app" => $this->appName));

@@ -36,4 +36,4 @@ use OCP\App;
  */
 App::registerAdmin("onlyoffice", "settings");
 
-$app = new Application();
+$app = \OC::$server->query(Application::class);

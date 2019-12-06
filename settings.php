@@ -36,8 +36,6 @@ use OCA\Onlyoffice\Controller\SettingsController;
 
 User::checkAdminUser();
 
-$app = new Application();
-$container = $app->getContainer();
-$response = $container->query(SettingsController::class)->index();
+$response = \OC::$server->query(SettingsController::class)->index();
 
 return $response->render();

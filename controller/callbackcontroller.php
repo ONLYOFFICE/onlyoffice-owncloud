@@ -212,13 +212,13 @@ class CallbackController extends Controller {
         if ($this->userSession->isLoggedIn()) {
             $userId = $this->userSession->getUser()->getUID();
         } else {
+            \OC_Util::tearDownFS();
+
             $userId = $hashData->userId;
+            \OC_User::setUserId($userId);
+
             $user = $this->userManager->get($userId);
-
             if (!empty($user)) {
-                $this->userSession->setUser($user);
-
-                \OC_Util::tearDownFS();
                 \OC_Util::setupFS($userId);
             }
         }
@@ -382,12 +382,14 @@ class CallbackController extends Controller {
                 try {
                     $shareToken = isset($hashData->shareToken) ? $hashData->shareToken : NULL;
 
-                    $userId = $this->parseUserId($users[0]);
-                    $user = $this->userManager->get($userId);
+                    \OC_Util::tearDownFS();
 
-                    if (!empty($user)) {
-                        $this->userSession->setUser($user);
-                    } else {
+                    // author of the latest changes
+                    $userId = $this->parseUserId($users[0]);
+                    \OC_User::setUserId($userId);
+
+                    $user = $this->userManager->get($userId);
+                    if (empty($user)) {
                         if (empty($shareToken)) {
                             $this->logger->debug("Track without token: $fileId status $trackerStatus", array("app" => $this->appName));
                         } else {
@@ -413,7 +415,6 @@ class CallbackController extends Controller {
                         }
                     }
 
-                    \OC_Util::tearDownFS();
                     if (!empty($userId)) {
                         \OC_Util::setupFS($userId);
                     }

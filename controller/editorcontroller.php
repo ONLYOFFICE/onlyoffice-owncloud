@@ -56,6 +56,7 @@ use OCA\Files\Helper;
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\DocumentService;
+use OCA\Onlyoffice\FileUtility;
 
 /**
  * Controller with the main functions
@@ -112,18 +113,11 @@ class EditorController extends Controller {
     private $crypt;
 
     /**
-     * Share manager
+     * File utility
      *
-     * @var IManager
+     * @var OCA\Onlyoffice\FileUtility
      */
-    private $shareManager;
-
-    /**
-     * Session
-     *
-     * @var ISession
-     */
-    private $session;
+    private $fileUtility;
 
     /**
      * Mobile regex from https://github.com/ONLYOFFICE/CommunityServer/blob/v9.1.1/web/studio/ASC.Web.Studio/web.appsettings.config#L35
@@ -164,8 +158,8 @@ class EditorController extends Controller {
         $this->logger = $logger;
         $this->config = $config;
         $this->crypt = $crypt;
-        $this->shareManager = $shareManager;
-        $this->session = $session;
+
+        $this->fileUtility = new FileUtility($AppName, $trans, $logger, $config, $shareManager, $session);
     }
 
     /**
@@ -191,7 +185,7 @@ class EditorController extends Controller {
             $userId = $this->userSession->getUser()->getUID();
             $userFolder = $this->root->getUserFolder($userId);
         } else {
-            list ($userFolder, $error, $share) = $this->getNodeByToken($shareToken);
+            list ($userFolder, $error, $share) = $this->fileUtility->getNodeByToken($shareToken);
 
             if (isset($error)) {
                 $this->logger->error("Create: $error", array("app" => $this->appName));
@@ -288,7 +282,7 @@ class EditorController extends Controller {
             $userId = $user->getUID();
         }
 
-        list ($file, $error, $share) = empty($shareToken) ? $this->getFile($userId, $fileId) : $this->getFileByToken($fileId, $shareToken);
+        list ($file, $error, $share) = empty($shareToken) ? $this->getFile($userId, $fileId) : $this->fileUtility->getFileByToken($fileId, $shareToken);
 
         if (isset($error)) {
             $this->logger->error("Convertion: $fileId $error", array("app" => $this->appName));
@@ -325,7 +319,7 @@ class EditorController extends Controller {
 
         $newFileUri;
         $documentService = new DocumentService($this->trans, $this->config);
-        $key = $this->getKey($file);
+        $key = $this->fileUtility->getKey($file);
         $fileUrl = $this->getUrl($file, $user, $shareToken);
         try {
             $newFileUri = $documentService->GetConvertedUri($fileUrl, $ext, $internalExtension, $key);
@@ -569,7 +563,7 @@ class EditorController extends Controller {
             $userId = $user->getUID();
         }
 
-        list ($file, $error, $share) = empty($shareToken) ? $this->getFile($userId, $fileId, $filePath) : $this->getFileByToken($fileId, $shareToken);
+        list ($file, $error, $share) = empty($shareToken) ? $this->getFile($userId, $fileId, $filePath) : $this->fileUtility->getFileByToken($fileId, $shareToken);
 
         if (isset($error)) {
             $this->logger->error("Config: $fileId $error", array("app" => $this->appName));
@@ -585,12 +579,13 @@ class EditorController extends Controller {
         }
 
         $fileUrl = $this->getUrl($file, $user, $shareToken);
-        $key = $this->getKey($file);
+        $key = $this->fileUtility->getKey($file, true);
+        $key = DocumentService::GenerateRevisionId($key);
 
         $params = [
             "document" => [
                 "fileType" => $ext,
-                "key" => DocumentService::GenerateRevisionId($key),
+                "key" => $key,
                 "permissions" => [],
                 "title" => $fileName,
                 "url" => $fileUrl,
@@ -658,7 +653,7 @@ class EditorController extends Controller {
                 $ownerId = $owner->getUID();
             }
 
-            $hashCallback = $this->crypt->GetHash(["fileId" => $file->getId(), "ownerId" => $ownerId, "shareToken" => $shareToken, "action" => "track"]);
+            $hashCallback = $this->crypt->GetHash(["userId" => $userId, "ownerId" => $ownerId, "fileId" => $file->getId(), "filePath" => $filePath, "shareToken" => $shareToken, "action" => "track"]);
             $callback = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".callback.track", ["doc" => $hashCallback]);
 
             if (!empty($this->config->GetStorageUrl())) {
@@ -676,7 +671,7 @@ class EditorController extends Controller {
 
         if (!empty($userId)) {
             $params["editorConfig"]["user"] = [
-                "id" => $userId,
+                "id" => $this->buildUserId($userId),
                 "name" => $user->getDisplayName()
             ];
         }
@@ -770,6 +765,7 @@ class EditorController extends Controller {
             foreach ($files as $curFile) {
                 if ($curFile->getPath() === $filePath) {
                     $file = $curFile;
+                    break;
                 }
             }
         }
@@ -779,119 +775,6 @@ class EditorController extends Controller {
         }
 
         return [$file, NULL, NULL];
-    }
-
-    /**
-     * Getting file by token
-     *
-     * @param integer $fileId - file identifier
-     * @param string $shareToken - access token
-     *
-     * @return array
-     */
-    private function getFileByToken($fileId, $shareToken) {
-        list ($node, $error, $share) = $this->getNodeByToken($shareToken);
-
-        if (isset($error)) {
-            return [NULL, $error, NULL];
-        }
-
-        if ($node instanceof Folder) {
-            try {
-                $files = $node->getById($fileId);
-            } catch (\Exception $e) {
-                $this->logger->error("getFileByToken: $fileId " . $e->getMessage(), array("app" => $this->appName));
-                return [NULL, $this->trans->t("Invalid request"), NULL];
-            }
-
-            if (empty($files)) {
-                $this->logger->info("Files not found: $fileId", array("app" => $this->appName));
-                return [NULL, $this->trans->t("File not found"), NULL];
-            }
-            $file = $files[0];
-        } else {
-            $file = $node;
-        }
-
-        return [$file, NULL, $share];
-    }
-
-    /**
-     * Getting file by token
-     *
-     * @param string $shareToken - access token
-     *
-     * @return array
-     */
-    private function getNodeByToken($shareToken) {
-        list ($share, $error) = $this->getShare($shareToken);
-
-        if (isset($error)) {
-            return [NULL, $error, NULL];
-        }
-
-        if (($share->getPermissions() & Constants::PERMISSION_READ) === 0) {
-            return [NULL, $this->trans->t("You do not have enough permissions to view the file"), NULL];
-        }
-
-        try {
-            $node = $share->getNode();
-        } catch (NotFoundException $e) {
-            $this->logger->error("getFileByToken error: " . $e->getMessage(), array("app" => $this->appName));
-            return [NULL, $this->trans->t("File not found"), NULL];
-        }
-
-        return [$node, NULL, $share];
-    }
-
-    /**
-     * Getting share by token
-     *
-     * @param string $shareToken - access token
-     *
-     * @return array
-     */
-    private function getShare($shareToken) {
-        if (empty($shareToken)) {
-            return [NULL, $this->trans->t("FileId is empty")];
-        }
-
-        $share;
-        try {
-            $share = $this->shareManager->getShareByToken($shareToken);
-        } catch (ShareNotFound $e) {
-            $this->logger->error("getShare error: " . $e->getMessage(), array("app" => $this->appName));
-            $share = NULL;
-        }
-
-        if ($share === NULL || $share === false) {
-            return [NULL, $this->trans->t("You do not have enough permissions to view the file")];
-        }
-
-        if ($share->getPassword()
-            && (!$this->session->exists("public_link_authenticated")
-                || $this->session->get("public_link_authenticated") !== (string) $share->getId())) {
-            return [NULL, $this->trans->t("You do not have enough permissions to view the file")];
-        }
-
-        return [$share, NULL];
-    }
-
-    /**
-     * Generate unique document identifier
-     *
-     * @param File $file - file
-     *
-     * @return string
-     */
-    private function getKey($file) {
-        $instanceId = $this->config->GetSystemValue("instanceid", true);
-
-        $fileId = $file->getId();
-
-        $key = $instanceId . "_" . $fileId . "_" . $file->getMtime();
-
-        return $key;
     }
 
     /**
@@ -905,17 +788,12 @@ class EditorController extends Controller {
      */
     private function getUrl($file, $user = NULL, $shareToken = NULL) {
         $userId = NULL;
+
         if (!empty($user)) {
             $userId = $user->getUID();
         }
 
-        $ownerId = NULL;
-        $owner = $file->getOwner();
-        if (!empty($owner)) {
-            $ownerId = $owner->getUID();
-        }
-
-        $hashUrl = $this->crypt->GetHash(["fileId" => $file->getId(), "userId" => $userId, "ownerId" => $ownerId, "shareToken" => $shareToken, "action" => "download"]);
+        $hashUrl = $this->crypt->GetHash(["fileId" => $file->getId(), "userId" => $userId, "shareToken" => $shareToken, "action" => "download"]);
 
         $fileUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".callback.download", ["doc" => $hashUrl]);
 
@@ -924,6 +802,19 @@ class EditorController extends Controller {
         }
 
         return $fileUrl;
+    }
+
+    /**
+     * Generate unique user identifier
+     *
+     * @param string $userId - current user identifier
+     *
+     * @return string
+     */
+    private function buildUserId($userId) {
+        $instanceId = $this->config->GetSystemValue("instanceid", true);
+        $userId = $instanceId . "_" . $userId;
+        return $userId;
     }
 
     /**

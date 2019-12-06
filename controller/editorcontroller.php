@@ -726,6 +726,10 @@ class EditorController extends Controller {
             }
         }
 
+        if ($inframe === true) {
+            $params["_files_sharing"] = \OC::$server->getAppManager()->isEnabledForUser("files_sharing");
+        }
+
         $params = $this->setCustomization($params);
 
         if ($this->config->UseDemo()) {

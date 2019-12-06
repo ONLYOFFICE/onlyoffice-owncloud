@@ -381,6 +381,7 @@ class CallbackController extends Controller {
 
                 try {
                     $shareToken = isset($hashData->shareToken) ? $hashData->shareToken : NULL;
+                    $filePath = null;
 
                     \OC_Util::tearDownFS();
 
@@ -401,6 +402,7 @@ class CallbackController extends Controller {
                         \OC_User::setIncognitoMode(true);
                     }
 
+                    // owner of file from the callback link
                     $ownerId = $hashData->ownerId;
                     $owner = $this->userManager->get($ownerId);
 
@@ -411,7 +413,11 @@ class CallbackController extends Controller {
                         $callbackUser = $this->userManager->get($callbackUserId);
 
                         if (!empty($callbackUser)) {
+                            // author of the callback link
                             $userId = $callbackUserId;
+
+                            // path for author of the callback link
+                            $filePath = $hashData->filePath;
                         }
                     }
 
@@ -419,7 +425,7 @@ class CallbackController extends Controller {
                         \OC_Util::setupFS($userId);
                     }
 
-                    list ($file, $error) = empty($shareToken) ? $this->getFile($userId, $fileId) : $this->getFileByToken($fileId, $shareToken);
+                    list ($file, $error) = empty($shareToken) ? $this->getFile($userId, $fileId, $filePath) : $this->getFileByToken($fileId, $shareToken);
 
                     if (isset($error)) {
                         $this->logger->error("track error: $fileId " . json_encode($error->getData()),  array("app" => $this->appName));
@@ -472,10 +478,11 @@ class CallbackController extends Controller {
      *
      * @param string $userId - user identifier
      * @param integer $fileId - file identifier
+     * @param string $filePath - file path
      *
      * @return array
      */
-    private function getFile($userId, $fileId) {
+    private function getFile($userId, $fileId, $filePath = NULL) {
         if (empty($fileId)) {
             return [NULL, new JSONResponse(["message" => $this->trans->t("FileId is empty")], Http::STATUS_BAD_REQUEST)];
         }
@@ -491,7 +498,18 @@ class CallbackController extends Controller {
             $this->logger->error("Files not found: $fileId", array("app" => $this->appName));
             return [NULL, new JSONResponse(["message" => $this->trans->t("Files not found")], Http::STATUS_NOT_FOUND)];
         }
+
         $file = $files[0];
+
+        if (count($files) > 1 && !empty($filePath)) {
+            $filePath = "/" . $userId . "/files" . $filePath;
+            foreach ($files as $curFile) {
+                if ($curFile->getPath() === $filePath) {
+                    $file = $curFile;
+                    break;
+                }
+            }
+        }
 
         if (!($file instanceof File)) {
             $this->logger->error("File not found: $fileId", array("app" => $this->appName));

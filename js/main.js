@@ -256,6 +256,13 @@
             recipientMimes);
     };
 
+    OCA.Onlyoffice.onRequestCompareFile = function (revisedMimes) {
+        OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Select file to compare"),
+            $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.editorSetRevised,
+            false,
+            revisedMimes);
+    };
+
     OCA.Onlyoffice.FileList = {
         attach: function (fileList) {
             if (fileList.id == "trashbin") {
@@ -496,6 +503,9 @@
                 break;
             case "editorRequestMailMergeRecipients":
                 OCA.Onlyoffice.onRequestMailMergeRecipients(event.data.param);
+                break;
+            case "editorRequestCompareFile":
+                OCA.Onlyoffice.onRequestCompareFile(event.data.param);
                 break;
             case "editorShowHeaderButton":
                 OCA.Onlyoffice.ShowHeaderButton();

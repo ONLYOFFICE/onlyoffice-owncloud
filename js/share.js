@@ -116,24 +116,6 @@
                         extendedProperties.attributes, "permissions", "download", true
                     );
                 }
-                if (this.config.review) {
-                    extendedProperties.attributes = this._updateAttributes(
-                        extendedProperties.attributes, OCA.Onlyoffice.AppName, "review", false
-                    );
-                }
-                if (this.config.fillForms) {
-                    extendedProperties.attributes = this._updateAttributes(
-                        extendedProperties.attributes, OCA.Onlyoffice.AppName, "fillForms", false
-                    );
-                }
-                if (this.config.comment) {
-                    extendedProperties.attributes = this._updateAttributes(
-                        extendedProperties.attributes, OCA.Onlyoffice.AppName, "comment", false
-                    );
-                }
-                extendedProperties.attributes = this._updateAttributes(
-                    extendedProperties.attributes, OCA.Onlyoffice.AppName, "modifyFilter", null
-                );
             }
 
             return extendedProperties;
@@ -208,20 +190,25 @@
                     updatedProperties.attributes, "permissions", "download", true
                 );
             }
-            if (this.config.review) {
-                updatedProperties.attributes = this._updateAttributes(
-                    updatedProperties.attributes, OCA.Onlyoffice.AppName, "review", false
-                );
-            }
-            if (this.config.fillForms) {
-                updatedProperties.attributes = this._updateAttributes(
-                    updatedProperties.attributes, OCA.Onlyoffice.AppName, "fillForms", false
-                );
-            }
-            if (this.config.comment) {
-                updatedProperties.attributes = this._updateAttributes(
-                    updatedProperties.attributes, OCA.Onlyoffice.AppName, "comment", false
-                );
+
+            if (!this.model.hasReshare()
+                || that._hasPermission(this.model.attributes.permissions, OC.PERMISSION_UPDATE))
+            {
+                if (this.config.review) {
+                    updatedProperties.attributes = this._updateAttributes(
+                        updatedProperties.attributes, OCA.Onlyoffice.AppName, "review", false
+                    );
+                }
+                if (this.config.fillForms) {
+                    updatedProperties.attributes = this._updateAttributes(
+                        updatedProperties.attributes, OCA.Onlyoffice.AppName, "fillForms", false
+                    );
+                }
+                if (this.config.comment) {
+                    updatedProperties.attributes = this._updateAttributes(
+                        updatedProperties.attributes, OCA.Onlyoffice.AppName, "comment", false
+                    );
+                }
             }
 
             updatedProperties.attributes = this._updateAttributes(

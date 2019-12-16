@@ -29,12 +29,9 @@
 (function ($, OC) {
 
     $(document).ready(function () {
-        OCA.Onlyoffice = _.extend({}, OCA.Onlyoffice);
-        if (!OCA.Onlyoffice.AppName) {
-            OCA.Onlyoffice = {
+        OCA.Onlyoffice = _.extend({
                 AppName: "onlyoffice"
-            };
-        }
+            }, OCA.Onlyoffice)
 
         var advToogle = function () {
             $("#onlyofficeSecretPanel").toggleClass("onlyoffice-hide");
@@ -81,7 +78,7 @@
 
             var onlyofficeInternalUrl = ($("#onlyofficeInternalUrl:visible").val() || "").trim();
             var onlyofficeStorageUrl = ($("#onlyofficeStorageUrl:visible").val() || "").trim();
-            var onlyofficeSecret = $("#onlyofficeSecret:visible").val() || "";
+            var onlyofficeSecret = ($("#onlyofficeSecret:visible").val() || "").trim();
             var demo = $("#onlyofficeDemo").prop("checked");
 
             $.ajax({

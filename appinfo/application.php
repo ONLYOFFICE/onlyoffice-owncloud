@@ -73,6 +73,7 @@ class Application extends App {
                     && $this->appConfig->isUserAllowedToUse()) {
                     Util::addScript("onlyoffice", "desktop");
                     Util::addScript("onlyoffice", "main");
+                    Util::addScript("onlyoffice", "share");
                     Util::addStyle("onlyoffice", "main");
                 }
             });
@@ -132,7 +133,8 @@ class Application extends App {
                 $this->appConfig,
                 $this->crypt,
                 $c->query("IManager"),
-                $c->query("Session")
+                $c->query("Session"),
+                $c->query("ClientService")
             );
         });
 

@@ -1,5 +1,14 @@
 # Change Log
 
+## 4.0.1
+## Added
+- Polish translation
+- British (en_GB) file templates
+
+## Changed
+- co-editing for federated share
+- Advanced Sharing Permissions APIv2
+
 ## 3.0.3
 ## Changed
 - federated share saving fixed

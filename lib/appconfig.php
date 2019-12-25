@@ -225,6 +225,13 @@ class AppConfig {
     public $_customization_logo = "customization_logo";
 
     /**
+     * The config key for the zoom
+     *
+     * @var string
+     */
+    public $_customization_zoom = "customization_zoom";
+
+    /**
      * @param string $AppName - application name
      */
     public function __construct($AppName) {

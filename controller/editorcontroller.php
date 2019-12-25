@@ -878,6 +878,11 @@ class EditorController extends Controller {
             $params["editorConfig"]["customization"]["logo"] = $logo;
         }
 
+        $zoom = $this->config->GetSystemValue($this->config->_customization_zoom);
+        if (isset($zoom)) {
+            $params["editorConfig"]["customization"]["zoom"] = $zoom;
+        }
+
         return $params;
     }
 

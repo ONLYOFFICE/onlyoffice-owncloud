@@ -38,6 +38,7 @@ use OCP\Constants;
 use OCP\Files\FileInfo;
 use OCP\Files\File;
 use OCP\Files\Folder;
+use OCP\Files\ForbiddenException;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotFoundException;
 use OCP\IL10N;
@@ -238,6 +239,9 @@ class EditorController extends Controller {
         } catch (NotPermittedException $e) {
             $this->logger->error("Can't create file: $name", array("app" => $this->appName));
             return ["error" => $this->trans->t("Can't create file")];
+        } catch (ForbiddenException $e) {
+            $this->logger->error("Can't put file: $name", array("app" => $this->appName));
+            return ["error" => $this->trans->t("Can't create file")];
         }
 
         $fileInfo = $file->getFileInfo();
@@ -350,6 +354,9 @@ class EditorController extends Controller {
         } catch (NotPermittedException $e) {
             $this->logger->error("Can't create file: $newFileName", array("app" => $this->appName));
             return ["error" => $this->trans->t("Can't create file")];
+        } catch (ForbiddenException $e) {
+            $this->logger->error("Can't put file: $newFileName", array("app" => $this->appName));
+            return ["error" => $this->trans->t("Can't create file")];
         }
 
         $fileInfo = $file->getFileInfo();
@@ -409,6 +416,9 @@ class EditorController extends Controller {
             $file->putContent($newData);
         } catch (NotPermittedException $e) {
             $this->logger->error("Can't save file: $name", array("app" => $this->appName));
+            return ["error" => $this->trans->t("Can't create file")];
+        } catch (ForbiddenException $e) {
+            $this->logger->error("Can't put file: $name", array("app" => $this->appName));
             return ["error" => $this->trans->t("Can't create file")];
         }
 

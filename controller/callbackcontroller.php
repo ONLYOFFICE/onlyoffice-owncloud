@@ -140,7 +140,7 @@ class CallbackController extends Controller {
      * @param OCA\Onlyoffice\Crypt $crypt - hash generator
      * @param IManager $shareManager - Share manager
      */
-    public function __construct($AppName, 
+    public function __construct($AppName,
                                     IRequest $request,
                                     IRootFolder $root,
                                     IUserSession $userSession,

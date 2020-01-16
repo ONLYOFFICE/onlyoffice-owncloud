@@ -550,7 +550,7 @@ class EditorController extends Controller {
      * @param integer $fileId - file identifier
      * @param string $filePath - file path
      * @param string $shareToken - access token
-     * @param bool $inframe - open in frame
+     * @param integer $inframe - open in frame. 0 - no, 1 - yes, 2 - without goback for old editor (5.4)
      * @param bool $desktop - desktop label
      *
      * @return array
@@ -558,7 +558,7 @@ class EditorController extends Controller {
      * @NoAdminRequired
      * @PublicPage
      */
-    public function config($fileId, $filePath = NULL, $shareToken = NULL, $inframe = false, $desktop = false) {
+    public function config($fileId, $filePath = NULL, $shareToken = NULL, $inframe = 0, $desktop = false) {
 
         if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
             return ["error" => $this->trans->t("Not permitted")];
@@ -711,7 +711,7 @@ class EditorController extends Controller {
             }
         }
 
-        if ($folderLink !== NULL) {
+        if ($folderLink !== NULL && $inframe !== 2) {
             $params["editorConfig"]["customization"]["goback"] = [
                 "url"  => $folderLink
             ];
@@ -719,14 +719,14 @@ class EditorController extends Controller {
             if (!$desktop) {
                 if ($this->config->GetSameTab()) {
                     $params["editorConfig"]["customization"]["goback"]["blank"] = false;
-                    if ($inframe === true) {
+                    if ($inframe === 1) {
                         $params["editorConfig"]["customization"]["goback"]["requestClose"] = true;
                     }
                 }
             }
         }
 
-        if ($inframe === true) {
+        if ($inframe === 1) {
             $params["_files_sharing"] = \OC::$server->getAppManager()->isEnabledForUser("files_sharing");
         }
 

@@ -133,7 +133,7 @@
 
                     if (OCA.Onlyoffice.inframe) {
                         config.events.onRequestClose = OCA.Onlyoffice.onRequestClose;
-                        if (config._files_sharing) {
+                        if (config._files_sharing && !shareToken) {
                             config.events.onRequestSharingSettings = OCA.Onlyoffice.onRequestSharingSettings;
                         }
                     }

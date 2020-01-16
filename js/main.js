@@ -128,11 +128,13 @@
         });
         wrapper.prepend(btnClose);
 
-        var btnShare = $("<a class='icon icon-shared'></a>");
-        btnShare.on("click", function () {
-            OCA.Onlyoffice.OpenShareDialog();
-        })
-        wrapper.prepend(btnShare);
+        if (!$("#isPublic").val()) {
+            var btnShare = $("<a class='icon icon-shared'></a>");
+            btnShare.on("click", function () {
+                OCA.Onlyoffice.OpenShareDialog();
+            })
+            wrapper.prepend(btnShare);
+        }
 
         $("#header").append(wrapper);
     };

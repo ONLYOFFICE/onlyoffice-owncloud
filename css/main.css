@@ -63,6 +63,24 @@ body.onlyoffice-inline #content #app-content {
     z-index: 110;
 }
 
+#onlyofficeHeader {
+    display: flex;
+    float: right;
+}
+
+#onlyofficeHeader .icon {
+    display: block;
+    min-width: 50px;
+    height: 45px;
+}
+#onlyofficeHeader .icon-close {
+    background-image: url("../img/close.svg");
+}
+#onlyofficeHeader .icon-shared {
+    background-image: url("../img/shared.svg");
+    opacity: 1;
+}
+
 /* AscDesktopEditor */
 .AscDesktopEditor #header {
     display: none;

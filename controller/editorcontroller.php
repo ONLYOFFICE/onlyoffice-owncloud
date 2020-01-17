@@ -480,15 +480,16 @@ class EditorController extends Controller {
      * Print editor section
      *
      * @param integer $fileId - file identifier
-     * @param string $shareToken - access token
      * @param string $filePath - file path
+     * @param string $shareToken - access token
+     * @param bool $inframe - open in frame
      *
      * @return TemplateResponse|RedirectResponse
      *
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function index($fileId, $shareToken = NULL, $filePath = NULL) {
+    public function index($fileId, $filePath = NULL, $shareToken = NULL, $inframe = false) {
         $this->logger->debug("Open: $fileId $filePath", array("app" => $this->appName));
 
         if (empty($shareToken) && !$this->userSession->isLoggedIn()) {
@@ -513,10 +514,16 @@ class EditorController extends Controller {
             "documentServerUrl" => $documentServerUrl,
             "fileId" => $fileId,
             "filePath" => $filePath,
-            "shareToken" => $shareToken
+            "shareToken" => $shareToken,
+            "inframe" => false
         ];
 
-        $response = new TemplateResponse($this->appName, "editor", $params);
+        if ($inframe === true) {
+            $params["inframe"] = true;
+            $response = new TemplateResponse($this->appName, "editor", $params, "plain");
+        } else {
+            $response = new TemplateResponse($this->appName, "editor", $params);
+        }
 
         $csp = new ContentSecurityPolicy();
         $csp->allowInlineScript(true);
@@ -537,6 +544,7 @@ class EditorController extends Controller {
      *
      * @param integer $fileId - file identifier
      * @param string $shareToken - access token
+     * @param bool $inframe - open in frame
      *
      * @return TemplateResponse
      *
@@ -544,8 +552,8 @@ class EditorController extends Controller {
      * @NoCSRFRequired
      * @PublicPage
      */
-    public function PublicPage($fileId, $shareToken) {
-        return $this->index($fileId, $shareToken);
+    public function PublicPage($fileId, $shareToken, $inframe = false) {
+        return $this->index($fileId, null, $shareToken, $inframe);
     }
 
     /**
@@ -554,6 +562,7 @@ class EditorController extends Controller {
      * @param integer $fileId - file identifier
      * @param string $filePath - file path
      * @param string $shareToken - access token
+     * @param integer $inframe - open in frame. 0 - no, 1 - yes, 2 - without goback for old editor (5.4)
      * @param bool $desktop - desktop label
      *
      * @return array
@@ -561,7 +570,7 @@ class EditorController extends Controller {
      * @NoAdminRequired
      * @PublicPage
      */
-    public function config($fileId, $filePath = NULL, $shareToken = NULL, $desktop = false) {
+    public function config($fileId, $filePath = NULL, $shareToken = NULL, $inframe = 0, $desktop = false) {
 
         if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
             return ["error" => $this->trans->t("Not permitted")];
@@ -714,7 +723,7 @@ class EditorController extends Controller {
             }
         }
 
-        if ($folderLink !== NULL) {
+        if ($folderLink !== NULL && $inframe !== 2) {
             $params["editorConfig"]["customization"]["goback"] = [
                 "url"  => $folderLink
             ];
@@ -722,8 +731,15 @@ class EditorController extends Controller {
             if (!$desktop) {
                 if ($this->config->GetSameTab()) {
                     $params["editorConfig"]["customization"]["goback"]["blank"] = false;
+                    if ($inframe === 1) {
+                        $params["editorConfig"]["customization"]["goback"]["requestClose"] = true;
+                    }
                 }
             }
+        }
+
+        if ($inframe === 1) {
+            $params["_files_sharing"] = \OC::$server->getAppManager()->isEnabledForUser("files_sharing");
         }
 
         $params = $this->setCustomization($params);

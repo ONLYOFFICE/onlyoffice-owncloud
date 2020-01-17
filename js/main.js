@@ -107,7 +107,11 @@
             location.href = url;
         } else {
             var $iframe = $("<iframe id=\"onlyofficeFrame\" nonce=\"" + btoa(OC.requestToken) + "\" scrolling=\"no\" allowfullscreen src=\"" + url + "&inframe=true\" />");
-            $("#app-content").append($iframe);
+            if ($("#app-content").length) {
+                $("#app-content").append($iframe);
+            } else {
+                $("#preview").append($iframe);
+            }
 
             $("body").addClass("onlyoffice-inline");
             OC.Apps.hideAppSidebar();
@@ -136,7 +140,11 @@
             wrapper.prepend(btnShare);
         }
 
-        $("#header").append(wrapper);
+        if ($("#header .header-right").length) {
+            $("#header .header-right").append(wrapper);
+        } else {
+            $("#header").append(wrapper);
+        }
     };
 
     OCA.Onlyoffice.CloseEditor = function () {

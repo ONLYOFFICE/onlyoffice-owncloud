@@ -67,11 +67,17 @@ body.onlyoffice-inline #content #app-content {
     display: flex;
     float: right;
 }
+.header-right #onlyofficeHeader {
+    float: left;
+}
 
 #onlyofficeHeader .icon {
     display: block;
     min-width: 50px;
     height: 45px;
+}
+.header-right #onlyofficeHeader .icon {
+    height: 31px;
 }
 #onlyofficeHeader .icon-close {
     background-image: url("../img/close.svg");

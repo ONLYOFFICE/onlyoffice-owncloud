@@ -61,6 +61,7 @@ OC.L10N.register(
     "Connect to demo ONLYOFFICE Document Server" : "Połącz się z serwerem demo ONLYOFFICE",
     "This is a public test server, please do not use it for private sensitive data. The server will be available during a 30-day period." : "To jest publiczny testowy serwer, proszę nie używać go do prywatnych danych. Serwer będzie dostępny przez 30 dni.",
     "The 30-day test period is over, you can no longer connect to demo ONLYOFFICE Document Server." : "Upłyneło 30 dni, nie możesz się już łączyć z serwerem demo.",
-    "You are using public demo ONLYOFFICE Document Server. Please do not store private sensitive data." : "Używasz publicznego serwera demo. Nie przechowuj tu prywatnych danych."
+    "You are using public demo ONLYOFFICE Document Server. Please do not store private sensitive data." : "Używasz publicznego serwera demo. Nie przechowuj tu prywatnych danych.",
+    "Select tag" : "Wybierz tag"
 },
 "nplurals=2; plural=(n != 1);");

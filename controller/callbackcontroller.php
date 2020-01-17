@@ -44,6 +44,7 @@ use OCP\ILogger;
 use OCP\IRequest;
 use OCP\IUserManager;
 use OCP\IUserSession;
+use OCP\Lock\LockedException;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
 
@@ -212,14 +213,13 @@ class CallbackController extends Controller {
         if ($this->userSession->isLoggedIn()) {
             $userId = $this->userSession->getUser()->getUID();
         } else {
-            $userId = $hashData->ownerId;
-
-            if (empty($this->userManager->get($userId))) {
-                $userId = $hashData->userId;
-            }
-
             \OC_Util::tearDownFS();
-            if (!empty($userId)) {
+
+            $userId = $hashData->userId;
+            \OC_User::setUserId($userId);
+
+            $user = $this->userManager->get($userId);
+            if (!empty($user)) {
                 \OC_Util::setupFS($userId);
             }
         }
@@ -382,35 +382,51 @@ class CallbackController extends Controller {
 
                 try {
                     $shareToken = isset($hashData->shareToken) ? $hashData->shareToken : NULL;
+                    $filePath = null;
 
-                    $userId = $users[0];
+                    \OC_Util::tearDownFS();
+
+                    // author of the latest changes
+                    $userId = $this->parseUserId($users[0]);
+                    \OC_User::setUserId($userId);
+
                     $user = $this->userManager->get($userId);
-                    if (!empty($user)) {
-                        $this->userSession->setUser($user);
-                    } else {
+                    if (empty($user)) {
                         if (empty($shareToken)) {
-                            $this->logger->error("Track without access: $fileId status $trackerStatus", array("app" => $this->appName));
-                            return new JSONResponse(["message" => "User and token is empty"], Http::STATUS_BAD_REQUEST);
+                            $this->logger->debug("Track without token: $fileId status $trackerStatus", array("app" => $this->appName));
+                        } else {
+                            $this->logger->debug("Track $fileId by token for $userId", array("app" => $this->appName));
                         }
-
-                        $this->logger->debug("Track by anonymous userId", array("app" => $this->appName));
                     }
 
                     if ($this->config->checkEncryptionModule() === "master") {
                         \OC_User::setIncognitoMode(true);
                     }
 
+                    // owner of file from the callback link
                     $ownerId = $hashData->ownerId;
-                    if (!empty($this->userManager->get($ownerId))) {
+                    $owner = $this->userManager->get($ownerId);
+
+                    if (!empty($owner)) {
                         $userId = $ownerId;
+                    } else {
+                        $callbackUserId = $hashData->userId;
+                        $callbackUser = $this->userManager->get($callbackUserId);
+
+                        if (!empty($callbackUser)) {
+                            // author of the callback link
+                            $userId = $callbackUserId;
+
+                            // path for author of the callback link
+                            $filePath = $hashData->filePath;
+                        }
                     }
 
-                    \OC_Util::tearDownFS();
                     if (!empty($userId)) {
                         \OC_Util::setupFS($userId);
                     }
 
-                    list ($file, $error) = empty($shareToken) ? $this->getFile($userId, $fileId) : $this->getFileByToken($fileId, $shareToken);
+                    list ($file, $error) = empty($shareToken) ? $this->getFile($userId, $fileId, $filePath) : $this->getFileByToken($fileId, $shareToken);
 
                     if (isset($error)) {
                         $this->logger->error("track error: $fileId " . json_encode($error->getData()),  array("app" => $this->appName));
@@ -439,7 +455,10 @@ class CallbackController extends Controller {
                     $newData = $documentService->Request($url);
 
                     $this->logger->debug("Track put content " . $file->getPath(), array("app" => $this->appName));
-                    $file->putContent($newData);
+                    $this->retryOperation(function () use ($file, $newData){
+                        return $file->putContent($newData);
+                    });
+
                     $result = 0;
                 } catch (\Exception $e) {
                     $this->logger->error("Track $trackerStatus error: " . $e->getMessage(), array("app" => $this->appName));
@@ -463,10 +482,11 @@ class CallbackController extends Controller {
      *
      * @param string $userId - user identifier
      * @param integer $fileId - file identifier
+     * @param string $filePath - file path
      *
      * @return array
      */
-    private function getFile($userId, $fileId) {
+    private function getFile($userId, $fileId, $filePath = NULL) {
         if (empty($fileId)) {
             return [NULL, new JSONResponse(["message" => $this->trans->t("FileId is empty")], Http::STATUS_BAD_REQUEST)];
         }
@@ -482,7 +502,18 @@ class CallbackController extends Controller {
             $this->logger->error("Files not found: $fileId", array("app" => $this->appName));
             return [NULL, new JSONResponse(["message" => $this->trans->t("Files not found")], Http::STATUS_NOT_FOUND)];
         }
+
         $file = $files[0];
+
+        if (count($files) > 1 && !empty($filePath)) {
+            $filePath = "/" . $userId . "/files" . $filePath;
+            foreach ($files as $curFile) {
+                if ($curFile->getPath() === $filePath) {
+                    $file = $curFile;
+                    break;
+                }
+            }
+        }
 
         if (!($file instanceof File)) {
             $this->logger->error("File not found: $fileId", array("app" => $this->appName));
@@ -558,5 +589,40 @@ class CallbackController extends Controller {
         }
 
         return [$share, NULL];
+    }
+
+    /**
+     * Parse user identifier for current instance
+     *
+     * @param string $userId - unique user identifier
+     *
+     * @return string
+     */
+    private function parseUserId($uniqueUserId) {
+        $instanceId = $this->config->GetSystemValue("instanceid", true);
+        $userId = ltrim($uniqueUserId, $instanceId . "_");
+        return $userId;
+    }
+
+    /**
+     * Retry operation if a LockedException occurred
+     * Other exceptions will still be thrown
+     *
+     * @param callable $operation
+     *
+     * @throws LockedException
+     */
+    private function retryOperation(callable $operation) {
+        $i = 0;
+        while (true) {
+            try {
+                return $operation();
+            } catch (LockedException $e) {
+                if (++$i === 4) {
+                    throw $e;
+                }
+            }
+            usleep(500000);
+        }
     }
 }

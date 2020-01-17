@@ -30,6 +30,9 @@
     position: absolute;
     vertical-align: top;
 }
+#body-public #content {
+    height: 100%;
+}
 
 .AscDesktopEditor #header {
     display: none;

@@ -218,9 +218,13 @@ class CallbackController extends Controller {
             $userId = $hashData->userId;
             \OC_User::setUserId($userId);
 
-            $user = $this->userManager->get($userId);
-            if (!empty($user)) {
-                \OC_Util::setupFS($userId);
+            if ($this->config->checkEncryptionModule() === "master") {
+                \OC_User::setIncognitoMode(true);
+            } else {
+                $user = $this->userManager->get($userId);
+                if (!empty($user)) {
+                    \OC_Util::setupFS($userId);
+                }
             }
         }
 
@@ -399,10 +403,6 @@ class CallbackController extends Controller {
                         }
                     }
 
-                    if ($this->config->checkEncryptionModule() === "master") {
-                        \OC_User::setIncognitoMode(true);
-                    }
-
                     // owner of file from the callback link
                     $ownerId = $hashData->ownerId;
                     $owner = $this->userManager->get($ownerId);
@@ -422,7 +422,9 @@ class CallbackController extends Controller {
                         }
                     }
 
-                    if (!empty($userId)) {
+                    if ($this->config->checkEncryptionModule() === "master") {
+                        \OC_User::setIncognitoMode(true);
+                    } else if (!empty($userId)) {
                         \OC_Util::setupFS($userId);
                     }
 

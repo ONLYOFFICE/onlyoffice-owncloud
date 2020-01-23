@@ -125,7 +125,8 @@
                         "onDocumentStateChange": setPageTitle,
                     };
 
-                    if (OCA.Onlyoffice.inframe || OC.currentUser) {
+                    if (OCA.Onlyoffice.inframe && !shareToken
+                        || OC.currentUser) {
                         config.events.onRequestSaveAs = OCA.Onlyoffice.onRequestSaveAs;
                         config.events.onRequestInsertImage = OCA.Onlyoffice.onRequestInsertImage;
                         config.events.onRequestMailMergeRecipients = OCA.Onlyoffice.onRequestMailMergeRecipients;

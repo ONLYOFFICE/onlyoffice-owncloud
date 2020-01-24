@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2019
+ * (c) Copyright Ascensio System SIA 2020
  *
  * This program is a free software product.
  * You can redistribute it and/or modify it under the terms of the GNU Affero General Public License
@@ -140,7 +140,7 @@ class CallbackController extends Controller {
      * @param OCA\Onlyoffice\Crypt $crypt - hash generator
      * @param IManager $shareManager - Share manager
      */
-    public function __construct($AppName, 
+    public function __construct($AppName,
                                     IRequest $request,
                                     IRootFolder $root,
                                     IUserSession $userSession,
@@ -218,9 +218,13 @@ class CallbackController extends Controller {
             $userId = $hashData->userId;
             \OC_User::setUserId($userId);
 
-            $user = $this->userManager->get($userId);
-            if (!empty($user)) {
-                \OC_Util::setupFS($userId);
+            if ($this->config->checkEncryptionModule() === "master") {
+                \OC_User::setIncognitoMode(true);
+            } else {
+                $user = $this->userManager->get($userId);
+                if (!empty($user)) {
+                    \OC_Util::setupFS($userId);
+                }
             }
         }
 
@@ -399,10 +403,6 @@ class CallbackController extends Controller {
                         }
                     }
 
-                    if ($this->config->checkEncryptionModule() === "master") {
-                        \OC_User::setIncognitoMode(true);
-                    }
-
                     // owner of file from the callback link
                     $ownerId = $hashData->ownerId;
                     $owner = $this->userManager->get($ownerId);
@@ -422,7 +422,9 @@ class CallbackController extends Controller {
                         }
                     }
 
-                    if (!empty($userId)) {
+                    if ($this->config->checkEncryptionModule() === "master") {
+                        \OC_User::setIncognitoMode(true);
+                    } else if (!empty($userId)) {
                         \OC_Util::setupFS($userId);
                     }
 

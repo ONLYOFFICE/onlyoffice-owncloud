@@ -63,6 +63,7 @@ OC.L10N.register(
     "Save as" : "Salvar como",
     "File saved" : "O arquivo foi salvo",
     "Insert image" : "Inserir imagem",
-    "Select recipients" : "Selecione os destinatários"
+    "Select recipients" : "Selecione os destinatários",
+    "Select file to compare" : "Selecionar arquivo para comparar"
 },
 "nplurals=2; plural=(n != 1);");

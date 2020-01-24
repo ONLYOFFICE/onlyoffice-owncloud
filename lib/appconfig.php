@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2019
+ * (c) Copyright Ascensio System SIA 2020
  *
  * This program is a free software product.
  * You can redistribute it and/or modify it under the terms of the GNU Affero General Public License
@@ -223,6 +223,20 @@ class AppConfig {
      * @var string
      */
     public $_customization_logo = "customization_logo";
+
+    /**
+     * The config key for the zoom
+     *
+     * @var string
+     */
+    public $_customization_zoom = "customization_zoom";
+
+    /**
+     * The config key for the autosave
+     *
+     * @var string
+     */
+    public $_customization_autosave = "customization_autosave";
 
     /**
      * @param string $AppName - application name

@@ -1,6 +1,6 @@
 /**
  *
- * (c) Copyright Ascensio System SIA 2019
+ * (c) Copyright Ascensio System SIA 2020
  *
  * This program is a free software product.
  * You can redistribute it and/or modify it under the terms of the GNU Affero General Public License
@@ -40,6 +40,54 @@
     background-image: url("../img/app-dark.svg");
 }
 
+/* onlyoffice-inline */
+body.onlyoffice-inline {
+    overscroll-behavior-y: none;
+    overflow: hidden;
+}
+body.onlyoffice-inline #app-navigation,
+body.onlyoffice-inline .searchbox,
+body.onlyoffice-inline #app-content #controls {
+    display: none;
+}
+body.onlyoffice-inline #content #app-content {
+    margin-left: 0;
+}
+#onlyofficeFrame {
+    background-color: #fff;
+    width: 100%;
+    height: calc(100vh - 45px);
+    display: block;
+    position: absolute;
+    top: 0;
+    z-index: 110;
+}
+
+#onlyofficeHeader {
+    display: flex;
+    float: right;
+}
+.header-right #onlyofficeHeader {
+    float: left;
+}
+
+#onlyofficeHeader .icon {
+    display: block;
+    min-width: 50px;
+    height: 45px;
+}
+.header-right #onlyofficeHeader .icon {
+    height: 31px;
+}
+#onlyofficeHeader .icon-close {
+    background-image: url("../img/close.svg");
+}
+#onlyofficeHeader .icon-shared {
+    background-image: url("../img/shared.svg");
+    opacity: 1;
+}
+
+/* AscDesktopEditor */
 .AscDesktopEditor #header {
     display: none;
 }

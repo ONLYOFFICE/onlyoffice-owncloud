@@ -1,5 +1,15 @@
 # Change Log
 
+## 4.1.3
+## Added
+- inline editor if using the same tab, opening the sidebar, sharing from the editor
+- setting zoom and autosave
+- selection of a file for comparison (DocumentServer 5.5 required)
+
+## Changed
+- fix file opening if master key encryption is enabled
+- fix file opening the federated file when watermark is enabled
+
 ## 4.0.1
 ## Added
 - Polish translation

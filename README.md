@@ -43,7 +43,7 @@ For that click the upper-left hamburger menu and select **Market**. After that f
 
 If the server with the ownCloud installed does not have an Internet access, or if you need it for some other reason, the administrator can install the application manually: 
 
-1. Go to the ownCloud server _apps/_ directory (or some other directory [used](https://doc.owncloud.org/server/administration_manual/installation/apps_management_installation.html#using-custom-app-directories)):
+1. Go to the ownCloud server _apps/_ directory (or some other directory [used](https://doc.owncloud.org/server/admin_manual/installation/apps_management_installation.html#using-custom-app-directories)):
 
     ```bash
     cd apps/

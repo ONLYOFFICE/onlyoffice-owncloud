@@ -70,7 +70,7 @@ There are several ways to do that:
     chown -R www-data:www-data onlyoffice
     ```
 
-4. In ownCloud open the `~/index.php/settings/apps?category=disabled` page with _Not enabled_ apps by administrator and click _Enable_ for the **ONLYOFFICE** application.
+4. In ownCloud open the `~/index.php/settings/admin?sectionid=apps&category=disabled` page with _Not enabled_ apps by administrator and click _Enable_ for the **ONLYOFFICE** application.
 
 ## Configuring ownCloud ONLYOFFICE integration app
 
@@ -114,12 +114,9 @@ This method adds the copy of the file from the assets folder to the folder the u
 * The app prepares a JSON object with the following properties:
 
   * **url** - the URL that ONLYOFFICE Document Server uses to download the document;
-  * **callback** - the URL that ONLYOFFICE Document Server informs about status of the document editing;
+  * **callbackUrl** - the URL that ONLYOFFICE Document Server informs about status of the document editing;
   * **documentServerUrl** - the URL that the client needs to respond to ONLYOFFICE Document Server (can be set at the administrative settings page);
   * **key** - the UUID+Modified Timestamp to instruct ONLYOFFICE Document Server whether to download the document again or not;
-  * **fileName** - the document Title (name);
-  * **userId** - the identification of the user;
-  * **userName** - the name of the user.
 
 * ownCloud takes this object and constructs a page from `templates/editor.php` template, filling in all of those values so that the client browser can load up the editor.
 
@@ -127,11 +124,11 @@ This method adds the copy of the file from the assets folder to the folder the u
 
 * Then ONLYOFFICE Document Server downloads the document from ownCloud and the user begins editing.
 
-* ONLYOFFICE Document Server sends a POST request to the _callback_ URL to inform ownCloud that a user is editing the document.
+* ONLYOFFICE Document Server sends a POST request to the _callbackUrl_ to inform ownCloud that a user is editing the document.
 
 * When all users and client browsers are done with editing, they close the editing window.
 
-* After [10 seconds](https://api.onlyoffice.com/editors/save#savedelay) of inactivity, ONLYOFFICE Document Server sends a POST to the _callback_ URL letting ownCloud know that the clients have finished editing the document and closed it.
+* After [10 seconds](https://api.onlyoffice.com/editors/save#savedelay) of inactivity, ONLYOFFICE Document Server sends a POST to the _callbackUrl_ letting ownCloud know that the clients have finished editing the document and closed it.
 
 * ownCloud downloads the new version of the document, replacing the old one.
 
@@ -161,7 +158,7 @@ The instruction on enabling _master key_ based encryption is available in the of
 
     This will disable the certificate verification and allow ownCloud to establish connection with **Document Server**, but you must remember that this is a temporary insecure solution and we strongly recommend that you replace the certificate with the one issued by some CA. Once you do that, do not forget to remove the above section from ownCloud config file.
     
-    ## ONLYOFFICE Document Server editions
+## ONLYOFFICE Document Server editions
 
 ONLYOFFICE offers different versions of its online document editors that can be deployed on your own servers.
 
@@ -229,4 +226,3 @@ The table below will help you to make the right choice.
 \*  It's possible to add documents for comparison from your local drive, from URL and from ownCloud storage.
 
 \** Changing style and deleting (Full support coming soon)
-

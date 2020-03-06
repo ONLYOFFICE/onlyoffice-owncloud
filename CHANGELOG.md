@@ -8,7 +8,6 @@
 
 ## Changed
 - fix file opening if master key encryption is enabled
-- fix file opening the federated file when watermark is enabled
 
 ## 4.0.1
 ## Added

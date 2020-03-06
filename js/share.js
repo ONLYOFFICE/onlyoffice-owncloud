@@ -129,14 +129,12 @@
          * @param properties
          */
         updateShareProperties: function(shareId, properties) {
-            var that = this;
-
             var updatedProperties = properties;
             updatedProperties.attributes = properties.attributes || {};
 
             // if share permission got enabled unset all attributes
             // as resharing is not compatible
-            if (that._hasPermission(properties.permissions, OC.PERMISSION_SHARE)) {
+            if (this._hasPermission(properties.permissions, OC.PERMISSION_SHARE)) {
                 updatedProperties.attributes = this._updateAttributes(
                     updatedProperties.attributes, "permissions", "download", null
                 );
@@ -157,9 +155,9 @@
             }
 
             // if edit permission got enabled, enable only modifyFilter
-            if (that._hasPermission(properties.permissions, OC.PERMISSION_UPDATE)
-                || that._hasPermission(properties.permissions, OC.PERMISSION_CREATE)
-                || that._hasPermission(properties.permissions, OC.PERMISSION_DELETE)) {
+            if (this._hasPermission(properties.permissions, OC.PERMISSION_UPDATE)
+                || this._hasPermission(properties.permissions, OC.PERMISSION_CREATE)
+                || this._hasPermission(properties.permissions, OC.PERMISSION_DELETE)) {
                 updatedProperties.attributes = this._updateAttributes(
                     updatedProperties.attributes, "permissions", "download", null
                 );
@@ -183,7 +181,7 @@
             }
 
             // default checkboxes on permission update
-            var canDownload = that._getAttribute(properties.attributes, "permissions", "download");
+            var canDownload = this._getAttribute(properties.attributes, "permissions", "download");
             if (canDownload === null) {
                 // if this attribute has not been set by other app, set to tru as default
                 updatedProperties.attributes = this._updateAttributes(
@@ -192,7 +190,7 @@
             }
 
             if (!this.model.hasReshare()
-                || that._hasPermission(this.model.attributes.permissions, OC.PERMISSION_UPDATE))
+                || this._hasPermission(this.model.attributes.permissions, OC.PERMISSION_UPDATE))
             {
                 if (this.config.review) {
                     updatedProperties.attributes = this._updateAttributes(
@@ -225,7 +223,6 @@
          * @param event
          */
         onOnlyOfficeOptionChange: function(event) {
-            var that = this;
             var share;
             var $element = $(event.target);
             var $li = $element.closest("li");
@@ -251,7 +248,7 @@
                 var shareOptionAttrKey = $(checkbox).data("attr-key");
                 var shareOptionChecked = $(checkbox).is(":checked");
 
-                attributes = that._updateAttributes(
+                attributes = this._updateAttributes(
                     attributes, shareOptionAttrScope, shareOptionAttrKey, shareOptionChecked
                 );
             });

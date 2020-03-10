@@ -128,7 +128,8 @@ class SettingsController extends Controller {
             "feedback" => $this->config->GetCustomizationFeedback(),
             "help" => $this->config->GetCustomizationHelp(),
             "toolbarNoTabs" => $this->config->GetCustomizationToolbarNoTabs(),
-            "successful" => $this->config->SettingsAreSuccessful()
+            "successful" => $this->config->SettingsAreSuccessful(),
+            "reviewDisplay" => $this->config->GetCustomizationReviewDisplay()
         ];
         return new TemplateResponse($this->appName, "settings", $data, "blank");
     }
@@ -194,6 +195,7 @@ class SettingsController extends Controller {
      * @param bool $feedback - display feedback
      * @param bool $help - display help
      * @param bool $toolbarNoTabs - display toolbar tab
+     * @param string $reviewDisplay - review viewing mode
      *
      * @return array
      */
@@ -205,7 +207,8 @@ class SettingsController extends Controller {
                                     $compactHeader,
                                     $feedback,
                                     $help,
-                                    $toolbarNoTabs
+                                    $toolbarNoTabs,
+                                    $reviewDisplay
                                     ) {
 
         $this->config->SetDefaultFormats($defFormats);
@@ -217,6 +220,7 @@ class SettingsController extends Controller {
         $this->config->SetCustomizationFeedback($feedback);
         $this->config->SetCustomizationHelp($help);
         $this->config->SetCustomizationToolbarNoTabs($toolbarNoTabs);
+        $this->config->SetCustomizationReviewDisplay($reviewDisplay);
 
         return [
             ];

@@ -61,6 +61,9 @@
     "File saved" : "El archivo ha sido guardado",
     "Insert image" : "Insertar imagen",
     "Select recipients" : "Seleccionar destinatarios",
-    "Select file to compare" : "Seleccione un archivo para comparar"
+    "Select file to compare" : "Seleccione un archivo para comparar",
+    "Markup": "Cambios",
+    "Final": "Final",
+    "Original": "Original"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

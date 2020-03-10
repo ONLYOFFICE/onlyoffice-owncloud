@@ -129,6 +129,11 @@
          * @param properties
          */
         updateShareProperties: function(shareId, properties) {
+            if (_.isUndefined(properties.permissions) && _.isUndefined(properties.attributes)) {
+                // no attribute or permission change, ignore
+                return properties;
+            }
+
             var updatedProperties = properties;
             updatedProperties.attributes = properties.attributes || {};
 

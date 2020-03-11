@@ -169,7 +169,7 @@ class EditorController extends Controller {
      * @NoAdminRequired
      * @PublicPage
      */
-    public function create($name, $dir, $shareToken = NULL) {
+    public function create($name, $dir, $shareToken = null) {
         $this->logger->debug("Create: $name", ["app" => $this->appName]);
 
         if (empty(shareToken) && !$this->config->isUserAllowedToUse()) {
@@ -199,7 +199,7 @@ class EditorController extends Controller {
 
         $folder = $userFolder->get($dir);
 
-        if ($folder === NULL) {
+        if ($folder === null) {
             $this->logger->error("Folder for file creation was not found: $dir", ["app" => $this->appName]);
             return ["error" => $this->trans->t("The required folder was not found")];
         }
@@ -267,7 +267,7 @@ class EditorController extends Controller {
      * @NoAdminRequired
      * @PublicPage
      */
-    public function convert($fileId, $shareToken = NULL) {
+    public function convert($fileId, $shareToken = null) {
         $this->logger->debug("Convert: $fileId", ["app" => $this->appName]);
 
         if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
@@ -275,7 +275,7 @@ class EditorController extends Controller {
         }
 
         $user = $this->userSession->getUser();
-        $userId = NULL;
+        $userId = null;
         if (!empty($user)) {
             $userId = $user->getUID();
         }
@@ -383,7 +383,7 @@ class EditorController extends Controller {
 
         $folder = $userFolder->get($dir);
 
-        if ($folder === NULL) {
+        if ($folder === null) {
             $this->logger->error("Folder for saving file was not found: $dir", ["app" => $this->appName]);
             return ["error" => $this->trans->t("The required folder was not found")];
         }
@@ -444,7 +444,7 @@ class EditorController extends Controller {
 
         $file = $userFolder->get($filePath);
 
-        if ($file === NULL) {
+        if ($file === null) {
             $this->logger->error("File for generate presigned url was not found: $dir", ["app" => $this->appName]);
             return ["error" => $this->trans->t("File not found")];
         }
@@ -483,7 +483,7 @@ class EditorController extends Controller {
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function index($fileId, $filePath = NULL, $shareToken = NULL, $inframe = false) {
+    public function index($fileId, $filePath = null, $shareToken = null, $inframe = false) {
         $this->logger->debug("Open: $fileId $filePath", ["app" => $this->appName]);
 
         if (empty($shareToken) && !$this->userSession->isLoggedIn()) {
@@ -564,14 +564,14 @@ class EditorController extends Controller {
      * @NoAdminRequired
      * @PublicPage
      */
-    public function config($fileId, $filePath = NULL, $shareToken = NULL, $inframe = 0, $desktop = false) {
+    public function config($fileId, $filePath = null, $shareToken = null, $inframe = 0, $desktop = false) {
 
         if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
             return ["error" => $this->trans->t("Not permitted")];
         }
 
         $user = $this->userSession->getUser();
-        $userId = NULL;
+        $userId = null;
         if (!empty($user)) {
             $userId = $user->getUID();
         }
@@ -660,7 +660,7 @@ class EditorController extends Controller {
                     && (empty($shareToken) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE);
         $params["document"]["permissions"]["edit"] = $editable;
         if (($editable || $restrictedEditing) && $canEdit) {
-            $ownerId = NULL;
+            $ownerId = null;
             $owner = $file->getOwner();
             if (!empty($owner)) {
                 $ownerId = $owner->getUID();
@@ -689,7 +689,7 @@ class EditorController extends Controller {
             ];
         }
 
-        $folderLink = NULL;
+        $folderLink = null;
 
         if (!empty($shareToken)) {
             $node = $share->getNode();
@@ -717,7 +717,7 @@ class EditorController extends Controller {
             }
         }
 
-        if ($folderLink !== NULL && $inframe !== 2) {
+        if ($folderLink !== null && $inframe !== 2) {
             $params["editorConfig"]["customization"]["goback"] = [
                 "url"  => $folderLink
             ];
@@ -761,21 +761,21 @@ class EditorController extends Controller {
      *
      * @return array
      */
-    private function getFile($userId, $fileId, $filePath = NULL) {
+    private function getFile($userId, $fileId, $filePath = null) {
         if (empty($fileId)) {
-            return [NULL, $this->trans->t("FileId is empty"), NULL];
+            return [null, $this->trans->t("FileId is empty"), null];
         }
 
         try {
             $files = $this->root->getUserFolder($userId)->getById($fileId);
         } catch (\Exception $e) {
             $this->logger->logException($e, ["message" => "getFile: $fileId", "app" => $this->appName]);
-            return [NULL, $this->trans->t("Invalid request"), NULL];
+            return [null, $this->trans->t("Invalid request"), null];
         }
 
         if (empty($files)) {
             $this->logger->info("Files not found: $fileId", ["app" => $this->appName]);
-            return [NULL, $this->trans->t("File not found"), NULL];
+            return [null, $this->trans->t("File not found"), null];
         }
 
         $file = $files[0];
@@ -791,10 +791,10 @@ class EditorController extends Controller {
         }
 
         if (!$file->isReadable()) {
-            return [NULL, $this->trans->t("You do not have enough permissions to view the file"), NULL];
+            return [null, $this->trans->t("You do not have enough permissions to view the file"), null];
         }
 
-        return [$file, NULL, NULL];
+        return [$file, null, null];
     }
 
     /**
@@ -806,8 +806,8 @@ class EditorController extends Controller {
      *
      * @return string
      */
-    private function getUrl($file, $user = NULL, $shareToken = NULL) {
-        $userId = NULL;
+    private function getUrl($file, $user = null, $shareToken = null) {
+        $userId = null;
 
         if (!empty($user)) {
             $userId = $user->getUID();

@@ -31,7 +31,6 @@ namespace OCA\Onlyoffice;
 
 use OCP\User;
 
-use OCA\Onlyoffice\AppInfo\Application;
 use OCA\Onlyoffice\Controller\SettingsController;
 
 User::checkAdminUser();

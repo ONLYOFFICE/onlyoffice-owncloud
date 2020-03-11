@@ -254,7 +254,7 @@ class SettingsController extends Controller {
             }
 
         } catch (\Exception $e) {
-            $this->logger->error("Protocol on check error: " . $e->getMessage(), array("app" => $this->appName));
+            $this->logger->logException($e, ["message" => "Protocol on check error", "app" => $this->appName]);
             return $e->getMessage();
         }
 
@@ -268,7 +268,7 @@ class SettingsController extends Controller {
             }
 
         } catch (\Exception $e) {
-            $this->logger->error("HealthcheckRequest on check error: " . $e->getMessage(), array("app" => $this->appName));
+            $this->logger->logException($e, ["message" => "HealthcheckRequest on check error", "app" => $this->appName]);
             return $e->getMessage();
         }
 
@@ -290,11 +290,11 @@ class SettingsController extends Controller {
             }
 
         } catch (\Exception $e) {
-            $this->logger->error("CommandRequest on check error: " . $e->getMessage(), array("app" => $this->appName));
+            $this->logger->logException($e, ["message" => "CommandRequest on check error", "app" => $this->appName]);
             return $e->getMessage();
         }
 
-        $convertedFileUri;
+        $convertedFileUri = null;
         try {
 
             $hashUrl = $this->crypt->GetHash(["action" => "empty"]);
@@ -306,14 +306,14 @@ class SettingsController extends Controller {
             $convertedFileUri = $documentService->GetConvertedUri($fileUrl, "docx", "docx", "check_" . rand());
 
         } catch (\Exception $e) {
-            $this->logger->error("GetConvertedUri on check error: " . $e->getMessage(), array("app" => $this->appName));
+            $this->logger->logException($e, ["message" => "GetConvertedUri on check error", "app" => $this->appName]);
             return $e->getMessage();
         }
 
         try {
             $documentService->Request($convertedFileUri);
         } catch (\Exception $e) {
-            $this->logger->error("Request converted file on check error: " . $e->getMessage(), array("app" => $this->appName));
+            $this->logger->logException($e, ["message" => "Request converted file on check error", "app" => $this->appName]);
             return $e->getMessage();
         }
 

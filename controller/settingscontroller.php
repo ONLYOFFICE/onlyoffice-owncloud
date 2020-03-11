@@ -169,7 +169,7 @@ class SettingsController extends Controller {
             }
 
             if ($this->config->checkEncryptionModule() === true) {
-                $this->logger->info("SaveSettings when encryption is enabled", array("app" => $this->appName));
+                $this->logger->info("SaveSettings when encryption is enabled", ["app" => $this->appName]);
             }
         }
 
@@ -278,7 +278,7 @@ class SettingsController extends Controller {
 
             $commandResponse = $documentService->CommandRequest("version");
 
-            $this->logger->debug("CommandRequest on check: " . json_encode($commandResponse), array("app" => $this->appName));
+            $this->logger->debug("CommandRequest on check: " . json_encode($commandResponse), ["app" => $this->appName]);
 
             if (empty($commandResponse)) {
                 throw new \Exception($this->trans->t("Error occurred in the document service"));

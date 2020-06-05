@@ -870,6 +870,12 @@ class EditorController extends Controller {
             $params["editorConfig"]["customization"]["toolbarNoTabs"] = true;
         }
 
+        //default is original
+        $reviewDisplay = $this->config->GetCustomizationReviewDisplay();
+        if ($reviewDisplay !== "original") {
+            $params["editorConfig"]["customization"]["reviewDisplay"] = $reviewDisplay;
+        }
+
 
         /* from system config */
 

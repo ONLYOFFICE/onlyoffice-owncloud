@@ -1,5 +1,8 @@
 # Change Log
 
+## 4.2.1
+- review display settings
+
 ## 4.1.3
 ## Added
 - inline editor if using the same tab, opening the sidebar, sharing from the editor

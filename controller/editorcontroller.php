@@ -33,24 +33,18 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\AppFramework\Http\RedirectResponse;
 use OCP\AppFramework\Http\TemplateResponse;
-use OCP\AutoloadNotAllowedException;
 use OCP\Constants;
-use OCP\Files\FileInfo;
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\ForbiddenException;
 use OCP\Files\IRootFolder;
-use OCP\Files\NotFoundException;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IRequest;
 use OCP\ISession;
 use OCP\IURLGenerator;
 use OCP\IUserSession;
-use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
-
-use OC\Files\Filesystem;
 
 use OCA\Files\Helper;
 
@@ -102,21 +96,21 @@ class EditorController extends Controller {
     /**
      * Application configuration
      *
-     * @var OCA\Onlyoffice\AppConfig
+     * @var AppConfig
      */
     private $config;
 
     /**
      * Hash generator
      *
-     * @var OCA\Onlyoffice\Crypt
+     * @var Crypt
      */
     private $crypt;
 
     /**
      * File utility
      *
-     * @var OCA\Onlyoffice\FileUtility
+     * @var FileUtility
      */
     private $fileUtility;
 
@@ -133,8 +127,8 @@ class EditorController extends Controller {
      * @param IURLGenerator $urlGenerator - url generator service
      * @param IL10N $trans - l10n service
      * @param ILogger $logger - logger
-     * @param OCA\Onlyoffice\AppConfig $config - application configuration
-     * @param OCA\Onlyoffice\Crypt $crypt - hash generator
+     * @param AppConfig $config - application configuration
+     * @param Crypt $crypt - hash generator
      * @param IManager $shareManager - Share manager
      * @param IManager $ISession - Session
      */
@@ -175,8 +169,8 @@ class EditorController extends Controller {
      * @NoAdminRequired
      * @PublicPage
      */
-    public function create($name, $dir, $shareToken = NULL) {
-        $this->logger->debug("Create: $name", array("app" => $this->appName));
+    public function create($name, $dir, $shareToken = null) {
+        $this->logger->debug("Create: $name", ["app" => $this->appName]);
 
         if (empty(shareToken) && !$this->config->isUserAllowedToUse()) {
             return ["error" => $this->trans->t("Not permitted")];
@@ -189,7 +183,7 @@ class EditorController extends Controller {
             list ($userFolder, $error, $share) = $this->fileUtility->getNodeByToken($shareToken);
 
             if (isset($error)) {
-                $this->logger->error("Create: $error", array("app" => $this->appName));
+                $this->logger->error("Create: $error", ["app" => $this->appName]);
                 return ["error" => $error];
             }
 
@@ -198,19 +192,19 @@ class EditorController extends Controller {
             }
 
             if (!empty($shareToken) && ($share->getPermissions() & Constants::PERMISSION_CREATE) === 0) {
-                $this->logger->error("Create in public folder without access: $fileId", array("app" => $this->appName));
+                $this->logger->error("Create in public folder without access", ["app" => $this->appName]);
                 return ["error" => $this->trans->t("You do not have enough permissions to view the file")];
             }
         }
 
         $folder = $userFolder->get($dir);
 
-        if ($folder === NULL) {
-            $this->logger->error("Folder for file creation was not found: $dir", array("app" => $this->appName));
+        if ($folder === null) {
+            $this->logger->error("Folder for file creation was not found: $dir", ["app" => $this->appName]);
             return ["error" => $this->trans->t("The required folder was not found")];
         }
         if (!$folder->isCreatable()) {
-            $this->logger->error("Folder for file creation without permission: $dir", array("app" => $this->appName));
+            $this->logger->error("Folder for file creation without permission: $dir", ["app" => $this->appName]);
             return ["error" => $this->trans->t("You don't have enough permission to create")];
         }
 
@@ -226,7 +220,7 @@ class EditorController extends Controller {
 
         $template = file_get_contents($templatePath);
         if (!$template) {
-            $this->logger->error("Template for file creation not found: $templatePath", array("app" => $this->appName));
+            $this->logger->error("Template for file creation not found: $templatePath", ["app" => $this->appName]);
             return ["error" => $this->trans->t("Template not found")];
         }
 
@@ -237,10 +231,10 @@ class EditorController extends Controller {
 
             $file->putContent($template);
         } catch (NotPermittedException $e) {
-            $this->logger->error("Can't create file: $name", array("app" => $this->appName));
+            $this->logger->logException($e, ["message" => "Can't create file: $name", "app" => $this->appName]);
             return ["error" => $this->trans->t("Can't create file")];
         } catch (ForbiddenException $e) {
-            $this->logger->error("Can't put file: $name", array("app" => $this->appName));
+            $this->logger->logException($e, ["message" => "Can't put file: $name", "app" => $this->appName]);
             return ["error" => $this->trans->t("Can't create file")];
         }
 
@@ -273,15 +267,15 @@ class EditorController extends Controller {
      * @NoAdminRequired
      * @PublicPage
      */
-    public function convert($fileId, $shareToken = NULL) {
-        $this->logger->debug("Convert: $fileId", array("app" => $this->appName));
+    public function convert($fileId, $shareToken = null) {
+        $this->logger->debug("Convert: $fileId", ["app" => $this->appName]);
 
         if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
             return ["error" => $this->trans->t("Not permitted")];
         }
 
         $user = $this->userSession->getUser();
-        $userId = NULL;
+        $userId = null;
         if (!empty($user)) {
             $userId = $user->getUID();
         }
@@ -289,12 +283,12 @@ class EditorController extends Controller {
         list ($file, $error, $share) = empty($shareToken) ? $this->getFile($userId, $fileId) : $this->fileUtility->getFileByToken($fileId, $shareToken);
 
         if (isset($error)) {
-            $this->logger->error("Convertion: $fileId $error", array("app" => $this->appName));
+            $this->logger->error("Convertion: $fileId $error", ["app" => $this->appName]);
             return ["error" => $error];
         }
 
         if (!empty($shareToken) && ($share->getPermissions() & Constants::PERMISSION_CREATE) === 0) {
-            $this->logger->error("Convertion in public folder without access: $fileId", array("app" => $this->appName));
+            $this->logger->error("Convertion in public folder without access: $fileId", ["app" => $this->appName]);
             return ["error" => $this->trans->t("You do not have enough permissions to view the file")];
         }
 
@@ -302,12 +296,12 @@ class EditorController extends Controller {
         $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
         $format = $this->config->FormatsSetting()[$ext];
         if (!isset($format)) {
-            $this->logger->info("Format for convertion not supported: $fileName", array("app" => $this->appName));
+            $this->logger->info("Format for convertion not supported: $fileName", ["app" => $this->appName]);
             return ["error" => $this->trans->t("Format is not supported")];
         }
 
         if (!isset($format["conv"]) || $format["conv"] !== true) {
-            $this->logger->info("Conversion is not required: $fileName", array("app" => $this->appName));
+            $this->logger->info("Conversion is not required: $fileName", ["app" => $this->appName]);
             return ["error" => $this->trans->t("Conversion is not required")];
         }
 
@@ -321,14 +315,14 @@ class EditorController extends Controller {
                 break;
         }
 
-        $newFileUri;
+        $newFileUri = null;
         $documentService = new DocumentService($this->trans, $this->config);
         $key = $this->fileUtility->getKey($file);
         $fileUrl = $this->getUrl($file, $user, $shareToken);
         try {
             $newFileUri = $documentService->GetConvertedUri($fileUrl, $ext, $internalExtension, $key);
         } catch (\Exception $e) {
-            $this->logger->error("GetConvertedUri: " . $file->getId() . " " . $e->getMessage(), array("app" => $this->appName));
+            $this->logger->logException($e, ["message" => "GetConvertedUri: " . $file->getId(), "app" => $this->appName]);
             return ["error" => $e->getMessage()];
         }
 
@@ -340,7 +334,7 @@ class EditorController extends Controller {
         try {
             $newData = $documentService->Request($newFileUri);
         } catch (\Exception $e) {
-            $this->logger->error("Failed to download converted file: " . $e->getMessage(), array("app" => $this->appName));
+            $this->logger->logException($e, ["message" => "Failed to download converted file", "app" => $this->appName]);
             return ["error" => $this->trans->t("Failed to download converted file")];
         }
 
@@ -352,10 +346,10 @@ class EditorController extends Controller {
 
             $file->putContent($newData);
         } catch (NotPermittedException $e) {
-            $this->logger->error("Can't create file: $newFileName", array("app" => $this->appName));
+            $this->logger->logException($e, ["message" => "Can't create file: $newFileName", "app" => $this->appName]);
             return ["error" => $this->trans->t("Can't create file")];
         } catch (ForbiddenException $e) {
-            $this->logger->error("Can't put file: $newFileName", array("app" => $this->appName));
+            $this->logger->logException($e, ["message" => "Can't put file: $newFileName", "app" => $this->appName]);
             return ["error" => $this->trans->t("Can't create file")];
         }
 
@@ -378,7 +372,7 @@ class EditorController extends Controller {
      * @PublicPage
      */
     public function save($name, $dir, $url) {
-        $this->logger->debug("Save: $name", array("app" => $this->appName));
+        $this->logger->debug("Save: $name", ["app" => $this->appName]);
 
         if (!$this->config->isUserAllowedToUse()) {
             return ["error" => $this->trans->t("Not permitted")];
@@ -389,12 +383,12 @@ class EditorController extends Controller {
 
         $folder = $userFolder->get($dir);
 
-        if ($folder === NULL) {
-            $this->logger->error("Folder for saving file was not found: $dir", array("app" => $this->appName));
+        if ($folder === null) {
+            $this->logger->error("Folder for saving file was not found: $dir", ["app" => $this->appName]);
             return ["error" => $this->trans->t("The required folder was not found")];
         }
         if (!$folder->isCreatable()) {
-            $this->logger->error("Folder for saving file without permission: $dir", array("app" => $this->appName));
+            $this->logger->error("Folder for saving file without permission: $dir", ["app" => $this->appName]);
             return ["error" => $this->trans->t("You don't have enough permission to create")];
         }
 
@@ -404,7 +398,7 @@ class EditorController extends Controller {
             $documentService = new DocumentService($this->trans, $this->config);
             $newData = $documentService->Request($url);
         } catch (\Exception $e) {
-            $this->logger->error("Failed to download file for saving: " . $e->getMessage(), array("app" => $this->appName));
+            $this->logger->logException($e, ["message" => "Failed to download file for saving", "app" => $this->appName]);
             return ["error" => $this->trans->t("Download failed")];
         }
 
@@ -415,10 +409,10 @@ class EditorController extends Controller {
 
             $file->putContent($newData);
         } catch (NotPermittedException $e) {
-            $this->logger->error("Can't save file: $name", array("app" => $this->appName));
+            $this->logger->logException($e, ["message" => "Can't save file: $name", "app" => $this->appName]);
             return ["error" => $this->trans->t("Can't create file")];
         } catch (ForbiddenException $e) {
-            $this->logger->error("Can't put file: $name", array("app" => $this->appName));
+            $this->logger->logException($e, ["message" => "Can't put file: $name", "app" => $this->appName]);
             return ["error" => $this->trans->t("Can't create file")];
         }
 
@@ -438,7 +432,7 @@ class EditorController extends Controller {
      * @NoAdminRequired
      */
     public function url($filePath) {
-        $this->logger->debug("Request url for: $filePath", array("app" => $this->appName));
+        $this->logger->debug("Request url for: $filePath", ["app" => $this->appName]);
 
         if (!$this->config->isUserAllowedToUse()) {
             return ["error" => $this->trans->t("Not permitted")];
@@ -450,12 +444,12 @@ class EditorController extends Controller {
 
         $file = $userFolder->get($filePath);
 
-        if ($file === NULL) {
-            $this->logger->error("File for generate presigned url was not found: $dir", array("app" => $this->appName));
+        if ($file === null) {
+            $this->logger->error("File for generate presigned url was not found: $dir", ["app" => $this->appName]);
             return ["error" => $this->trans->t("File not found")];
         }
         if (!$file->isReadable()) {
-            $this->logger->error("Folder for saving file without permission: $dir", array("app" => $this->appName));
+            $this->logger->error("Folder for saving file without permission: $dir", ["app" => $this->appName]);
             return ["error" => $this->trans->t("You do not have enough permissions to view the file")];
         }
 
@@ -489,8 +483,8 @@ class EditorController extends Controller {
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function index($fileId, $filePath = NULL, $shareToken = NULL, $inframe = false) {
-        $this->logger->debug("Open: $fileId $filePath", array("app" => $this->appName));
+    public function index($fileId, $filePath = null, $shareToken = null, $inframe = false) {
+        $this->logger->debug("Open: $fileId $filePath", ["app" => $this->appName]);
 
         if (empty($shareToken) && !$this->userSession->isLoggedIn()) {
             $redirectUrl = $this->urlGenerator->linkToRoute("core.login.showLoginForm", [
@@ -506,7 +500,7 @@ class EditorController extends Controller {
         $documentServerUrl = $this->config->GetDocumentServerUrl();
 
         if (empty($documentServerUrl)) {
-            $this->logger->error("documentServerUrl is empty", array("app" => $this->appName));
+            $this->logger->error("documentServerUrl is empty", ["app" => $this->appName]);
             return $this->renderError($this->trans->t("ONLYOFFICE app is not configured. Please contact admin"));
         }
 
@@ -570,14 +564,14 @@ class EditorController extends Controller {
      * @NoAdminRequired
      * @PublicPage
      */
-    public function config($fileId, $filePath = NULL, $shareToken = NULL, $inframe = 0, $desktop = false) {
+    public function config($fileId, $filePath = null, $shareToken = null, $inframe = 0, $desktop = false) {
 
         if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
             return ["error" => $this->trans->t("Not permitted")];
         }
 
         $user = $this->userSession->getUser();
-        $userId = NULL;
+        $userId = null;
         if (!empty($user)) {
             $userId = $user->getUID();
         }
@@ -585,7 +579,7 @@ class EditorController extends Controller {
         list ($file, $error, $share) = empty($shareToken) ? $this->getFile($userId, $fileId, $filePath) : $this->fileUtility->getFileByToken($fileId, $shareToken);
 
         if (isset($error)) {
-            $this->logger->error("Config: $fileId $error", array("app" => $this->appName));
+            $this->logger->error("Config: $fileId $error", ["app" => $this->appName]);
             return ["error" => $error];
         }
 
@@ -593,7 +587,7 @@ class EditorController extends Controller {
         $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
         $format = $this->config->FormatsSetting()[$ext];
         if (!isset($format)) {
-            $this->logger->info("Format is not supported for editing: $fileName", array("app" => $this->appName));
+            $this->logger->info("Format is not supported for editing: $fileName", ["app" => $this->appName]);
             return ["error" => $this->trans->t("Format is not supported")];
         }
 
@@ -666,7 +660,7 @@ class EditorController extends Controller {
                     && (empty($shareToken) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE);
         $params["document"]["permissions"]["edit"] = $editable;
         if (($editable || $restrictedEditing) && $canEdit) {
-            $ownerId = NULL;
+            $ownerId = null;
             $owner = $file->getOwner();
             if (!empty($owner)) {
                 $ownerId = $owner->getUID();
@@ -695,7 +689,7 @@ class EditorController extends Controller {
             ];
         }
 
-        $folderLink = NULL;
+        $folderLink = null;
 
         if (!empty($shareToken)) {
             $node = $share->getNode();
@@ -723,7 +717,7 @@ class EditorController extends Controller {
             }
         }
 
-        if ($folderLink !== NULL && $inframe !== 2) {
+        if ($folderLink !== null && $inframe !== 2) {
             $params["editorConfig"]["customization"]["goback"] = [
                 "url"  => $folderLink
             ];
@@ -753,7 +747,7 @@ class EditorController extends Controller {
             $params["token"] = $token;
         }
 
-        $this->logger->debug("Config is generated for: $fileId with key $key", array("app" => $this->appName));
+        $this->logger->debug("Config is generated for: $fileId with key $key", ["app" => $this->appName]);
 
         return $params;
     }
@@ -767,21 +761,21 @@ class EditorController extends Controller {
      *
      * @return array
      */
-    private function getFile($userId, $fileId, $filePath = NULL) {
+    private function getFile($userId, $fileId, $filePath = null) {
         if (empty($fileId)) {
-            return [NULL, $this->trans->t("FileId is empty"), NULL];
+            return [null, $this->trans->t("FileId is empty"), null];
         }
 
         try {
             $files = $this->root->getUserFolder($userId)->getById($fileId);
         } catch (\Exception $e) {
-            $this->logger->error("getFile: $fileId " . $e->getMessage(), array("app" => $this->appName));
-            return [NULL, $this->trans->t("Invalid request"), NULL];
+            $this->logger->logException($e, ["message" => "getFile: $fileId", "app" => $this->appName]);
+            return [null, $this->trans->t("Invalid request"), null];
         }
 
         if (empty($files)) {
-            $this->logger->info("Files not found: $fileId", array("app" => $this->appName));
-            return [NULL, $this->trans->t("File not found"), NULL];
+            $this->logger->info("Files not found: $fileId", ["app" => $this->appName]);
+            return [null, $this->trans->t("File not found"), null];
         }
 
         $file = $files[0];
@@ -797,10 +791,10 @@ class EditorController extends Controller {
         }
 
         if (!$file->isReadable()) {
-            return [NULL, $this->trans->t("You do not have enough permissions to view the file"), NULL];
+            return [null, $this->trans->t("You do not have enough permissions to view the file"), null];
         }
 
-        return [$file, NULL, NULL];
+        return [$file, null, null];
     }
 
     /**
@@ -812,8 +806,8 @@ class EditorController extends Controller {
      *
      * @return string
      */
-    private function getUrl($file, $user = NULL, $shareToken = NULL) {
-        $userId = NULL;
+    private function getUrl($file, $user = null, $shareToken = null) {
+        $userId = null;
 
         if (!empty($user)) {
             $userId = $user->getUID();
@@ -876,6 +870,12 @@ class EditorController extends Controller {
             $params["editorConfig"]["customization"]["toolbarNoTabs"] = true;
         }
 
+        //default is original
+        $reviewDisplay = $this->config->GetCustomizationReviewDisplay();
+        if ($reviewDisplay !== "original") {
+            $params["editorConfig"]["customization"]["reviewDisplay"] = $reviewDisplay;
+        }
+
 
         /* from system config */
 
@@ -926,11 +926,13 @@ class EditorController extends Controller {
      * @return TemplateResponse
      */
     private function renderError($error, $hint = "") {
-        return new TemplateResponse("", "error", array(
-                "errors" => array(array(
-                "error" => $error,
-                "hint" => $hint
-            ))
-        ), "error");
+        return new TemplateResponse("", "error", [
+                "errors" => [
+                    [
+                        "error" => $error,
+                        "hint" => $hint
+                    ]
+                ]
+            ], "error");
     }
 }

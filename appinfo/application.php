@@ -30,7 +30,6 @@
 namespace OCA\Onlyoffice\AppInfo;
 
 use OCP\AppFramework\App;
-use OCP\Share\IManager;
 use OCP\Util;
 
 use OCA\Onlyoffice\AppConfig;
@@ -45,14 +44,14 @@ class Application extends App {
     /**
      * Application configuration
      *
-     * @var OCA\Onlyoffice\AppConfig
+     * @var AppConfig
      */
     public $appConfig;
 
     /**
      * Hash generator
      *
-     * @var OCA\Onlyoffice\Crypt
+     * @var Crypt
      */
     public $crypt;
 

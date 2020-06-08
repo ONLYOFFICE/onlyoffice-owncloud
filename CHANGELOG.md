@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.2.1
+## Added
+- review display settings
+
 ## 4.1.3
 ## Added
 - inline editor if using the same tab, opening the sidebar, sharing from the editor
@@ -8,7 +12,6 @@
 
 ## Changed
 - fix file opening if master key encryption is enabled
-- fix file opening the federated file when watermark is enabled
 
 ## 4.0.1
 ## Added

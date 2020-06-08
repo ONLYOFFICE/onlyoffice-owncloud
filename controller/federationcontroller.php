@@ -63,14 +63,14 @@ class FederationController extends OCSController {
     /**
      * Application configuration
      *
-     * @var OCA\Onlyoffice\AppConfig
+     * @var AppConfig
      */
     public $config;
 
     /**
      * File utility
      *
-     * @var OCA\Onlyoffice\FileUtility
+     * @var FileUtility
      */
     private $fileUtility;
 
@@ -114,13 +114,13 @@ class FederationController extends OCSController {
         list ($file, $error, $share) = $this->fileUtility->getFileByToken(null, $shareToken, $path);
 
         if (isset($error)) {
-            $this->logger->error("Federated getFileByToken: $error", array("app" => $this->appName));
+            $this->logger->error("Federated getFileByToken: $error", ["app" => $this->appName]);
             return new Result(["error" => $error]);
         }
 
         $key = $this->fileUtility->getKey($file, true);
 
-        $this->logger->debug("Federated request get for " . $file->getId() . " key $key", array("app" => $this->appName));
+        $this->logger->debug("Federated request get for " . $file->getId() . " key $key", ["app" => $this->appName]);
 
         return new Result(["key" => $key]);
     }

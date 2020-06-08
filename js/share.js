@@ -228,6 +228,7 @@
          * @param event
          */
         onOnlyOfficeOptionChange: function(event) {
+            var that = this;
             var share;
             var $element = $(event.target);
             var $li = $element.closest("li");
@@ -253,7 +254,7 @@
                 var shareOptionAttrKey = $(checkbox).data("attr-key");
                 var shareOptionChecked = $(checkbox).is(":checked");
 
-                attributes = this._updateAttributes(
+                attributes = that._updateAttributes(
                     attributes, shareOptionAttrScope, shareOptionAttrKey, shareOptionChecked
                 );
             });

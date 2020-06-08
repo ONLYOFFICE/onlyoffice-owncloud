@@ -1,6 +1,7 @@
 # Change Log
 
 ## 4.2.1
+## Added
 - review display settings
 
 ## 4.1.3

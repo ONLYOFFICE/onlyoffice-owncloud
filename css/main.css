@@ -52,6 +52,7 @@ body.onlyoffice-inline #app-content #controls {
 }
 body.onlyoffice-inline #content #app-content {
     margin-left: 0;
+    overflow: hidden;
 }
 #onlyofficeFrame {
     background-color: #fff;

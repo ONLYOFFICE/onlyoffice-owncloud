@@ -73,6 +73,11 @@ class Application extends App {
                     Util::addScript("onlyoffice", "desktop");
                     Util::addScript("onlyoffice", "main");
                     Util::addScript("onlyoffice", "share");
+
+                    if ($this->appConfig->GetSameTab()) {
+                        Util::addScript("onlyoffice", "listener");
+                    }
+
                     Util::addStyle("onlyoffice", "main");
                 }
             });

@@ -162,10 +162,11 @@ class SettingsController extends Controller {
         }
         $this->config->SetStorageUrl($storageUrl);
 
+        $version = null;
         if (empty($error)) {
             $documentserver = $this->config->GetDocumentServerUrl();
             if (!empty($documentserver)) {
-                $error = $this->checkDocServiceUrl();
+                list ($error, $version) = $this->checkDocServiceUrl();
                 $this->config->SetSettingsError($error);
             }
 
@@ -179,7 +180,8 @@ class SettingsController extends Controller {
             "documentserverInternal" => $this->config->GetDocumentServerInternalUrl(true),
             "storageUrl" => $this->config->GetStorageUrl(),
             "secret" => $this->config->GetDocumentServerSecret(true),
-            "error" => $error
+            "error" => $error,
+            "version" => $version,
             ];
     }
 
@@ -247,11 +249,13 @@ class SettingsController extends Controller {
     /**
      * Checking document service location
      *
-     * @return string
+     * @return array
      */
     private function checkDocServiceUrl() {
+        $version = null;
 
         try {
+
             if (preg_match("/^https:\/\//i", $this->urlGenerator->getAbsoluteURL("/"))
                 && preg_match("/^http:\/\//i", $this->config->GetDocumentServerUrl())) {
                 throw new \Exception($this->trans->t("Mixed Active Content is not allowed. HTTPS address for Document Server is required."));
@@ -259,7 +263,7 @@ class SettingsController extends Controller {
 
         } catch (\Exception $e) {
             $this->logger->logException($e, ["message" => "Protocol on check error", "app" => $this->appName]);
-            return $e->getMessage();
+            return [$e->getMessage(), $version];
         }
 
         try {
@@ -273,7 +277,7 @@ class SettingsController extends Controller {
 
         } catch (\Exception $e) {
             $this->logger->logException($e, ["message" => "HealthcheckRequest on check error", "app" => $this->appName]);
-            return $e->getMessage();
+            return [$e->getMessage(), $version];
         }
 
         try {
@@ -295,7 +299,7 @@ class SettingsController extends Controller {
 
         } catch (\Exception $e) {
             $this->logger->logException($e, ["message" => "CommandRequest on check error", "app" => $this->appName]);
-            return $e->getMessage();
+            return [$e->getMessage(), $version];
         }
 
         $convertedFileUri = null;
@@ -311,16 +315,16 @@ class SettingsController extends Controller {
 
         } catch (\Exception $e) {
             $this->logger->logException($e, ["message" => "GetConvertedUri on check error", "app" => $this->appName]);
-            return $e->getMessage();
+            return [$e->getMessage(), $version];
         }
 
         try {
             $documentService->Request($convertedFileUri);
         } catch (\Exception $e) {
             $this->logger->logException($e, ["message" => "Request converted file on check error", "app" => $this->appName]);
-            return $e->getMessage();
+            return [$e->getMessage(), $version];
         }
 
-        return "";
+        return ["", $version];
     }
 }

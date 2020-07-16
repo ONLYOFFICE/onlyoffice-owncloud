@@ -52,6 +52,7 @@ use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\DocumentService;
 use OCA\Onlyoffice\FileUtility;
+use OCA\Onlyoffice\VersionManager;
 
 /**
  * Controller with the main functions
@@ -115,6 +116,13 @@ class EditorController extends Controller {
     private $fileUtility;
 
     /**
+     * File version manager
+     *
+     * @var VersionManager
+    */
+    private $versionManager;
+
+    /**
      * Mobile regex from https://github.com/ONLYOFFICE/CommunityServer/blob/v9.1.1/web/studio/ASC.Web.Studio/web.appsettings.config#L35
      */
     const USER_AGENT_MOBILE = "/android|avantgo|playbook|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od|ad)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\\/|plucker|pocket|psp|symbian|treo|up\\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i";
@@ -153,6 +161,7 @@ class EditorController extends Controller {
         $this->logger = $logger;
         $this->config = $config;
         $this->crypt = $crypt;
+        $this->versionManager = new VersionManager($AppName, $root);
 
         $this->fileUtility = new FileUtility($AppName, $trans, $logger, $config, $shareManager, $session);
     }
@@ -420,6 +429,64 @@ class EditorController extends Controller {
 
         $result = Helper::formatFileInfo($fileInfo);
         return $result;
+    }
+
+    /**
+     * Get versions history for file
+     *
+     * @param integer $fileId - file identifier
+     *
+     * @return array
+     *
+     * @NoAdminRequired
+     */
+    public function history($fileId) {
+        $this->logger->debug("Request history for: $fileId", ["app" => $this->appName]);
+
+        $history = [];
+
+        $userId = $this->userSession->getUser()->getUID();
+        list ($file, $error, $share) = $this->getFile($userId, $fileId);
+
+        if (isset($error)) {
+            $this->logger->error("History: $fileId $error", ["app" => $this->appName]);
+            return ["error" => $error];
+        }
+
+        $owner = $file->getFileInfo()->getOwner();
+        $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
+
+        $instanceId = $this->config->GetSystemValue("instanceid", true);
+        $versionNum = 0;
+        foreach ($versions as $version) {
+            $versionNum = $versionNum + 1;
+
+            $key = $instanceId . "_" . $version->getSourceFile()->getEtag() . "_" . $version->getRevisionId();
+            $key = DocumentService::GenerateRevisionId($key);
+
+            array_push(
+                $history,
+                array(
+                    "created" => date("m/d/Y H:m", $version->getTimestamp()),
+                    "key" => $key,
+                    "version" => $versionNum
+                )
+            );
+        }
+
+        $key = $this->fileUtility->getKey($file, true);
+        $key = DocumentService::GenerateRevisionId($key);
+
+        array_push(
+            $history,
+            array(
+                "created" => date("m/d/Y H:m", $file->getMTime()),
+                "key" => $key,
+                "version" => $versionNum + 1
+            )
+        );
+
+        return $history;
     }
 
     /**

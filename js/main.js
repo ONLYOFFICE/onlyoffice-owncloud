@@ -127,7 +127,7 @@
         var wrapper = $("<div id='onlyofficeHeader' />")
 
         var btnClose = $("<a class='icon icon-close'></a>");
-        btnClose.on("click", function() {
+        btnClose.on("click", function () {
             OCA.Onlyoffice.CloseEditor();
         });
         wrapper.prepend(btnClose);
@@ -237,7 +237,7 @@
                 return;
             }
 
-            var register = function() {
+            var register = function () {
                 var formats = OCA.Onlyoffice.setting.formats;
 
                 $.each(formats, function (ext, config) {
@@ -327,7 +327,7 @@
             var fileName = $("#filename").val();
             var extension = OCA.Onlyoffice.GetFileExtension(fileName);
 
-            var initSharedButton = function() {
+            var initSharedButton = function () {
                 var formats = OCA.Onlyoffice.setting.formats;
 
                 var config = formats[extension];

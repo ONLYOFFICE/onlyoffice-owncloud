@@ -44,7 +44,7 @@
 
         _shareOptionsTemplate: null,
 
-        validateShareProperties: function(properties) {
+        validateShareProperties: function (properties) {
             if (this.model.hasReshare()) {
                 // it is enough to check the parent share attributes
                 // if these are set to avoid privilege escalation
@@ -75,7 +75,7 @@
          *
          * @param properties
          */
-        addShareProperties: function(properties) {
+        addShareProperties: function (properties) {
             var extendedProperties = properties;
 
             extendedProperties.attributes = properties.attributes || {};
@@ -128,7 +128,7 @@
          * @param shareId
          * @param properties
          */
-        updateShareProperties: function(shareId, properties) {
+        updateShareProperties: function (shareId, properties) {
             if (_.isUndefined(properties.permissions) && _.isUndefined(properties.attributes)) {
                 // no attribute or permission change, ignore
                 return properties;
@@ -227,7 +227,7 @@
          *
          * @param event
          */
-        onOnlyOfficeOptionChange: function(event) {
+        onOnlyOfficeOptionChange: function (event) {
             var that = this;
             var share;
             var $element = $(event.target);
@@ -249,7 +249,7 @@
 
             // parse current checkboxes
             var attributes = share.attributes || {};
-            $("li[data-share-id='" + shareId + "'] .onlyOfficeShareOption").each(function(index, checkbox) {
+            $("li[data-share-id='" + shareId + "'] .onlyOfficeShareOption").each(function (index, checkbox) {
                 var shareOptionAttrScope = $(checkbox).data("attr-scope");
                 var shareOptionAttrKey = $(checkbox).data("attr-key");
                 var shareOptionChecked = $(checkbox).is(":checked");
@@ -380,7 +380,7 @@
             $(".onlyOfficeShareOption").on("click", $.proxy(this.onOnlyOfficeOptionChange, this));
         },
 
-        _getAttribute: function(attributes, scope, key) {
+        _getAttribute: function (attributes, scope, key) {
             for (var i in attributes) {
                 if (attributes[i].scope === scope
                     && attributes[i].key === key
@@ -392,7 +392,7 @@
             return null;
         },
 
-        _updateAttributes: function(attributes, scope, key, enabled) {
+        _updateAttributes: function (attributes, scope, key, enabled) {
             var updatedAttributes = [];
 
             // copy existing scope-key pairs from attributes
@@ -420,11 +420,11 @@
             return updatedAttributes;
         },
 
-        _hasPermission: function(permissions, permission) {
+        _hasPermission: function (permissions, permission) {
             return (permissions & permission) === permission;
         },
 
-        _removePermission: function(permissions, permission) {
+        _removePermission: function (permissions, permission) {
             return (permissions & ~permission);
         },
 
@@ -472,7 +472,7 @@
 
             // customize rendering of checkboxes
             var baseRenderCall = view.render;
-            view.render = function() {
+            view.render = function () {
                 baseRenderCall.call(view);
                 OCA.Onlyoffice.ShareOptions.render(view);
             };
@@ -480,7 +480,7 @@
             var model = view.model;
 
             var baseAddShareCall = model.addShare;
-            model.addShare = function(properties, options) {
+            model.addShare = function (properties, options) {
                 // add onlyoffice attributes
                 var newProperties = OCA.Onlyoffice.ShareOptions.addShareProperties(properties);
 
@@ -495,7 +495,7 @@
             };
 
             var baseUpdateShareCall = model.updateShare;
-            model.updateShare = function(shareId, properties, options) {
+            model.updateShare = function (shareId, properties, options) {
                 var newProperties = properties || {};
                 var newOptions = options || {};
 
@@ -516,7 +516,7 @@
             };
 
             // Add call to watch for changes of shares
-            model.on("change:shares", function(event) {
+            model.on("change:shares", function (event) {
                 OCA.Onlyoffice.ShareOptions.render(view);
             });
         }

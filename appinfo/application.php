@@ -66,7 +66,7 @@ class Application extends App {
         // Default script and style if configured
         $eventDispatcher = \OC::$server->getEventDispatcher();
         $eventDispatcher->addListener("OCA\Files::loadAdditionalScripts",
-            function() {
+            function () {
                 if (!empty($this->appConfig->GetDocumentServerUrl())
                     && $this->appConfig->SettingsAreSuccessful()
                     && $this->appConfig->isUserAllowedToUse()) {
@@ -91,29 +91,29 @@ class Application extends App {
 
         $container = $this->getContainer();
 
-        $container->registerService("L10N", function($c) {
+        $container->registerService("L10N", function ($c) {
             return $c->query("ServerContainer")->getL10N($c->query("AppName"));
         });
 
-        $container->registerService("RootStorage", function($c) {
+        $container->registerService("RootStorage", function ($c) {
             return $c->query("ServerContainer")->getRootFolder();
         });
 
-        $container->registerService("UserSession", function($c) {
+        $container->registerService("UserSession", function ($c) {
             return $c->query("ServerContainer")->getUserSession();
         });
 
-        $container->registerService("Logger", function($c) {
+        $container->registerService("Logger", function ($c) {
             return $c->query("ServerContainer")->getLogger();
         });
 
-        $container->registerService("URLGenerator", function($c) {
+        $container->registerService("URLGenerator", function ($c) {
             return $c->query("ServerContainer")->getURLGenerator();
         });
 
 
         // Controllers
-        $container->registerService("SettingsController", function($c) {
+        $container->registerService("SettingsController", function ($c) {
             return new SettingsController(
                 $c->query("AppName"),
                 $c->query("Request"),
@@ -125,7 +125,7 @@ class Application extends App {
             );
         });
 
-        $container->registerService("EditorController", function($c) {
+        $container->registerService("EditorController", function ($c) {
             return new EditorController(
                 $c->query("AppName"),
                 $c->query("Request"),
@@ -142,7 +142,7 @@ class Application extends App {
             );
         });
 
-        $container->registerService("CallbackController", function($c) {
+        $container->registerService("CallbackController", function ($c) {
             return new CallbackController(
                 $c->query("AppName"),
                 $c->query("Request"),

@@ -242,7 +242,7 @@ class CallbackController extends Controller {
         try {
             return new DataDownloadResponse($file->getContent(), $file->getName(), $file->getMimeType());
         } catch (NotPermittedException  $e) {
-            $this->logger->logException($e, ["Download Not permitted: $fileId", "app" => $this->appName]);
+            $this->logger->logException($e, ["message" => "Download Not permitted: $fileId", "app" => $this->appName]);
             return new JSONResponse(["message" => $this->trans->t("Not permitted")], Http::STATUS_FORBIDDEN);
         }
         return new JSONResponse(["message" => $this->trans->t("Download failed")], Http::STATUS_INTERNAL_SERVER_ERROR);
@@ -456,7 +456,7 @@ class CallbackController extends Controller {
                     $newData = $documentService->Request($url);
 
                     $this->logger->debug("Track put content " . $file->getPath(), ["app" => $this->appName]);
-                    $this->retryOperation(function () use ($file, $newData){
+                    $this->retryOperation(function () use ($file, $newData) {
                         return $file->putContent($newData);
                     });
 

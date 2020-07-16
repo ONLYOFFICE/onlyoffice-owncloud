@@ -49,7 +49,7 @@
 
         $("#onlyofficeGroups").prop("checked", $("#onlyofficeLimitGroups").val() != "");
 
-        var groupListToggle = function() {
+        var groupListToggle = function () {
             if ($("#onlyofficeGroups").prop("checked")) {
                 OC.Settings.setupGroupsSelect($("#onlyofficeLimitGroups"));
             } else {
@@ -60,7 +60,7 @@
         $("#onlyofficeGroups").click(groupListToggle);
         groupListToggle();
 
-        var demoToggle = function() {
+        var demoToggle = function () {
             $("#onlyofficeAddrSettings input:not(#onlyofficeStorageUrl)").prop("disabled", $("#onlyofficeDemo").prop("checked"));
         };
 
@@ -121,12 +121,12 @@
             $(".section-onlyoffice").addClass("icon-loading");
 
             var defFormats = {};
-            $("input[id^=\"onlyofficeDefFormat\"]").each(function() {
+            $("input[id^=\"onlyofficeDefFormat\"]").each(function () {
                 defFormats[this.name] = this.checked;
             });
 
             var editFormats = {};
-            $("input[id^=\"onlyofficeEditFormat\"]").each(function() {
+            $("input[id^=\"onlyofficeEditFormat\"]").each(function () {
                 editFormats[this.name] = this.checked;
             });
 

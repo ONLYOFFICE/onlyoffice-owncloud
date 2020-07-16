@@ -70,7 +70,7 @@
             revisedMimes);
     };
 
-    window.addEventListener("message", function(event) {
+    window.addEventListener("message", function (event) {
         if ($("#onlyofficeFrame")[0].contentWindow !== event.source
             || !event.data["method"]) {
             return;

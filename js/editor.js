@@ -122,6 +122,7 @@
                         "onDocumentStateChange": setPageTitle,
                         "onRequestHistory": function () { OCA.Onlyoffice.onRequestHistory(fileId); },
                         "onRequestHistoryData": function (event) { OCA.Onlyoffice.onRequestHistoryData(fileId, event.data); },
+                        "onRequestHistoryClose": OCA.Onlyoffice.onRequestHistoryClose,
                     };
 
                     if (config.editorConfig.tenant) {
@@ -195,6 +196,10 @@
                 }
                 OCA.Onlyoffice.docEditor.setHistoryData(response);
         });
+    };
+
+    OCA.Onlyoffice.onRequestHistoryClose = function () {
+        location.reload(true);
     };
 
     OCA.Onlyoffice.onRequestSaveAs = function (event) {

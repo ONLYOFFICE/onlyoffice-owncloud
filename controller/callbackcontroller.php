@@ -50,6 +50,7 @@ use OCP\Share\IManager;
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\DocumentService;
+use OCA\Onlyoffice\VersionManager;
 
 /**
  * Callback handler for the document server.
@@ -115,6 +116,13 @@ class CallbackController extends Controller {
     private $shareManager;
 
     /**
+     * File version manager
+     *
+     * @var VersionManager
+    */
+    private $versionManager;
+
+    /**
      * Status of the document
      *
      * @var Array
@@ -160,6 +168,7 @@ class CallbackController extends Controller {
         $this->config = $config;
         $this->crypt = $crypt;
         $this->shareManager = $shareManager;
+        $this->versionManager = new VersionManager($AppName, $root);
     }
 
 
@@ -188,7 +197,8 @@ class CallbackController extends Controller {
         }
 
         $fileId = $hashData->fileId;
-        $this->logger->debug("Download: $fileId", ["app" => $this->appName]);
+        $version = isset($hashData->version) ? $hashData->version : null;
+        $this->logger->debug("Download: $fileId" . (empty($version) ? "" : " (" . $version . ")"), ["app" => $this->appName]);
 
         if (!$this->userSession->isLoggedIn()) {
             if (!empty($this->config->GetDocumentServerSecret())) {
@@ -228,7 +238,7 @@ class CallbackController extends Controller {
         }
 
         $shareToken = isset($hashData->shareToken) ? $hashData->shareToken : null;
-        list ($file, $error) = empty($shareToken) ? $this->getFile($userId, $fileId) : $this->getFileByToken($fileId, $shareToken);
+        list ($file, $error) = empty($shareToken) ? $this->getFile($userId, $fileId, null, $version) : $this->getFileByToken($fileId, $shareToken);
 
         if (isset($error)) {
             return $error;
@@ -484,10 +494,11 @@ class CallbackController extends Controller {
      * @param string $userId - user identifier
      * @param integer $fileId - file identifier
      * @param string $filePath - file path
+     * @param integer $version - file version
      *
      * @return array
      */
-    private function getFile($userId, $fileId, $filePath = null) {
+    private function getFile($userId, $fileId, $filePath = null, $version = null) {
         if (empty($fileId)) {
             return [null, new JSONResponse(["message" => $this->trans->t("FileId is empty")], Http::STATUS_BAD_REQUEST)];
         }
@@ -519,6 +530,16 @@ class CallbackController extends Controller {
         if (!($file instanceof File)) {
             $this->logger->error("File not found: $fileId", ["app" => $this->appName]);
             return [null, new JSONResponse(["message" => $this->trans->t("File not found")], Http::STATUS_NOT_FOUND)];
+        }
+
+        if (!empty($version)) {
+            $owner = $file->getFileInfo()->getOwner();
+            $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
+
+            if ($version <= count($versions)) {
+                $fileVersion = array_values($versions)[$version - 1];
+                $file = $this->versionManager->getVersionFile($owner, $file->getFileInfo(), $fileVersion->getRevisionId());
+            }
         }
 
         return [$file, null];

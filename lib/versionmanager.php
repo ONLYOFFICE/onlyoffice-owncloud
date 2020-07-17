@@ -79,6 +79,41 @@ class VersionManager {
     }
 
     /**
+     * Get version folder
+     *
+     * @param IUser $user - file owner
+     *
+     * @return Folder
+     */
+    private function getVersionFolder($user) {
+        $userRoot = $this->rootFolder->getUserFolder($user->getUID())->getParent();
+        try {
+            $folder = $userRoot->get("files_versions");
+            return $folder;
+        } catch (NotFoundException $e) {
+            $this->logger->logException($e, ["message" => "VersionManager: not found user version folder " . $user->getUID(), "app" => $this->appName]);
+            return null;
+        }
+    }
+
+    /**
+     * Get file version
+     *
+     * @param IUser $user - file owner
+     * @param FileInfo $sourceFile - file
+     * @param integer $version - file version
+     *
+     * @return File
+     */
+    public function getVersionFile($user, $sourceFile, $version) {
+        $userFolder = $this->rootFolder->getUserFolder($user->getUID());
+        $versionsFolder = $this->getVersionFolder($user);
+
+        $file = $versionsFolder->get($userFolder->getRelativePath($sourceFile->getPath()) . ".v" . $version);
+        return $file;
+    }
+
+    /**
      * Get versions for file
      *
      * @param IUser $user - file owner

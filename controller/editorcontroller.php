@@ -464,7 +464,9 @@ class EditorController extends Controller {
         $versions = array();
         if ($this->versionManager->available) {
             $owner = $file->getFileInfo()->getOwner();
-            $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
+            if ($owner !== null) {
+                $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
+            }
         }
 
         $instanceId = $this->config->GetSystemValue("instanceid", true);
@@ -533,7 +535,9 @@ class EditorController extends Controller {
         $versions = array();
         if ($this->versionManager->available) {
             $owner = $file->getFileInfo()->getOwner();
-            $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
+            if ($owner !== null) {
+                $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
+            }
         }
 
         $key = null;

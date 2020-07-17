@@ -161,6 +161,7 @@ class EditorController extends Controller {
         $this->logger = $logger;
         $this->config = $config;
         $this->crypt = $crypt;
+
         $this->versionManager = new VersionManager($AppName, $root);
 
         $this->fileUtility = new FileUtility($AppName, $trans, $logger, $config, $shareManager, $session);
@@ -453,8 +454,11 @@ class EditorController extends Controller {
             return ["error" => $error];
         }
 
-        $owner = $file->getFileInfo()->getOwner();
-        $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
+        $versions = array();
+        if ($this->versionManager->available) {
+            $owner = $file->getFileInfo()->getOwner();
+            $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
+        }
 
         $instanceId = $this->config->GetSystemValue("instanceid", true);
         $versionNum = 0;
@@ -514,8 +518,11 @@ class EditorController extends Controller {
             return ["error" => $error];
         }
 
-        $owner = $file->getFileInfo()->getOwner();
-        $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
+        $versions = array();
+        if ($this->versionManager->available) {
+            $owner = $file->getFileInfo()->getOwner();
+            $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
+        }
 
         $key = null;
         $fileUrl = null;

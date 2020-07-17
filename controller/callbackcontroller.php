@@ -168,6 +168,7 @@ class CallbackController extends Controller {
         $this->config = $config;
         $this->crypt = $crypt;
         $this->shareManager = $shareManager;
+
         $this->versionManager = new VersionManager($AppName, $root);
     }
 
@@ -532,7 +533,7 @@ class CallbackController extends Controller {
             return [null, new JSONResponse(["message" => $this->trans->t("File not found")], Http::STATUS_NOT_FOUND)];
         }
 
-        if (!empty($version)) {
+        if (!empty($version) && $this->versionManager->available) {
             $owner = $file->getFileInfo()->getOwner();
             $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
 

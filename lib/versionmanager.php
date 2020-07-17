@@ -68,6 +68,13 @@ class VersionManager {
     private $storage;
 
     /**
+     * Version manager is available
+     *
+     * @var bool
+     */
+    public $available;
+
+    /**
      * @param string $AppName - application name
      * @param IRootFolder $rootFolder - root folder
      */
@@ -75,7 +82,14 @@ class VersionManager {
         $this->appName = $AppName;
         $this->rootFolder = $rootFolder;
 
-        $this->storage = \OC::$server->query(Storage::class);
+        if (\OC::$server->getAppManager()->isInstalled("files_versions")) {
+            try {
+                $this->storage = \OC::$server->query(Storage::class);
+                $this->available = true;
+            } catch (QueryException $e) {
+                $this->logger->logException($e, ["message" => "VersionManager init error", "app" => $this->appName]);
+            }
+        }
     }
 
     /**

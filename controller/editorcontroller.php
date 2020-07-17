@@ -469,12 +469,11 @@ class EditorController extends Controller {
             }
         }
 
-        $instanceId = $this->config->GetSystemValue("instanceid", true);
         $versionNum = 0;
         foreach ($versions as $version) {
             $versionNum = $versionNum + 1;
 
-            $key = $instanceId . "_" . $version->getSourceFile()->getEtag() . "_" . $version->getRevisionId();
+            $key = $this->fileUtility->getVersionKey($version);
             $key = DocumentService::GenerateRevisionId($key);
 
             $historyItem = [
@@ -560,8 +559,7 @@ class EditorController extends Controller {
         } else {
             $fileVersion = array_values($versions)[$version - 1];
 
-            $instanceId = $this->config->GetSystemValue("instanceid", true);
-            $key = $instanceId . "_" . $fileVersion->getFileInfo()->getEtag() . "_" . $version->getRevisionId();
+            $key = $this->fileUtility->getVersionKey($fileVersion);
 
             $fileUrl = $this->getUrl($file, $user, $shareToken, $version);
         }

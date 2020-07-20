@@ -484,7 +484,7 @@ class EditorController extends Controller {
 
             if ($owner !== null) {
                 $historyItem["user"] = [
-                    "id" => $owner->getUID(),
+                    "id" => $this->buildUserId($owner->getUID()),
                     "name" => $owner->getDisplayName()
                 ];
             }
@@ -503,7 +503,7 @@ class EditorController extends Controller {
 
         if ($owner !== null) {
             $historyItem["user"] = [
-                "id" => $owner->getUID(),
+                "id" => $this->buildUserId($owner->getUID()),
                 "name" => $owner->getDisplayName()
             ];
         }

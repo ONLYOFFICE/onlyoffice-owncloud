@@ -149,8 +149,11 @@
 
     OCA.Onlyoffice.CloseEditor = function () {
         $("body").removeClass("onlyoffice-inline");
-
         $("#onlyofficeHeader").remove();
+
+        if (OCA.Onlyoffice.unbindVersionClick) {
+            OCA.Onlyoffice.unbindVersionClick();
+        }
 
         OCA.Onlyoffice.context = null;
 
@@ -321,6 +324,27 @@
         var extension = fileName.substr(fileName.lastIndexOf(".") + 1).toLowerCase();
         return extension;
     };
+
+    OCA.Onlyoffice.openVersion = function (version) {
+        $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.onRequestHistory(version);
+    };
+
+    OCA.Onlyoffice.bindVersionClick = function () {
+        OCA.Onlyoffice.unbindVersionClick();
+        $(document).on("click.onlyoffice-version", "#versionsTabView .downloadVersion", function() {
+            var versionNodes = $("#versionsTabView ul.versions>li");
+            var versionNode = $(this).closest("#versionsTabView ul.versions>li")[0];
+
+            var versionNum = versionNodes.length - $.inArray(versionNode, versionNodes);
+            OCA.Onlyoffice.openVersion(versionNum);
+
+            return false;
+        });
+    };
+
+    OCA.Onlyoffice.unbindVersionClick = function() {
+        $(document).off("click.onlyoffice-version", "#versionsTabView .downloadVersion");
+    }
 
     var initPage = function () {
         if ($("#isPublic").val() === "1" && !$("#filestable").length) {

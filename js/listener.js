@@ -70,6 +70,10 @@
             revisedMimes);
     };
 
+    OCA.Onlyoffice.onDocumentReady = function () {
+        OCA.Onlyoffice.bindVersionClick();
+    };
+
     window.addEventListener("message", function (event) {
         if ($("#onlyofficeFrame")[0].contentWindow !== event.source
             || !event.data["method"]) {
@@ -100,6 +104,9 @@
                 break;
             case "editorRequestCompareFile":
                 OCA.Onlyoffice.onRequestCompareFile(event.data.param);
+                break;
+            case "onDocumentReady":
+                OCA.Onlyoffice.onDocumentReady();
                 break;
         }
     }, false);

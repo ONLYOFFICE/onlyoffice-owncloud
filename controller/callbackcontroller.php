@@ -483,6 +483,7 @@ class CallbackController extends Controller {
 
                     $url = $this->config->ReplaceDocumentServerUrlToInternal($url);
 
+                    $prevVersion = $file->getFileInfo()->getMtime();
                     $fileName = $file->getName();
                     $curExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
                     $downloadExt = strtolower(pathinfo($url, PATHINFO_EXTENSION));
@@ -513,7 +514,7 @@ class CallbackController extends Controller {
                             $changesurl = $this->config->ReplaceDocumentServerUrlToInternal($changesurl);
                             $changes = $documentService->Request($changesurl);
                         }
-                        FileVersions::saveHistory($file->getFileInfo(), $history, $changes);
+                        FileVersions::saveHistory($file->getFileInfo(), $history, $changes, $prevVersion);
                     }
 
                     $result = 0;

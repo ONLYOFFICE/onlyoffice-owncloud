@@ -51,6 +51,7 @@ use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\DocumentService;
 use OCA\Onlyoffice\VersionManager;
+use OCA\Onlyoffice\FileVersions;
 
 /**
  * Callback handler for the document server.
@@ -199,7 +200,8 @@ class CallbackController extends Controller {
 
         $fileId = $hashData->fileId;
         $version = isset($hashData->version) ? $hashData->version : null;
-        $this->logger->debug("Download: $fileId" . (empty($version) ? "" : " (" . $version . ")"), ["app" => $this->appName]);
+        $changes = isset($hashData->changes) ? $hashData->changes : false;
+        $this->logger->debug("Download: $fileId ($version)" . ($changes ? " changes" : ""), ["app" => $this->appName]);
 
         if (!$this->userSession->isLoggedIn()) {
             if (!empty($this->config->GetDocumentServerSecret())) {
@@ -239,7 +241,7 @@ class CallbackController extends Controller {
         }
 
         $shareToken = isset($hashData->shareToken) ? $hashData->shareToken : null;
-        list ($file, $error) = empty($shareToken) ? $this->getFile($userId, $fileId, null, $version) : $this->getFileByToken($fileId, $shareToken, $version);
+        list ($file, $error) = empty($shareToken) ? $this->getFile($userId, $fileId, null, $changes ? null : $version) : $this->getFileByToken($fileId, $shareToken, $version);
 
         if (isset($error)) {
             return $error;
@@ -250,10 +252,42 @@ class CallbackController extends Controller {
             return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
         }
 
+        if ($changes) {
+            if ($this->versionManager->available !== true) {
+                $this->logger->error("Download changes: versionManager is null", ["app" => $this->appName]);
+                return new JSONResponse(["message" => $this->trans->t("Invalid request")], Http::STATUS_BAD_REQUEST);
+            }
+
+            $owner = $file->getFileInfo()->getOwner();
+            if ($owner === null) {
+                $this->logger->error("Download: changes owner of $fileId was not found", ["app" => $this->appName]);
+                return new JSONResponse(["message" => $this->trans->t("Files not found")], Http::STATUS_NOT_FOUND);
+            }
+
+            $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
+
+            $versionId = null;
+            if ($version > count($versions)) {
+                $versionId = $file->getFileInfo()->getMtime();
+            } else {
+                $fileVersion = array_values($versions)[$version - 1];
+
+                $versionId = $fileVersion->getRevisionId();
+            }
+
+            $changes = FileVersions::getChangesFile($owner->getUID(), $fileId, $versionId);
+            if ($changes === null) {
+                $this->logger->error("Download: changes $fileId ($version) was not found", ["app" => $this->appName]);
+                return new JSONResponse(["message" => $this->trans->t("Files not found")], Http::STATUS_NOT_FOUND);
+            }
+
+            $file = $changes;
+        }
+
         try {
             return new DataDownloadResponse($file->getContent(), $file->getName(), $file->getMimeType());
         } catch (NotPermittedException  $e) {
-            $this->logger->logException($e, ["message" => "Download Not permitted: $fileId", "app" => $this->appName]);
+            $this->logger->logException($e, ["message" => "Download Not permitted: $fileId ($version)", "app" => $this->appName]);
             return new JSONResponse(["message" => $this->trans->t("Not permitted")], Http::STATUS_FORBIDDEN);
         }
         return new JSONResponse(["message" => $this->trans->t("Download failed")], Http::STATUS_INTERNAL_SERVER_ERROR);
@@ -327,6 +361,8 @@ class CallbackController extends Controller {
      * @param integer $status - the edited status
      * @param string $url - the link to the edited document to be saved
      * @param string $token - request signature
+     * @param array $history - file history
+     * @param string $changesurl - link to file changes
      *
      * @return array
      *
@@ -335,7 +371,7 @@ class CallbackController extends Controller {
      * @PublicPage
      * @CORS
      */
-    public function track($doc, $users, $key, $status, $url, $token) {
+    public function track($doc, $users, $key, $status, $url, $token, $history, $changesurl) {
 
         list ($hashData, $error) = $this->crypt->ReadHash($doc);
         if ($hashData === null) {
@@ -471,9 +507,15 @@ class CallbackController extends Controller {
                         return $file->putContent($newData);
                     });
 
+                    $changes = null;
+                    if (!empty($changesurl)) {
+                        $changes = $documentService->Request($changesurl);
+                    }
+                    FileVersions::saveHistory($file->getFileInfo(), $history, $changes);
+
                     $result = 0;
                 } catch (\Exception $e) {
-                    $this->logger->logException($e, ["message" => "Track $trackerStatus error", "app" => $this->appName]);
+                    $this->logger->logException($e, ["message" => "Track: $fileId status $trackerStatus error", "app" => $this->appName]);
                 }
                 break;
 

@@ -53,6 +53,7 @@ use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\DocumentService;
 use OCA\Onlyoffice\FileUtility;
 use OCA\Onlyoffice\VersionManager;
+use OCA\Onlyoffice\FileVersions;
 
 /**
  * Controller with the main functions
@@ -462,10 +463,12 @@ class EditorController extends Controller {
         }
 
         $owner = null;
+        $ownerId = null;
         $versions = array();
         if ($this->versionManager->available) {
             $owner = $file->getFileInfo()->getOwner();
             if ($owner !== null) {
+                $ownerId = $owner->getUID();
                 $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
             }
         }
@@ -481,11 +484,18 @@ class EditorController extends Controller {
                 "created" => $this->trans->l("datetime", $version->getTimestamp(), ["width" => "short"]),
                 "key" => $key,
                 "user" => [
-                    "id" => $this->buildUserId($owner->getUID()),
+                    "id" => $this->buildUserId($ownerId),
                     "name" => $owner->getDisplayName()
                 ],
                 "version" => $versionNum
             ];
+
+            $versionId = $version->getRevisionId();
+            $historyData = FileVersions::getHistoryData($ownerId, $fileId, $versionId);
+            if ($historyData !== null) {
+                $historyItem["changes"] = $historyData["changes"];
+                $historyItem["serverVersion"] = $historyData["serverVersion"];
+            }
 
             array_push($history, $historyItem);
         }
@@ -504,6 +514,13 @@ class EditorController extends Controller {
                 "id" => $this->buildUserId($owner->getUID()),
                 "name" => $owner->getDisplayName()
             ];
+        }
+
+        $versionId = $file->getFileInfo()->getMtime();
+        $historyData = FileVersions::getHistoryData($ownerId, $fileId, $versionId);
+        if ($historyData !== null) {
+            $historyItem["changes"] = $historyData["changes"];
+            $historyItem["serverVersion"] = $historyData["serverVersion"];
         }
 
         array_push($history, $historyItem);
@@ -541,27 +558,33 @@ class EditorController extends Controller {
             return ["error" => $error];
         }
 
+        $owner = null;
+        $ownerId = null;
         $versions = array();
         if ($this->versionManager->available) {
             $owner = $file->getFileInfo()->getOwner();
             if ($owner !== null) {
+                $ownerId = $owner->getUID();
                 $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
             }
         }
 
         $key = null;
         $fileUrl = null;
+        $versionId = null;
         if ($version > count($versions)) {
             $key = $this->fileUtility->getKey($file, true);
+            $versionId = $file->getFileInfo()->getMtime();
+
             $fileUrl = $this->getUrl($file, $user, $shareToken);
         } else {
             $fileVersion = array_values($versions)[$version - 1];
 
             $key = $this->fileUtility->getVersionKey($fileVersion);
+            $versionId = $fileVersion->getRevisionId();
 
             $fileUrl = $this->getUrl($file, $user, $shareToken, $version);
         }
-
         $key = DocumentService::GenerateRevisionId($key);
 
         $result = [
@@ -569,6 +592,25 @@ class EditorController extends Controller {
             "version" => $version,
             "key" => $key
         ];
+
+        if ($version > 1
+            && count($versions) >= $version - 1
+            && FileVersions::hasChanges($ownerId, $fileId, $versionId)) {
+
+            $changesUrl = $this->getUrl($file, $user, $shareToken, $version, true);
+            $result["changesUrl"] = $changesUrl;
+
+            $prevVersion = array_values($versions)[$version - 2];
+            $prevVersionKey = $this->fileUtility->getVersionKey($prevVersion);
+            $prevVersionKey = DocumentService::GenerateRevisionId($prevVersionKey);
+
+            $prevVersionUrl = $this->getUrl($file, $user, $shareToken, $version - 1);
+
+            $result["previous"] = [
+                "key" => $prevVersionKey,
+                "url" => $prevVersionUrl
+            ];
+        }
 
         if (!empty($this->config->GetDocumentServerSecret())) {
             $token = \Firebase\JWT\JWT::encode($result, $this->config->GetDocumentServerSecret());
@@ -978,21 +1020,22 @@ class EditorController extends Controller {
     /**
      * Generate secure link to download document
      *
-     * @param integer $file - file
+     * @param File $file - file
      * @param IUser $user - user with access
      * @param string $shareToken - access token
      * @param integer $version - file version
+     * @param bool $changes - is required url to file changes
      *
      * @return string
      */
-    private function getUrl($file, $user = null, $shareToken = null, $version = 0) {
+    private function getUrl($file, $user = null, $shareToken = null, $version = 0, $changes = false) {
         $userId = null;
 
         if (!empty($user)) {
             $userId = $user->getUID();
         }
 
-        $hashUrl = $this->crypt->GetHash(["fileId" => $file->getId(), "userId" => $userId, "shareToken" => $shareToken, "action" => "download", "version" => $version]);
+        $hashUrl = $this->crypt->GetHash(["fileId" => $file->getId(), "userId" => $userId, "shareToken" => $shareToken, "action" => "download", "version" => $version, "changes" => $changes]);
 
         $fileUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".callback.download", ["doc" => $hashUrl]);
 

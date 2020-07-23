@@ -38,6 +38,7 @@
         data-id="<?php p($_["fileId"]) ?>"
         data-path="<?php p($_["filePath"]) ?>"
         data-sharetoken="<?php p($_["shareToken"]) ?>"
+        data-version="<?php p($_["version"]) ?>"
         data-inframe="<?php p($_["inframe"]) ?>"></div>
 
     <?php if (!empty($_["documentServerUrl"])) { ?>

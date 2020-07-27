@@ -128,11 +128,11 @@
                         "onDocumentStateChange": setPageTitle,
                         "onRequestHistory": OCA.Onlyoffice.onRequestHistory,
                         "onRequestHistoryData": OCA.Onlyoffice.onRequestHistoryData,
-                        "onRequestHistoryClose": OCA.Onlyoffice.onRequestHistoryClose,
+                        "onDocumentReady": OCA.Onlyoffice.onDocumentReady,
                     };
 
-                    if (OCA.Onlyoffice.inframe) {
-                        config.events.onDocumentReady = OCA.Onlyoffice.onDocumentReady;
+                    if (!OCA.Onlyoffice.version) {
+                        config.events.onRequestHistoryClose = OCA.Onlyoffice.onRequestHistoryClose;
                     }
 
                     if (config.editorConfig.tenant) {
@@ -226,6 +226,10 @@
                 method: "onDocumentReady"
             },
             "*");
+        }
+
+        if (OCA.Onlyoffice.version > 0) {
+            OCA.Onlyoffice.onRequestHistory(OCA.Onlyoffice.version);
         }
     };
 

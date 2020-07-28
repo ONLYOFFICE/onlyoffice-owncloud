@@ -70,11 +70,11 @@ There are several ways to do that:
     chown -R www-data:www-data onlyoffice
     ```
 
-4. In ownCloud open the `~/index.php/settings/admin?sectionid=apps&category=disabled` page with _Not enabled_ apps by administrator and click _Enable_ for the **ONLYOFFICE** application.
+4. In ownCloud open the `~/settings/admin?sectionid=apps&category=disabled` page with _Not enabled_ apps by administrator and click _Enable_ for the **ONLYOFFICE** application.
 
 ## Configuring ownCloud ONLYOFFICE integration app
 
-In ownCloud open the `~/index.php/settings/admin#onlyoffice` page with administrative settings for **ONLYOFFICE** section.
+In ownCloud open the `~/settings/admin?sectionid=additional#onlyoffice` page with administrative settings for **ONLYOFFICE** section.
 Enter the following address to connect ONLYOFFICE Document Server:
 
 ```bash

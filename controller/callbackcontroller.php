@@ -286,7 +286,13 @@ class CallbackController extends Controller {
         }
 
         try {
-            return new DataDownloadResponse($file->getContent(), $file->getName(), $file->getMimeType());
+            $response = new DataDownloadResponse($file->getContent(), $file->getName(), $file->getMimeType());
+
+            if ($changes) {
+                $response = \OC_Response::setOptionsRequestHeaders($response);
+            }
+
+            return $response;
         } catch (NotPermittedException  $e) {
             $this->logger->logException($e, ["message" => "Download Not permitted: $fileId ($version)", "app" => $this->appName]);
             return new JSONResponse(["message" => $this->trans->t("Not permitted")], Http::STATUS_FORBIDDEN);

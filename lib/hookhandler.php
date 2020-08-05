@@ -43,7 +43,7 @@ class HookHandler {
             Util::addScript("onlyoffice", "main");
             Util::addScript("onlyoffice", "share");
 
-            if ($this->appConfig->GetSameTab()) {
+            if ($appConfig->GetSameTab()) {
                 Util::addScript("onlyoffice", "listener");
             }
 

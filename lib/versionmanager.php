@@ -149,9 +149,10 @@ class VersionManager {
             return $versions;
         }
 
-        $sourceFileName = $sourceFile->getName();
         $ownerId = $sourceFile->getOwner()->getUID();
-        $propsVersions = $this->storage->getVersions($ownerId, $sourceFileName);
+        $userFolder = $this->rootFolder->getUserFolder($ownerId);
+        $sourceFilePath = $userFolder->getRelativePath($sourceFile->getPath());
+        $propsVersions = $this->storage->getVersions($ownerId, $sourceFilePath);
 
         foreach($propsVersions as $propVersion) {
             $version = new Version($propVersion["timestamp"],

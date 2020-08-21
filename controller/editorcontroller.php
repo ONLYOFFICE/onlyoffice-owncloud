@@ -463,6 +463,10 @@ class EditorController extends Controller {
             return ["error" => $error];
         }
 
+        if ($fileId === 0) {
+            $fileId = $file->getId();
+        }
+
         $owner = null;
         $ownerId = null;
         $versions = array();
@@ -560,6 +564,10 @@ class EditorController extends Controller {
         if (isset($error)) {
             $this->logger->error("History: $fileId $error", ["app" => $this->appName]);
             return ["error" => $error];
+        }
+
+        if ($fileId === 0) {
+            $fileId = $file->getId();
         }
 
         $owner = null;

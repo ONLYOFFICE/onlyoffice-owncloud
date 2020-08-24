@@ -63,6 +63,7 @@ OC.L10N.register(
     "The 30-day test period is over, you can no longer connect to demo ONLYOFFICE Document Server." : "Upłyneło 30 dni, nie możesz się już łączyć z serwerem demo.",
     "You are using public demo ONLYOFFICE Document Server. Please do not store private sensitive data." : "Używasz publicznego serwera demo. Nie przechowuj tu prywatnych danych.",
     "Select tag" : "Wybierz tag",
-    "version": "wersja"
+    "version": "wersja",
+    "Disable certificate verification (insecure)": "Wyłącz weryfikację certyfikatu (niebezpieczne)"
 },
 "nplurals=2; plural=(n != 1);");

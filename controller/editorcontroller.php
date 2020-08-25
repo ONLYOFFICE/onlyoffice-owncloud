@@ -559,7 +559,6 @@ class EditorController extends Controller {
      * @NoAdminRequired
      * @NoCSRFRequired
      * @PublicPage
-     *
      */
     public function loader() {
         return new TemplateResponse($this->appName, "loader", [], "plain");

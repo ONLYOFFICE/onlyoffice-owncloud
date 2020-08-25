@@ -70,8 +70,12 @@
             revisedMimes);
     };
 
-    OCA.Onlyoffice.onDocumentReady = function () {
-        OCA.Onlyoffice.bindVersionClick();
+    OCA.Onlyoffice.onDocumentReady = function (documentType) {
+        if (documentType === "text") {
+            OCA.Onlyoffice.bindVersionClick();
+        } else {
+            OCA.Onlyoffice.unbindVersionClick();
+        }
     };
 
     window.addEventListener("message", function (event) {
@@ -106,7 +110,7 @@
                 OCA.Onlyoffice.onRequestCompareFile(event.data.param);
                 break;
             case "onDocumentReady":
-                OCA.Onlyoffice.onDocumentReady();
+                OCA.Onlyoffice.onDocumentReady(event.data.param);
                 break;
         }
     }, false);

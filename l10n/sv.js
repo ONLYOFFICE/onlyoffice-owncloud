@@ -67,6 +67,7 @@ OC.L10N.register(
     "The 30-day test period is over, you can no longer connect to demo ONLYOFFICE Document Server." : "När 30-dagars testperioden är över, kan du inte längre ansluta till demo ONLYOFFICE Dokumentserver.",
     "You are using public demo ONLYOFFICE Document Server. Please do not store private sensitive data." : "Du använder en offentlig demo ONLYOFFICE Dokumentserver. Lagra inte privat känslig information.",
     "Select tag" : "Välj tagg",
-    "version": "verzia"
+    "version": "verzia",
+    "Disable certificate verification (insecure)": "Använd inte certifikatsverifiering (osäkert)"
 },
 "nplurals=2; plural=(n != 1);");

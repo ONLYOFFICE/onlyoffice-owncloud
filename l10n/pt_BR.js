@@ -65,6 +65,7 @@ OC.L10N.register(
     "Insert image" : "Inserir imagem",
     "Select recipients" : "Selecione os destinatários",
     "Select file to compare" : "Selecionar arquivo para comparar",
-    "version": "versão"
+    "version": "versão",
+    "Disable certificate verification (insecure)": "Desativar a verificação do certificado (inseguro)"
 },
 "nplurals=2; plural=(n != 1);");

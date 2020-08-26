@@ -27,23 +27,76 @@
  *
  */
 
-    style("onlyoffice", "editor");
-    script("onlyoffice", "desktop");
-    script("onlyoffice", "editor");
-?>
+namespace OCA\Onlyoffice;
 
-<div id="app">
+use OCP\Files\FileInfo;
 
-    <div id="iframeEditor"
-        data-id="<?php p($_["fileId"]) ?>"
-        data-path="<?php p($_["filePath"]) ?>"
-        data-sharetoken="<?php p($_["shareToken"]) ?>"
-        data-version="<?php p($_["version"]) ?>"
-        data-inframe="<?php p($_["inframe"]) ?>"></div>
 
-    <?php if (!empty($_["documentServerUrl"])) { ?>
-        <script nonce="<?php p(base64_encode($_["requesttoken"])) ?>"
-            src="<?php p($_["documentServerUrl"]) ?>web-apps/apps/api/documents/api.js" type="text/javascript"></script>
-    <?php } ?>
+/**
+ * Version file
+ *
+ * @package OCA\Onlyoffice
+ */
+class Version {
+    /** 
+     * Time of creation
+     * 
+     * @var int 
+     * */
+    private $timestamp;
 
-</div>
+    /** 
+     * Version file
+     * 
+     * @var int|string 
+     * */
+    private $revisionId;
+
+    /** 
+     * Source file properties
+     * 
+     * @var FileInfo 
+     * */
+    private $sourceFileInfo;
+
+    /**
+     * @param int $timestamp - file time stamp
+     * @param int $revisionId - revision id
+     * @param FileInfo $sourceFileInfo - source file info
+     */
+    public function __construct(int $timestamp,
+                                int $revisionId,
+                                FileInfo $sourceFileInfo
+                                ) {
+        $this->timestamp = $timestamp;
+        $this->revisionId = $revisionId;
+        $this->sourceFileInfo = $sourceFileInfo;
+    }
+
+    /**
+     * Get source file
+     *
+     * @return FileInfo
+     */
+    public function getSourceFile() {
+        return $this->sourceFileInfo;
+    }
+
+    /**
+     * Get version file
+     *
+     * @return int|string
+     */
+    public function getRevisionId() {
+        return $this->revisionId;
+    }
+
+    /**
+     * Get timestamp file
+     *
+     * @return int
+     */
+    public function getTimestamp() {
+        return $this->timestamp;
+    }
+}

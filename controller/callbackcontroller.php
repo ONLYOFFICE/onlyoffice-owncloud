@@ -223,20 +223,23 @@ class CallbackController extends Controller {
             }
         }
 
+        $userId = null;
         if ($this->userSession->isLoggedIn()) {
             $userId = $this->userSession->getUser()->getUID();
         } else {
             \OC_Util::tearDownFS();
 
-            $userId = $hashData->userId;
-            \OC_User::setUserId($userId);
+            if (isset($hashData->userId)) {
+                $userId = $hashData->userId;
+                \OC_User::setUserId($userId);
 
-            if ($this->config->checkEncryptionModule() === "master") {
-                \OC_User::setIncognitoMode(true);
-            } else {
-                $user = $this->userManager->get($userId);
-                if (!empty($user)) {
-                    \OC_Util::setupFS($userId);
+                if ($this->config->checkEncryptionModule() === "master") {
+                    \OC_User::setIncognitoMode(true);
+                } else {
+                    $user = $this->userManager->get($userId);
+                    if (!empty($user)) {
+                        \OC_Util::setupFS($userId);
+                    }
                 }
             }
         }

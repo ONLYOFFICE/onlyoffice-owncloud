@@ -149,7 +149,12 @@ class VersionManager {
             return $versions;
         }
 
-        $ownerId = $sourceFile->getOwner()->getUID();
+        $owner = $sourceFile->getOwner();
+        if ($owner === null) {
+            return $versions;
+        }
+
+        $ownerId = $owner->getUID();
         $userFolder = $this->rootFolder->getUserFolder($ownerId);
         $sourceFilePath = $userFolder->getRelativePath($sourceFile->getPath());
         $propsVersions = $this->storage->getVersions($ownerId, $sourceFilePath);

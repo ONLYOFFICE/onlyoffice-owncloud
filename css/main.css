@@ -59,8 +59,8 @@ body.onlyoffice-inline #content #app-content {
     width: 100%;
     height: calc(100vh - 45px);
     display: block;
-    position: fixed;
-    top: 45px;
+    position: absolute;
+    top: 0;
     z-index: 110;
 }
 

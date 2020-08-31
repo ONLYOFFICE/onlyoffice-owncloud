@@ -113,6 +113,9 @@
             var $iframe = $("<iframe id=\"onlyofficeFrame\" nonce=\"" + btoa(OC.requestToken) + "\" scrolling=\"no\" allowfullscreen src=\"" + url + "&inframe=true\" />");
             if ($("#app-content").length) {
                 $("#app-content").append($iframe);
+
+                var scrollTop = $("#app-content").scrollTop();
+                $("#onlyofficeFrame").css("top", scrollTop);
             } else {
                 $("#preview").append($iframe);
             }

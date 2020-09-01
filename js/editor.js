@@ -32,7 +32,8 @@
             AppName: "onlyoffice",
             inframe: false,
             fileId: null,
-            shareToken: null
+            shareToken: null,
+            insertImageType: null
         }, OCA.Onlyoffice);
 
     OCA.Onlyoffice.InitEditor = function () {
@@ -280,13 +281,15 @@
             });
     };
 
-    OCA.Onlyoffice.onRequestInsertImage = function () {
+    OCA.Onlyoffice.onRequestInsertImage = function (event) {
         var imageMimes = [
             "image/bmp", "image/x-bmp", "image/x-bitmap", "application/bmp",
             "image/gif",
             "image/jpeg", "image/jpg", "application/jpg", "application/x-jpg",
             "image/png", "image/x-png", "application/png", "application/x-png"
         ];
+
+        OCA.Onlyoffice.insertImageType = event.data.c;
 
         if (OCA.Onlyoffice.inframe) {
             window.parent.postMessage({
@@ -311,6 +314,10 @@
                         timeout: 3
                     });
                     return;
+                }
+
+                if (OCA.Onlyoffice.insertImageType) {
+                    response.c = OCA.Onlyoffice.insertImageType;
                 }
 
                 OCA.Onlyoffice.docEditor.insertImage(response);

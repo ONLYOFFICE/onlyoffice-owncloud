@@ -77,7 +77,7 @@ class VersionManager {
                 $this->storage = \OC::$server->query(Storage::class);
                 $this->available = true;
             } catch (QueryException $e) {
-                $this->logger->logException($e, ["message" => "VersionManager init error", "app" => $this->appName]);
+                \OC::$server->getLogger()->logException($e, ["message" => "VersionManager init error", "app" => $this->appName]);
             }
         }
     }
@@ -95,7 +95,7 @@ class VersionManager {
             $folder = $userRoot->get("files_versions");
             return $folder;
         } catch (NotFoundException $e) {
-            $this->logger->logException($e, ["message" => "VersionManager: not found user version folder " . $user->getUID(), "app" => $this->appName]);
+            \OC::$server->getLogger()->logException($e, ["message" => "VersionManager: not found user version folder " . $user->getUID(), "app" => $this->appName]);
             return null;
         }
     }
@@ -135,7 +135,7 @@ class VersionManager {
             $nodes = $userFolder->getById($fileId);
             $sourceFile = $nodes[0];
         } catch (\Exception $e) {
-            $this->logger->logException($e, ["message" => "VersionManager: $fileId", "app" => $this->appName]);
+            \OC::$server->getLogger()->logException($e, ["message" => "VersionManager: $fileId", "app" => $this->appName]);
             return $versions;
         }
 

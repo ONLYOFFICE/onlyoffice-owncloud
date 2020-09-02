@@ -159,15 +159,12 @@ The instruction on enabling _master key_ based encryption is available in the of
 
 ONLYOFFICE offers different versions of its online document editors that can be deployed on your own servers.
 
-ONLYOFFICE Document Server:
-
 * Community Edition (`onlyoffice-documentserver` package)
-
 * Enterprise Edition (`onlyoffice-documentserver-ie` package)
 
 The table below will help you to make the right choice.
 
-| Pricing and licensing | Community Edition | Integration Edition |
+| Pricing and licensing | Community Edition | Enterprise Edition |
 | ------------- | ------------- | ------------- |
 | | [Get it now](https://www.onlyoffice.com/download.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwncloud)  | [Start Free Trial](https://www.onlyoffice.com/enterprise-edition-free.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwncloud)  |
 | Cost  | FREE  | [Go to the pricing page](https://www.onlyoffice.com/enterprise-edition.aspx??utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwncloud)  |

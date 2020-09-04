@@ -1,5 +1,18 @@
 # Change Log
 
+## 5.0.1
+## Added
+- show the version of the Document Service on the settings page
+- support for OpenDocument Templates
+- Japanese translation
+- certificate verification setting
+- version history
+
+## Changed
+- apache license
+- fix styles for inline editor
+- loader page when creating a file
+
 ## 4.2.1
 ## Added
 - review display settings

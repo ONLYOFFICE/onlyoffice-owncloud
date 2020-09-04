@@ -66,6 +66,8 @@ OC.L10N.register(
     "Select file to compare" : "Sélectionner fichier à comparer",
     "Markup": "Balisage",
     "Final": "Finale",
-    "Original": "Original"
+    "Original": "Original",
+    "version": "version",
+    "Disable certificate verification (insecure)": "Désactiver la vérification du certificat (non sur)"
 },
 "nplurals=2; plural=(n != 1);");

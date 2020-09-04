@@ -2,27 +2,17 @@
  *
  * (c) Copyright Ascensio System SIA 2020
  *
- * This program is a free software product.
- * You can redistribute it and/or modify it under the terms of the GNU Affero General Public License
- * (AGPL) version 3 as published by the Free Software Foundation.
- * In accordance with Section 7(a) of the GNU AGPL its Section 15 shall be amended to the effect
- * that Ascensio System SIA expressly excludes the warranty of non-infringement of any third-party rights.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is distributed WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * For details, see the GNU AGPL at: http://www.gnu.org/licenses/agpl-3.0.html
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * You can contact Ascensio System SIA at 20A-12 Ernesta Birznieka-Upisha street, Riga, Latvia, EU, LV-1050.
- *
- * The interactive user interfaces in modified source and object code versions of the Program
- * must display Appropriate Legal Notices, as required under Section 5 of the GNU AGPL version 3.
- *
- * Pursuant to Section 7(b) of the License you must retain the original Product logo when distributing the program.
- * Pursuant to Section 7(e) we decline to grant you any rights under trademark law for use of our trademarks.
- *
- * All the Product's GUI elements, including illustrations and icon sets, as well as technical
- * writing content are licensed under the terms of the Creative Commons Attribution-ShareAlike 4.0 International.
- * See the License terms at http://creativecommons.org/licenses/by-sa/4.0/legalcode
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  *
  */
 
@@ -31,7 +21,7 @@
     OCA.Onlyoffice = _.extend({
             AppName: "onlyoffice",
             context: null,
-            folderUrl: null
+            folderUrl: null,
         }, OCA.Onlyoffice);
 
     OCA.Onlyoffice.setting = {};
@@ -40,11 +30,8 @@
         var dir = fileList.getCurrentDirectory();
 
         if (!OCA.Onlyoffice.setting.sameTab || OCA.Onlyoffice.Desktop) {
-            var winEditor = window.open("");
-            if (winEditor) {
-                winEditor.document.write(t(OCA.Onlyoffice.AppName, "Loading, please wait."));
-                winEditor.document.close();
-            }
+            $loaderUrl = OCA.Onlyoffice.Desktop ? "" : OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/loader");
+            var winEditor = window.open($loaderUrl);
         }
 
         var createData = {
@@ -71,7 +58,7 @@
                 }
 
                 fileList.add(response, { animate: true });
-                OCA.Onlyoffice.OpenEditor(response.id, dir, response.name, winEditor);
+                OCA.Onlyoffice.OpenEditor(response.id, dir, response.name, 0, winEditor);
 
                 OCA.Onlyoffice.context = { fileList: fileList };
                 OCA.Onlyoffice.context.fileName = response.name;
@@ -83,8 +70,11 @@
         );
     };
 
-    OCA.Onlyoffice.OpenEditor = function (fileId, fileDir, fileName, winEditor) {
-        var filePath = fileDir.replace(new RegExp("\/$"), "") + "/" + fileName;
+    OCA.Onlyoffice.OpenEditor = function (fileId, fileDir, fileName, version, winEditor) {
+        var filePath = "";
+        if (fileName) {
+            filePath = fileDir.replace(new RegExp("\/$"), "") + "/" + fileName;
+        }
         var url = OC.generateUrl("/apps/" + OCA.Onlyoffice.AppName + "/{fileId}?filePath={filePath}",
             {
                 fileId: fileId,
@@ -99,6 +89,10 @@
                 });
         }
 
+        if (version > 0) {
+            url += "&version=" + version;
+        }
+
         if (winEditor && winEditor.location) {
             winEditor.location.href = url;
         } else if (!OCA.Onlyoffice.setting.sameTab || OCA.Onlyoffice.Desktop) {
@@ -109,6 +103,9 @@
             var $iframe = $("<iframe id=\"onlyofficeFrame\" nonce=\"" + btoa(OC.requestToken) + "\" scrolling=\"no\" allowfullscreen src=\"" + url + "&inframe=true\" />");
             if ($("#app-content").length) {
                 $("#app-content").append($iframe);
+
+                var scrollTop = $("#app-content").scrollTop();
+                $("#onlyofficeFrame").css("top", scrollTop);
             } else {
                 $("#preview").append($iframe);
             }
@@ -127,7 +124,7 @@
         var wrapper = $("<div id='onlyofficeHeader' />")
 
         var btnClose = $("<a class='icon icon-close'></a>");
-        btnClose.on("click", function() {
+        btnClose.on("click", function () {
             OCA.Onlyoffice.CloseEditor();
         });
         wrapper.prepend(btnClose);
@@ -149,8 +146,6 @@
 
     OCA.Onlyoffice.CloseEditor = function () {
         $("body").removeClass("onlyoffice-inline");
-
-        $("#onlyofficeFrame").remove();
         $("#onlyofficeHeader").remove();
 
         OCA.Onlyoffice.context = null;
@@ -159,6 +154,10 @@
         if (!!url) {
             window.history.pushState(null, null, url);
             OCA.Onlyoffice.folderUrl = null;
+        }
+
+        if (OCA.Versions) {
+            OCA.Onlyoffice.bindVersionClick();
         }
     };
 
@@ -232,44 +231,13 @@
         }
     };
 
-    OCA.Onlyoffice.onRequestSaveAs = function (saveData) {
-        OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Save as"),
-            function (fileDir) {
-                saveData.dir = fileDir;
-                $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.editorSaveAs(saveData);
-            },
-            false,
-            "httpd/unix-directory");
-    };
-
-    OCA.Onlyoffice.onRequestInsertImage = function (imageMimes) {
-        OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Insert image"),
-            $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.editorInsertImage,
-            false,
-            imageMimes);
-    };
-
-    OCA.Onlyoffice.onRequestMailMergeRecipients = function (recipientMimes) {
-        OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Select recipients"),
-            $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.editorSetRecipient,
-            false,
-            recipientMimes);
-    };
-
-    OCA.Onlyoffice.onRequestCompareFile = function (revisedMimes) {
-        OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Select file to compare"),
-            $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.editorSetRevised,
-            false,
-            revisedMimes);
-    };
-
     OCA.Onlyoffice.FileList = {
         attach: function (fileList) {
             if (fileList.id == "trashbin") {
                 return;
             }
 
-            var register = function() {
+            var register = function () {
                 var formats = OCA.Onlyoffice.setting.formats;
 
                 $.each(formats, function (ext, config) {
@@ -354,12 +322,46 @@
         return extension;
     };
 
+    OCA.Onlyoffice.openVersion = function (fileId, version) {
+        if ($("body").hasClass("onlyoffice-inline")) {
+            $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.onRequestHistory(version);
+            return;
+        }
+
+        OCA.Onlyoffice.OpenEditor(fileId, "", "", version)
+    };
+
+    OCA.Onlyoffice.bindVersionClick = function () {
+        OCA.Onlyoffice.unbindVersionClick();
+        $(document).on("click.onlyoffice-version", "#versionsTabView .downloadVersion", function() {
+            var versionNodes = $("#versionsTabView ul.versions>li");
+            var versionNode = $(this).closest("#versionsTabView ul.versions>li")[0];
+
+            var href = $(this).attr("href");
+            var search = new RegExp("\/meta\/(\\d+)\/v\/\\d+");
+            var result = search.exec(href);
+            if (result && result.length > 1) {
+                var fileId = result[1];
+            }
+
+            var versionNum = versionNodes.length - $.inArray(versionNode, versionNodes);
+
+            OCA.Onlyoffice.openVersion(fileId || "", versionNum);
+
+            return false;
+        });
+    };
+
+    OCA.Onlyoffice.unbindVersionClick = function() {
+        $(document).off("click.onlyoffice-version", "#versionsTabView .downloadVersion");
+    }
+
     var initPage = function () {
         if ($("#isPublic").val() === "1" && !$("#filestable").length) {
             var fileName = $("#filename").val();
             var extension = OCA.Onlyoffice.GetFileExtension(fileName);
 
-            var initSharedButton = function() {
+            var initSharedButton = function () {
                 var formats = OCA.Onlyoffice.setting.formats;
 
                 var config = formats[extension];
@@ -383,42 +385,16 @@
         } else {
             OC.Plugins.register("OCA.Files.FileList", OCA.Onlyoffice.FileList);
             OC.Plugins.register("OCA.Files.NewFileMenu", OCA.Onlyoffice.NewFileMenu);
+
+            if (OCA.Versions) {
+                OCA.Onlyoffice.bindVersionClick();
+            }
             if (OCA.Onlyoffice.Share) {
                 OCA.Onlyoffice.Share();
             }
         }
     };
 
-    window.addEventListener("message", function(event) {
-        if ($("#onlyofficeFrame")[0].contentWindow !== event.source
-            || !event.data["method"]) {
-            return;
-        }
-        switch (event.data.method) {
-            case "editorRequestClose":
-                OCA.Onlyoffice.CloseEditor();
-                break;
-            case "editorRequestSharingSettings":
-                OCA.Onlyoffice.OpenShareDialog();
-                break;
-            case "editorRequestSaveAs":
-                OCA.Onlyoffice.onRequestSaveAs(event.data.param);
-                break;
-            case "editorRequestInsertImage":
-                OCA.Onlyoffice.onRequestInsertImage(event.data.param);
-                break;
-            case "editorRequestMailMergeRecipients":
-                OCA.Onlyoffice.onRequestMailMergeRecipients(event.data.param);
-                break;
-            case "editorRequestCompareFile":
-                OCA.Onlyoffice.onRequestCompareFile(event.data.param);
-                break;
-            case "editorShowHeaderButton":
-                OCA.Onlyoffice.ShowHeaderButton();
-                break;
-        }
-    }, false);
-
-    $(document).ready(initPage)
+    $(document).ready(initPage);
 
 })(OCA);

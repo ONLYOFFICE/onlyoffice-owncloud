@@ -70,6 +70,8 @@ OC.L10N.register(
     "Select file to compare" : "Datei zum Vergleich auswählen",
     "Markup": "Markup",
     "Final": "Endgültig",
-    "Original": "Original"
+    "Original": "Original",
+    "version": "version",
+    "Disable certificate verification (insecure)": "Zertifikatsüberprüfung deaktivieren (unsicher)"
 },
 "nplurals=2; plural=(n != 1);");

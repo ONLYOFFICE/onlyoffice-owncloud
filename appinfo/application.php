@@ -20,6 +20,7 @@
 namespace OCA\Onlyoffice\AppInfo;
 
 use OCP\AppFramework\App;
+use OCP\Files\IMimeTypeDetector;
 use OCP\Util;
 
 use OCA\Onlyoffice\AppConfig;
@@ -81,6 +82,13 @@ class Application extends App {
         require_once __DIR__ . "/../3rdparty/jwt/JWT.php";
 
         $container = $this->getContainer();
+
+        $detector = $container->query(IMimeTypeDetector::class);
+        $detector->getAllMappings();
+        $detector->registerType("ott","application/vnd.oasis.opendocument.text-template");
+        $detector->registerType("ots", "application/vnd.oasis.opendocument.spreadsheet-template");
+        $detector->registerType("otp", "application/vnd.oasis.opendocument.presentation-template");
+
 
         $container->registerService("L10N", function ($c) {
             return $c->query("ServerContainer")->getL10N($c->query("AppName"));

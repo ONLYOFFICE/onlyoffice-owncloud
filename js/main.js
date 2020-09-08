@@ -125,7 +125,7 @@
 
         var btnClose = $("<a class='icon icon-close'></a>");
         btnClose.on("click", function () {
-            OCA.Onlyoffice.CloseEditor();
+            OCA.Onlyoffice.onRequestClose();
         });
         wrapper.prepend(btnClose);
 

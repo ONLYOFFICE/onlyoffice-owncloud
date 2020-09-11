@@ -1118,19 +1118,24 @@ class EditorController extends Controller {
             $params["editorConfig"]["customization"]["help"] = false;
         }
 
-        //default is false
-        if ($this->config->GetCustomizationToolbarNoTabs() === true) {
-            $params["editorConfig"]["customization"]["toolbarNoTabs"] = true;
-        }
-
         //default is original
         $reviewDisplay = $this->config->GetCustomizationReviewDisplay();
         if ($reviewDisplay !== "original") {
             $params["editorConfig"]["customization"]["reviewDisplay"] = $reviewDisplay;
         }
 
+        //default is false
+        if ($this->config->GetCustomizationToolbarNoTabs() === true) {
+            $params["editorConfig"]["customization"]["toolbarNoTabs"] = true;
+        }
+
 
         /* from system config */
+
+        $autosave = $this->config->GetSystemValue($this->config->_customization_autosave);
+        if (isset($autosave)) {
+            $params["editorConfig"]["customization"]["autosave"] = $autosave;
+        }
 
         $customer = $this->config->GetSystemValue($this->config->_customization_customer);
         if (isset($customer)) {
@@ -1155,11 +1160,6 @@ class EditorController extends Controller {
         $zoom = $this->config->GetSystemValue($this->config->_customization_zoom);
         if (isset($zoom)) {
             $params["editorConfig"]["customization"]["zoom"] = $zoom;
-        }
-
-        $autosave = $this->config->GetSystemValue($this->config->_customization_autosave);
-        if (isset($autosave)) {
-            $params["editorConfig"]["customization"]["autosave"] = $autosave;
         }
 
         return $params;

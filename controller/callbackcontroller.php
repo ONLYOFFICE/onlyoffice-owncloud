@@ -39,6 +39,7 @@ use OCP\Share\IManager;
 
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
+use OCA\Onlyoffice\KeyManager;
 use OCA\Onlyoffice\DocumentService;
 use OCA\Onlyoffice\VersionManager;
 use OCA\Onlyoffice\FileVersions;
@@ -500,10 +501,17 @@ class CallbackController extends Controller {
 
                     $newData = $documentService->Request($url);
 
+                    $isForcesave = $status === self::TrackerStatus_ForceSave || $status === self::TrackerStatus_CorruptedForceSave;
+                    //lock the key when forcesave and unlock if last forcesave is broken
+                    KeyManager::lock($fileId, $isForcesave);
+
                     $this->logger->debug("Track put content " . $file->getPath(), ["app" => $this->appName]);
                     $this->retryOperation(function () use ($file, $newData) {
                         return $file->putContent($newData);
                     });
+
+                    //unlock key for future federated save
+                    KeyManager::lock($fileId, false);
 
                     if ($this->versionManager !== null) {
                         $changes = null;

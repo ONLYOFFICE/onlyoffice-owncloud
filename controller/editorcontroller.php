@@ -839,6 +839,9 @@ class EditorController extends Controller {
             ],
             "documentType" => $format["type"],
             "editorConfig" => [
+                "customization" => [
+                    "forcesave" => true
+                ],
                 "lang" => str_replace("_", "-", \OC::$server->getL10NFactory("")->get("")->getLanguageCode())
             ]
         ];

@@ -31,6 +31,7 @@ use OCA\Files_Sharing\External\Storage as SharingExternalStorage;
 
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Version;
+use OCA\Onlyoffice\KeyManager;
 
 /**
  * File utility
@@ -218,6 +219,8 @@ class FileUtility {
      * @return string
      */
     public function getKey($file, $origin = false) {
+        $fileId = $file->getId();
+
         if ($origin
             && $file->getStorage()->instanceOfStorage(SharingExternalStorage::class)) {
 
@@ -232,9 +235,15 @@ class FileUtility {
             }
         }
 
-        $instanceId = $this->config->GetSystemValue("instanceid", true);
+        $key = KeyManager::get($fileId);
 
-        $key = $instanceId . "_" . $file->getEtag();
+        if (empty($key) ) {
+            $instanceId = $this->config->GetSystemValue("instanceid", true);
+
+            $key = $instanceId . "_" . $file->getEtag();
+
+            KeyManager::set($fileId, $key);
+        }
 
         return $key;
     }

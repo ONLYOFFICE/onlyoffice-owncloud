@@ -121,6 +121,10 @@
     };
 
     OCA.Onlyoffice.ShowHeaderButton = function () {
+        if ($("#onlyofficeHeader").length) {
+            return;
+        }
+
         var wrapper = $("<div id='onlyofficeHeader' />")
 
         var btnClose = $("<a class='icon icon-close'></a>");

@@ -38,6 +38,7 @@ use OCP\IUserSession;
 use OCP\Share\IManager;
 
 use OCA\Files\Helper;
+use OCA\Files_Sharing\External\Storage as SharingExternalStorage;
 
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
@@ -973,6 +974,11 @@ class EditorController extends Controller {
 
         $params = $this->setCustomization($params);
 
+        if ($file->getStorage()->instanceOfStorage(SharingExternalStorage::class)) {
+            //otherwise forcesave will delete the key
+            $params["editorConfig"]["customization"]["forcesave"] = false;
+        }
+
         if ($this->config->UseDemo()) {
             $params["editorConfig"]["tenant"] = $this->config->GetSystemValue("instanceid", true);
         }
@@ -1111,6 +1117,11 @@ class EditorController extends Controller {
         //default is false
         if ($this->config->GetCustomizationFeedback() === true) {
             $params["editorConfig"]["customization"]["feedback"] = true;
+        }
+
+        //default is false
+        if ($this->config->GetCustomizationForcesave() === true) {
+            $params["editorConfig"]["customization"]["forcesave"] = true;
         }
 
         //default is true

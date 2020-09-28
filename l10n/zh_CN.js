@@ -72,6 +72,7 @@ OC.L10N.register(
     "Final": "最终版",
     "Original": "原始版本",
     "version": "版本",
-    "Disable certificate verification (insecure)": "关闭证书校验(不安全)"
+    "Disable certificate verification (insecure)": "关闭证书校验(不安全)",
+    "Keep intermediate versions when editing": "编辑时保留中间版本"
 },
 "nplurals=2; plural=(n != 1);");

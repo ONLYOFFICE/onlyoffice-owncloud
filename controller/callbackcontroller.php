@@ -37,8 +37,11 @@ use OCP\Lock\LockedException;
 use OCP\Share\Exceptions\ShareNotFound;
 use OCP\Share\IManager;
 
+use OCA\Files_Sharing\External\Storage as SharingExternalStorage;
+
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
+use OCA\Onlyoffice\KeyManager;
 use OCA\Onlyoffice\DocumentService;
 use OCA\Onlyoffice\VersionManager;
 use OCA\Onlyoffice\FileVersions;
@@ -120,6 +123,8 @@ class CallbackController extends Controller {
     private const TrackerStatus_MustSave = 2;
     private const TrackerStatus_Corrupted = 3;
     private const TrackerStatus_Closed = 4;
+    private const TrackerStatus_ForceSave = 6;
+    private const TrackerStatus_CorruptedForceSave = 7;
 
     /**
      * @param string $AppName - application name
@@ -418,6 +423,8 @@ class CallbackController extends Controller {
         switch ($status) {
             case self::TrackerStatus_MustSave:
             case self::TrackerStatus_Corrupted:
+            case self::TrackerStatus_ForceSave:
+            case self::TrackerStatus_CorruptedForceSave:
                 if (empty($url)) {
                     $this->logger->error("Track without url: $fileId status $status", ["app" => $this->appName]);
                     return new JSONResponse(["message" => "Url not found"], Http::STATUS_BAD_REQUEST);
@@ -496,12 +503,31 @@ class CallbackController extends Controller {
 
                     $newData = $documentService->Request($url);
 
+                    $prevIsForcesave = KeyManager::wasForcesave($fileId);
+
+                    $isForcesave = $status === self::TrackerStatus_ForceSave || $status === self::TrackerStatus_CorruptedForceSave;
+
+                    if ($isForcesave
+                        && $file->getStorage()->instanceOfStorage(SharingExternalStorage::class)) {
+                        $this->logger->info("Track: $fileId status $status not allowed for external file", ["app" => $this->appName]);
+                        break;
+                    }
+
+                    //lock the key when forcesave and unlock if last forcesave is broken
+                    KeyManager::lock($fileId, $isForcesave);
+
                     $this->logger->debug("Track put content " . $file->getPath(), ["app" => $this->appName]);
                     $this->retryOperation(function () use ($file, $newData) {
                         return $file->putContent($newData);
                     });
 
-                    if ($this->versionManager !== null) {
+                    //unlock key for future federated save
+                    KeyManager::lock($fileId, false);
+                    KeyManager::setForcesave($fileId, $isForcesave);
+
+                    if (!$isForcesave
+                        && !$prevIsForcesave
+                        && $this->versionManager !== null) {
                         $changes = null;
                         if (!empty($changesurl)) {
                             $changesurl = $this->config->ReplaceDocumentServerUrlToInternal($changesurl);

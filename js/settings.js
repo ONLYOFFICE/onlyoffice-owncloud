@@ -130,6 +130,7 @@
             var chat = $("#onlyofficeChat").is(":checked");
             var compactHeader = $("#onlyofficeCompactHeader").is(":checked");
             var feedback = $("#onlyofficeFeedback").is(":checked");
+            var forcesave = $("#onlyofficeForcesave").is(":checked");
             var help = $("#onlyofficeHelp").is(":checked");
             var toolbarNoTabs = !$("#onlyofficeToolbarNoTabs").is(":checked");
             var reviewDisplay = $("input[type='radio'][name='reviewDisplay']:checked").attr("id").replace("onlyofficeReviewDisplay_", "");
@@ -145,6 +146,7 @@
                     chat: chat,
                     compactHeader: compactHeader,
                     feedback: feedback,
+                    forcesave: forcesave,
                     help: help,
                     toolbarNoTabs: toolbarNoTabs,
                     reviewDisplay: reviewDisplay

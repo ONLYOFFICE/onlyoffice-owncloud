@@ -29,6 +29,7 @@ use OCP\Share\IManager;
 use OC\OCS\Result;
 
 use OCA\Onlyoffice\AppConfig;
+use OCA\Onlyoffice\DocumentService;
 use OCA\Onlyoffice\FileUtility;
 
 /**
@@ -42,13 +43,6 @@ class FederationController extends OCSController {
      * @var ILogger
      */
     private $logger;
-
-    /**
-     * Share manager
-     *
-     * @var IManager
-     */
-    private $shareManager;
 
     /**
      * Application configuration
@@ -82,7 +76,6 @@ class FederationController extends OCSController {
         parent::__construct($AppName, $request);
 
         $this->logger = $logger;
-        $this->shareManager = $shareManager;
 
         $this->config = new AppConfig($this->appName);
         $this->fileUtility = new FileUtility($AppName, $trans, $logger, $this->config, $shareManager, $session);
@@ -109,6 +102,8 @@ class FederationController extends OCSController {
         }
 
         $key = $this->fileUtility->getKey($file, true);
+
+        $key = DocumentService::GenerateRevisionId($key);
 
         $this->logger->debug("Federated request get for " . $file->getId() . " key $key", ["app" => $this->appName]);
 

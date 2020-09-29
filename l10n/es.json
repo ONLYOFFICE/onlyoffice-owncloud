@@ -47,6 +47,7 @@
     "review" : "revista",
     "form filling" : "relleno de formulario",
     "comment" : "comentarios",
+    "custom filter" : "filtro personalizado",
     "download" : "descargar",
     "Server settings" : "Ajustes de servidor",
     "Common settings" : "Ajustes comunes",
@@ -66,6 +67,7 @@
     "Final": "Final",
     "Original": "Original",
     "version": "versión",
-    "Disable certificate verification (insecure)": "Desactivar la verificación de certificados (inseguro)"
+    "Disable certificate verification (insecure)": "Desactivar la verificación de certificados (inseguro)",
+    "Keep intermediate versions when editing": "Mantener las versiones intermedias durante la edición"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

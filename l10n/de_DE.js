@@ -46,9 +46,10 @@ OC.L10N.register(
     "Save" : "Speichern",
     "Mixed Active Content is not allowed. HTTPS address for Document Server is required." : "Mixed Active Content ist nicht möglich. HTTPS-Adresse für Document Server ist erforderlich.",
     "Restrict access to editors to following groups" : "Den Zugriff auf Editoren auf folgende Gruppen gewähren",
-    "review" : "Review",
-    "form filling" : "ausfüllen von Formularen",
-    "comment" : "Kommentarе",
+    "review" : "review",
+    "form filling" : "ausfüllen von formularen",
+    "comment" : "kommentarе",
+    "custom filter" : "benutzerdefinierter filter",
     "download" : "herunterladen",
     "Server settings" : "Servereinstellungen",
     "Common settings" : "Allgemeine Einstellungen",
@@ -72,6 +73,7 @@ OC.L10N.register(
     "Final": "Endgültig",
     "Original": "Original",
     "version": "version",
-    "Disable certificate verification (insecure)": "Zertifikatsüberprüfung deaktivieren (unsicher)"
+    "Disable certificate verification (insecure)": "Zertifikatsüberprüfung deaktivieren (unsicher)",
+    "Keep intermediate versions when editing": "Zwischenversionen bei der Bearbeitung aufbewahren"
 },
 "nplurals=2; plural=(n != 1);");

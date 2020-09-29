@@ -49,6 +49,7 @@ OC.L10N.register(
     "review" : "révision",
     "form filling" : "remplissage de formulaire",
     "comment" : "commentaire",
+    "custom filter" : "filtre personnalisé",
     "download" : "télécharger",
     "Server settings" : "Paramètres du serveur",
     "Common settings" : "Paramètres communs",
@@ -68,6 +69,7 @@ OC.L10N.register(
     "Final": "Finale",
     "Original": "Original",
     "version": "version",
-    "Disable certificate verification (insecure)": "Désactiver la vérification du certificat (non sur)"
+    "Disable certificate verification (insecure)": "Désactiver la vérification du certificat (non sur)",
+    "Keep intermediate versions when editing": "Sauvegarder les versions intermédiaires lors de l'édition"
 },
 "nplurals=2; plural=(n != 1);");

@@ -27,4 +27,7 @@
     <dependencies>
         <owncloud min-version="10" max-version="10" />
     </dependencies>
+    <commands>
+        <command>OCA\Onlyoffice\Command\DocumentServer</command>
+    </commands>
 </info>

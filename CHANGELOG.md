@@ -1,5 +1,8 @@
 # Change Log
 
+## Added
+- connection test command
+
 ## Changed
 - display local time in history
 

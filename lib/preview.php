@@ -226,6 +226,9 @@ class Preview implements IProvider2 {
      * @return bool
      */
     public function isAvailable(FileInfo $fileInfo) {
+        if ($this->config->GetPreview() !== true) {
+            return false;
+        }
         if (!$fileInfo || $fileInfo->getSize() === 0) {
             return false;
         }

@@ -23,11 +23,13 @@ use OC\Files\Meta\MetaFileVersionNode;
 
 use OCP\Files\File;
 use OCP\Files\FileInfo;
+use OCP\Files\IRootFolder;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\Image;
 use OCP\ISession;
 use OCP\IURLGenerator;
+use OCP\IUserManager;
 use OCP\Preview\IProvider2;
 use OCP\Share\IManager;
 
@@ -35,6 +37,7 @@ use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\DocumentService;
 use OCA\Onlyoffice\FileUtility;
+use OCA\Onlyoffice\VersionManager;
 
 /**
  * Preview provider
@@ -49,6 +52,20 @@ class Preview implements IProvider2 {
      * @var string
      */
     private $appName;
+
+    /**
+     * Root folder
+     *
+     * @var IRootFolder
+     */
+    private $root;
+
+    /**
+     * User manager
+     *
+     * @var IUserManager
+     */
+    private $userManager;
 
     /**
      * Logger
@@ -84,6 +101,13 @@ class Preview implements IProvider2 {
      * @var Crypt
      */
     private $crypt;
+
+    /**
+     * File version manager
+     *
+     * @var VersionManager
+    */
+    private $versionManager;
 
     /**
      * File utility
@@ -135,6 +159,7 @@ class Preview implements IProvider2 {
 
     /**
      * @param string $appName - application name
+     * @param IRootFolder $root - root folder
      * @param ILogger $logger - logger
      * @param IL10N $trans - l10n service
      * @param AppConfig $config - application configuration
@@ -142,22 +167,29 @@ class Preview implements IProvider2 {
      * @param Crypt $crypt - hash generator
      * @param IManager $shareManager - share manager
      * @param ISession $session - session
+     * @param IUserManager $userManager - user manager
      */
     public function __construct(string $appName,
+                                    IRootFolder $root,
                                     ILogger $logger,
                                     IL10N $trans,
                                     AppConfig $config,
                                     IURLGenerator $urlGenerator,
                                     Crypt $crypt,
                                     IManager $shareManager,
-                                    ISession $session
+                                    ISession $session,
+                                    IUserManager $userManager
                                     ) {
         $this->appName = $appName;
+        $this->root = $root;
         $this->logger = $logger;
         $this->trans = $trans;
         $this->config = $config;
         $this->urlGenerator = $urlGenerator;
         $this->crypt = $crypt;
+        $this->userManager = $userManager;
+
+        $this->versionManager = new VersionManager($appName, $root);
 
         $this->fileUtility = new FileUtility($appName, $trans, $logger, $config, $shareManager, $session);
     }
@@ -258,10 +290,11 @@ class Preview implements IProvider2 {
      *
      * @param File $file - file
      * @param IUser $user - user with access
+     * @param int $version - file version
      *
      * @return string
      */
-    private function getUrl($file, $user = null) {
+    private function getUrl($file, $user = null, $version = 0) {
 
         $data = [
             "action" => "download",
@@ -272,6 +305,9 @@ class Preview implements IProvider2 {
         if (!empty($user)) {
             $userId = $user->getUID();
             $data["userId"] = $userId;
+        }
+        if ($version > 0) {
+            $data["version"] = $version;
         }
 
         $hashUrl = $this->crypt->GetHash($data);
@@ -297,18 +333,52 @@ class Preview implements IProvider2 {
             return [null, null, null];
         }
 
-        $owner = $file->getOwner();
-        $path = $file->getPath();
-
         $key = null;
+        $versionNum = 0;
         if ($file instanceof MetaFileVersionNode) {
-            return [null, null, null];
+            if ($this->versionManager->available !== true) {
+                return [null, null, null];
+            }
+
+            $fileVersion = $file->getName();
+            $sourceFileId = $file->getId();
+
+            $storage = $file->getStorage();
+            $path = $file->getContentDispositionFileName();
+
+            $ownerId = $storage->getOwner($path);
+            $owner = $this->userManager->get($ownerId);
+            if ($owner === null) {
+                return [null, null, null];
+            }
+
+            $files = $this->root->getUserFolder($ownerId)->getById($sourceFileId);
+            if (empty($files)) {
+                return [null, null, null];
+            }
+            $file = $files[0];
+
+            $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
+
+            foreach ($versions as $version) {
+                $versionNum = $versionNum + 1;
+
+                $versionId = $version->getRevisionId();
+                if (strcmp($versionId, $fileVersion) === 0) {
+                    $key = $this->fileUtility->getVersionKey($version);
+                    $key = DocumentService::GenerateRevisionId($key);
+
+                    break;
+                }
+            }
         } else {
+            $owner = $file->getOwner();
+
             $key = $this->fileUtility->getKey($file);
             $key = DocumentService::GenerateRevisionId($key);
         }
 
-        $fileUrl = $this->getUrl($file, $owner);
+        $fileUrl = $this->getUrl($file, $owner, $versionNum);
 
         $fileExtension = strtolower(pathinfo($file->getName(), PATHINFO_EXTENSION));
 

@@ -481,14 +481,20 @@ class EditorController extends Controller {
             $historyItem = [
                 "created" => $version->getTimestamp(),
                 "key" => $key,
-                "user" => [
-                    "id" => $this->buildUserId($ownerId),
-                    "name" => $owner->getDisplayName()
-                ],
                 "version" => $versionNum
             ];
 
             $versionId = $version->getRevisionId();
+
+            $author = FileVersions::getAuthor($ownerId, $fileId, $versionId);
+            $authorId = $author !== null ? $author["id"] : $ownerId;
+            $authorName = $author !== null ? $author["name"] : $owner->getDisplayName();
+
+            $historyItem["user"] = [
+                "id" => $this->buildUserId($authorId),
+                "name" => $authorName
+            ];
+
             $historyData = FileVersions::getHistoryData($ownerId, $fileId, $versionId, $prevVersion);
             if ($historyData !== null) {
                 $historyItem["changes"] = $historyData["changes"];
@@ -509,14 +515,21 @@ class EditorController extends Controller {
             "version" => $versionNum + 1
         ];
 
-        if ($owner !== null) {
+        $versionId = $file->getFileInfo()->getMtime();
+
+        $author = FileVersions::getAuthor($ownerId, $fileId, $versionId);
+        if ($author !== null) {
             $historyItem["user"] = [
-                "id" => $this->buildUserId($owner->getUID()),
+                "id" => $this->buildUserId($author["id"]),
+                "name" => $author["name"]
+            ];
+        } else if ($owner !== null) {
+            $historyItem["user"] = [
+                "id" => $this->buildUserId($ownerId),
                 "name" => $owner->getDisplayName()
             ];
         }
 
-        $versionId = $file->getFileInfo()->getMtime();
         $historyData = FileVersions::getHistoryData($ownerId, $fileId, $versionId, $prevVersion);
         if ($historyData !== null) {
             $historyItem["changes"] = $historyData["changes"];

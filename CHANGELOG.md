@@ -2,6 +2,7 @@
 
 ## Added
 - connection test command
+- store author name for version
 
 ## Changed
 - display local time in history

@@ -85,7 +85,7 @@ class Application extends App {
 
         $detector = $container->query(IMimeTypeDetector::class);
         $detector->getAllMappings();
-        $detector->registerType("ott","application/vnd.oasis.opendocument.text-template");
+        $detector->registerType("ott", "application/vnd.oasis.opendocument.text-template");
         $detector->registerType("ots", "application/vnd.oasis.opendocument.spreadsheet-template");
         $detector->registerType("otp", "application/vnd.oasis.opendocument.presentation-template");
 

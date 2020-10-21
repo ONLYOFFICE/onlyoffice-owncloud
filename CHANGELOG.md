@@ -1,5 +1,8 @@
 # Change Log
 
+## Changed
+- display local time in history
+
 ## 6.0.1
 ## Added
 - saving intermediate versions when editing

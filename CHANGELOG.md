@@ -3,6 +3,7 @@
 ## Added
 - connection test command
 - store author name for version
+- generate file preview
 
 ## Changed
 - display local time in history

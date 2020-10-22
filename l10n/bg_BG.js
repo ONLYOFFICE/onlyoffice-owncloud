@@ -55,6 +55,7 @@ OC.L10N.register(
     "Insert image" : "Вмъкване на изображение",
     "Select recipients" : "Изберете получатели",
     "version": "версия",
-    "Keep intermediate versions when editing": "Съхранявайте междинни версии при редактиране"
+    "Keep intermediate versions when editing": "Съхранявайте междинни версии при редактиране",
+    "Generate document preview": "Генериране на визуализация на документ"
 },
 "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");

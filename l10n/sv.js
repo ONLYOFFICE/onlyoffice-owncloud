@@ -68,6 +68,7 @@ OC.L10N.register(
     "You are using public demo ONLYOFFICE Document Server. Please do not store private sensitive data." : "Du använder en offentlig demo ONLYOFFICE Dokumentserver. Lagra inte privat känslig information.",
     "Select tag" : "Välj tagg",
     "version": "verzia",
-    "Disable certificate verification (insecure)": "Använd inte certifikatsverifiering (osäkert)"
+    "Disable certificate verification (insecure)": "Använd inte certifikatsverifiering (osäkert)",
+    "Generate document preview": "Skapa förhandsgranskning av dokument"
 },
 "nplurals=2; plural=(n != 1);");

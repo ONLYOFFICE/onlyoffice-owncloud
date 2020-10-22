@@ -538,7 +538,7 @@ class CallbackController extends Controller {
 
                     if (!$isForcesave
                         && !$prevIsForcesave
-                        && $this->versionManager !== null) {
+                        && $this->versionManager->available) {
                         $changes = null;
                         if (!empty($changesurl)) {
                             $changesurl = $this->config->ReplaceDocumentServerUrlToInternal($changesurl);

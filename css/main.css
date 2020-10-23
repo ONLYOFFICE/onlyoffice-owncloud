@@ -81,6 +81,11 @@ body.onlyoffice-inline #content #app-content {
     opacity: 1;
 }
 
+.onlyoffice-public-open {
+    display: inline-block;
+    margin-top: 10px;
+}
+
 /* AscDesktopEditor */
 .AscDesktopEditor #header {
     display: none;

@@ -33,6 +33,7 @@ OC.L10N.register(
     "Bad Response. Errors: " : "Risposta non corretta. Errori: ",
     "Documentation" : "Documentazione" ,
     "ONLYOFFICE Document Service Location specifies the address of the server with the document services installed. Please change the '<documentserver>' for the server address in the below line.": "ONLYOFFICE Document Service Location specifica l'indirizzo del server con i servizi documenti installati. Modifica il '<documentserver>' con l'indirizzo del server nella riga sottostante.",
+    "Encryption App is enabled, the application cannot work. You can continue working with the application if you enable master key." : "Encryption App è abilitata, l'applicazione non può funzionare. È possibile continuare a lavorare con l'applicazione se è abilitata la chiave master.",
     "Document Editing Service address" : "Indirizzo del Document Editing Service",
     "Advanced server settings" : "Impostazioni avanzate del server",
     "Document Editing Service address for internal requests from the server": "Indirizzo del Document Editing Service per le richieste interne del server",

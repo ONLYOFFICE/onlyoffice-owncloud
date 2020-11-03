@@ -59,7 +59,7 @@ OC.L10N.register(
     "Display the header more compact" : "Kompakten Header anzeigen",
     "Display Feedback & Support menu button" : "Feedback-& Support-Taste anzeigen",
     "Display Help menu button" : "Hilfetaste anzeigen",
-    "Display toolbar tabs" : "Symbolleiste-Registerkarten anzeigen",
+    "Display monochrome toolbar header" : "Monochromen Kopfbereich der Symbolleiste anzeigen",
     "Save as" : "Speichern als",
     "File saved" : "Datei wurde gespeichert",
     "Insert image" : "Bild einfügen",
@@ -69,11 +69,13 @@ OC.L10N.register(
     "The 30-day test period is over, you can no longer connect to demo ONLYOFFICE Document Server." : "Der 30-tägige Testzeitraum ist abgelaufen. Du kannst keine Verbindung mehr zu Demo ONLYOFFICE Document Server herstellen.",
     "You are using public demo ONLYOFFICE Document Server. Please do not store private sensitive data." : "Du verwendest den öffentlichen Demo ONLYOFFICE Document Server. Bitte benutze ihn nicht zum Speichern von Deinen privaten sensiblen Daten.",
     "Select file to compare" : "Datei zum Vergleich auswählen",
+    "Review mode for viewing": "Review-Modus zum Anzeigen",
     "Markup": "Markup",
     "Final": "Endgültig",
     "Original": "Original",
     "version": "version",
     "Disable certificate verification (insecure)": "Zertifikatsüberprüfung deaktivieren (unsicher)",
-    "Keep intermediate versions when editing": "Zwischenversionen bei der Bearbeitung aufbewahren"
+    "Keep intermediate versions when editing": "Zwischenversionen bei der Bearbeitung aufbewahren",
+    "Generate document preview": "Dokumentvorschau generieren"
 },
 "nplurals=2; plural=(n != 1);");

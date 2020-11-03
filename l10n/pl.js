@@ -53,7 +53,6 @@ OC.L10N.register(
     "Display the header more compact" : "Wyświetlaj bardziej kompaktowy nagłówek",
     "Display Feedback & Support menu button" : "Wyświetlaj Opinie i Support",
     "Display Help menu button" : "Wyświetlaj menu pomocy",
-    "Display toolbar tabs" : "Wyświetlaj wstążki",
     "Save as" : "Zapisz jako",
     "File saved" : "Plik zapisany",
     "Insert image" : "Wstaw obraz",
@@ -64,6 +63,7 @@ OC.L10N.register(
     "You are using public demo ONLYOFFICE Document Server. Please do not store private sensitive data." : "Używasz publicznego serwera demo. Nie przechowuj tu prywatnych danych.",
     "Select tag" : "Wybierz tag",
     "version": "wersja",
-    "Disable certificate verification (insecure)": "Wyłącz weryfikację certyfikatu (niebezpieczne)"
+    "Disable certificate verification (insecure)": "Wyłącz weryfikację certyfikatu (niebezpieczne)",
+    "Generate document preview": "Wygeneruj podgląd dokumentu"
 },
 "nplurals=2; plural=(n != 1);");

@@ -19,6 +19,7 @@
 
 namespace OCA\Onlyoffice;
 
+use OCP\AppFramework\QueryException;
 use OCP\Files\FileInfo;
 use OCP\Files\File;
 use OCP\Files\Folder;

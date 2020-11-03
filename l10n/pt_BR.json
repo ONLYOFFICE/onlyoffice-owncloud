@@ -47,6 +47,7 @@
     "review" : "revisar",
     "form filling" : "preenchimento de formularios",
     "comment" : "comente",
+    "custom filter" : "filtro personalizado",
     "download" : "baixar",
     "Server settings" : "Configurações do servidor",
     "Common settings" : "Configurações comuns",
@@ -56,13 +57,23 @@
     "Display the header more compact" : "Exibir o cabeçalho mais compacto",
     "Display Feedback & Support menu button" : "Exibir o botão do menu de feedback e suporte",
     "Display Help menu button" : "Exibir o botão do menu Ajuda",
-    "Display toolbar tabs" : "Exibir guias da barra de ferramentas",
+    "Display monochrome toolbar header" : "Exibir cabeçalho da barra de ferramentas monocromático",
     "Save as" : "Salvar como",
     "File saved" : "O arquivo foi salvo",
     "Insert image" : "Inserir imagem",
     "Select recipients" : "Selecione os destinatários",
+    "Connect to demo ONLYOFFICE Document Server" : "Conectar ao Servidor de documentos de demonstração do ONLYOFFICE",
+    "This is a public test server, please do not use it for private sensitive data. The server will be available during a 30-day period." : "Este é um servidor de teste público, não o use para dados confidenciais. O servidor estará disponível por um período de 30 dias.",
+    "The 30-day test period is over, you can no longer connect to demo ONLYOFFICE Document Server." : "O período de teste de 30 dias acabou, você não pode mais se conectar ao Servidor de documentos de demonstração do ONLYOFFICE",
+    "You are using public demo ONLYOFFICE Document Server. Please do not store private sensitive data." : "Você está usando o Servidor de documentos de demonstração pública. Não armazene dados confidenciais.",
     "Select file to compare" : "Selecionar arquivo para comparar",
+    "Review mode for viewing": "Modo de revisão para visualização",
+    "Markup": "Markup",
+    "Final": "Final",
+    "Original": "Original",
     "version": "versão",
-    "Disable certificate verification (insecure)": "Desativar a verificação do certificado (inseguro)"
+    "Disable certificate verification (insecure)": "Desativar a verificação do certificado (inseguro)",
+    "Keep intermediate versions when editing": "Manter versões intermediárias ao editar",
+    "Generate document preview": "Gerar visualização de documentos"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -57,7 +57,6 @@ OC.L10N.register(
     "Display the header more compact" : "Visa kompakt sidhuvud",
     "Display Feedback & Support menu button" : "Visa Feedback & Support i menyn",
     "Display Help menu button" : "Visa hjälp i menyn",
-    "Display toolbar tabs" : "Visa flikar i verktygsfältet",
     "Save as" : "Spara som",
     "File saved" : "Filen har sparats",
     "Insert image" : "Infoga bild",
@@ -68,6 +67,7 @@ OC.L10N.register(
     "You are using public demo ONLYOFFICE Document Server. Please do not store private sensitive data." : "Du använder en offentlig demo ONLYOFFICE Dokumentserver. Lagra inte privat känslig information.",
     "Select tag" : "Välj tagg",
     "version": "verzia",
-    "Disable certificate verification (insecure)": "Använd inte certifikatsverifiering (osäkert)"
+    "Disable certificate verification (insecure)": "Använd inte certifikatsverifiering (osäkert)",
+    "Generate document preview": "Skapa förhandsgranskning av dokument"
 },
 "nplurals=2; plural=(n != 1);");

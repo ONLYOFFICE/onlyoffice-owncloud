@@ -98,6 +98,12 @@
         </p>
 
         <p>
+            <input type="checkbox" class="checkbox" id="onlyofficePreview"
+                <?php if ($_["preview"]) { ?>checked="checked"<?php } ?> />
+            <label for="onlyofficePreview"><?php p($l->t("Generate document preview")) ?></label>
+        </p>
+
+        <p>
             <input type="checkbox" class="checkbox" id="onlyofficeSameTab"
                 <?php if ($_["sameTab"]) { ?>checked="checked"<?php } ?> />
             <label for="onlyofficeSameTab"><?php p($l->t("Open file in the same tab")) ?></label>
@@ -178,8 +184,8 @@
 
         <p>
             <input type="checkbox" class="checkbox" id="onlyofficeToolbarNoTabs"
-                <?php if (!$_["toolbarNoTabs"]) { ?>checked="checked"<?php } ?> />
-            <label for="onlyofficeToolbarNoTabs"><?php p($l->t("Display toolbar tabs")) ?></label>
+                <?php if ($_["toolbarNoTabs"]) { ?>checked="checked"<?php } ?> />
+            <label for="onlyofficeToolbarNoTabs"><?php p($l->t("Display monochrome toolbar header")) ?></label>
         </p>
 
         <p class="onlyoffice-header">

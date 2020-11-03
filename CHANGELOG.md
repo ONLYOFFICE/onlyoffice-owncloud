@@ -1,5 +1,15 @@
 # Change Log
 
+## 6.1.1
+## Added
+- connection test command
+- store author name for version
+- generate file preview
+- Italian translation
+
+## Changed
+- display local time in history
+
 ## 6.0.1
 ## Added
 - saving intermediate versions when editing

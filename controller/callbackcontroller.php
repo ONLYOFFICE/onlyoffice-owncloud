@@ -519,11 +519,9 @@ class CallbackController extends Controller {
                     $isForcesave = $status === self::TrackerStatus_ForceSave || $status === self::TrackerStatus_CorruptedForceSave;
 
                     if ($file->getStorage()->instanceOfStorage(SharingExternalStorage::class)) {
-                        if ($isForcesave) {
-                            $isLock = KeyManager::lockFederatedKey($file, $isForcesave, null);
-                            if (!$isLock) {
-                                break;
-                            }
+                        $isLock = KeyManager::lockFederatedKey($file, $isForcesave, null);
+                        if ($isForcesave && !$isLock) {
+                            break;
                         }
                     } else {
                         KeyManager::lock($fileId, $isForcesave);

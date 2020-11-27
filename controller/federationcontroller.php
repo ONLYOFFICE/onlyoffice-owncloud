@@ -28,6 +28,8 @@ use OCP\Share\IManager;
 
 use OC\OCS\Result;
 
+use OCA\Files_Sharing\External\Storage as SharingExternalStorage;
+
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\DocumentService;
 use OCA\Onlyoffice\FileUtility;
@@ -135,9 +137,16 @@ class FederationController extends OCSController {
 
         $fileId = $file->getId();
 
-        KeyManager::lock($fileId, $lock);
-        if (!empty($fs)) {
-            KeyManager::setForcesave($fileId, $fs);
+        if ($file->getStorage()->instanceOfStorage(SharingExternalStorage::class)) {
+            $isLock = KeyManager::lockFederatedKey($file, $lock, $fs);
+            if (!$isLock) {
+                return new Result(["error" => "Failed request"]);
+            }
+        } else {
+            KeyManager::lock($fileId, $lock);
+            if (!empty($fs)) {
+                KeyManager::setForcesave($fileId, $fs);
+            }
         }
 
         $this->logger->debug("Federated request lock for " . $fileId, ["app" => $this->appName]);

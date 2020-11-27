@@ -31,6 +31,7 @@ use OC\OCS\Result;
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\DocumentService;
 use OCA\Onlyoffice\FileUtility;
+use OCA\Onlyoffice\KeyManager;
 
 /**
  * OCS handler
@@ -108,5 +109,34 @@ class FederationController extends OCSController {
         $this->logger->debug("Federated request get for " . $file->getId() . " key $key", ["app" => $this->appName]);
 
         return new Result(["key" => $key]);
+    }
+
+    /**
+     * Lock the origin document key for editor
+     *
+     * @param string $shareToken - access token
+     * @param string $path - file path
+     * @param bool $lock - status
+     *
+     * @return Result
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * @PublicPage
+     */
+    public function keylock($shareToken, $path, $lock) {
+        list ($file, $error, $share) = $this->fileUtility->getFileByToken(null, $shareToken, $path);
+
+        if (isset($error)) {
+            $this->logger->error("Federated getFileByToken: $error", ["app" => $this->appName]);
+            return new Result(["error" => $error]);
+        }
+
+        $fileId = $file->getId();
+
+        KeyManager::lock($fileId, $lock);
+
+        $this->logger->debug("Federated request lock for " . $fileId, ["app" => $this->appName]);
+        return new Result();
     }
 }

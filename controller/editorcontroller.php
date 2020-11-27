@@ -988,11 +988,6 @@ class EditorController extends Controller {
 
         $params = $this->setCustomization($params);
 
-        if ($file->getStorage()->instanceOfStorage(SharingExternalStorage::class)) {
-            //otherwise forcesave will delete the key
-            $params["editorConfig"]["customization"]["forcesave"] = false;
-        }
-
         if ($this->config->UseDemo()) {
             $params["editorConfig"]["tenant"] = $this->config->GetSystemValue("instanceid", true);
         }

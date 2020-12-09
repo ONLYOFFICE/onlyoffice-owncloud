@@ -1,5 +1,9 @@
 # Change Log
 
+## 6.2.1
+## Changed
+- the ability to use forcesave for federated share files
+
 ## 6.1.1
 ## Added
 - connection test command

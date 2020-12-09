@@ -1,7 +1,8 @@
 # Change Log
 
+## 6.2.1
 ## Changed
-- the ability to forcesave a file when federated share
+- the ability to use forcesave for federated share files
 
 ## 6.1.1
 ## Added

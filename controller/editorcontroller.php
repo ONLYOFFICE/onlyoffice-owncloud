@@ -40,6 +40,8 @@ use OCP\Share\IManager;
 use OCA\Files\Helper;
 use OCA\Files_Sharing\External\Storage as SharingExternalStorage;
 
+use OC\Lock\Persistent\LockManager;
+
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\DocumentService;
@@ -116,6 +118,13 @@ class EditorController extends Controller {
     private $versionManager;
 
     /**
+     * File lock manager
+     *
+     * @var LockManager
+    */
+    private $lockManager;
+
+    /**
      * Mobile regex from https://github.com/ONLYOFFICE/CommunityServer/blob/v9.1.1/web/studio/ASC.Web.Studio/web.appsettings.config#L35
      */
     const USER_AGENT_MOBILE = "/android|avantgo|playbook|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od|ad)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\\/|plucker|pocket|psp|symbian|treo|up\\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i";
@@ -132,6 +141,7 @@ class EditorController extends Controller {
      * @param Crypt $crypt - hash generator
      * @param IManager $shareManager - Share manager
      * @param ISession $ISession - Session
+     * @param LockManager $lockManager - Lock manager
      */
     public function __construct($AppName,
                                     IRequest $request,
@@ -143,7 +153,8 @@ class EditorController extends Controller {
                                     AppConfig $config,
                                     Crypt $crypt,
                                     IManager $shareManager,
-                                    ISession $session
+                                    ISession $session,
+                                    LockManager $lockManager
                                     ) {
         parent::__construct($AppName, $request);
 
@@ -154,6 +165,7 @@ class EditorController extends Controller {
         $this->logger = $logger;
         $this->config = $config;
         $this->crypt = $crypt;
+        $this->lockManager = $lockManager;
 
         $this->versionManager = new VersionManager($AppName, $root);
 
@@ -904,9 +916,30 @@ class EditorController extends Controller {
             }
         }
 
+        $isPersistentLock = false;
+        if ($version < 1
+            && (\OC::$server->getConfig()->getAppValue("files", "enable_lock_file_action", "no") === "yes")) {
+
+            $storageId = $fileStorage->getStorageCache()->getNumericId();
+            $targetUserId = !empty($userId) ? $userId : $file->getOwner()->getUid();
+            $userFolder = $this->root->get($targetUserId);
+            $path = substr($userFolder->getRelativePath($file->getPath()), 1);
+
+            $locks = $this->lockManager->getLocks($storageId, $path, false);
+            if (count($locks) > 0) {
+                $activeLock = $locks[0];
+                $lockOwner = explode(' ', trim($activeLock->getOwner()))[0];
+                if ($userId !== $lockOwner) {
+                    $isPersistentLock = true;
+                    $this->logger->debug("File $fileId is locked by $lockOwner", ["app" => $this->appName]);
+                }
+            }
+        }
+
         $canEdit = isset($format["edit"]) && $format["edit"];
         $editable = $version < 1
                     && $file->isUpdateable()
+                    && !$isPersistentLock
                     && (empty($shareToken) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE);
         $params["document"]["permissions"]["edit"] = $editable;
         if (($editable || $restrictedEditing) && $canEdit) {

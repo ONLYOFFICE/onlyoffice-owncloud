@@ -458,10 +458,11 @@ class CallbackController extends Controller {
                         \OC_User::setUserId($userId);
                     } else {
                         if (empty($shareToken)) {
-                            $this->logger->debug("Track without token: $fileId status $status", ["app" => $this->appName]);
-                        } else {
-                            $this->logger->debug("Track $fileId by token for $userId", ["app" => $this->appName]);
+                            $this->logger->error("Track without token: $fileId status $status", ["app" => $this->appName]);
+                            return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
                         }
+
+                        $this->logger->debug("Track $fileId by token for $userId", ["app" => $this->appName]);
                     }
 
                     // owner of file from the callback link

@@ -38,7 +38,6 @@ use OCP\IUserSession;
 use OCP\Share\IManager;
 
 use OCA\Files\Helper;
-use OCA\Files_Sharing\External\Storage as SharingExternalStorage;
 
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;

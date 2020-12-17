@@ -224,12 +224,15 @@ class CallbackController extends Controller {
 
             if (isset($hashData->userId)) {
                 $userId = $hashData->userId;
-                \OC_User::setUserId($userId);
+
+                $user = $this->userManager->get($userId);
+                if (!empty($user)) {
+                    \OC_User::setUserId($userId);
+                }
 
                 if ($this->config->checkEncryptionModule() === "master") {
                     \OC_User::setIncognitoMode(true);
                 } else {
-                    $user = $this->userManager->get($userId);
                     if (!empty($user)) {
                         \OC_Util::setupFS($userId);
                     }

@@ -452,10 +452,11 @@ class CallbackController extends Controller {
 
                     // author of the latest changes
                     $userId = $this->parseUserId($users[0]);
-                    \OC_User::setUserId($userId);
 
                     $user = $this->userManager->get($userId);
-                    if (empty($user)) {
+                    if (!empty($user)) {
+                        \OC_User::setUserId($userId);
+                    } else {
                         if (empty($shareToken)) {
                             $this->logger->debug("Track without token: $fileId status $status", ["app" => $this->appName]);
                         } else {

@@ -1,5 +1,8 @@
 # Change Log
 
+## Added
+- viewing a locked file
+
 ## 6.2.1
 ## Changed
 - the ability to use forcesave for federated share files

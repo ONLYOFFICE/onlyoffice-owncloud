@@ -28,6 +28,7 @@ use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\ForbiddenException;
 use OCP\Files\IRootFolder;
+use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IRequest;
@@ -903,9 +904,26 @@ class EditorController extends Controller {
             }
         }
 
+        $isPersistentLock = false;
+        if ($version < 1
+            && (\OC::$server->getConfig()->getAppValue("files", "enable_lock_file_action", "no") === "yes")
+            && $fileStorage->instanceOfStorage(IPersistentLockingStorage::class)) {
+
+            $locks = $fileStorage->getLocks($file->getFileInfo()->getInternalPath(), false);
+            if (count($locks) > 0) {
+                $activeLock = $locks[0];
+                $lockOwner = explode(' ', trim($activeLock->getOwner()))[0];
+                if ($userId !== $lockOwner) {
+                    $isPersistentLock = true;
+                    $this->logger->debug("File $fileId is locked by $lockOwner", ["app" => $this->appName]);
+                }
+            }
+        }
+
         $canEdit = isset($format["edit"]) && $format["edit"];
         $editable = $version < 1
                     && $file->isUpdateable()
+                    && !$isPersistentLock
                     && (empty($shareToken) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE);
         $params["document"]["permissions"]["edit"] = $editable;
         if (($editable || $restrictedEditing) && $canEdit) {

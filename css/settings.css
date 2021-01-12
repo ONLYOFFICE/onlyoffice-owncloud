@@ -60,3 +60,7 @@
     -moz-column-width: 140px;
     -webkit-column-width: 140px;
 }
+#personal-show + label{
+    margin-top: -25px;
+    margin-left: 230px;
+}

@@ -201,6 +201,13 @@ class AppConfig {
     private $_settingsError = "settings_error";
 
     /**
+     * The config key for limit thumbnail size
+     *
+     * @var string
+     */
+    public $_limitThumbSize = "limit_thumb_size";
+
+    /**
      * The config key for the customer
      *
      * @var string
@@ -856,6 +863,21 @@ class AppConfig {
         }
 
         return $this->GetSystemValue($this->_verification);
+    }
+
+    /**
+     * Get the limit on size document when generating thumbnails
+     *
+     * @return int
+     */
+    public function GetLimitThumbSize() {
+        $limitSize = (integer)$this->GetSystemValue($this->_limitThumbSize);
+
+        if (!empty($limitSize)) {
+            return $limitSize;
+        }
+
+        return 100*1024*1024;
     }
 
     /**

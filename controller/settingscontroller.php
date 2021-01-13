@@ -113,6 +113,7 @@ class SettingsController extends Controller {
             "formats" => $this->config->FormatsSetting(),
             "sameTab" => $this->config->GetSameTab(),
             "preview" => $this->config->GetPreview(),
+            "versionHistory" => $this->config->GetVersionHistory(),
             "encryption" => ($this->config->checkEncryptionModule() === true),
             "limitGroups" => $this->config->GetLimitGroups(),
             "chat" => $this->config->GetCustomizationChat(),
@@ -190,6 +191,7 @@ class SettingsController extends Controller {
      * @param array $editFormats - editable formats array
      * @param bool $sameTab - open in the same tab
      * @param bool $preview - generate preview files
+     * @param bool $versionHistory - keep version history
      * @param array $limitGroups - list of groups
      * @param bool $chat - display chat
      * @param bool $compactHeader - display compact header
@@ -205,6 +207,7 @@ class SettingsController extends Controller {
                                     $editFormats,
                                     $sameTab,
                                     $preview,
+                                    $versionHistory,
                                     $limitGroups,
                                     $chat,
                                     $compactHeader,
@@ -219,6 +222,7 @@ class SettingsController extends Controller {
         $this->config->SetEditableFormats($editFormats);
         $this->config->SetSameTab($sameTab);
         $this->config->SetPreview($preview);
+        $this->config->SetVersionHistory($versionHistory);
         $this->config->SetLimitGroups($limitGroups);
         $this->config->SetCustomizationChat($chat);
         $this->config->SetCustomizationCompactHeader($compactHeader);

@@ -109,6 +109,12 @@
             <label for="onlyofficeSameTab"><?php p($l->t("Open file in the same tab")) ?></label>
         </p>
 
+        <p>
+            <input type="checkbox" class="checkbox" id="onlyofficeVersionHistory"
+                <?php if ($_["versionHistory"]) { ?>checked="checked"<?php } ?> />
+            <label for="onlyofficeVersionHistory"><?php p($l->t("Keep document version history")) ?></label>
+        </p>
+
         <p class="onlyoffice-header"><?php p($l->t("The default application for opening the format")) ?></p>
         <div class="onlyoffice-exts">
             <?php foreach ($_["formats"] as $format => $setting) { ?>

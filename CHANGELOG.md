@@ -2,6 +2,8 @@
 
 ## Added
 - viewing a locked file
+- configuring version storage
+- clearing history data
 
 ## 6.2.1
 ## Changed

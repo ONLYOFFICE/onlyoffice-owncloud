@@ -29,6 +29,7 @@ use OCP\IURLGenerator;
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\DocumentService;
+use OCA\Onlyoffice\FileVersions;
 
 /**
  * Settings controller for the administration page
@@ -231,6 +232,19 @@ class SettingsController extends Controller {
         $this->config->SetCustomizationHelp($help);
         $this->config->SetCustomizationToolbarNoTabs($toolbarNoTabs);
         $this->config->SetCustomizationReviewDisplay($reviewDisplay);
+
+        return [
+            ];
+    }
+
+    /**
+     * Clear all version history
+     *
+     * @return array
+     */
+    public function ClearHistory() {
+
+        FileVersions::clearHistory();
 
         return [
             ];

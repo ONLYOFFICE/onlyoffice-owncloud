@@ -2,6 +2,7 @@
 
 ## Added
 - viewing a locked file
+- thumbnails for small files only
 
 ## 6.2.1
 ## Changed

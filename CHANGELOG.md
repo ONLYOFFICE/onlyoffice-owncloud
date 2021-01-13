@@ -2,6 +2,7 @@
 
 ## Added
 - viewing a locked file
+- hide secret key in settings
 
 ## 6.2.1
 ## Changed

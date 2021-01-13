@@ -100,7 +100,7 @@
         <p>
             <input type="checkbox" class="checkbox" id="onlyofficePreview"
                 <?php if ($_["preview"]) { ?>checked="checked"<?php } ?> />
-            <label for="onlyofficePreview"><?php p($l->t("Generate document preview")) ?></label>
+            <label for="onlyofficePreview"><?php p($l->t("Generate document preview")) ?> <?php p($l->t("(take up disk space)")) ?></label>
         </p>
 
         <p>
@@ -112,7 +112,7 @@
         <p>
             <input type="checkbox" class="checkbox" id="onlyofficeVersionHistory"
                 <?php if ($_["versionHistory"]) { ?>checked="checked"<?php } ?> />
-            <label for="onlyofficeVersionHistory"><?php p($l->t("Keep document version history")) ?></label>
+            <label for="onlyofficeVersionHistory"><?php p($l->t("Keep document version history")) ?> <?php p($l->t("(take up disk space)")) ?></label>
         </p>
 
         <p class="onlyoffice-header"><?php p($l->t("The default application for opening the format")) ?></p>

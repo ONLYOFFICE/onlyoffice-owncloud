@@ -70,6 +70,7 @@ OC.L10N.register(
     "You are using public demo ONLYOFFICE Document Server. Please do not store private sensitive data." : "Używasz publicznego serwera demo. Nie przechowuj tu prywatnych danych.",
     "version": "wersja",
     "Disable certificate verification (insecure)": "Wyłącz weryfikację certyfikatu (niebezpieczne)",
-    "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "Skorzystaj z ONLYOFFICE, aby wygenerować podgląd dokumentu (zajmie to miejsce na dysku)"
+    "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "Skorzystaj z ONLYOFFICE, aby wygenerować podgląd dokumentu (zajmie to miejsce na dysku)",
+    "Keep metadata for each version once the document is edited (it will take up disk space)": "Zachowaj metadane dla każdej wersji, gdy dokument jest edytowany (zajmie to miejsce na dysku)"
 },
 "nplurals=2; plural=(n != 1);");

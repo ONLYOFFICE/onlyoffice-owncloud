@@ -3,6 +3,9 @@
 ## Added
 - viewing a locked file
 
+## Changed
+- do not store history for federated share files
+
 ## 6.2.1
 ## Changed
 - the ability to use forcesave for federated share files

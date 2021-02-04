@@ -25,6 +25,8 @@ use OC\Files\View;
 use OCP\Files\FileInfo;
 use OCP\IUser;
 
+use OCA\Files_Sharing\External\Storage as SharingExternalStorage;
+
 /**
  * File versions
  *
@@ -245,12 +247,20 @@ class FileVersions {
     public static function saveHistory($fileInfo, $history, $changes, $prevVersion) {
         $logger = \OC::$server->getLogger();
 
-        $owner = $fileInfo->getOwner();
+        if ($fileInfo === null) {
+            return;
+        }
 
+        $owner = $fileInfo->getOwner();
         if ($owner === null) {
             return;
         }
+
         if (empty($history) || empty($changes)) {
+            return;
+        }
+
+        if ($fileInfo->getStorage()->instanceOfStorage(SharingExternalStorage::class)) {
             return;
         }
 
@@ -351,6 +361,10 @@ class FileVersions {
 
         $owner = $fileInfo->getOwner();
         if ($owner === null) {
+            return;
+        }
+
+        if ($fileInfo->getStorage()->instanceOfStorage(SharingExternalStorage::class)) {
             return;
         }
 

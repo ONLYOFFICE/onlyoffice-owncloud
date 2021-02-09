@@ -3,6 +3,8 @@
 ## Added
 - viewing a locked file
 - hide secret key in settings
+- configuring version storage
+- clearing history data
 
 ## Changed
 - thumbnails for small files only

@@ -31,6 +31,7 @@
     "Bad Response. Errors: " : "Zła odpowiedź. Błędy:",
     "Documentation" : "Dokumentacja",
     "ONLYOFFICE Document Service Location specifies the address of the server with the document services installed. Please change the '<documentserver>' for the server address in the below line." : "Lokacja Usługi Dokumentów ONLYOFFICE to adres serwera na którym Usługi Dokumentów są zainstalowe. Proszę zmienić '<documentserver>' na adres poniżej.",
+    "Encryption App is enabled, the application cannot work. You can continue working with the application if you enable master key." : "Aplikacja nie działa, ponieważ włączone jest aplikacja Encryption App. Możesz kontynuować pracę z aplikacją, jeśli włączysz klucz master key.",
     "Document Editing Service address" : "Adres Usługi Edycji Dokumentów",
     "Advanced server settings" : "Zaawansowane ustawienia serwera",
     "Document Editing Service address for internal requests from the server" : "Adres Usługi Edycji Dokumentów dla zapytań wewnętrznych",
@@ -43,6 +44,11 @@
     "Save" : "Zapisz",
     "Mixed Active Content is not allowed. HTTPS address for Document Server is required." : "Aktywna Zawartość Mieszana nie jest dozwolona. Adres HTTPS jest wymagany dla Serwera Dokumentów.",
     "Restrict access to editors to following groups" : "Ogranicz dostęp do edytorów dla tych grup",
+    "review" : "recenzja",
+    "form filling" : "wypełnianie formularza",
+    "comment" : "komentarz",
+    "custom filter" : "niestandardowy filtr",
+    "download" : "pobierz",
     "Server settings" : "Ustawienia serwera",
     "Common settings" : "Ustawienia ogólne",
     "Editor customization settings" : "Ustawienia edytorów",
@@ -51,6 +57,7 @@
     "Display the header more compact" : "Wyświetlaj bardziej kompaktowy nagłówek",
     "Display Feedback & Support menu button" : "Wyświetlaj Opinie i Support",
     "Display Help menu button" : "Wyświetlaj menu pomocy",
+    "Display monochrome toolbar header" : "Wyświetl monochromatyczny nagłówek paska narzędzi",
     "Save as" : "Zapisz jako",
     "File saved" : "Plik zapisany",
     "Insert image" : "Wstaw obraz",
@@ -59,9 +66,8 @@
     "This is a public test server, please do not use it for private sensitive data. The server will be available during a 30-day period." : "To jest publiczny testowy serwer, proszę nie używać go do prywatnych danych. Serwer będzie dostępny przez 30 dni.",
     "The 30-day test period is over, you can no longer connect to demo ONLYOFFICE Document Server." : "Upłyneło 30 dni, nie możesz się już łączyć z serwerem demo.",
     "You are using public demo ONLYOFFICE Document Server. Please do not store private sensitive data." : "Używasz publicznego serwera demo. Nie przechowuj tu prywatnych danych.",
-    "Select tag" : "Wybierz tag",
     "version": "wersja",
     "Disable certificate verification (insecure)": "Wyłącz weryfikację certyfikatu (niebezpieczne)",
-    "Generate document preview": "Wygeneruj podgląd dokumentu"
+    "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "Skorzystaj z ONLYOFFICE, aby wygenerować podgląd dokumentu (zajmie to miejsce na dysku)"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

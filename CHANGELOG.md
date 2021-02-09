@@ -4,6 +4,9 @@
 - viewing a locked file
 - hide secret key in settings
 
+## Changed
+- thumbnails for small files only
+
 ## 6.2.1
 ## Changed
 - the ability to use forcesave for federated share files

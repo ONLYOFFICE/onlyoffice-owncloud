@@ -179,6 +179,34 @@
                 $("#onlyofficeSecret").attr("type", "password");
             }
         });
+
+        $("#onlyofficeAddTemplate").change(function () {
+            var file = this.files[0];
+            var data = new FormData();
+
+            data.append("file", file);
+
+            $(".section-onlyoffice").addClass("icon-loading");
+            $.ajax({
+                method: "POST",
+                url: OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/settings/template"),
+                data: data,
+                processData: false,
+                contentType: false,
+                success: function onSuccess(response) {
+                    $(".section-onlyoffice").removeClass("icon-loading");
+                    if (response) {
+                        var message = response.error ? t(OCA.Onlyoffice.AppName, "Error") + ": " + response.error
+                                                     : t(OCA.Onlyoffice.AppName, "Template successfully added");
+
+                        OC.Notification.show(message, {
+                            type: response.error ? "error" : null,
+                            timeout: 3
+                        });
+                    }
+                }
+            });
+        });
     });
 
 })(jQuery, OC);

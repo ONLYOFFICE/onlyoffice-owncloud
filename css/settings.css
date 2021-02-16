@@ -64,3 +64,11 @@
     margin-top: -25px;
     margin-left: 230px;
 }
+.icon-add {
+    opacity: 0.5;
+    padding-left: 35px;
+    padding-bottom: 5px;
+}
+.icon-add:hover {
+    opacity: 0.7;
+}

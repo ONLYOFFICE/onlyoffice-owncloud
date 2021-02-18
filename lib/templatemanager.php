@@ -41,4 +41,46 @@ class TemplateManager {
 
         return $templateDir;
     }
+
+    /**
+     * Get global templates
+     *
+     * @return array
+     */
+    public static function GetGlobalTemplates() {
+        $templates = [];
+        $templateDir = self::GetGlobalTemplateDir();
+
+        $templatesList = $templateDir->getDirectoryListing();
+        foreach ($templatesList as $templateItem) {
+            $template = [
+                "id" => $templateItem->getId(),
+                "name" => $templateItem->getName(),
+                "type" => self::GetTypeTemplate($templateItem->getMimeType())
+            ];
+            array_push($templates, $template);
+        }
+
+        return $templates;
+    }
+
+    /**
+     * Get type template from mimetype
+     * 
+     * @param string $mime - mimetype 
+     *
+     * @return string
+     */
+    public static function GetTypeTemplate($mime) {
+        switch($mime) {
+            case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                return "document";
+            case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+                return "spreadsheet";
+            case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+                return "presentation";
+        }
+
+        return "";
+    }
 }

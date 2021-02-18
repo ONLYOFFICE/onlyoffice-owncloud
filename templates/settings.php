@@ -227,5 +227,17 @@
             <input id="onlyofficeAddTemplate" type="file" class="hidden-visually" />
             <label for="onlyofficeAddTemplate" class="icon-add" title="<?php p($l->t("Add a new template")) ?>"></label>
         </h3>
+        <?php foreach ($_["templates"] as $template) { ?>
+            <div data-id=<?php echo $template["id"] ?> class="template-item" >
+                <div class="thumbnail" >
+                    <img src= <?php echo "/core/img/filetypes/x-office-" . $template["type"] . ".svg" ?> />
+                </div>
+                <div class="template-name">
+                    <p>
+                        <?php echo $template["name"] ?>
+                    </p>
+                </div>
+            </div>
+        <?php } ?>
     </div>
 </div>

@@ -125,7 +125,8 @@ class SettingsController extends Controller {
             "help" => $this->config->GetCustomizationHelp(),
             "toolbarNoTabs" => $this->config->GetCustomizationToolbarNoTabs(),
             "successful" => $this->config->SettingsAreSuccessful(),
-            "reviewDisplay" => $this->config->GetCustomizationReviewDisplay()
+            "reviewDisplay" => $this->config->GetCustomizationReviewDisplay(),
+            "templates" => $this->GetGlobalTemplates()
         ];
         return new TemplateResponse($this->appName, "settings", $data, "blank");
     }
@@ -284,5 +285,16 @@ class SettingsController extends Controller {
         return [
             "error" => $this->trans->t("Invalid file provided")
         ];
+    }
+
+    /**
+     * Get global templates
+     *
+     * @return array
+     */
+    public function GetGlobalTemplates() {
+        $templates = TemplateManager::GetGlobalTemplates();
+
+        return $templates;
     }
 }

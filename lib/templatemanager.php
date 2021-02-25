@@ -29,6 +29,20 @@ use OCP\Files\Folder;
 class TemplateManager {
 
     /**
+     * Application name
+     *
+     * @var string
+     */
+    private static $appName = "onlyoffice";
+
+    /**
+     * Template folder name
+     *
+     * @var string
+     */
+    private static $templateFolderName = "template";
+
+    /**
      * Get global template directory
      *
      * @return Folder
@@ -36,8 +50,8 @@ class TemplateManager {
     public static function GetGlobalTemplateDir() {
         $rootFolder = \OC::$server->getRootFolder();
 
-        $appDir = $rootFolder->nodeExists("onlyoffice") ? $rootFolder->get("onlyoffice") : $rootFolder->newFolder("onlyoffice");
-        $templateDir = $appDir->nodeExists("template") ? $appDir->get("template") : $appDir->newFolder("template");
+        $appDir = $rootFolder->nodeExists(self::$appName) ? $rootFolder->get(self::$appName) : $rootFolder->newFolder(self::$appName);
+        $templateDir = $appDir->nodeExists(self::$templateFolderName) ? $appDir->get(self::$templateFolderName) : $appDir->newFolder(self::$templateFolderName);
 
         return $templateDir;
     }
@@ -62,6 +76,34 @@ class TemplateManager {
         }
 
         return $templates;
+    }
+
+    /**
+     * Get template content
+     * 
+     * @param string $templateId - identificator file template
+     * 
+     * @return string
+     */
+    public static function GetTemplate($templateId) {
+        $logger = \OC::$server->getLogger();
+
+        $templateDir = self::GetGlobalTemplateDir();
+        try {
+            $template = $templateDir->getById($templateId);
+        } catch(\Exception $e) {
+            $logger->logException($e, ["message" => "GetTemplate: $templateId", "app" => self::$appName]);
+            return null;
+        }
+
+        if (empty($template)) {
+            $logger->info("Template not found: $templateId", ["app" => self::$appName]);
+            return null;
+        }
+
+        $content = $template[0]->getContent();
+
+        return $content;
     }
 
     /**

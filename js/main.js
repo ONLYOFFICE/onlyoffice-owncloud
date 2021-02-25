@@ -26,7 +26,7 @@
 
     OCA.Onlyoffice.setting = {};
 
-    OCA.Onlyoffice.CreateFile = function (name, fileList) {
+    OCA.Onlyoffice.CreateFile = function (name, fileList, templateId) {
         var dir = fileList.getCurrentDirectory();
 
         if (!OCA.Onlyoffice.setting.sameTab || OCA.Onlyoffice.Desktop) {
@@ -38,6 +38,10 @@
             name: name,
             dir: dir
         };
+
+        if (templateId) {
+            createData.templateId = templateId;
+        }
 
         if ($("#isPublic").val()) {
             createData.shareToken = encodeURIComponent($("#sharingToken").val());
@@ -291,7 +295,11 @@
                 iconClass: "icon-onlyoffice-new-docx",
                 fileType: "docx",
                 actionHandler: function (name) {
-                    OCA.Onlyoffice.CreateFile(name + ".docx", fileList);
+                    OCA.Onlyoffice.OpenTemplatePicker(name, ".docx", (isTemplate) => {
+                        if (!isTemplate) {
+                            OCA.Onlyoffice.CreateFile(name + ".docx", fileList);
+                        }
+                    });
                 }
             });
 
@@ -302,7 +310,11 @@
                 iconClass: "icon-onlyoffice-new-xlsx",
                 fileType: "xlsx",
                 actionHandler: function (name) {
-                    OCA.Onlyoffice.CreateFile(name + ".xlsx", fileList);
+                    OCA.Onlyoffice.OpenTemplatePicker(name, ".xlsx", (isTemplate) => {
+                        if (!isTemplate) {
+                            OCA.Onlyoffice.CreateFile(name + ".xlsx", fileList);
+                        }
+                    });
                 }
             });
 
@@ -313,7 +325,11 @@
                 iconClass: "icon-onlyoffice-new-pptx",
                 fileType: "pptx",
                 actionHandler: function (name) {
-                    OCA.Onlyoffice.CreateFile(name + ".pptx", fileList);
+                    OCA.Onlyoffice.OpenTemplatePicker(name, ".pptx", (isTemplate) => {
+                        if (!isTemplate) {
+                            OCA.Onlyoffice.CreateFile(name + ".pptx", fileList);
+                        }
+                    });
                 }
             });
         }

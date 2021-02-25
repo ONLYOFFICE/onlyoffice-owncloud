@@ -46,6 +46,7 @@ use OCA\Onlyoffice\DocumentService;
 use OCA\Onlyoffice\FileUtility;
 use OCA\Onlyoffice\VersionManager;
 use OCA\Onlyoffice\FileVersions;
+use OCA\Onlyoffice\TemplateManager;
 
 /**
  * Controller with the main functions
@@ -165,6 +166,7 @@ class EditorController extends Controller {
      *
      * @param string $name - file name
      * @param string $dir - folder path
+     * @param string $templateId - file identifier
      * @param string $shareToken - access token
      *
      * @return array
@@ -172,7 +174,7 @@ class EditorController extends Controller {
      * @NoAdminRequired
      * @PublicPage
      */
-    public function create($name, $dir, $shareToken = null) {
+    public function create($name, $dir, $templateId = null, $shareToken = null) {
         $this->logger->debug("Create: $name", ["app" => $this->appName]);
 
         if (empty(shareToken) && !$this->config->isUserAllowedToUse()) {
@@ -211,17 +213,22 @@ class EditorController extends Controller {
             return ["error" => $this->trans->t("You don't have enough permission to create")];
         }
 
-        $ext = strtolower("." . pathinfo($name, PATHINFO_EXTENSION));
+        if (!empty($templateId)) {
+            $template = TemplateManager::GetTemplate($templateId);
+        } else {
+            $ext = strtolower("." . pathinfo($name, PATHINFO_EXTENSION));
 
-        $lang = \OC::$server->getL10NFactory("")->get("")->getLanguageCode();
+            $lang = \OC::$server->getL10NFactory("")->get("")->getLanguageCode();
 
-        $templatePath = $this->getTemplatePath($lang, $ext);
-        if (!file_exists($templatePath)) {
-            $lang = "en";
             $templatePath = $this->getTemplatePath($lang, $ext);
+            if (!file_exists($templatePath)) {
+                $lang = "en";
+                $templatePath = $this->getTemplatePath($lang, $ext);
+            }
+
+            $template = file_get_contents($templatePath);
         }
 
-        $template = file_get_contents($templatePath);
         if (!$template) {
             $this->logger->error("Template for file creation not found: $templatePath", ["app" => $this->appName]);
             return ["error" => $this->trans->t("Template not found")];

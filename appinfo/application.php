@@ -92,9 +92,11 @@ class Application extends App {
         $detector->registerType("otp", "application/vnd.oasis.opendocument.presentation-template");
 
         $previewManager = $container->query(IPreview::class);
-        $previewManager->registerProvider(Preview::getMimeTypeRegex(), function() use ($container) {
-            return $container->query(Preview::class);
-        });
+        if ($this->appConfig->GetPreview()) {
+            $previewManager->registerProvider(Preview::getMimeTypeRegex(), function() use ($container) {
+                return $container->query(Preview::class);
+            });
+        }
 
         $container->registerService("L10N", function ($c) {
             return $c->query("ServerContainer")->getL10N($c->query("AppName"));

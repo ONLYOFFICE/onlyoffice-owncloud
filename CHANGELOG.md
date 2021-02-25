@@ -1,5 +1,6 @@
 # Change Log
 
+## 6.3.1
 ## Added
 - viewing a locked file
 - hide secret key in settings
@@ -8,7 +9,7 @@
 
 ## Changed
 - thumbnails for small files only
-- do not store history for federated share files
+- history for federated share files is not stored
 
 ## 6.2.1
 ## Changed

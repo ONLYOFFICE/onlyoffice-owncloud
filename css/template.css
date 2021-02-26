@@ -16,27 +16,43 @@
  *
  */
 
+.template-container {
+    width: 710px;
+    height: 400px;
+    overflow: scroll;
+}
 .template-item {
     position: relative;
     width: 130px;
     height: 170px;
     display: inline-block;
+    margin-right: 10px;
+    margin-top: 10px;
 }
-.thumbnail,
-.thumbnail img {
+.template-item label {
+    display: flex;
+    flex-direction: column;
+}
+.template-item input {
+    position: absolute;
+    left: -10000px;
+}
+.thumbnail-template,
+.thumbnail-template img {
     width: 130px;
     height: 130px;
-    margin-left: auto;
-    margin-right: auto;
+}
+.thumbnail-template {
+    color: rgb(208, 209, 211);
+    border: 2px solid;
+    border-radius: 4%;
+}
+input:checked + div {
+    color: rgb(116, 172, 255);
 }
 .template-name {
     max-height: 40px;
     justify-content: center;
     display: flex;
     overflow: hidden;
-}
-
-.template-container {
-    width: 530px;
-    overflow: scroll;
 }

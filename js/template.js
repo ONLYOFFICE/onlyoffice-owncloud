@@ -90,6 +90,8 @@
         templates.forEach(template => {
             var item = emptyItem.cloneNode(true);
             item.className = "template-item";
+            item.querySelector("input").id = "template_picker-" + template["id"];
+            $(item.querySelector("label")).attr("for", "template_picker-" + template["id"]);
             item.querySelector("img").src = "/core/img/filetypes/x-office-" + template["type"] + ".svg";
             item.querySelector("p").textContent = template["name"]
             item.onclick = function() {
@@ -100,6 +102,8 @@
 
         emptyItem.querySelector("img").src = "/core/img/filetypes/x-office-document.svg";
         emptyItem.querySelector("p").textContent = t("onlyoffice", "Empty");
+        emptyItem.querySelector("input").id = "template_picker-0"
+        $(emptyItem.querySelector("label")).attr("for", "template_picker-0");
         emptyItem.onclick = function() {
             dialog[0].dataset.templateId = "0";
         }

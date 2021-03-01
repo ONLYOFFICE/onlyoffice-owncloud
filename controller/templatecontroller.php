@@ -21,6 +21,8 @@ namespace OCA\Onlyoffice\Controller;
 
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\IL10N;
+use OCP\IRequest;
 
 use OCA\Onlyoffice\TemplateManager;
 
@@ -28,6 +30,27 @@ use OCA\Onlyoffice\TemplateManager;
  * Template controller for template manage
  */
 class TemplateController extends Controller {
+
+    /**
+     * l10n service
+     *
+     * @var IL10N
+     */
+    private $trans;
+
+    /**
+     * @param string $AppName - application name
+     * @param IRequest $request - request object
+     * @param IL10N $trans - l10n service
+     */
+    public function __construct($AppName, 
+                                    IL10N $trans,
+                                    IRequest $request
+                                    ) {
+        parent::__construct($AppName, $request);
+
+        $this->trans = $trans;
+    }
 
     /**
      * Get templates
@@ -40,5 +63,43 @@ class TemplateController extends Controller {
         $templates = TemplateManager::GetGlobalTemplates($type);
 
         return $templates;
+    }
+
+    /**
+     * Add global template
+     *
+     * @return array
+     */
+    public function AddTemplate() {
+
+        $file = $this->request->getUploadedFile("file");
+
+        if (!is_null($file)) {
+            if (is_uploaded_file($file["tmp_name"]) && $file["error"] === 0) {
+                $templateDir = TemplateManager::GetGlobalTemplateDir();
+                if ($templateDir->nodeExists($file["name"])) {
+                    return [
+                        "error" => $this->trans->t("Template already exist")
+                    ];
+                }
+
+                $templateContent = file_get_contents($file["tmp_name"]);
+                $template = $templateDir->newFile($file["name"]);
+                $template->putContent($templateContent);
+
+                $fileInfo = $template->getFileInfo();
+                $result = [
+                    "id" => $fileInfo->getId(),
+                    "name" => $fileInfo->getName(),
+                    "type" => TemplateManager::GetTypeTemplate($fileInfo->getMimeType())
+                ];
+
+                return $result;
+            }
+        }
+
+        return [
+            "error" => $this->trans->t("Invalid file provided")
+        ];
     }
 }

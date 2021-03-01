@@ -17,7 +17,7 @@
  */
 
 .template-container {
-    width: 710px;
+    width: 870px;
     height: 400px;
     overflow: scroll;
 }
@@ -41,6 +41,7 @@
 .thumbnail-template img {
     width: 130px;
     height: 130px;
+    cursor: pointer;
 }
 .thumbnail-template {
     color: rgb(208, 209, 211);
@@ -55,4 +56,12 @@ input:checked + div {
     justify-content: center;
     display: flex;
     overflow: hidden;
+}
+.template.icon-add {
+    opacity: 0.5;
+    padding-left: 35px;
+    padding-bottom: 5px;
+}
+.template.icon-add:hover {
+    opacity: 0.7;
 }

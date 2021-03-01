@@ -35,7 +35,7 @@ return [
        ["name" => "settings#save_address", "url" => "/ajax/settings/address", "verb" => "PUT"],
        ["name" => "settings#save_common", "url" => "/ajax/settings/common", "verb" => "PUT"],
        ["name" => "settings#get_settings", "url" => "/ajax/settings", "verb" => "GET"],
-       ["name" => "settings#add_template", "url" => "/ajax/settings/template", "verb" => "POST"],
+       ["name" => "template#add_template", "url" => "/ajax/template", "verb" => "POST"],
        ["name" => "template#get_templates", "url" => "/ajax/template", "verb" => "GET"],
     ],
     "ocs" => [

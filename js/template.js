@@ -86,6 +86,26 @@
             });
     };
 
+    OCA.Onlyoffice.AddTemplate = function (file, callback) {
+        var data = new FormData();
+        data.append("file", file);
+
+        $.ajax({
+            method: "POST",
+            url: OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/template"),
+            data: data,
+            processData: false,
+            contentType: false,
+            success: function onSuccess(response) {
+                if (response.error) {
+                    callback(null, response.error)
+                    return;
+                }
+                callback(response, null);
+            }
+        });
+    }
+
     OCA.Onlyoffice.AttachTemplates = function (dialog, templates) {
         var emptyItem = dialog[0].querySelector(".template-item");
         var type = templates[0]["type"];

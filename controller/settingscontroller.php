@@ -254,45 +254,11 @@ class SettingsController extends Controller {
     }
 
     /**
-     * Add global template
-     *
-     * @return array
-     */
-    public function AddTemplate() {
-
-        $file = $this->request->getUploadedFile("file");
-
-        if (!is_null($file)) {
-            if (is_uploaded_file($file["tmp_name"]) && $file["error"] === 0) {
-                $templateDir = TemplateManager::GetGlobalTemplateDir();
-                if ($templateDir->nodeExists($file["name"])) {
-                    return [
-                        "error" => $this->trans->t("Template already exist")
-                    ];
-                }
-
-                $templateContent = file_get_contents($file["tmp_name"]);
-                $template = $templateDir->newFile($file["name"]);
-                $template->putContent($templateContent);
-
-                $fileInfo = $template->getFileInfo();
-                $result = Helper::formatFileInfo($fileInfo);
-
-                return $result;
-            }
-        }
-
-        return [
-            "error" => $this->trans->t("Invalid file provided")
-        ];
-    }
-
-    /**
      * Get global templates
      *
      * @return array
      */
-    public function GetGlobalTemplates() {
+    private function GetGlobalTemplates() {
         $templates = TemplateManager::GetGlobalTemplates();
 
         return $templates;

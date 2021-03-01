@@ -86,6 +86,27 @@ class TemplateManager {
     }
 
     /**
+     * Get empty template content
+     * 
+     * @param string $fileName - target file name
+     *
+     * @return string
+     */
+    public static function GetEmptyTemplate($fileName) {
+        $ext = strtolower("." . pathinfo($fileName, PATHINFO_EXTENSION));
+        $lang = \OC::$server->getL10NFactory("")->get("")->getLanguageCode();
+
+        $templatePath = self::getEmptyTemplatePath($lang, $ext);
+        if (!file_exists($templatePath)) {
+            $lang = "en";
+            $templatePath = self::getEmptyTemplatePath($lang, $ext);
+        }
+
+        $template = file_get_contents($templatePath);
+        return $template;
+    }
+
+    /**
      * Get template content
      * 
      * @param string $templateId - identificator file template
@@ -151,5 +172,17 @@ class TemplateManager {
         }
 
         return "";
+    }
+
+    /**
+     * Get template path
+     *
+     * @param string $lang - language
+     * @param string $ext - file extension
+     *
+     * @return string
+     */
+    private static function getEmptyTemplatePath($lang, $ext) {
+        return dirname(__DIR__) . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . "new" . $ext;
     }
 }

@@ -59,13 +59,20 @@ class TemplateManager {
     /**
      * Get global templates
      *
+     * @param string $type - template format type
+     * 
      * @return array
      */
-    public static function GetGlobalTemplates() {
+    public static function GetGlobalTemplates($type = null) {
         $templates = [];
         $templateDir = self::GetGlobalTemplateDir();
 
-        $templatesList = $templateDir->getDirectoryListing();
+        if (!empty($type)) {
+            $mime = self::GetMimeTemplate($type);
+            $templatesList = $templateDir->searchByMime($mime);
+        } else {
+            $templatesList = $templateDir->getDirectoryListing();
+        }
         foreach ($templatesList as $templateItem) {
             $template = [
                 "id" => $templateItem->getId(),
@@ -121,6 +128,26 @@ class TemplateManager {
                 return "spreadsheet";
             case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
                 return "presentation";
+        }
+
+        return "";
+    }
+
+    /**
+     * Get mimetype template from format type
+     * 
+     * @param string $type - format type 
+     *
+     * @return string
+     */
+    public static function GetMimeTemplate($type) {
+        switch($type) {
+            case "document":
+                return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+            case "spreadsheet":
+                return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            case "presentation":
+                return "application/vnd.openxmlformats-officedocument.presentationml.presentation";
         }
 
         return "";

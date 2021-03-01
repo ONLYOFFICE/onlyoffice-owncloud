@@ -295,7 +295,7 @@
                 iconClass: "icon-onlyoffice-new-docx",
                 fileType: "docx",
                 actionHandler: function (name) {
-                    OCA.Onlyoffice.OpenTemplatePicker(name, ".docx", (isTemplate) => {
+                    OCA.Onlyoffice.OpenTemplatePicker(name, ".docx", "document", (isTemplate) => {
                         if (!isTemplate) {
                             OCA.Onlyoffice.CreateFile(name + ".docx", fileList);
                         }
@@ -310,7 +310,7 @@
                 iconClass: "icon-onlyoffice-new-xlsx",
                 fileType: "xlsx",
                 actionHandler: function (name) {
-                    OCA.Onlyoffice.OpenTemplatePicker(name, ".xlsx", (isTemplate) => {
+                    OCA.Onlyoffice.OpenTemplatePicker(name, ".xlsx", "spreadsheet", (isTemplate) => {
                         if (!isTemplate) {
                             OCA.Onlyoffice.CreateFile(name + ".xlsx", fileList);
                         }
@@ -325,7 +325,7 @@
                 iconClass: "icon-onlyoffice-new-pptx",
                 fileType: "pptx",
                 actionHandler: function (name) {
-                    OCA.Onlyoffice.OpenTemplatePicker(name, ".pptx", (isTemplate) => {
+                    OCA.Onlyoffice.OpenTemplatePicker(name, ".pptx", "presentation", (isTemplate) => {
                         if (!isTemplate) {
                             OCA.Onlyoffice.CreateFile(name + ".pptx", fileList);
                         }

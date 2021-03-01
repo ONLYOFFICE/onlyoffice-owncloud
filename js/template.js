@@ -22,8 +22,8 @@
         AppName: "onlyoffice"
     }, OCA.Onlyoffice);
 
-    OCA.Onlyoffice.OpenTemplatePicker = function (name, extension, callback) {
-        OCA.Onlyoffice.GetTemplates((templates, error) => {
+    OCA.Onlyoffice.OpenTemplatePicker = function (name, extension, type, callback) {
+        OCA.Onlyoffice.GetTemplates(type, (templates, error) => {
             if (error || templates.length < 1) {
                 callback(false);
             }
@@ -68,8 +68,10 @@
         });
     };
 
-    OCA.Onlyoffice.GetTemplates = function (callback) {
-        $.get(OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/template"),
+    OCA.Onlyoffice.GetTemplates = function (type, callback) {
+        $.get(OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/template?type={type}", {
+            type: type
+        }),
             function onSuccess(response) {
                 if (response.error) {
                     OC.Notification.show(response.error, {
@@ -86,24 +88,25 @@
 
     OCA.Onlyoffice.AttachTemplates = function (dialog, templates) {
         var emptyItem = dialog[0].querySelector(".template-item");
+        var type = templates[0]["type"];
 
         templates.forEach(template => {
             var item = emptyItem.cloneNode(true);
-            item.className = "template-item";
-            item.querySelector("input").id = "template_picker-" + template["id"];
+
             $(item.querySelector("label")).attr("for", "template_picker-" + template["id"]);
+            item.querySelector("input").id = "template_picker-" + template["id"];
             item.querySelector("img").src = "/core/img/filetypes/x-office-" + template["type"] + ".svg";
-            item.querySelector("p").textContent = template["name"]
+            item.querySelector("p").textContent = template["name"];
             item.onclick = function() {
                 dialog[0].dataset.templateId = template["id"];
             }
-            dialog[0].querySelector(".template-container").appendChild(item)
+            dialog[0].querySelector(".template-container").appendChild(item);
         });
 
-        emptyItem.querySelector("img").src = "/core/img/filetypes/x-office-document.svg";
-        emptyItem.querySelector("p").textContent = t("onlyoffice", "Empty");
-        emptyItem.querySelector("input").id = "template_picker-0"
         $(emptyItem.querySelector("label")).attr("for", "template_picker-0");
+        emptyItem.querySelector("input").id = "template_picker-0";
+        emptyItem.querySelector("img").src = "/core/img/filetypes/x-office-" + type + ".svg";
+        emptyItem.querySelector("p").textContent = t("onlyoffice", "Empty");
         emptyItem.onclick = function() {
             dialog[0].dataset.templateId = "0";
         }

@@ -199,6 +199,26 @@
                 }
             });
         });
+
+        $(".template-delete").click(function (event) {
+            var item = $(event.target).parents(".template-item");
+            var templateId = $(item).attr("data-id");
+
+            $(".section-onlyoffice").addClass("icon-loading");
+            OCA.Onlyoffice.DeleteTemplate(templateId, (response) => {
+                $(".section-onlyoffice").removeClass("icon-loading");
+
+                var message = response.error ? t(OCA.Onlyoffice.AppName, "Error") + ": " + response.error
+                                             : t(OCA.Onlyoffice.AppName, "Template successfully deleted");
+                OC.Notification.show(message, {
+                    type: response.error ? "error" : null,
+                    timeout: 3
+                });
+                if (!response.error) {
+                    $(item).detach();
+                }
+            });
+        });
     });
 
 })(jQuery, OC);

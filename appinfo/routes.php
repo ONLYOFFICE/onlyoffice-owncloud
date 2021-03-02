@@ -37,6 +37,7 @@ return [
        ["name" => "settings#get_settings", "url" => "/ajax/settings", "verb" => "GET"],
        ["name" => "template#add_template", "url" => "/ajax/template", "verb" => "POST"],
        ["name" => "template#get_templates", "url" => "/ajax/template", "verb" => "GET"],
+       ["name" => "template#delete_template", "url" => "/ajax/template", "verb" => "DELETE"],
     ],
     "ocs" => [
         ["name" => "federation#key", "url" => "/api/v1/key", "verb" => "POST"],

@@ -106,6 +106,21 @@
         });
     }
 
+    OCA.Onlyoffice.DeleteTemplate = function (templateId, callback) {
+        $.ajax({
+            method: "DELETE",
+            url: OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/template?templateId={templateId}",
+            {
+                templateId: templateId
+            }),
+            success: function onSuccess(response) {
+                if (response) {
+                    callback(response);
+                }
+            }
+        });
+    }
+
     OCA.Onlyoffice.AttachTemplates = function (dialog, templates) {
         var emptyItem = dialog[0].querySelector(".template-item");
         var type = templates[0]["type"];
@@ -141,6 +156,7 @@
         $(item).addClass("template-item");
         $(itemThumb).addClass("thumbnail-template");
         $(itemThumb).append("<img src=/core/img/filetypes/x-office-" + template.type + ".svg />");
+        $(itemThumb).append('<span class="template-delete icon-delete"></span>');
         $(itemName).addClass("template-name");
         $(itemName).append("<p>" + template.name + "</p>");
 

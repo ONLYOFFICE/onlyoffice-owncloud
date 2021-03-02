@@ -234,6 +234,7 @@
                 <div data-id=<?php echo $template["id"] ?> class="template-item" >
                     <div class="thumbnail-template" >
                         <img src= <?php echo "/core/img/filetypes/x-office-" . $template["type"] . ".svg" ?> />
+                        <span class="template-delete icon-delete"> </span>
                     </div>
                     <div class="template-name">
                         <p>

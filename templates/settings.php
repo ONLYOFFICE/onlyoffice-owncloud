@@ -229,20 +229,14 @@
             <input id="onlyofficeAddTemplate" type="file" class="hidden-visually" />
             <label for="onlyofficeAddTemplate" class="template icon-add" title="<?php p($l->t("Add a new template")) ?>"></label>
         </h3>
-        <div class="template-container">
+        <ul class="template-container">
             <?php foreach ($_["templates"] as $template) { ?>
-                <div data-id=<?php echo $template["id"] ?> class="template-item" >
-                    <div class="thumbnail-template" >
-                        <img src= <?php echo "/core/img/filetypes/x-office-" . $template["type"] . ".svg" ?> />
-                        <span class="template-delete icon-delete"> </span>
-                    </div>
-                    <div class="template-name">
-                        <p>
-                            <?php echo $template["name"] ?>
-                        </p>
-                    </div>
-                </div>
+                <li data-id=<?php echo $template["id"] ?> class="template-item" >
+                    <img src= <?php echo "/core/img/filetypes/x-office-" . $template["type"] . ".svg" ?> />
+                    <p> <?php echo $template["name"] ?> </p>
+                    <span class="template-delete icon-delete"> </span>
+                </li>
             <?php } ?>
-        </div>
+        </ul>
     </div>
 </div>

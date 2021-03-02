@@ -16,46 +16,22 @@
  *
  */
 
-.template-container {
-    width: 870px;
-    height: 400px;
-    overflow: scroll;
-}
-.template-item {
-    position: relative;
-    width: 130px;
-    height: 170px;
+.template-item img,
+.template-item p,
+.template-delete {
     display: inline-block;
-    margin-right: 10px;
-    margin-top: 10px;
+    margin-left: 10px;
+    cursor: pointer;
 }
-.template-item label {
-    display: flex;
-    flex-direction: column;
+.template-item img {
+    float: left;
 }
 .template-item input {
     position: absolute;
     left: -10000px;
 }
-.thumbnail-template,
-.thumbnail-template img {
-    width: 130px;
-    height: 130px;
-    cursor: pointer;
-}
-.thumbnail-template {
-    color: rgb(208, 209, 211);
-    border: 2px solid;
-    border-radius: 4%;
-}
-input:checked + div {
-    color: rgb(116, 172, 255);
-}
-.template-name {
-    max-height: 40px;
-    justify-content: center;
-    display: flex;
-    overflow: hidden;
+.template-item input:checked + label {
+    color: rgb(55, 137, 243);
 }
 .template.icon-add {
     opacity: 0.5;
@@ -64,12 +40,4 @@ input:checked + div {
 }
 .template.icon-add:hover {
     opacity: 0.7;
-}
-.template-delete {
-    position: absolute;
-    top: 100px;
-    left: 95px;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
 }

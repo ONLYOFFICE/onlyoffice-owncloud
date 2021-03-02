@@ -26,6 +26,7 @@
         OCA.Onlyoffice.GetTemplates(type, (templates, error) => {
             if (error || templates.length < 1) {
                 callback(false);
+                return;
             }
 
             $("#template-picker").remove();
@@ -148,19 +149,15 @@
     }
 
     OCA.Onlyoffice.AttachItemTemplate = function (template) {
-        var item = document.createElement("div");
-        var itemThumb = document.createElement("div");
-        var itemName = document.createElement("div");
+        var itemNode = $(document.createElement("li"));
 
-        $(item).attr("data-id", template.id);
-        $(item).addClass("template-item");
-        $(itemThumb).addClass("thumbnail-template");
-        $(itemThumb).append("<img src=/core/img/filetypes/x-office-" + template.type + ".svg />");
-        $(itemThumb).append('<span class="template-delete icon-delete"></span>');
-        $(itemName).addClass("template-name");
-        $(itemName).append("<p>" + template.name + "</p>");
+        itemNode.attr("data-id", template.id);
+        itemNode.addClass("template-item");
+        itemNode.append("<img src=/core/img/filetypes/x-office-" + template.type + ".svg />");
+        itemNode.append("<p>" + template.name + "</p>");
+        itemNode.append('<span class="template-delete icon-delete"></span>');
 
-        $(".template-container").append($(item).prepend(itemThumb, itemName));
+        $(".template-container").append(itemNode);
     }
 
 })(jQuery, OC);

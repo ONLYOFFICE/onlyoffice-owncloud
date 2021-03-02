@@ -200,7 +200,7 @@
             });
         });
 
-        $(".template-delete").click(function (event) {
+        $(document).on("click", ".template-delete", function (event) {
             var item = $(event.target).parents(".template-item");
             var templateId = $(item).attr("data-id");
 

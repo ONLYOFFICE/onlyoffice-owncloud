@@ -194,6 +194,9 @@
                     type: error ? "error" : null,
                     timeout: 3
                 });
+                if (template) {
+                    OCA.Onlyoffice.AttachItemTemplate(template);
+                }
             });
         });
     });

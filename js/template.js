@@ -132,4 +132,19 @@
         }
     }
 
+    OCA.Onlyoffice.AttachItemTemplate = function (template) {
+        var item = document.createElement("div");
+        var itemThumb = document.createElement("div");
+        var itemName = document.createElement("div");
+
+        $(item).attr("data-id", template.id);
+        $(item).addClass("template-item");
+        $(itemThumb).addClass("thumbnail-template");
+        $(itemThumb).append("<img src=/core/img/filetypes/x-office-" + template.type + ".svg />");
+        $(itemName).addClass("template-name");
+        $(itemName).append("<p>" + template.name + "</p>");
+
+        $(".template-container").append($(item).prepend(itemThumb, itemName));
+    }
+
 })(jQuery, OC);

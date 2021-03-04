@@ -175,6 +175,25 @@ class TemplateManager {
     }
 
     /**
+     * Check template type
+     * 
+     * @param string $name - template name 
+     *
+     * @return bool
+     */
+    public static function IsTemplateType($name) {
+        $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+        switch($ext) {
+            case "docx":
+            case "xlsx":
+            case "pptx":
+                return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Get template path
      *
      * @param string $lang - language

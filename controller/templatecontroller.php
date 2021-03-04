@@ -76,6 +76,12 @@ class TemplateController extends Controller {
 
         if (!is_null($file)) {
             if (is_uploaded_file($file["tmp_name"]) && $file["error"] === 0) {
+                if (!TemplateManager::IsTemplateType($file["name"])) {
+                    return [
+                        "error" => $this->trans->t("Invalid file format")
+                    ];
+                }
+
                 $templateDir = TemplateManager::GetGlobalTemplateDir();
                 if ($templateDir->nodeExists($file["name"])) {
                     return [

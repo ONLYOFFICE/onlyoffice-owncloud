@@ -234,6 +234,7 @@
                 <li data-id=<?php echo $template["id"] ?> class="template-item" >
                     <img src= <?php echo "/core/img/filetypes/x-office-" . $template["type"] . ".svg" ?> />
                     <p> <?php echo $template["name"] ?> </p>
+                    <span class="template-preview"> </span>
                     <span class="template-delete icon-delete"> </span>
                 </li>
             <?php } ?>

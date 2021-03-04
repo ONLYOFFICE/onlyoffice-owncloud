@@ -219,6 +219,19 @@
                 }
             });
         });
+
+        $(document).on("click", ".template-preview", function (event) {
+            var item = $(event.target).parents(".template-item");
+            var templateId = $(item).attr("data-id");
+
+            var url = OC.generateUrl("/apps/" + OCA.Onlyoffice.AppName + "/{fileId}?template={template}",
+            {
+                fileId: templateId,
+                template: true
+            });
+
+            window.open(url);
+        });
     });
 
 })(jQuery, OC);

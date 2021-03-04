@@ -155,6 +155,7 @@
         itemNode.addClass("template-item");
         itemNode.append("<img src=/core/img/filetypes/x-office-" + template.type + ".svg />");
         itemNode.append("<p>" + template.name + "</p>");
+        itemNode.append('<span class="template-preview"></span>');
         itemNode.append('<span class="template-delete icon-delete"></span>');
 
         $(".template-container").append(itemNode);

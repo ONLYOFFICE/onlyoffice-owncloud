@@ -18,7 +18,8 @@
 
 .template-item img,
 .template-item p,
-.template-delete {
+.template-delete,
+.template-preview {
     display: inline-block;
     margin-left: 10px;
     cursor: pointer;
@@ -32,6 +33,11 @@
 }
 .template-item input:checked + label {
     color: rgb(55, 137, 243);
+}
+.template-preview {
+    background-image: url("../../../core/img/actions/toggle.svg");
+    height: 16px;
+    width: 16px;
 }
 .template.icon-add {
     opacity: 0.5;

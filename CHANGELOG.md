@@ -1,5 +1,16 @@
 # Change Log
 
+## 6.3.1
+## Added
+- viewing a locked file
+- hide secret key in settings
+- configuring version storage
+- clearing history data
+
+## Changed
+- thumbnails for small files only
+- history for federated share files is not stored
+
 ## 6.2.1
 ## Changed
 - the ability to use forcesave for federated share files

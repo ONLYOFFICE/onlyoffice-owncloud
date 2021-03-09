@@ -224,12 +224,15 @@ class CallbackController extends Controller {
 
             if (isset($hashData->userId)) {
                 $userId = $hashData->userId;
-                \OC_User::setUserId($userId);
+
+                $user = $this->userManager->get($userId);
+                if (!empty($user)) {
+                    \OC_User::setUserId($userId);
+                }
 
                 if ($this->config->checkEncryptionModule() === "master") {
                     \OC_User::setIncognitoMode(true);
                 } else {
-                    $user = $this->userManager->get($userId);
                     if (!empty($user)) {
                         \OC_Util::setupFS($userId);
                     }
@@ -449,15 +452,17 @@ class CallbackController extends Controller {
 
                     // author of the latest changes
                     $userId = $this->parseUserId($users[0]);
-                    \OC_User::setUserId($userId);
 
                     $user = $this->userManager->get($userId);
-                    if (empty($user)) {
+                    if (!empty($user)) {
+                        \OC_User::setUserId($userId);
+                    } else {
                         if (empty($shareToken)) {
-                            $this->logger->debug("Track without token: $fileId status $status", ["app" => $this->appName]);
-                        } else {
-                            $this->logger->debug("Track $fileId by token for $userId", ["app" => $this->appName]);
+                            $this->logger->error("Track without token: $fileId status $status", ["app" => $this->appName]);
+                            return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
                         }
+
+                        $this->logger->debug("Track $fileId by token for $userId", ["app" => $this->appName]);
                     }
 
                     // owner of file from the callback link
@@ -543,7 +548,8 @@ class CallbackController extends Controller {
 
                     if (!$isForcesave
                         && !$prevIsForcesave
-                        && $this->versionManager->available) {
+                        && $this->versionManager->available
+                        && $this->config->GetVersionHistory()) {
                         $changes = null;
                         if (!empty($changesurl)) {
                             $changesurl = $this->config->ReplaceDocumentServerUrlToInternal($changesurl);
@@ -552,7 +558,7 @@ class CallbackController extends Controller {
                         FileVersions::saveHistory($file->getFileInfo(), $history, $changes, $prevVersion);
                     }
 
-                    if (!empty($user)) {
+                    if (!empty($user) && $this->config->GetVersionHistory()) {
                         FileVersions::saveAuthor($file->getFileInfo(), $user);
                     }
 

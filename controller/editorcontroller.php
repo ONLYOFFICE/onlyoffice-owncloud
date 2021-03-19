@@ -260,6 +260,29 @@ class EditorController extends Controller {
     }
 
     /**
+     * Create new file in folder from editor
+     *
+     * @param string $name - file name
+     * @param string $dir - folder path
+     * 
+     * @return TemplateResponse|RedirectResponse
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     */
+    public function createNew($name, $dir) {
+        $this->logger->debug("Create from editor: $name in $dir", ["app" => $this->appName]);
+
+        $result = $this->create($name, $dir);
+        if (isset($result["error"])) {
+            return $this->renderError($result["error"]);
+        }
+
+        $openEditor = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.index", ["fileId" => $result["id"]]);
+        return new RedirectResponse($openEditor);
+    }
+
+    /**
      * Conversion file to Office Open XML format
      *
      * @param integer $fileId - file identifier
@@ -982,6 +1005,26 @@ class EditorController extends Controller {
                 ];
                 $folderLink = $this->urlGenerator->linkToRouteAbsolute("files.view.index", $linkAttr);
             }
+
+            switch($params["documentType"]) {
+                case "text":
+                    $createName = $this->trans->t("Document") . ".docx";
+                    break;
+                case "spreadsheet":
+                    $createName = $this->trans->t("Spreadsheet") . ".xlsx";
+                    break;
+                case "presentation":
+                    $createName = $this->trans->t("Presentation") . ".pptx";
+                    break;
+            }
+            $createParam = [
+                "dir" => $folderPath,
+                "name" => $createName
+            ];
+
+            $createUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.create_new", $createParam);
+
+            $params["editorConfig"]["createUrl"] = urldecode($createUrl);
         }
 
         if ($folderLink !== null && $inframe !== 2) {

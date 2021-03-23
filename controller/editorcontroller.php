@@ -216,10 +216,6 @@ class EditorController extends Controller {
         $lang = \OC::$server->getL10NFactory("")->get("")->getLanguageCode();
 
         $templatePath = $this->getTemplatePath($lang, $ext);
-        if (!file_exists($templatePath)) {
-            $lang = "en";
-            $templatePath = $this->getTemplatePath($lang, $ext);
-        }
 
         $template = file_get_contents($templatePath);
         if (!$template) {
@@ -256,6 +252,10 @@ class EditorController extends Controller {
      * @return string
      */
     private function getTemplatePath($lang, $ext) {
+        if (!array_key_exists($lang, self::$localPath)) {
+            $lang = "en";
+        }
+
         return dirname(__DIR__) . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . self::$localPath[$lang] . DIRECTORY_SEPARATOR . "new" . $ext;
     }
 

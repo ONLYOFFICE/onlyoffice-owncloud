@@ -256,7 +256,7 @@ class EditorController extends Controller {
      * @return string
      */
     private function getTemplatePath($lang, $ext) {
-        return dirname(__DIR__) . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . "new" . $ext;
+        return dirname(__DIR__) . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . self::$localPath[$lang] . DIRECTORY_SEPARATOR . "new" . $ext;
     }
 
     /**
@@ -1201,6 +1201,33 @@ class EditorController extends Controller {
 
         return $params;
     }
+
+    /**
+     * Mapping local path to templates
+     *
+     * @var Array
+     */
+    private static $localPath = [
+        "bg_BG" => "bg-BG",
+        "cs" => "cs-CZ",
+        "de" => "de-DE",
+        "de_DE" => "de-DE",
+        "el" => "el-GR",
+        "en" => "en-US",
+        "en_GB" => "en-GB",
+        "es" => "es-ES",
+        "fr" => "fr-FR",
+        "it" => "it-IT",
+        "ja" => "ja-JP",
+        "ko" => "ko-KR",
+        "nl" => "nl-NL",
+        "pl" => "pl-PL",
+        "pt_BR" => "pt-BR",
+        "pt_PT" => "pt-PT",
+        "ru" => "ru-RU",
+        "sv" => "sv-SE",
+        "zh_CN" => "zh-CN"
+    ];
 
     /**
      * Print error page

@@ -175,7 +175,7 @@ class EditorController extends Controller {
     public function create($name, $dir, $shareToken = null) {
         $this->logger->debug("Create: $name", ["app" => $this->appName]);
 
-        if (empty(shareToken) && !$this->config->isUserAllowedToUse()) {
+        if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
             return ["error" => $this->trans->t("Not permitted")];
         }
 

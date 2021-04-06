@@ -1,5 +1,8 @@
 # Change Log
 
+## Added
+- more empty files in different languages
+
 ## 6.3.1
 ## Added
 - viewing a locked file

@@ -28,6 +28,7 @@ use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\ForbiddenException;
 use OCP\Files\IRootFolder;
+use OCP\Files\NotPermittedException;
 use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\IL10N;
 use OCP\ILogger;
@@ -228,7 +229,7 @@ class EditorController extends Controller {
         }
 
         if (!$template) {
-            $this->logger->error("Template for file creation not found: $templatePath", ["app" => $this->appName]);
+            $this->logger->error("Template for file creation not found: $name ($templateId)", ["app" => $this->appName]);
             return ["error" => $this->trans->t("Template not found")];
         }
 
@@ -1242,38 +1243,6 @@ class EditorController extends Controller {
 
         return $params;
     }
-
-    /**
-     * Mapping local path to templates
-     *
-     * @var Array
-     */
-    private static $localPath = [
-        "az" => "az-Latn-AZ",
-        "bg_BG" => "bg-BG",
-        "cs" => "cs-CZ",
-        "de" => "de-DE",
-        "de_DE" => "de-DE",
-        "el" => "el-GR",
-        "en" => "en-US",
-        "en_GB" => "en-GB",
-        "es" => "es-ES",
-        "fr" => "fr-FR",
-        "it" => "it-IT",
-        "ja" => "ja-JP",
-        "ko" => "ko-KR",
-        "lv" => "lv-LV",
-        "nl" => "nl-NL",
-        "pl" => "pl-PL",
-        "pt_BR" => "pt-BR",
-        "pt_PT" => "pt-PT",
-        "ru" => "ru-RU",
-        "sk_SK" => "sk-SK",
-        "sv" => "sv-SE",
-        "uk" => "uk-UA",
-        "vi" => "vi-VN",
-        "zh_CN" => "zh-CN"
-    ];
 
     /**
      * Print error page

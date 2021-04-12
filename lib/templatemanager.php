@@ -97,10 +97,6 @@ class TemplateManager {
         $lang = \OC::$server->getL10NFactory("")->get("")->getLanguageCode();
 
         $templatePath = self::getEmptyTemplatePath($lang, $ext);
-        if (!file_exists($templatePath)) {
-            $lang = "en";
-            $templatePath = self::getEmptyTemplatePath($lang, $ext);
-        }
 
         $template = file_get_contents($templatePath);
         return $template;
@@ -202,6 +198,42 @@ class TemplateManager {
      * @return string
      */
     private static function getEmptyTemplatePath($lang, $ext) {
-        return dirname(__DIR__) . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . "new" . $ext;
+        if (!array_key_exists($lang, self::$localPath)) {
+            $lang = "en";
+        }
+
+        return dirname(__DIR__) . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . self::$localPath[$lang] . DIRECTORY_SEPARATOR . "new" . $ext;
     }
+
+    /**
+     * Mapping local path to templates
+     *
+     * @var Array
+     */
+    private static $localPath = [
+        "az" => "az-Latn-AZ",
+        "bg_BG" => "bg-BG",
+        "cs" => "cs-CZ",
+        "de" => "de-DE",
+        "de_DE" => "de-DE",
+        "el" => "el-GR",
+        "en" => "en-US",
+        "en_GB" => "en-GB",
+        "es" => "es-ES",
+        "fr" => "fr-FR",
+        "it" => "it-IT",
+        "ja" => "ja-JP",
+        "ko" => "ko-KR",
+        "lv" => "lv-LV",
+        "nl" => "nl-NL",
+        "pl" => "pl-PL",
+        "pt_BR" => "pt-BR",
+        "pt_PT" => "pt-PT",
+        "ru" => "ru-RU",
+        "sk_SK" => "sk-SK",
+        "sv" => "sv-SE",
+        "uk" => "uk-UA",
+        "vi" => "vi-VN",
+        "zh_CN" => "zh-CN"
+    ];
 }

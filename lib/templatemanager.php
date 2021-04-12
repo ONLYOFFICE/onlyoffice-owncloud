@@ -105,7 +105,7 @@ class TemplateManager {
     /**
      * Get template content
      * 
-     * @param string $templateId - identificator file template
+     * @param string $templateId - identifier file template
      * 
      * @return string
      */
@@ -114,18 +114,18 @@ class TemplateManager {
 
         $templateDir = self::GetGlobalTemplateDir();
         try {
-            $template = $templateDir->getById($templateId);
+            $templates = $templateDir->getById($templateId);
         } catch(\Exception $e) {
             $logger->logException($e, ["message" => "GetTemplate: $templateId", "app" => self::$appName]);
             return null;
         }
 
-        if (empty($template)) {
+        if (empty($templates)) {
             $logger->info("Template not found: $templateId", ["app" => self::$appName]);
             return null;
         }
 
-        $content = $template[0]->getContent();
+        $content = $templates[0]->getContent();
 
         return $content;
     }

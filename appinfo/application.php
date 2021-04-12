@@ -28,6 +28,7 @@ use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Controller\CallbackController;
 use OCA\Onlyoffice\Controller\EditorController;
 use OCA\Onlyoffice\Controller\SettingsController;
+use OCA\Onlyoffice\Controller\TemplateController;
 use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\Hookhandler;
 use OCA\Onlyoffice\Hooks;
@@ -163,6 +164,15 @@ class Application extends App {
                 $this->appConfig,
                 $this->crypt,
                 $c->query("IManager")
+            );
+        });
+
+        $container->registerService("TemplateController", function ($c) {
+            return new TemplateController(
+                $c->query("AppName"),
+                $c->query("Request"),
+                $c->query("L10N"),
+                $c->query("Logger")
             );
         });
 

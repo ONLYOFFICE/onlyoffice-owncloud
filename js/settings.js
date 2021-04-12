@@ -247,7 +247,7 @@
             var url = OC.generateUrl("/apps/" + OCA.Onlyoffice.AppName + "/{fileId}?template={template}",
             {
                 fileId: templateId,
-                template: true
+                template: "true"
             });
 
             window.open(url);

@@ -598,8 +598,8 @@ class CallbackController extends Controller {
             return [null, new JSONResponse(["message" => $this->trans->t("FileId is empty")], Http::STATUS_BAD_REQUEST)];
         }
 
-        $folder = !$template ? $this->root->getUserFolder($userId) : TemplateManager::GetGlobalTemplateDir();
         try {
+            $folder = !$template ? $this->root->getUserFolder($userId) : TemplateManager::GetGlobalTemplateDir();
             $files = $folder->getById($fileId);
         } catch (\Exception $e) {
             $this->logger->logException($e, ["message" => "getFile: $fileId", "app" => $this->appName]);

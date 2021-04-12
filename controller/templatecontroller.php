@@ -20,8 +20,8 @@
 namespace OCA\Onlyoffice\Controller;
 
 use OCP\AppFramework\Controller;
-use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IL10N;
+use OCP\ILogger;
 use OCP\IRequest;
 
 use OCA\Onlyoffice\TemplateManager;
@@ -39,17 +39,26 @@ class TemplateController extends Controller {
     private $trans;
 
     /**
+     * Logger
+     *
+     * @var ILogger
+     */
+    private $logger;
+
+    /**
      * @param string $AppName - application name
      * @param IRequest $request - request object
      * @param IL10N $trans - l10n service
      */
-    public function __construct($AppName, 
+    public function __construct($AppName,
+                                    IRequest $request, 
                                     IL10N $trans,
-                                    IRequest $request
+                                    ILogger $logger
                                     ) {
         parent::__construct($AppName, $request);
 
         $this->trans = $trans;
+        $this->logger = $logger;
     }
 
     /**
@@ -100,6 +109,8 @@ class TemplateController extends Controller {
                     "type" => TemplateManager::GetTypeTemplate($fileInfo->getMimeType())
                 ];
 
+                $this->logger->debug("Template: added " . $fileInfo->getName(), ["app" => $this->appName]);
+
                 return $result;
             }
         }
@@ -118,22 +129,24 @@ class TemplateController extends Controller {
         $templateDir = TemplateManager::GetGlobalTemplateDir();
 
         try {
-            $template = $templateDir->getById($templateId);
+            $templates = $templateDir->getById($templateId);
         } catch(\Exception $e) {
-            $logger->logException($e, ["message" => "DeleteTemplate: $templateId", "app" => $this->AppName]);
+            $this->logger->logException($e, ["message" => "DeleteTemplate: $templateId", "app" => $this->AppName]);
             return [
                 "error" => $this->trans->t("Can't delete template")
             ];
         }
 
-        if (empty($template)) {
-            $logger->info("Template not found: $templateId", ["app" => $this->AppName]);
+        if (empty($templates)) {
+            $this->logger->info("Template not found: $templateId", ["app" => $this->AppName]);
             return [
                 "error" => $this->trans->t("Can't delete template")
             ];
         }
 
-        $template[0]->delete();
+        $templates[0]->delete();
+
+        $this->logger->debug("Template: deleted " . $templates[0]->getName(), ["app" => $this->appName]);
         return [];
     }
 }

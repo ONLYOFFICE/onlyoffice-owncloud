@@ -1069,9 +1069,8 @@ class EditorController extends Controller {
             return [null, $this->trans->t("FileId is empty"), null];
         }
 
-        $folder = !$template ? $this->root->getUserFolder($userId) : TemplateManager::GetGlobalTemplateDir();
-
         try {
+            $folder = !$template ? $this->root->getUserFolder($userId) : TemplateManager::GetGlobalTemplateDir();
             $files = $folder->getById($fileId);
         } catch (\Exception $e) {
             $this->logger->logException($e, ["message" => "getFile: $fileId", "app" => $this->appName]);

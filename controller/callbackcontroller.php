@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2020
+ * (c) Copyright Ascensio System SIA 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -550,7 +550,8 @@ class CallbackController extends Controller {
 
                     if (!$isForcesave
                         && !$prevIsForcesave
-                        && $this->versionManager->available) {
+                        && $this->versionManager->available
+                        && $this->config->GetVersionHistory()) {
                         $changes = null;
                         if (!empty($changesurl)) {
                             $changesurl = $this->config->ReplaceDocumentServerUrlToInternal($changesurl);
@@ -559,7 +560,7 @@ class CallbackController extends Controller {
                         FileVersions::saveHistory($file->getFileInfo(), $history, $changes, $prevVersion);
                     }
 
-                    if (!empty($user)) {
+                    if (!empty($user) && $this->config->GetVersionHistory()) {
                         FileVersions::saveAuthor($file->getFileInfo(), $user);
                     }
 

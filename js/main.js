@@ -1,6 +1,6 @@
 /**
  *
- * (c) Copyright Ascensio System SIA 2020
+ * (c) Copyright Ascensio System SIA 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -352,6 +352,12 @@
     OCA.Onlyoffice.bindVersionClick = function () {
         OCA.Onlyoffice.unbindVersionClick();
         $(document).on("click.onlyoffice-version", "#versionsTabView .downloadVersion", function() {
+            var ext = $("#app-sidebar .fileName h3").text().split(".").pop();
+            if (!OCA.Onlyoffice.setting.formats[ext]
+                || !OCA.Onlyoffice.setting.formats[ext].def) {
+                return true;
+            }
+
             var versionNodes = $("#versionsTabView ul.versions>li");
             var versionNode = $(this).closest("#versionsTabView ul.versions>li")[0];
 

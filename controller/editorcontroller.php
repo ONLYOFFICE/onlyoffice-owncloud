@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2020
+ * (c) Copyright Ascensio System SIA 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -177,8 +177,13 @@ class EditorController extends Controller {
     public function create($name, $dir, $templateId = null, $shareToken = null) {
         $this->logger->debug("Create: $name", ["app" => $this->appName]);
 
-        if (empty(shareToken) && !$this->config->isUserAllowedToUse()) {
+        if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
             return ["error" => $this->trans->t("Not permitted")];
+        }
+
+        if (empty($name)) {
+            $this->logger->error("File name for creation was not found: $name", ["app" => $this->appName]);
+            return ["error" => $this->trans->t("Template not found")];
         }
 
         if (empty($shareToken)) {
@@ -202,6 +207,9 @@ class EditorController extends Controller {
             }
         }
 
+        if (empty($dir)) {
+            $dir = "/";
+        }
         $folder = $userFolder->get($dir);
 
         if ($folder === null) {
@@ -242,6 +250,28 @@ class EditorController extends Controller {
 
         $result = Helper::formatFileInfo($fileInfo);
         return $result;
+    }
+
+    /**
+     * Create new file in folder from editor
+     *
+     * @param string $name - file name
+     * 
+     * @return TemplateResponse|RedirectResponse
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     */
+    public function createNew($name) {
+        $this->logger->debug("Create from editor: $name", ["app" => $this->appName]);
+
+        $result = $this->create($name, null);
+        if (isset($result["error"])) {
+            return $this->renderError($result["error"]);
+        }
+
+        $openEditor = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.index", ["fileId" => $result["id"]]);
+        return new RedirectResponse($openEditor);
     }
 
     /**
@@ -971,6 +1001,22 @@ class EditorController extends Controller {
                 ];
                 $folderLink = $this->urlGenerator->linkToRouteAbsolute("files.view.index", $linkAttr);
             }
+
+            switch($params["documentType"]) {
+                case "text":
+                    $createName = $this->trans->t("Document") . ".docx";
+                    break;
+                case "spreadsheet":
+                    $createName = $this->trans->t("Spreadsheet") . ".xlsx";
+                    break;
+                case "presentation":
+                    $createName = $this->trans->t("Presentation") . ".pptx";
+                    break;
+            }
+
+            $createUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.create_new", ["name" => $createName]);
+
+            $params["editorConfig"]["createUrl"] = urldecode($createUrl);
         }
 
         if ($folderLink !== null && $inframe !== 2) {
@@ -1196,6 +1242,38 @@ class EditorController extends Controller {
 
         return $params;
     }
+
+    /**
+     * Mapping local path to templates
+     *
+     * @var Array
+     */
+    private static $localPath = [
+        "az" => "az-Latn-AZ",
+        "bg_BG" => "bg-BG",
+        "cs" => "cs-CZ",
+        "de" => "de-DE",
+        "de_DE" => "de-DE",
+        "el" => "el-GR",
+        "en" => "en-US",
+        "en_GB" => "en-GB",
+        "es" => "es-ES",
+        "fr" => "fr-FR",
+        "it" => "it-IT",
+        "ja" => "ja-JP",
+        "ko" => "ko-KR",
+        "lv" => "lv-LV",
+        "nl" => "nl-NL",
+        "pl" => "pl-PL",
+        "pt_BR" => "pt-BR",
+        "pt_PT" => "pt-PT",
+        "ru" => "ru-RU",
+        "sk_SK" => "sk-SK",
+        "sv" => "sv-SE",
+        "uk" => "uk-UA",
+        "vi" => "vi-VN",
+        "zh_CN" => "zh-CN"
+    ];
 
     /**
      * Print error page

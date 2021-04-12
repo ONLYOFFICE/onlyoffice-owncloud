@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2020
+ * (c) Copyright Ascensio System SIA 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ use OCA\Files\Helper;
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\DocumentService;
+use OCA\Onlyoffice\FileVersions;
 use OCA\Onlyoffice\TemplateManager;
 
 /**
@@ -116,6 +117,7 @@ class SettingsController extends Controller {
             "formats" => $this->config->FormatsSetting(),
             "sameTab" => $this->config->GetSameTab(),
             "preview" => $this->config->GetPreview(),
+            "versionHistory" => $this->config->GetVersionHistory(),
             "encryption" => ($this->config->checkEncryptionModule() === true),
             "limitGroups" => $this->config->GetLimitGroups(),
             "chat" => $this->config->GetCustomizationChat(),
@@ -194,6 +196,7 @@ class SettingsController extends Controller {
      * @param array $editFormats - editable formats array
      * @param bool $sameTab - open in the same tab
      * @param bool $preview - generate preview files
+     * @param bool $versionHistory - keep version history
      * @param array $limitGroups - list of groups
      * @param bool $chat - display chat
      * @param bool $compactHeader - display compact header
@@ -209,6 +212,7 @@ class SettingsController extends Controller {
                                     $editFormats,
                                     $sameTab,
                                     $preview,
+                                    $versionHistory,
                                     $limitGroups,
                                     $chat,
                                     $compactHeader,
@@ -223,6 +227,7 @@ class SettingsController extends Controller {
         $this->config->SetEditableFormats($editFormats);
         $this->config->SetSameTab($sameTab);
         $this->config->SetPreview($preview);
+        $this->config->SetVersionHistory($versionHistory);
         $this->config->SetLimitGroups($limitGroups);
         $this->config->SetCustomizationChat($chat);
         $this->config->SetCustomizationCompactHeader($compactHeader);
@@ -231,6 +236,19 @@ class SettingsController extends Controller {
         $this->config->SetCustomizationHelp($help);
         $this->config->SetCustomizationToolbarNoTabs($toolbarNoTabs);
         $this->config->SetCustomizationReviewDisplay($reviewDisplay);
+
+        return [
+            ];
+    }
+
+    /**
+     * Clear all version history
+     *
+     * @return array
+     */
+    public function ClearHistory() {
+
+        FileVersions::clearHistory();
 
         return [
             ];

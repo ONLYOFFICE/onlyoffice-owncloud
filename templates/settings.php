@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2020
+ * (c) Copyright Ascensio System SIA 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -115,6 +115,13 @@
             <label for="onlyofficeSameTab"><?php p($l->t("Open file in the same tab")) ?></label>
         </p>
 
+        <p>
+            <input type="checkbox" class="checkbox" id="onlyofficeVersionHistory"
+                <?php if ($_["versionHistory"]) { ?>checked="checked"<?php } ?> />
+            <label for="onlyofficeVersionHistory"><?php p($l->t("Keep metadata for each version once the document is edited (it will take up disk space)")) ?></label>
+            <button id="onlyofficeClearVersionHistory" class="button"><?php p($l->t("Clear")) ?></button>
+        </p>
+
         <p class="onlyoffice-header"><?php p($l->t("The default application for opening the format")) ?></p>
         <div class="onlyoffice-exts">
             <?php foreach ($_["formats"] as $format => $setting) { ?>
@@ -157,7 +164,7 @@
         <p>
         <input type="checkbox" class="checkbox" id="onlyofficeForcesave"
             <?php if ($_["forcesave"]) { ?>checked="checked"<?php } ?> />
-        <label for="onlyofficeForcesave"><?php p($l->t("Keep intermediate versions when editing")) ?></label>
+        <label for="onlyofficeForcesave"><?php p($l->t("Keep intermediate versions when editing (forcesave)")) ?></label>
         </p>
 
         <p class="onlyoffice-header">

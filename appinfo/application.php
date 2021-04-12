@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2020
+ * (c) Copyright Ascensio System SIA 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,9 +94,11 @@ class Application extends App {
         $detector->registerType("otp", "application/vnd.oasis.opendocument.presentation-template");
 
         $previewManager = $container->query(IPreview::class);
-        $previewManager->registerProvider(Preview::getMimeTypeRegex(), function() use ($container) {
-            return $container->query(Preview::class);
-        });
+        if ($this->appConfig->GetPreview()) {
+            $previewManager->registerProvider(Preview::getMimeTypeRegex(), function() use ($container) {
+                return $container->query(Preview::class);
+            });
+        }
 
         $container->registerService("L10N", function ($c) {
             return $c->query("ServerContainer")->getL10N($c->query("AppName"));

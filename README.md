@@ -20,7 +20,7 @@ ODT, ODS, and ODP is also available for instant conversion. After you enable the
 
 ## Installing ONLYOFFICE Docs
 
-You will need an instance of ONLYOFFICE Docs (Document Server) that is resolvable and connectable both from ownCloud and any end clients (version 4.2.7 and later are supported for use with the app). ONLYOFFICE Document Server must also be able to POST to ownCloud directly.
+You will need an instance of ONLYOFFICE Docs (Document Server) that is resolvable and connectable both from ownCloud and any end clients. ONLYOFFICE Document Server must also be able to POST to ownCloud directly.
 
 ONLYOFFICE Document Server and ownCloud can be installed either on different computers, or on the same machine. If you use one machine, set up a custom port for Document Server as by default both ONLYOFFICE Document Server and ownCloud work on port 80.
 

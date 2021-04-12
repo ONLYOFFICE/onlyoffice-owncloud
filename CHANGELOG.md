@@ -1,11 +1,22 @@
 # Change Log
 
 ## Added
+- create file from editor
+- more empty files in different languages
+
+## Changed
+- open a version from the history of supported formats only
+
+## 6.3.1
+## Added
 - viewing a locked file
 - hide secret key in settings
+- configuring version storage
+- clearing history data
 
 ## Changed
 - thumbnails for small files only
+- history for federated share files is not stored
 
 ## 6.2.1
 ## Changed

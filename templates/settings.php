@@ -238,11 +238,11 @@
         </h3>
         <ul class="template-container">
             <?php foreach ($_["templates"] as $template) { ?>
-                <li data-id=<?php echo $template["id"] ?> class="template-item" >
-                    <img src= <?php echo "/core/img/filetypes/x-office-" . $template["type"] . ".svg" ?> />
-                    <p> <?php echo $template["name"] ?> </p>
-                    <span class="template-preview"> </span>
-                    <span class="template-delete icon-delete"> </span>
+                <li data-id=<?php p($template["id"]) ?> class="template-item" >
+                    <img src="/core/img/filetypes/x-office-<?php p($template["type"]) ?>.svg" />
+                    <p><?php p($template["name"]) ?></p>
+                    <span class="template-preview"></span>
+                    <span class="template-delete icon-delete"></span>
                 </li>
             <?php } ?>
         </ul>

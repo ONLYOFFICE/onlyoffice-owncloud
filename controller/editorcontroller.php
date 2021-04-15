@@ -1061,10 +1061,11 @@ class EditorController extends Controller {
      * @param string $userId - user identifier
      * @param integer $fileId - file identifier
      * @param string $filePath - file path
+     * @param bool $template - file is template
      *
      * @return array
      */
-    private function getFile($userId, $fileId, $filePath = null, $template) {
+    private function getFile($userId, $fileId, $filePath = null, $template = false) {
         if (empty($fileId)) {
             return [null, $this->trans->t("FileId is empty"), null];
         }

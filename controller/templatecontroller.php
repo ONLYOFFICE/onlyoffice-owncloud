@@ -87,7 +87,7 @@ class TemplateController extends Controller {
             if (is_uploaded_file($file["tmp_name"]) && $file["error"] === 0) {
                 if (!TemplateManager::IsTemplateType($file["name"])) {
                     return [
-                        "error" => $this->trans->t("Invalid file format")
+                        "error" => $this->trans->t("Template must be OOXML format")
                     ];
                 }
 

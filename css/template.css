@@ -16,6 +16,9 @@
  *
  */
 
+.template-container li {
+    margin-bottom: 10px;
+}
 .template-item img,
 .template-item p,
 .template-delete,
@@ -24,8 +27,14 @@
     margin-left: 10px;
     cursor: pointer;
 }
+.template-delete,
+.template-preview {
+    margin-bottom: -4px;
+    opacity: .8;
+}
 .template-item img {
     float: left;
+    margin-top: 3px;
 }
 .template-item input {
     position: absolute;

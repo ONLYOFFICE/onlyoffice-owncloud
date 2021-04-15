@@ -149,16 +149,16 @@
     }
 
     OCA.Onlyoffice.AttachItemTemplate = function (template) {
-        var itemNode = $(document.createElement("li"));
+        $.get(OC.filePath(OCA.Onlyoffice.AppName, "templates", "templateItem.html"), 
+            function (item) {
+                var item = $(item)
 
-        itemNode.attr("data-id", template.id);
-        itemNode.addClass("template-item");
-        itemNode.append("<img src=/core/img/filetypes/x-office-" + template.type + ".svg />");
-        itemNode.append("<p>" + template.name + "</p>");
-        itemNode.append('<span class="template-preview"></span>');
-        itemNode.append('<span class="template-delete icon-delete"></span>');
+                item.attr("data-id", template.id);
+                item.children("img").attr("src", "/core/img/filetypes/x-office-" + template.type + ".svg");
+                item.children("p").text(template.name);
 
-        $(".template-container").append(itemNode);
+                $(".template-container").append(item);
+            });
     }
 
 })(jQuery, OC);

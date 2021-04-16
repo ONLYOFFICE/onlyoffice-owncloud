@@ -348,6 +348,8 @@
     };
 
     OCA.Onlyoffice.onRequestClose = function () {
+        OCA.Onlyoffice.docEditor.destroyEditor();
+
         window.parent.postMessage({
             method: "editorRequestClose"
         },

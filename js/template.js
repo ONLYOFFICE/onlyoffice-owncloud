@@ -36,7 +36,7 @@
                     var $tmpl = $(tmpl)
                     var dialog = $tmpl.octemplate({
                         dialog_name: "onlyoffice-template-picker",
-                        dialog_title: t("onlyoffice", "Select template")
+                        dialog_title: t(OCA.Onlyoffice.AppName, "Select template")
                     });
 
                     OCA.Onlyoffice.AttachTemplates(dialog, templates);
@@ -53,7 +53,7 @@
                                 $(this).ocdialog("close")
                             }
                         }, {
-                            text: t("onlyoffice", "Create"),
+                            text: t(OCA.Onlyoffice.AppName, "Create"),
                             classes: "primary",
                             click: function() {
                                 var templateId = this.dataset.templateId;
@@ -142,7 +142,7 @@
         $(emptyItem.querySelector("label")).attr("for", "template_picker-0");
         emptyItem.querySelector("input").id = "template_picker-0";
         emptyItem.querySelector("img").src = "/core/img/filetypes/x-office-" + type + ".svg";
-        emptyItem.querySelector("p").textContent = t("onlyoffice", "Empty");
+        emptyItem.querySelector("p").textContent = t(OCA.Onlyoffice.AppName, "Empty");
         emptyItem.onclick = function() {
             dialog[0].dataset.templateId = "0";
         }

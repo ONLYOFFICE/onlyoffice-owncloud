@@ -51,7 +51,7 @@ class TemplateController extends Controller {
      * @param IL10N $trans - l10n service
      */
     public function __construct($AppName,
-                                    IRequest $request, 
+                                    IRequest $request,
                                     IL10N $trans,
                                     ILogger $logger
                                     ) {
@@ -65,7 +65,7 @@ class TemplateController extends Controller {
      * Get templates
      *
      * @param string $type - template format type
-     * 
+     *
      * @return array
      */
     public function GetTemplates($type = null) {
@@ -122,7 +122,7 @@ class TemplateController extends Controller {
 
     /**
      * Delete template
-     * 
+     *
      * @param string $templateId - file identifier
      */
     public function DeleteTemplate($templateId) {

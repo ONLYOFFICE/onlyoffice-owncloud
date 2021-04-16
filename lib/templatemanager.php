@@ -60,7 +60,7 @@ class TemplateManager {
      * Get global templates
      *
      * @param string $type - template format type
-     * 
+     *
      * @return array
      */
     public static function GetGlobalTemplates($type = null) {
@@ -87,7 +87,7 @@ class TemplateManager {
 
     /**
      * Get empty template content
-     * 
+     *
      * @param string $fileName - target file name
      *
      * @return string
@@ -104,9 +104,9 @@ class TemplateManager {
 
     /**
      * Get template content
-     * 
+     *
      * @param string $templateId - identifier file template
-     * 
+     *
      * @return string
      */
     public static function GetTemplate($templateId) {
@@ -132,8 +132,8 @@ class TemplateManager {
 
     /**
      * Get type template from mimetype
-     * 
-     * @param string $mime - mimetype 
+     *
+     * @param string $mime - mimetype
      *
      * @return string
      */
@@ -152,8 +152,8 @@ class TemplateManager {
 
     /**
      * Get mimetype template from format type
-     * 
-     * @param string $type - format type 
+     *
+     * @param string $type - format type
      *
      * @return string
      */
@@ -172,8 +172,8 @@ class TemplateManager {
 
     /**
      * Check template type
-     * 
-     * @param string $name - template name 
+     *
+     * @param string $name - template name
      *
      * @return bool
      */

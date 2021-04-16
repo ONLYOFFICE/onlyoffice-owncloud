@@ -75,6 +75,12 @@
     "Disable certificate verification (insecure)": "关闭证书校验(不安全)",
     "Keep intermediate versions when editing (forcesave)": "编辑时保留中间版本 (强制保存)",
     "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "使用ONLYOFFICE生成文档预览（将占用磁盘空间）",
-    "Keep metadata for each version once the document is edited (it will take up disk space)": "编辑文档后保留每个版本的元数据（它将占用磁盘空间）"
+    "Keep metadata for each version once the document is edited (it will take up disk space)": "编辑文档后保留每个版本的元数据（它将占用磁盘空间）",
+    "Create": "创建",
+    "Select template" : "选择模板",
+    "Invalid file provided" : "提供了无效文件",
+    "Empty": "空",
+    "Error" : "错误",
+    "Add a new template": "添加一个新的模板"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

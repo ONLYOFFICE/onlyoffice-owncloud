@@ -78,6 +78,12 @@ OC.L10N.register(
     "Keep intermediate versions when editing (forcesave)": "Mantieni le versioni intermedie durante la modifica (forzare salvataggio)",
     "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "Usare ONLYOFFICE per generare anteprima documenti (occuperà spazio su disco)",
     "Keep metadata for each version once the document is edited (it will take up disk space)": "Salvare metadati per ogni versione una volta modificato il documento (occuperà spazio su disco)",
-    "All history successfully deleted": "Cronologia eliminata con successo"
+    "All history successfully deleted": "Cronologia eliminata con successo",
+    "Create": "Crea",
+    "Select template" : "Seleziona modello",
+    "Invalid file provided" : "File fornito non valido",
+    "Empty": "Vuoto",
+    "Error" : "Errore",
+    "Add a new template": "Aggiungi un nuovo modello"
 },
 "nplurals=2; plural=(n != 1);");

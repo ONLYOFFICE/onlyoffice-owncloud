@@ -133,14 +133,14 @@ class TemplateController extends Controller {
         } catch(\Exception $e) {
             $this->logger->logException($e, ["message" => "DeleteTemplate: $templateId", "app" => $this->AppName]);
             return [
-                "error" => $this->trans->t("Can't delete template")
+                "error" => $this->trans->t("Failed to delete template")
             ];
         }
 
         if (empty($templates)) {
             $this->logger->info("Template not found: $templateId", ["app" => $this->AppName]);
             return [
-                "error" => $this->trans->t("Can't delete template")
+                "error" => $this->trans->t("Failed to delete template")
             ];
         }
 

@@ -78,6 +78,12 @@ OC.L10N.register(
     "Keep intermediate versions when editing (forcesave)": "Zwischenversionen bei der Bearbeitung aufbewahren (force save)",
     "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "ONLYOFFICE verwenden, um eine Dokumentvorschau zu erstellen (Speicherplatz erforderlich)",
     "Keep metadata for each version once the document is edited (it will take up disk space)": "Metadaten für jede Version beim Bearbeiten des Dokuments aufbewahren (Speicherplatz erforderlich)",
-    "All history successfully deleted": "Gesamtverlauf wurde erfolgreich gelöscht"
+    "All history successfully deleted": "Gesamtverlauf wurde erfolgreich gelöscht",
+    "Create": "Erstellen",
+    "Select template" : "Vorlage auswählen",
+    "Invalid file provided" : "Ungültige Datei zur Verfügung gestellt",
+    "Empty": "Leer",
+    "Error" : "Fehler",
+    "Add a new template": "Neue Vorlage hinzufügen"
 },
 "nplurals=2; plural=(n != 1);");

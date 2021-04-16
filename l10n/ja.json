@@ -75,6 +75,12 @@
     "Disable certificate verification (insecure)": "証明書の検証を無効にする（安全でない",
     "Keep intermediate versions when editing (forcesave)": "編集時に、中間バージョンを保持する (強制保存)",
     "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "ONLYOFFICEを使用して、ドキュメントプレビューを生成する（ディスク容量がかかる）",
-    "Keep metadata for each version once the document is edited (it will take up disk space)": "ドキュメントが編集されたら、各バージョンのメタデータを保持する（ディスクス容量がかかる）"
+    "Keep metadata for each version once the document is edited (it will take up disk space)": "ドキュメントが編集されたら、各バージョンのメタデータを保持する（ディスクス容量がかかる）",
+    "Create": "作成",
+    "Select template" : "テンプレートを選択する",
+    "Invalid file provided" : "無効なファイルが提供されました",
+    "Empty": "空",
+    "Error" : "エラー",
+    "Add a new template": "新しいテンプレートを追加する:"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

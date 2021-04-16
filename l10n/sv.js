@@ -73,6 +73,12 @@ OC.L10N.register(
     "version": "verzia",
     "Disable certificate verification (insecure)": "Använd inte certifikatsverifiering (osäkert)",
     "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "Använd ONLYOFFICE för att generera en förhandsgranskning av dokument (detta använder diskutrymme)",
-    "Keep metadata for each version once the document is edited (it will take up disk space)": "Behåll metadata för varje version när dokumentet redigeras (detta använder diskutrymme) "
+    "Keep metadata for each version once the document is edited (it will take up disk space)": "Behåll metadata för varje version när dokumentet redigeras (detta använder diskutrymme) ",
+    "Create": "Skapa",
+    "Select template" : "Välj mall",
+    "Invalid file provided" : "Ogiltig fil tillhandahölls",
+    "Empty": "Tom",
+    "Error" : "Fel",
+    "Add a new template": "Lägg till en ny mall"
 },
 "nplurals=2; plural=(n != 1);");

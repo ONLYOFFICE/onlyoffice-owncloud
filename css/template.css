@@ -16,43 +16,46 @@
  *
  */
 
-.template-container li {
+.onlyoffice-template-container {
+    margin-left: 0px !important;
+}
+.onlyoffice-template-container li {
     margin-bottom: 10px;
 }
-.template-item img,
-.template-item p,
-.template-delete,
-.template-preview {
+.onlyoffice-template-item img,
+.onlyoffice-template-item p,
+.onlyoffice-template-delete,
+.onlyoffice-template-preview {
     display: inline-block;
-    margin-left: 10px;
+    margin-right: 10px;
     cursor: pointer;
 }
-.template-delete,
-.template-preview {
+.onlyoffice-template-delete,
+.onlyoffice-template-preview {
     margin-bottom: -4px;
     opacity: .8;
 }
-.template-item img {
+.onlyoffice-template-item img {
     float: left;
     margin-top: 3px;
 }
-.template-item input {
+.onlyoffice-template-item input {
     position: absolute;
     left: -10000px;
 }
-.template-item input:checked + label {
+.onlyoffice-template-item input:checked + label {
     color: rgb(55, 137, 243);
 }
-.template-preview {
+.onlyoffice-template-preview {
     background-image: url("../../../core/img/actions/toggle.svg");
     height: 16px;
     width: 16px;
 }
-.template.icon-add {
+.onlyoffice-template.icon-add {
     opacity: 0.5;
     padding-left: 35px;
     padding-bottom: 5px;
 }
-.template.icon-add:hover {
+.onlyoffice-template.icon-add:hover {
     opacity: 0.7;
 }

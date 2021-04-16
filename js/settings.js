@@ -220,8 +220,8 @@
             });
         });
 
-        $(document).on("click", ".template-delete", function (event) {
-            var item = $(event.target).parents(".template-item");
+        $(document).on("click", ".onlyoffice-template-delete", function (event) {
+            var item = $(event.target).parents(".onlyoffice-template-item");
             var templateId = $(item).attr("data-id");
 
             $(".section-onlyoffice").addClass("icon-loading");
@@ -240,8 +240,8 @@
             });
         });
 
-        $(document).on("click", ".template-preview", function (event) {
-            var item = $(event.target).parents(".template-item");
+        $(document).on("click", ".onlyoffice-template-preview", function (event) {
+            var item = $(event.target).parents(".onlyoffice-template-item");
             var templateId = $(item).attr("data-id");
 
             var url = OC.generateUrl("/apps/" + OCA.Onlyoffice.AppName + "/{fileId}?template={template}",

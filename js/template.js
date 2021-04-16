@@ -29,13 +29,13 @@
                 return;
             }
 
-            $("#template-picker").remove();
+            $("#onlyoffice-template-picker").remove();
 
             $.get(OC.filePath(OCA.Onlyoffice.AppName, "templates", "templatePicker.html"), 
                 function (tmpl) {
                     var $tmpl = $(tmpl)
                     var dialog = $tmpl.octemplate({
-                        dialog_name: "template-picker",
+                        dialog_name: "onlyoffice-template-picker",
                         dialog_title: t("onlyoffice", "Select template")
                     });
 
@@ -43,7 +43,7 @@
 
                     $("body").append(dialog)
 
-                    $("#template-picker").ocdialog({
+                    $("#onlyoffice-template-picker").ocdialog({
                         closeOnEscape: true,
                         modal: true,
                         buttons: [{
@@ -123,7 +123,7 @@
     }
 
     OCA.Onlyoffice.AttachTemplates = function (dialog, templates) {
-        var emptyItem = dialog[0].querySelector(".template-item");
+        var emptyItem = dialog[0].querySelector(".onlyoffice-template-item");
         var type = templates[0]["type"];
 
         templates.forEach(template => {
@@ -136,7 +136,7 @@
             item.onclick = function() {
                 dialog[0].dataset.templateId = template["id"];
             }
-            dialog[0].querySelector(".template-container").appendChild(item);
+            dialog[0].querySelector(".onlyoffice-template-container").appendChild(item);
         });
 
         $(emptyItem.querySelector("label")).attr("for", "template_picker-0");
@@ -157,7 +157,7 @@
                 item.children("img").attr("src", "/core/img/filetypes/x-office-" + template.type + ".svg");
                 item.children("p").text(template.name);
 
-                $(".template-container").append(item);
+                $(".onlyoffice-template-container").append(item);
             });
     }
 

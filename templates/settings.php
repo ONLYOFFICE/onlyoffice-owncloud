@@ -232,7 +232,7 @@
         <p><button id="onlyofficeSave" class="button"><?php p($l->t("Save")) ?></button></p>
 
         <h3>
-            <?php p($l->t("Global templates")) ?>
+            <?php p($l->t("Common templates")) ?>
             <input id="onlyofficeAddTemplate" type="file" class="hidden-visually" />
             <label for="onlyofficeAddTemplate" class="onlyoffice-template icon-add" title="<?php p($l->t("Add a new template")) ?>"></label>
         </h3>

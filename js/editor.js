@@ -65,13 +65,7 @@
         }
 
         if (OCA.Onlyoffice.inframe) {
-            var dsVersion = DocsAPI.DocEditor.version();
-            var versionArray = dsVersion.split(".");
-            if (versionArray[0] < 5 || versionArray[0] == 5 && versionArray[1] < 5) {
-                params.push("inframe=2");
-            } else {
-                params.push("inframe=1");
-            }
+            params.push("inframe=true");
         }
 
         if (OCA.Onlyoffice.Desktop) {

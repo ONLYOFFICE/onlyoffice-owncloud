@@ -100,4 +100,10 @@
         }
     }, false);
 
+    window.addEventListener("popstate", function (event) {
+        if ($("#onlyofficeFrame").length) {
+            OCA.Onlyoffice.onRequestClose();
+        }
+    });
+
 })(OCA);

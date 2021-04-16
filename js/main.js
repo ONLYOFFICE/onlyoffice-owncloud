@@ -120,37 +120,8 @@
         }
     };
 
-    OCA.Onlyoffice.ShowHeaderButton = function () {
-        if ($("#onlyofficeHeader").length) {
-            return;
-        }
-
-        var wrapper = $("<div id='onlyofficeHeader' />")
-
-        var btnClose = $("<a class='icon icon-close'></a>");
-        btnClose.on("click", function () {
-            OCA.Onlyoffice.onRequestClose();
-        });
-        wrapper.prepend(btnClose);
-
-        if (!$("#isPublic").val()) {
-            var btnShare = $("<a class='icon icon-shared'></a>");
-            btnShare.on("click", function () {
-                OCA.Onlyoffice.OpenShareDialog();
-            })
-            wrapper.prepend(btnShare);
-        }
-
-        if ($("#header .header-right").length) {
-            $("#header .header-right").append(wrapper);
-        } else {
-            $("#header").append(wrapper);
-        }
-    };
-
     OCA.Onlyoffice.CloseEditor = function () {
         $("body").removeClass("onlyoffice-inline");
-        $("#onlyofficeHeader").remove();
 
         OCA.Onlyoffice.context = null;
 

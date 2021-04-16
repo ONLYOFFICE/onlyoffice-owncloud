@@ -57,30 +57,6 @@ body.onlyoffice-inline #content #app-content {
     z-index: 110;
 }
 
-#onlyofficeHeader {
-    display: flex;
-    float: right;
-}
-.header-right #onlyofficeHeader {
-    float: left;
-}
-
-#onlyofficeHeader .icon {
-    display: block;
-    min-width: 50px;
-    height: 45px;
-}
-.header-right #onlyofficeHeader .icon {
-    height: 31px;
-}
-#onlyofficeHeader .icon-close {
-    background-image: url("../img/close.svg");
-}
-#onlyofficeHeader .icon-shared {
-    background-image: url("../img/shared.svg");
-    opacity: 1;
-}
-
 .onlyoffice-public-open {
     display: inline-block;
     margin-top: 10px;

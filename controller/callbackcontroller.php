@@ -41,10 +41,10 @@ use OCA\Files_Sharing\External\Storage as SharingExternalStorage;
 
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
-use OCA\Onlyoffice\KeyManager;
 use OCA\Onlyoffice\DocumentService;
-use OCA\Onlyoffice\VersionManager;
 use OCA\Onlyoffice\FileVersions;
+use OCA\Onlyoffice\KeyManager;
+use OCA\Onlyoffice\VersionManager;
 
 /**
  * Callback handler for the document server.
@@ -349,7 +349,7 @@ class CallbackController extends Controller {
             }
         }
 
-        $templatePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "en" . DIRECTORY_SEPARATOR . "new.docx";
+        $templatePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "en-US" . DIRECTORY_SEPARATOR . "new.docx";
 
         $template = file_get_contents($templatePath);
         if (!$template) {

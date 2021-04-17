@@ -898,7 +898,7 @@ class EditorController extends Controller {
 
                 $permissionsDownload = $attributes->getAttribute("permissions", "download");
                 if ($permissionsDownload !== null) {
-                    $params["document"]["permissions"]["download"] = $params["document"]["permissions"]["print"] = $permissionsDownload === true;
+                    $params["document"]["permissions"]["download"] = $params["document"]["permissions"]["print"] = $params["document"]["permissions"]["copy"] = $permissionsDownload === true;
                 }
 
                 if (isset($format["review"]) && $format["review"]) {

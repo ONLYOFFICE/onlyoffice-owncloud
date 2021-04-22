@@ -84,6 +84,12 @@ OC.L10N.register(
     "Invalid file provided" : "Ungültige Datei zur Verfügung gestellt",
     "Empty": "Leer",
     "Error" : "Fehler",
-    "Add a new template": "Neue Vorlage hinzufügen"
+    "Add a new template": "Neue Vorlage hinzufügen",
+    "Template already exists": "Vorlage ist bereits vorhanden",
+    "Template must be in OOXML format": "Vorlage soll im OOXML-Format sein",
+    "Template successfully added": "Vorlage wurde erfolgreich hinzugefügt",
+    "Template successfully deleted": "Vorlage wurde erfolgreich entfernt",
+    "Common templates": "Gemeinsame Vorlagen",
+    "Failed to delete template": "Fehler beim Löschen einer Vorlage"
 },
 "nplurals=2; plural=(n != 1);");

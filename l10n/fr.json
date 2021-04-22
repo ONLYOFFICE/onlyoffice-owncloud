@@ -82,6 +82,12 @@
     "Invalid file provided" : "Fichier non valide",
     "Empty": "Vide",
     "Error" : "Erreur",
-    "Add a new template": "Ajouter un nouveau modèle"
+    "Add a new template": "Ajouter un nouveau modèle",
+    "Template already exists": "Le modèle existe déjà",
+    "Template must be in OOXML format": "Le modèle doit être au format OOXML",
+    "Template successfully added": "Le modèle a été ajouté avec succès",
+    "Template successfully deleted": "Le modèle a été supprimé avec succès",
+    "Common templates": "Modèles communs",
+    "Failed to delete template": "Impossible de supprimer le modèle"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

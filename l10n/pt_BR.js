@@ -84,6 +84,12 @@ OC.L10N.register(
     "Invalid file provided" : "Arquivo fornecido inválido",
     "Empty": "Vazio",
     "Error" : "Erro",
-    "Add a new template": "Adicionar um novo modelo"
+    "Add a new template": "Adicionar um novo modelo",
+    "Template already exists": "Modelo já existe",
+    "Template must be in OOXML format": "Modelo deve estar no formato OOXML",
+    "Template successfully added": "Modelo adicionado com sucesso",
+    "Template successfully deleted": "Modelo excluído com sucesso",
+    "Common templates": "Modelos comuns",
+    "Failed to delete template": "Falha ao excluir modelo"
 },
 "nplurals=2; plural=(n != 1);");

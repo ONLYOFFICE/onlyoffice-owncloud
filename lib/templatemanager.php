@@ -86,23 +86,6 @@ class TemplateManager {
     }
 
     /**
-     * Get empty template content
-     *
-     * @param string $fileName - target file name
-     *
-     * @return string
-     */
-    public static function GetEmptyTemplate($fileName) {
-        $ext = strtolower("." . pathinfo($fileName, PATHINFO_EXTENSION));
-        $lang = \OC::$server->getL10NFactory("")->get("")->getLanguageCode();
-
-        $templatePath = self::getEmptyTemplatePath($lang, $ext);
-
-        $template = file_get_contents($templatePath);
-        return $template;
-    }
-
-    /**
      * Get template content
      *
      * @param string $templateId - identifier file template
@@ -190,6 +173,23 @@ class TemplateManager {
     }
 
     /**
+     * Get empty template content
+     *
+     * @param string $fileName - target file name
+     *
+     * @return string
+     */
+    public static function GetEmptyTemplate($fileName) {
+        $ext = strtolower("." . pathinfo($fileName, PATHINFO_EXTENSION));
+        $lang = \OC::$server->getL10NFactory("")->get("")->getLanguageCode();
+
+        $templatePath = self::GetEmptyTemplatePath($lang, $ext);
+
+        $template = file_get_contents($templatePath);
+        return $template;
+    }
+
+    /**
      * Get template path
      *
      * @param string $lang - language
@@ -197,7 +197,7 @@ class TemplateManager {
      *
      * @return string
      */
-    private static function getEmptyTemplatePath($lang, $ext) {
+    public static function GetEmptyTemplatePath($lang, $ext) {
         if (!array_key_exists($lang, self::$localPath)) {
             $lang = "en";
         }

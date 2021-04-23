@@ -351,7 +351,7 @@ class CallbackController extends Controller {
             }
         }
 
-        $templatePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "en-US" . DIRECTORY_SEPARATOR . "new.docx";
+        $templatePath = TemplateManager::GetEmptyTemplatePath("en", ".docx");
 
         $template = file_get_contents($templatePath);
         if (!$template) {

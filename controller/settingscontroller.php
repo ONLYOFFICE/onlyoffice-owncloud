@@ -26,8 +26,6 @@ use OCP\ILogger;
 use OCP\IRequest;
 use OCP\IURLGenerator;
 
-use OCA\Files\Helper;
-
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\DocumentService;
@@ -277,8 +275,6 @@ class SettingsController extends Controller {
      * @return array
      */
     private function GetGlobalTemplates() {
-        $templates = TemplateManager::GetGlobalTemplates();
-
-        return $templates;
+        return TemplateManager::GetGlobalTemplates();
     }
 }

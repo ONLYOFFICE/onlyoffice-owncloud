@@ -806,7 +806,7 @@ class EditorController extends Controller {
      * @param string $filePath - file path
      * @param string $shareToken - access token
      * @param integer $version - file version
-     * @param integer $inframe - open in frame. 0 - no, 1 - yes, 2 - without goback for old editor (5.4)
+     * @param bool $inframe - open in frame
      * @param bool $desktop - desktop label
      * @param bool $template - file is template
      *
@@ -815,7 +815,7 @@ class EditorController extends Controller {
      * @NoAdminRequired
      * @PublicPage
      */
-    public function config($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = 0, $desktop = false, $template = false) {
+    public function config($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $desktop = false, $template = false) {
 
         if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
             return ["error" => $this->trans->t("Not permitted")];
@@ -887,7 +887,7 @@ class EditorController extends Controller {
 
                 $permissionsDownload = $attributes->getAttribute("permissions", "download");
                 if ($permissionsDownload !== null) {
-                    $params["document"]["permissions"]["download"] = $params["document"]["permissions"]["print"] = $permissionsDownload === true;
+                    $params["document"]["permissions"]["download"] = $params["document"]["permissions"]["print"] = $params["document"]["permissions"]["copy"] = $permissionsDownload === true;
                 }
 
                 if (isset($format["review"]) && $format["review"]) {
@@ -1020,7 +1020,7 @@ class EditorController extends Controller {
             $params["editorConfig"]["createUrl"] = urldecode($createUrl);
         }
 
-        if ($folderLink !== null && $inframe !== 2) {
+        if ($folderLink !== null) {
             $params["editorConfig"]["customization"]["goback"] = [
                 "url"  => $folderLink
             ];
@@ -1028,14 +1028,14 @@ class EditorController extends Controller {
             if (!$desktop) {
                 if ($this->config->GetSameTab()) {
                     $params["editorConfig"]["customization"]["goback"]["blank"] = false;
-                    if ($inframe === 1) {
+                    if ($inframe === true) {
                         $params["editorConfig"]["customization"]["goback"]["requestClose"] = true;
                     }
                 }
             }
         }
 
-        if ($inframe === 1) {
+        if ($inframe === true) {
             $params["_files_sharing"] = \OC::$server->getAppManager()->isEnabledForUser("files_sharing");
         }
 

@@ -74,11 +74,6 @@
             return;
         }
         switch (event.data.method) {
-            case "editorShowHeaderButton":
-                if (OCA.Onlyoffice.ShowHeaderButton) {
-                    OCA.Onlyoffice.ShowHeaderButton();
-                }
-                break;
             case "editorRequestClose":
                 OCA.Onlyoffice.onRequestClose();
                 break;
@@ -104,5 +99,11 @@
                 break;
         }
     }, false);
+
+    window.addEventListener("popstate", function (event) {
+        if ($("#onlyofficeFrame").length) {
+            OCA.Onlyoffice.onRequestClose();
+        }
+    });
 
 })(OCA);

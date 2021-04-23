@@ -69,17 +69,7 @@
         }
 
         if (OCA.Onlyoffice.inframe) {
-            var dsVersion = DocsAPI.DocEditor.version();
-            var versionArray = dsVersion.split(".");
-            if (versionArray[0] < 5 || versionArray[0] == 5 && versionArray[1] < 5) {
-                window.parent.postMessage({
-                    method: "editorShowHeaderButton"
-                },
-                "*");
-                params.push("inframe=2");
-            } else {
-                params.push("inframe=1");
-            }
+            params.push("inframe=true");
         }
 
         if (OCA.Onlyoffice.Desktop) {
@@ -362,6 +352,8 @@
     };
 
     OCA.Onlyoffice.onRequestClose = function () {
+        OCA.Onlyoffice.docEditor.destroyEditor();
+
         window.parent.postMessage({
             method: "editorRequestClose"
         },

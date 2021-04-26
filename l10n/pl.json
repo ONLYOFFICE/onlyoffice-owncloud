@@ -66,8 +66,14 @@
     "This is a public test server, please do not use it for private sensitive data. The server will be available during a 30-day period." : "To jest publiczny testowy serwer, proszę nie używać go do prywatnych danych. Serwer będzie dostępny przez 30 dni.",
     "The 30-day test period is over, you can no longer connect to demo ONLYOFFICE Document Server." : "Upłyneło 30 dni, nie możesz się już łączyć z serwerem demo.",
     "You are using public demo ONLYOFFICE Document Server. Please do not store private sensitive data." : "Używasz publicznego serwera demo. Nie przechowuj tu prywatnych danych.",
+    "Select file to compare": "Wybierz plik do porównania",
+    "Review mode for viewing": "Tryb recenzji dla przeglądania",
+    "Markup": "Wprowadzone zmiany",
+    "Final": "Zmieniony dokument",
+    "Original": "Oryginalny dokument",
     "version": "wersja",
     "Disable certificate verification (insecure)": "Wyłącz weryfikację certyfikatu (niebezpieczne)",
+    "Keep intermediate versions when editing (forcesave)": "Zachowuj wersje pośrednie w trakcie edycji (zapisuj automatycznie)",
     "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "Skorzystaj z ONLYOFFICE, aby wygenerować podgląd dokumentu (zajmie to miejsce na dysku)",
     "Keep metadata for each version once the document is edited (it will take up disk space)": "Zachowaj metadane dla każdej wersji, gdy dokument jest edytowany (zajmie to miejsce na dysku)"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"

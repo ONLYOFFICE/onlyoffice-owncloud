@@ -60,6 +60,7 @@ There are several ways to do that:
 
     ```bash
     git clone https://github.com/ONLYOFFICE/onlyoffice-owncloud.git onlyoffice
+    cd onlyoffice
     git submodule update --init --recursive
     ```
 

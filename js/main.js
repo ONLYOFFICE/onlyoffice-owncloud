@@ -221,7 +221,7 @@
                     if (!config.mime) {
                         return true;
                     }
-                    fileList.fileActions.registerAction({
+                    OCA.Files.fileActions.registerAction({
                         name: "onlyofficeOpen",
                         displayName: t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE"),
                         mime: config.mime,
@@ -231,11 +231,11 @@
                     });
 
                     if (config.def) {
-                        fileList.fileActions.setDefault(config.mime, "onlyofficeOpen");
+                        OCA.Files.fileActions.setDefault(config.mime, "onlyofficeOpen");
                     }
 
                     if (config.conv) {
-                        fileList.fileActions.registerAction({
+                        OCA.Files.fileActions.registerAction({
                             name: "onlyofficeConvert",
                             displayName: t(OCA.Onlyoffice.AppName, "Convert with ONLYOFFICE"),
                             mime: config.mime,

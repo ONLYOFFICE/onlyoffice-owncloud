@@ -28,6 +28,7 @@ use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\ForbiddenException;
 use OCP\Files\IRootFolder;
+use OCP\Files\NotPermittedException;
 use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\IL10N;
 use OCP\ILogger;
@@ -46,6 +47,7 @@ use OCA\Onlyoffice\DocumentService;
 use OCA\Onlyoffice\FileUtility;
 use OCA\Onlyoffice\VersionManager;
 use OCA\Onlyoffice\FileVersions;
+use OCA\Onlyoffice\TemplateManager;
 
 /**
  * Controller with the main functions
@@ -165,6 +167,7 @@ class EditorController extends Controller {
      *
      * @param string $name - file name
      * @param string $dir - folder path
+     * @param string $templateId - file identifier
      * @param string $shareToken - access token
      *
      * @return array
@@ -172,7 +175,7 @@ class EditorController extends Controller {
      * @NoAdminRequired
      * @PublicPage
      */
-    public function create($name, $dir, $shareToken = null) {
+    public function create($name, $dir, $templateId = null, $shareToken = null) {
         $this->logger->debug("Create: $name", ["app" => $this->appName]);
 
         if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
@@ -216,15 +219,14 @@ class EditorController extends Controller {
             return ["error" => $this->trans->t("You don't have enough permission to create")];
         }
 
-        $ext = strtolower("." . pathinfo($name, PATHINFO_EXTENSION));
+        if (empty($templateId)) {
+            $template = TemplateManager::GetEmptyTemplate($name);
+        } else {
+            $template = TemplateManager::GetTemplate($templateId);
+        }
 
-        $lang = \OC::$server->getL10NFactory("")->get("")->getLanguageCode();
-
-        $templatePath = $this->getTemplatePath($lang, $ext);
-
-        $template = file_get_contents($templatePath);
         if (!$template) {
-            $this->logger->error("Template for file creation not found: $templatePath", ["app" => $this->appName]);
+            $this->logger->error("Template for file creation not found: $name ($templateId)", ["app" => $this->appName]);
             return ["error" => $this->trans->t("Template not found")];
         }
 
@@ -246,22 +248,6 @@ class EditorController extends Controller {
 
         $result = Helper::formatFileInfo($fileInfo);
         return $result;
-    }
-
-    /**
-     * Get template path
-     *
-     * @param string $lang - language
-     * @param string $ext - file extension
-     *
-     * @return string
-     */
-    private function getTemplatePath($lang, $ext) {
-        if (!array_key_exists($lang, self::$localPath)) {
-            $lang = "en";
-        }
-
-        return dirname(__DIR__) . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . self::$localPath[$lang] . DIRECTORY_SEPARATOR . "new" . $ext;
     }
 
     /**
@@ -721,13 +707,14 @@ class EditorController extends Controller {
      * @param string $shareToken - access token
      * @param integer $version - file version
      * @param bool $inframe - open in frame
+     * @param bool $template - file is template
      *
      * @return TemplateResponse|RedirectResponse
      *
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function index($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false) {
+    public function index($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $template = false) {
         $this->logger->debug("Open: $fileId ($version) $filePath", ["app" => $this->appName]);
 
         if (empty($shareToken) && !$this->userSession->isLoggedIn()) {
@@ -754,6 +741,7 @@ class EditorController extends Controller {
             "filePath" => $filePath,
             "shareToken" => $shareToken,
             "version" => $version,
+            "template" => $template,
             "inframe" => false
         ];
 
@@ -818,13 +806,14 @@ class EditorController extends Controller {
      * @param integer $version - file version
      * @param bool $inframe - open in frame
      * @param bool $desktop - desktop label
+     * @param bool $template - file is template
      *
      * @return array
      *
      * @NoAdminRequired
      * @PublicPage
      */
-    public function config($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $desktop = false) {
+    public function config($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $desktop = false, $template = false) {
 
         if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
             return ["error" => $this->trans->t("Not permitted")];
@@ -836,7 +825,7 @@ class EditorController extends Controller {
             $userId = $user->getUID();
         }
 
-        list ($file, $error, $share) = empty($shareToken) ? $this->getFile($userId, $fileId, $filePath) : $this->fileUtility->getFileByToken($fileId, $shareToken);
+        list ($file, $error, $share) = empty($shareToken) ? $this->getFile($userId, $fileId, $filePath, $template) : $this->fileUtility->getFileByToken($fileId, $shareToken);
 
         if (isset($error)) {
             $this->logger->error("Config: $fileId $error", ["app" => $this->appName]);
@@ -851,7 +840,7 @@ class EditorController extends Controller {
             return ["error" => $this->trans->t("Format is not supported")];
         }
 
-        $fileUrl = $this->getUrl($file, $user, $shareToken, $version);
+        $fileUrl = $this->getUrl($file, $user, $shareToken, $version, null, $template);
 
         $key = null;
         if ($version > 0
@@ -950,6 +939,7 @@ class EditorController extends Controller {
 
         $canEdit = isset($format["edit"]) && $format["edit"];
         $editable = $version < 1
+                    && !$template
                     && $file->isUpdateable()
                     && !$isPersistentLock
                     && (empty($shareToken) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE);
@@ -1081,16 +1071,18 @@ class EditorController extends Controller {
      * @param string $userId - user identifier
      * @param integer $fileId - file identifier
      * @param string $filePath - file path
+     * @param bool $template - file is template
      *
      * @return array
      */
-    private function getFile($userId, $fileId, $filePath = null) {
+    private function getFile($userId, $fileId, $filePath = null, $template = false) {
         if (empty($fileId)) {
             return [null, $this->trans->t("FileId is empty"), null];
         }
 
         try {
-            $files = $this->root->getUserFolder($userId)->getById($fileId);
+            $folder = !$template ? $this->root->getUserFolder($userId) : TemplateManager::GetGlobalTemplateDir();
+            $files = $folder->getById($fileId);
         } catch (\Exception $e) {
             $this->logger->logException($e, ["message" => "getFile: $fileId", "app" => $this->appName]);
             return [null, $this->trans->t("Invalid request"), null];
@@ -1128,10 +1120,11 @@ class EditorController extends Controller {
      * @param string $shareToken - access token
      * @param integer $version - file version
      * @param bool $changes - is required url to file changes
+     * @param bool $template - file is template
      *
      * @return string
      */
-    private function getUrl($file, $user = null, $shareToken = null, $version = 0, $changes = false) {
+    private function getUrl($file, $user = null, $shareToken = null, $version = 0, $changes = false, $template = false) {
 
         $data = [
             "action" => "download",
@@ -1151,6 +1144,9 @@ class EditorController extends Controller {
         }
         if ($changes) {
             $data["changes"] = true;
+        }
+        if ($template) {
+            $data["template"] = true;
         }
 
         $hashUrl = $this->crypt->GetHash($data);
@@ -1257,38 +1253,6 @@ class EditorController extends Controller {
 
         return $params;
     }
-
-    /**
-     * Mapping local path to templates
-     *
-     * @var Array
-     */
-    private static $localPath = [
-        "az" => "az-Latn-AZ",
-        "bg_BG" => "bg-BG",
-        "cs" => "cs-CZ",
-        "de" => "de-DE",
-        "de_DE" => "de-DE",
-        "el" => "el-GR",
-        "en" => "en-US",
-        "en_GB" => "en-GB",
-        "es" => "es-ES",
-        "fr" => "fr-FR",
-        "it" => "it-IT",
-        "ja" => "ja-JP",
-        "ko" => "ko-KR",
-        "lv" => "lv-LV",
-        "nl" => "nl-NL",
-        "pl" => "pl-PL",
-        "pt_BR" => "pt-BR",
-        "pt_PT" => "pt-PT",
-        "ru" => "ru-RU",
-        "sk_SK" => "sk-SK",
-        "sv" => "sv-SE",
-        "uk" => "uk-UA",
-        "vi" => "vi-VN",
-        "zh_CN" => "zh-CN"
-    ];
 
     /**
      * Print error page

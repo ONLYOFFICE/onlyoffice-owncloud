@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2020
+ * (c) Copyright Ascensio System SIA 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\ForbiddenException;
 use OCP\Files\IRootFolder;
+use OCP\Files\NotPermittedException;
 use OCP\Files\Storage\IPersistentLockingStorage;
 use OCP\IL10N;
 use OCP\ILogger;
@@ -46,6 +47,7 @@ use OCA\Onlyoffice\DocumentService;
 use OCA\Onlyoffice\FileUtility;
 use OCA\Onlyoffice\VersionManager;
 use OCA\Onlyoffice\FileVersions;
+use OCA\Onlyoffice\TemplateManager;
 
 /**
  * Controller with the main functions
@@ -165,6 +167,7 @@ class EditorController extends Controller {
      *
      * @param string $name - file name
      * @param string $dir - folder path
+     * @param string $templateId - file identifier
      * @param string $shareToken - access token
      *
      * @return array
@@ -172,11 +175,16 @@ class EditorController extends Controller {
      * @NoAdminRequired
      * @PublicPage
      */
-    public function create($name, $dir, $shareToken = null) {
+    public function create($name, $dir, $templateId = null, $shareToken = null) {
         $this->logger->debug("Create: $name", ["app" => $this->appName]);
 
-        if (empty(shareToken) && !$this->config->isUserAllowedToUse()) {
+        if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
             return ["error" => $this->trans->t("Not permitted")];
+        }
+
+        if (empty($name)) {
+            $this->logger->error("File name for creation was not found: $name", ["app" => $this->appName]);
+            return ["error" => $this->trans->t("Template not found")];
         }
 
         if (empty($shareToken)) {
@@ -211,19 +219,14 @@ class EditorController extends Controller {
             return ["error" => $this->trans->t("You don't have enough permission to create")];
         }
 
-        $ext = strtolower("." . pathinfo($name, PATHINFO_EXTENSION));
-
-        $lang = \OC::$server->getL10NFactory("")->get("")->getLanguageCode();
-
-        $templatePath = $this->getTemplatePath($lang, $ext);
-        if (!file_exists($templatePath)) {
-            $lang = "en";
-            $templatePath = $this->getTemplatePath($lang, $ext);
+        if (empty($templateId)) {
+            $template = TemplateManager::GetEmptyTemplate($name);
+        } else {
+            $template = TemplateManager::GetTemplate($templateId);
         }
 
-        $template = file_get_contents($templatePath);
         if (!$template) {
-            $this->logger->error("Template for file creation not found: $templatePath", ["app" => $this->appName]);
+            $this->logger->error("Template for file creation not found: $name ($templateId)", ["app" => $this->appName]);
             return ["error" => $this->trans->t("Template not found")];
         }
 
@@ -248,15 +251,26 @@ class EditorController extends Controller {
     }
 
     /**
-     * Get template path
+     * Create new file in folder from editor
      *
-     * @param string $lang - language
-     * @param string $ext - file extension
+     * @param string $name - file name
+     * @param string $dir - folder path
+     * 
+     * @return TemplateResponse|RedirectResponse
      *
-     * @return string
+     * @NoAdminRequired
+     * @NoCSRFRequired
      */
-    private function getTemplatePath($lang, $ext) {
-        return dirname(__DIR__) . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . "new" . $ext;
+    public function createNew($name, $dir) {
+        $this->logger->debug("Create from editor: $name in $dir", ["app" => $this->appName]);
+
+        $result = $this->create($name, $dir);
+        if (isset($result["error"])) {
+            return $this->renderError($result["error"]);
+        }
+
+        $openEditor = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.index", ["fileId" => $result["id"]]);
+        return new RedirectResponse($openEditor);
     }
 
     /**
@@ -693,13 +707,14 @@ class EditorController extends Controller {
      * @param string $shareToken - access token
      * @param integer $version - file version
      * @param bool $inframe - open in frame
+     * @param bool $template - file is template
      *
      * @return TemplateResponse|RedirectResponse
      *
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function index($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false) {
+    public function index($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $template = false) {
         $this->logger->debug("Open: $fileId ($version) $filePath", ["app" => $this->appName]);
 
         if (empty($shareToken) && !$this->userSession->isLoggedIn()) {
@@ -726,6 +741,7 @@ class EditorController extends Controller {
             "filePath" => $filePath,
             "shareToken" => $shareToken,
             "version" => $version,
+            "template" => $template,
             "inframe" => false
         ];
 
@@ -788,15 +804,16 @@ class EditorController extends Controller {
      * @param string $filePath - file path
      * @param string $shareToken - access token
      * @param integer $version - file version
-     * @param integer $inframe - open in frame. 0 - no, 1 - yes, 2 - without goback for old editor (5.4)
+     * @param bool $inframe - open in frame
      * @param bool $desktop - desktop label
+     * @param bool $template - file is template
      *
      * @return array
      *
      * @NoAdminRequired
      * @PublicPage
      */
-    public function config($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = 0, $desktop = false) {
+    public function config($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $desktop = false, $template = false) {
 
         if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
             return ["error" => $this->trans->t("Not permitted")];
@@ -808,7 +825,7 @@ class EditorController extends Controller {
             $userId = $user->getUID();
         }
 
-        list ($file, $error, $share) = empty($shareToken) ? $this->getFile($userId, $fileId, $filePath) : $this->fileUtility->getFileByToken($fileId, $shareToken);
+        list ($file, $error, $share) = empty($shareToken) ? $this->getFile($userId, $fileId, $filePath, $template) : $this->fileUtility->getFileByToken($fileId, $shareToken);
 
         if (isset($error)) {
             $this->logger->error("Config: $fileId $error", ["app" => $this->appName]);
@@ -823,7 +840,7 @@ class EditorController extends Controller {
             return ["error" => $this->trans->t("Format is not supported")];
         }
 
-        $fileUrl = $this->getUrl($file, $user, $shareToken, $version);
+        $fileUrl = $this->getUrl($file, $user, $shareToken, $version, null, $template);
 
         $key = null;
         if ($version > 0
@@ -868,7 +885,7 @@ class EditorController extends Controller {
 
                 $permissionsDownload = $attributes->getAttribute("permissions", "download");
                 if ($permissionsDownload !== null) {
-                    $params["document"]["permissions"]["download"] = $params["document"]["permissions"]["print"] = $permissionsDownload === true;
+                    $params["document"]["permissions"]["download"] = $params["document"]["permissions"]["print"] = $params["document"]["permissions"]["copy"] = $permissionsDownload === true;
                 }
 
                 if (isset($format["review"]) && $format["review"]) {
@@ -922,6 +939,7 @@ class EditorController extends Controller {
 
         $canEdit = isset($format["edit"]) && $format["edit"];
         $editable = $version < 1
+                    && !$template
                     && $file->isUpdateable()
                     && !$isPersistentLock
                     && (empty($shareToken) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE);
@@ -982,9 +1000,37 @@ class EditorController extends Controller {
                 ];
                 $folderLink = $this->urlGenerator->linkToRouteAbsolute("files.view.index", $linkAttr);
             }
+
+            switch($params["documentType"]) {
+                case "text":
+                    $createName = $this->trans->t("Document") . ".docx";
+                    break;
+                case "spreadsheet":
+                    $createName = $this->trans->t("Spreadsheet") . ".xlsx";
+                    break;
+                case "presentation":
+                    $createName = $this->trans->t("Presentation") . ".pptx";
+                    break;
+            }
+
+            $createParam = [
+                "dir" => "/",
+                "name" => $createName
+            ];
+
+            if (!empty($folderPath)) {
+                $folder = $userFolder->get($folderPath);
+                if (!empty($folder) && $folder->isCreatable()) {
+                    $createParam["dir"] = $folderPath;
+                }
+            }
+
+            $createUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.create_new", $createParam);
+
+            $params["editorConfig"]["createUrl"] = urldecode($createUrl);
         }
 
-        if ($folderLink !== null && $inframe !== 2) {
+        if ($folderLink !== null) {
             $params["editorConfig"]["customization"]["goback"] = [
                 "url"  => $folderLink
             ];
@@ -992,14 +1038,14 @@ class EditorController extends Controller {
             if (!$desktop) {
                 if ($this->config->GetSameTab()) {
                     $params["editorConfig"]["customization"]["goback"]["blank"] = false;
-                    if ($inframe === 1) {
+                    if ($inframe === true) {
                         $params["editorConfig"]["customization"]["goback"]["requestClose"] = true;
                     }
                 }
             }
         }
 
-        if ($inframe === 1) {
+        if ($inframe === true) {
             $params["_files_sharing"] = \OC::$server->getAppManager()->isEnabledForUser("files_sharing");
         }
 
@@ -1025,16 +1071,18 @@ class EditorController extends Controller {
      * @param string $userId - user identifier
      * @param integer $fileId - file identifier
      * @param string $filePath - file path
+     * @param bool $template - file is template
      *
      * @return array
      */
-    private function getFile($userId, $fileId, $filePath = null) {
+    private function getFile($userId, $fileId, $filePath = null, $template = false) {
         if (empty($fileId)) {
             return [null, $this->trans->t("FileId is empty"), null];
         }
 
         try {
-            $files = $this->root->getUserFolder($userId)->getById($fileId);
+            $folder = !$template ? $this->root->getUserFolder($userId) : TemplateManager::GetGlobalTemplateDir();
+            $files = $folder->getById($fileId);
         } catch (\Exception $e) {
             $this->logger->logException($e, ["message" => "getFile: $fileId", "app" => $this->appName]);
             return [null, $this->trans->t("Invalid request"), null];
@@ -1072,10 +1120,11 @@ class EditorController extends Controller {
      * @param string $shareToken - access token
      * @param integer $version - file version
      * @param bool $changes - is required url to file changes
+     * @param bool $template - file is template
      *
      * @return string
      */
-    private function getUrl($file, $user = null, $shareToken = null, $version = 0, $changes = false) {
+    private function getUrl($file, $user = null, $shareToken = null, $version = 0, $changes = false, $template = false) {
 
         $data = [
             "action" => "download",
@@ -1095,6 +1144,9 @@ class EditorController extends Controller {
         }
         if ($changes) {
             $data["changes"] = true;
+        }
+        if ($template) {
+            $data["template"] = true;
         }
 
         $hashUrl = $this->crypt->GetHash($data);

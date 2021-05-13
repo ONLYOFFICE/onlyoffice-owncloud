@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2020
+ * (c) Copyright Ascensio System SIA 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,10 +41,11 @@ use OCA\Files_Sharing\External\Storage as SharingExternalStorage;
 
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
-use OCA\Onlyoffice\KeyManager;
 use OCA\Onlyoffice\DocumentService;
-use OCA\Onlyoffice\VersionManager;
 use OCA\Onlyoffice\FileVersions;
+use OCA\Onlyoffice\KeyManager;
+use OCA\Onlyoffice\VersionManager;
+use OCA\Onlyoffice\TemplateManager;
 
 /**
  * Callback handler for the document server.
@@ -191,6 +192,7 @@ class CallbackController extends Controller {
         $fileId = $hashData->fileId;
         $version = isset($hashData->version) ? $hashData->version : null;
         $changes = isset($hashData->changes) ? $hashData->changes : false;
+        $template = isset($hashData->template) ? $hashData->template : false;
         $this->logger->debug("Download: $fileId ($version)" . ($changes ? " changes" : ""), ["app" => $this->appName]);
 
         if (!$this->userSession->isLoggedIn()
@@ -241,7 +243,7 @@ class CallbackController extends Controller {
         }
 
         $shareToken = isset($hashData->shareToken) ? $hashData->shareToken : null;
-        list ($file, $error) = empty($shareToken) ? $this->getFile($userId, $fileId, null, $changes ? null : $version) : $this->getFileByToken($fileId, $shareToken, $changes ? null : $version);
+        list ($file, $error) = empty($shareToken) ? $this->getFile($userId, $fileId, null, $changes ? null : $version, $template) : $this->getFileByToken($fileId, $shareToken, $changes ? null : $version);
 
         if (isset($error)) {
             return $error;
@@ -349,7 +351,7 @@ class CallbackController extends Controller {
             }
         }
 
-        $templatePath = dirname(__DIR__) . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "en" . DIRECTORY_SEPARATOR . "new.docx";
+        $templatePath = TemplateManager::GetEmptyTemplatePath("en", ".docx");
 
         $template = file_get_contents($templatePath);
         if (!$template) {
@@ -587,16 +589,18 @@ class CallbackController extends Controller {
      * @param integer $fileId - file identifier
      * @param string $filePath - file path
      * @param integer $version - file version
-     *
+     * @param bool $template - file is template
+     * 
      * @return array
      */
-    private function getFile($userId, $fileId, $filePath = null, $version = 0) {
+    private function getFile($userId, $fileId, $filePath = null, $version = 0, $template = false) {
         if (empty($fileId)) {
             return [null, new JSONResponse(["message" => $this->trans->t("FileId is empty")], Http::STATUS_BAD_REQUEST)];
         }
 
         try {
-            $files = $this->root->getUserFolder($userId)->getById($fileId);
+            $folder = !$template ? $this->root->getUserFolder($userId) : TemplateManager::GetGlobalTemplateDir();
+            $files = $folder->getById($fileId);
         } catch (\Exception $e) {
             $this->logger->logException($e, ["message" => "getFile: $fileId", "app" => $this->appName]);
             return [null, new JSONResponse(["message" => $this->trans->t("Invalid request")], Http::STATUS_BAD_REQUEST)];

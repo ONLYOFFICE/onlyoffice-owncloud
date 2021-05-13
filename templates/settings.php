@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2020
+ * (c) Copyright Ascensio System SIA 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,9 @@
  */
 
     style("onlyoffice", "settings");
+    style("onlyoffice", "template");
     script("onlyoffice", "settings");
+    script("onlyoffice", "template");
 ?>
 <div class="section section-onlyoffice">
     <h2 id="onlyoffice">
@@ -162,7 +164,7 @@
         <p>
         <input type="checkbox" class="checkbox" id="onlyofficeForcesave"
             <?php if ($_["forcesave"]) { ?>checked="checked"<?php } ?> />
-        <label for="onlyofficeForcesave"><?php p($l->t("Keep intermediate versions when editing")) ?></label>
+        <label for="onlyofficeForcesave"><?php p($l->t("Keep intermediate versions when editing (forcesave)")) ?></label>
         </p>
 
         <p class="onlyoffice-header">
@@ -228,5 +230,21 @@
 
         <br />
         <p><button id="onlyofficeSave" class="button"><?php p($l->t("Save")) ?></button></p>
+
+        <h3>
+            <?php p($l->t("Common templates")) ?>
+            <input id="onlyofficeAddTemplate" type="file" class="hidden-visually" />
+            <label for="onlyofficeAddTemplate" class="onlyoffice-template icon-add" title="<?php p($l->t("Add a new template")) ?>"></label>
+        </h3>
+        <ul class="onlyoffice-template-container">
+            <?php foreach ($_["templates"] as $template) { ?>
+                <li data-id=<?php p($template["id"]) ?> class="onlyoffice-template-item" >
+                    <img src="/core/img/filetypes/x-office-<?php p($template["type"]) ?>.svg" />
+                    <p><?php p($template["name"]) ?></p>
+                    <span class="onlyoffice-template-preview"></span>
+                    <span class="onlyoffice-template-delete icon-delete"></span>
+                </li>
+            <?php } ?>
+        </ul>
     </div>
 </div>

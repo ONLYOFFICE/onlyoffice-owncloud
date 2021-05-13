@@ -1,6 +1,6 @@
 /**
  *
- * (c) Copyright Ascensio System SIA 2020
+ * (c) Copyright Ascensio System SIA 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,30 +55,6 @@ body.onlyoffice-inline #content #app-content {
     position: absolute;
     top: 0;
     z-index: 110;
-}
-
-#onlyofficeHeader {
-    display: flex;
-    float: right;
-}
-.header-right #onlyofficeHeader {
-    float: left;
-}
-
-#onlyofficeHeader .icon {
-    display: block;
-    min-width: 50px;
-    height: 45px;
-}
-.header-right #onlyofficeHeader .icon {
-    height: 31px;
-}
-#onlyofficeHeader .icon-close {
-    background-image: url("../img/close.svg");
-}
-#onlyofficeHeader .icon-shared {
-    background-image: url("../img/shared.svg");
-    opacity: 1;
 }
 
 .onlyoffice-public-open {

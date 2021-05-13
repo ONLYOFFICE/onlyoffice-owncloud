@@ -1,6 +1,6 @@
 /**
  *
- * (c) Copyright Ascensio System SIA 2020
+ * (c) Copyright Ascensio System SIA 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@
 
     OCA.Onlyoffice.setting = {};
 
-    OCA.Onlyoffice.CreateFile = function (name, fileList) {
+    OCA.Onlyoffice.CreateFile = function (name, fileList, templateId) {
         var dir = fileList.getCurrentDirectory();
 
         if (!OCA.Onlyoffice.setting.sameTab || OCA.Onlyoffice.Desktop) {
@@ -38,6 +38,10 @@
             name: name,
             dir: dir
         };
+
+        if (templateId) {
+            createData.templateId = templateId;
+        }
 
         if ($("#isPublic").val()) {
             createData.shareToken = encodeURIComponent($("#sharingToken").val());
@@ -120,37 +124,8 @@
         }
     };
 
-    OCA.Onlyoffice.ShowHeaderButton = function () {
-        if ($("#onlyofficeHeader").length) {
-            return;
-        }
-
-        var wrapper = $("<div id='onlyofficeHeader' />")
-
-        var btnClose = $("<a class='icon icon-close'></a>");
-        btnClose.on("click", function () {
-            OCA.Onlyoffice.onRequestClose();
-        });
-        wrapper.prepend(btnClose);
-
-        if (!$("#isPublic").val()) {
-            var btnShare = $("<a class='icon icon-shared'></a>");
-            btnShare.on("click", function () {
-                OCA.Onlyoffice.OpenShareDialog();
-            })
-            wrapper.prepend(btnShare);
-        }
-
-        if ($("#header .header-right").length) {
-            $("#header .header-right").append(wrapper);
-        } else {
-            $("#header").append(wrapper);
-        }
-    };
-
     OCA.Onlyoffice.CloseEditor = function () {
         $("body").removeClass("onlyoffice-inline");
-        $("#onlyofficeHeader").remove();
 
         OCA.Onlyoffice.context = null;
 
@@ -246,7 +221,7 @@
                     if (!config.mime) {
                         return true;
                     }
-                    fileList.fileActions.registerAction({
+                    OCA.Files.fileActions.registerAction({
                         name: "onlyofficeOpen",
                         displayName: t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE"),
                         mime: config.mime,
@@ -256,11 +231,11 @@
                     });
 
                     if (config.def) {
-                        fileList.fileActions.setDefault(config.mime, "onlyofficeOpen");
+                        OCA.Files.fileActions.setDefault(config.mime, "onlyofficeOpen");
                     }
 
                     if (config.conv) {
-                        fileList.fileActions.registerAction({
+                        OCA.Files.fileActions.registerAction({
                             name: "onlyofficeConvert",
                             displayName: t(OCA.Onlyoffice.AppName, "Convert with ONLYOFFICE"),
                             mime: config.mime,
@@ -291,7 +266,11 @@
                 iconClass: "icon-onlyoffice-new-docx",
                 fileType: "docx",
                 actionHandler: function (name) {
-                    OCA.Onlyoffice.CreateFile(name + ".docx", fileList);
+                    if (!$("#isPublic").val() && OCA.Onlyoffice.TemplateExist("document")) {
+                        OCA.Onlyoffice.OpenTemplatePicker(name, ".docx", "document");
+                    } else {
+                        OCA.Onlyoffice.CreateFile(name + ".docx", fileList);
+                    }
                 }
             });
 
@@ -302,7 +281,11 @@
                 iconClass: "icon-onlyoffice-new-xlsx",
                 fileType: "xlsx",
                 actionHandler: function (name) {
-                    OCA.Onlyoffice.CreateFile(name + ".xlsx", fileList);
+                    if (!$("#isPublic").val() && OCA.Onlyoffice.TemplateExist("spreadsheet")) {
+                        OCA.Onlyoffice.OpenTemplatePicker(name, ".xlsx", "spreadsheet");
+                    } else {
+                        OCA.Onlyoffice.CreateFile(name + ".xlsx", fileList);
+                    }
                 }
             });
 
@@ -313,7 +296,11 @@
                 iconClass: "icon-onlyoffice-new-pptx",
                 fileType: "pptx",
                 actionHandler: function (name) {
-                    OCA.Onlyoffice.CreateFile(name + ".pptx", fileList);
+                    if (!$("#isPublic").val() && OCA.Onlyoffice.TemplateExist("presentation")) {
+                        OCA.Onlyoffice.OpenTemplatePicker(name, ".pptx", "presentation");
+                    } else {
+                        OCA.Onlyoffice.CreateFile(name + ".pptx", fileList);
+                    }
                 }
             });
         }
@@ -336,6 +323,12 @@
     OCA.Onlyoffice.bindVersionClick = function () {
         OCA.Onlyoffice.unbindVersionClick();
         $(document).on("click.onlyoffice-version", "#versionsTabView .downloadVersion", function() {
+            var ext = $("#app-sidebar .fileName h3").text().split(".").pop();
+            if (!OCA.Onlyoffice.setting.formats[ext]
+                || !OCA.Onlyoffice.setting.formats[ext].def) {
+                return true;
+            }
+
             var versionNodes = $("#versionsTabView ul.versions>li");
             var versionNode = $(this).closest("#versionsTabView ul.versions>li")[0];
 

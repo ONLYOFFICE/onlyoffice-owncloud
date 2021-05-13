@@ -1,6 +1,6 @@
 /**
  *
- * (c) Copyright Ascensio System SIA 2020
+ * (c) Copyright Ascensio System SIA 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@
         var filePath = $("#iframeEditor").data("path");
         OCA.Onlyoffice.shareToken = $("#iframeEditor").data("sharetoken");
         OCA.Onlyoffice.version = $("#iframeEditor").data("version");
+        OCA.Onlyoffice.template = $("#iframeEditor").data("template");
         OCA.Onlyoffice.inframe = !!$("#iframeEditor").data("inframe");
         if (!OCA.Onlyoffice.fileId && !OCA.Onlyoffice.shareToken) {
             displayError(t(OCA.Onlyoffice.AppName, "FileId is empty"));
@@ -63,19 +64,12 @@
         if (OCA.Onlyoffice.version > 0) {
             params.push("version=" + OCA.Onlyoffice.version);
         }
+        if (OCA.Onlyoffice.template) {
+            params.push("template=true");
+        }
 
         if (OCA.Onlyoffice.inframe) {
-            var dsVersion = DocsAPI.DocEditor.version();
-            var versionArray = dsVersion.split(".");
-            if (versionArray[0] < 5 || versionArray[0] == 5 && versionArray[1] < 5) {
-                window.parent.postMessage({
-                    method: "editorShowHeaderButton"
-                },
-                "*");
-                params.push("inframe=2");
-            } else {
-                params.push("inframe=1");
-            }
+            params.push("inframe=true");
         }
 
         if (OCA.Onlyoffice.Desktop) {
@@ -358,6 +352,8 @@
     };
 
     OCA.Onlyoffice.onRequestClose = function () {
+        OCA.Onlyoffice.docEditor.destroyEditor();
+
         window.parent.postMessage({
             method: "editorRequestClose"
         },

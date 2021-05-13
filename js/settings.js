@@ -1,6 +1,6 @@
 /**
  *
- * (c) Copyright Ascensio System SIA 2020
+ * (c) Copyright Ascensio System SIA 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -198,6 +198,59 @@
                     }
                 }
             });
+        });
+
+        $("#onlyofficeAddTemplate").change(function () {
+            var file = this.files[0];
+
+            $(".section-onlyoffice").addClass("icon-loading");
+            OCA.Onlyoffice.AddTemplate(file, (template, error) => {
+
+                $(".section-onlyoffice").removeClass("icon-loading");
+                var message = error ? t(OCA.Onlyoffice.AppName, "Error") + ": " + error
+                                    : t(OCA.Onlyoffice.AppName, "Template successfully added");
+
+                OC.Notification.show(message, {
+                    type: error ? "error" : null,
+                    timeout: 3
+                });
+                if (template) {
+                    OCA.Onlyoffice.AttachItemTemplate(template);
+                }
+            });
+        });
+
+        $(document).on("click", ".onlyoffice-template-delete", function (event) {
+            var item = $(event.target).parents(".onlyoffice-template-item");
+            var templateId = $(item).attr("data-id");
+
+            $(".section-onlyoffice").addClass("icon-loading");
+            OCA.Onlyoffice.DeleteTemplate(templateId, (response) => {
+                $(".section-onlyoffice").removeClass("icon-loading");
+
+                var message = response.error ? t(OCA.Onlyoffice.AppName, "Error") + ": " + response.error
+                                             : t(OCA.Onlyoffice.AppName, "Template successfully deleted");
+                OC.Notification.show(message, {
+                    type: response.error ? "error" : null,
+                    timeout: 3
+                });
+                if (!response.error) {
+                    $(item).detach();
+                }
+            });
+        });
+
+        $(document).on("click", ".onlyoffice-template-preview", function (event) {
+            var item = $(event.target).parents(".onlyoffice-template-item");
+            var templateId = $(item).attr("data-id");
+
+            var url = OC.generateUrl("/apps/" + OCA.Onlyoffice.AppName + "/{fileId}?template={template}",
+            {
+                fileId: templateId,
+                template: "true"
+            });
+
+            window.open(url);
         });
     });
 

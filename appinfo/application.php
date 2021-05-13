@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2020
+ * (c) Copyright Ascensio System SIA 2021
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Controller\CallbackController;
 use OCA\Onlyoffice\Controller\EditorController;
 use OCA\Onlyoffice\Controller\SettingsController;
+use OCA\Onlyoffice\Controller\TemplateController;
 use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\Hookhandler;
 use OCA\Onlyoffice\Hooks;
@@ -67,11 +68,13 @@ class Application extends App {
                     Util::addScript("onlyoffice", "desktop");
                     Util::addScript("onlyoffice", "main");
                     Util::addScript("onlyoffice", "share");
+                    Util::addScript("onlyoffice", "template");
 
                     if ($this->appConfig->GetSameTab()) {
                         Util::addScript("onlyoffice", "listener");
                     }
 
+                    Util::addStyle("onlyoffice", "template");
                     Util::addStyle("onlyoffice", "main");
                 }
             });
@@ -161,6 +164,15 @@ class Application extends App {
                 $this->appConfig,
                 $this->crypt,
                 $c->query("IManager")
+            );
+        });
+
+        $container->registerService("TemplateController", function ($c) {
+            return new TemplateController(
+                $c->query("AppName"),
+                $c->query("Request"),
+                $c->query("L10N"),
+                $c->query("Logger")
             );
         });
 

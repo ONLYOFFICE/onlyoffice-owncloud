@@ -60,6 +60,8 @@ There are several ways to do that:
 
     ```bash
     git clone https://github.com/ONLYOFFICE/onlyoffice-owncloud.git onlyoffice
+    cd onlyoffice
+    git submodule update --init --recursive
     ```
 
     > ownCloud does not work with unsigned applications giving an alert, so you will need to use either option **a** or **b** to get the application.

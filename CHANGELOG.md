@@ -1,5 +1,9 @@
 # Change Log
 
+## 6.4.3
+## Changed
+- fixed registration of file actions
+
 ## 6.4.1
 ## Added
 - create file from editor

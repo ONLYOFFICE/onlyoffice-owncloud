@@ -27,6 +27,7 @@ use OCP\ITagManager;
 
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Controller\CallbackController;
+use OCA\Onlyoffice\Controller\EditorApiController;
 use OCA\Onlyoffice\Controller\EditorController;
 use OCA\Onlyoffice\Controller\SettingsController;
 use OCA\Onlyoffice\Controller\TemplateController;
@@ -155,6 +156,22 @@ class Application extends App {
 
         $container->registerService("EditorController", function ($c) {
             return new EditorController(
+                $c->query("AppName"),
+                $c->query("Request"),
+                $c->query("RootStorage"),
+                $c->query("UserSession"),
+                $c->query("URLGenerator"),
+                $c->query("L10N"),
+                $c->query("Logger"),
+                $this->appConfig,
+                $this->crypt,
+                $c->query("IManager"),
+                $c->query("Session")
+            );
+        });
+
+        $container->registerService("EditorApiController", function ($c) {
+            return new EditorApiController(
                 $c->query("AppName"),
                 $c->query("Request"),
                 $c->query("RootStorage"),

@@ -29,6 +29,7 @@ use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Controller\CallbackController;
 use OCA\Onlyoffice\Controller\EditorApiController;
 use OCA\Onlyoffice\Controller\EditorController;
+use OCA\Onlyoffice\Controller\SettingsApiController;
 use OCA\Onlyoffice\Controller\SettingsController;
 use OCA\Onlyoffice\Controller\TemplateController;
 use OCA\Onlyoffice\Crypt;
@@ -151,6 +152,15 @@ class Application extends App {
                 $c->query("Logger"),
                 $this->appConfig,
                 $this->crypt
+            );
+        });
+
+        $container->registerService("SettingsApiController", function ($c) {
+            return new SettingsApiController(
+                $c->query("AppName"),
+                $c->query("Request"),
+                $c->query("URLGenerator"),
+                $this->appConfig
             );
         });
 

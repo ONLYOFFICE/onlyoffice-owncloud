@@ -25,13 +25,13 @@
 .onlyoffice-template-item img,
 .onlyoffice-template-item p,
 .onlyoffice-template-delete,
-.onlyoffice-template-preview {
+.onlyoffice-template-download {
     display: inline-block;
     margin-right: 10px;
     cursor: pointer;
 }
 .onlyoffice-template-delete,
-.onlyoffice-template-preview {
+.onlyoffice-template-download {
     margin-bottom: -4px;
     opacity: .8;
 }
@@ -46,8 +46,8 @@
 .onlyoffice-template-item input:checked + label {
     color: rgb(55, 137, 243);
 }
-.onlyoffice-template-preview {
-    background-image: url("../../../core/img/actions/toggle.svg");
+.onlyoffice-template-download {
+    background-image: url("../../../core/img/actions/download.svg");
     height: 16px;
     width: 16px;
 }

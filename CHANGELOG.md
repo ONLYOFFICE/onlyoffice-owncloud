@@ -2,6 +2,7 @@
 
 ## Added
 - download as
+- downloading a template from settings
 
 ## 6.4.3
 ## Changed

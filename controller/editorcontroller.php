@@ -705,30 +705,49 @@ class EditorController extends Controller {
      *
      * @param int $fileId - file identifier
      * @param string $toExtension - file extension to download
+     * @param bool $template - file is template
      *
      * @return DataDownloadResponse|TemplateResponse
      *
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function download($fileId, $toExtension = null) {
+    public function download($fileId, $toExtension = null, $template = false) {
         $this->logger->debug("Download: $fileId $toExtension", ["app" => $this->appName]);
 
         if (!$this->config->isUserAllowedToUse()) {
             return $this->renderError($this->trans->t("Not permitted"));
         }
 
-        $user = $this->userSession->getUser();
-        $userId = null;
-        if (!empty($user)) {
-            $userId = $user->getUID();
-        }
+        if ($template) {
+            $templateDir = TemplateManager::GetGlobalTemplateDir();
 
-        list ($file, $error, $share) = $this->getFile($userId, $fileId);
+            try {
+                $templates = $templateDir->getById($fileId);
+            } catch(\Exception $e) {
+                $this->logger->logException($e, ["message" => "DownloadTemplate: $fileId", "app" => $this->appName]);
+                return $this->renderError($this->trans->t("Invalid request"));
+            }
 
-        if (isset($error)) {
-            $this->logger->error("Download: $fileId $error", ["app" => $this->appName]);
-            return $this->renderError($error);
+            if (empty($templates)) {
+                $this->logger->info("Template not found: $fileId", ["app" => $this->appName]);
+                return $this->renderError($this->trans->t("File not found"));
+            }
+
+            $file = $templates[0];
+        } else {
+            $user = $this->userSession->getUser();
+            $userId = null;
+            if (!empty($user)) {
+                $userId = $user->getUID();
+            }
+
+            list ($file, $error, $share) = $this->getFile($userId, $fileId);
+
+            if (isset($error)) {
+                $this->logger->error("Download: $fileId $error", ["app" => $this->appName]);
+                return $this->renderError($error);
+            }
         }
 
         $fileName = $file->getName();
@@ -736,7 +755,8 @@ class EditorController extends Controller {
         $toExtension = strtolower($toExtension);
 
         if ($toExtension === null
-            || $ext === $toExtension) {
+            || $ext === $toExtension
+            || $template) {
             return new DataDownloadResponse($file->getContent(), $fileName, $file->getMimeType());
         }
 

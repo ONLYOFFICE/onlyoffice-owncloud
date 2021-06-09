@@ -1,5 +1,8 @@
 # Change Log
 
+## Added
+- download as
+
 ## 6.4.3
 ## Changed
 - fixed registration of file actions

@@ -36,28 +36,32 @@
                 $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.editorSaveAs(saveData);
             },
             false,
-            "httpd/unix-directory");
+            "httpd/unix-directory",
+            true);
     };
 
     OCA.Onlyoffice.onRequestInsertImage = function (imageMimes) {
         OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Insert image"),
             $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.editorInsertImage,
             false,
-            imageMimes);
+            imageMimes,
+            true);
     };
 
     OCA.Onlyoffice.onRequestMailMergeRecipients = function (recipientMimes) {
         OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Select recipients"),
             $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.editorSetRecipient,
             false,
-            recipientMimes);
+            recipientMimes,
+            true);
     };
 
     OCA.Onlyoffice.onRequestCompareFile = function (revisedMimes) {
         OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Select file to compare"),
             $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.editorSetRevised,
             false,
-            revisedMimes);
+            revisedMimes,
+            true);
     };
 
     OCA.Onlyoffice.onDocumentReady = function (documentType) {

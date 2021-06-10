@@ -86,11 +86,11 @@ class TemplateManager {
     }
 
     /**
-     * Get template content
+     * Get template file
      *
      * @param string $templateId - identifier file template
      *
-     * @return string
+     * @return File
      */
     public static function GetTemplate($templateId) {
         $logger = \OC::$server->getLogger();
@@ -108,9 +108,7 @@ class TemplateManager {
             return null;
         }
 
-        $content = $templates[0]->getContent();
-
-        return $content;
+        return $templates[0];
     }
 
     /**

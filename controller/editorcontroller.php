@@ -223,7 +223,10 @@ class EditorController extends Controller {
         if (empty($templateId)) {
             $template = TemplateManager::GetEmptyTemplate($name);
         } else {
-            $template = TemplateManager::GetTemplate($templateId);
+            $templateFile = TemplateManager::GetTemplate($templateId);
+            if ($templateFile) {
+                $template = $templateFile->getContent();
+            }
         }
 
         if (!$template) {
@@ -720,21 +723,14 @@ class EditorController extends Controller {
         }
 
         if ($template) {
-            $templateDir = TemplateManager::GetGlobalTemplateDir();
+            $templateFile = TemplateManager::GetTemplate($fileId);
 
-            try {
-                $templates = $templateDir->getById($fileId);
-            } catch(\Exception $e) {
-                $this->logger->logException($e, ["message" => "DownloadTemplate: $fileId", "app" => $this->appName]);
-                return $this->renderError($this->trans->t("Invalid request"));
-            }
-
-            if (empty($templates)) {
-                $this->logger->info("Template not found: $fileId", ["app" => $this->appName]);
+            if (empty($templateFile)) {
+                $this->logger->info("Download: template not found: $fileId", ["app" => $this->appName]);
                 return $this->renderError($this->trans->t("File not found"));
             }
 
-            $file = $templates[0];
+            $file = $templateFile;
         } else {
             $user = $this->userSession->getUser();
             $userId = null;

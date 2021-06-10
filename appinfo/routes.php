@@ -22,7 +22,6 @@ return [
        ["name" => "callback#download", "url" => "/download", "verb" => "GET"],
        ["name" => "callback#emptyfile", "url" => "/empty", "verb" => "GET"],
        ["name" => "callback#track", "url" => "/track", "verb" => "POST"],
-       ["name" => "editor#loader", "url" => "/loader", "verb" => "GET"],
        ["name" => "editor#create_new", "url" => "/new", "verb" => "GET"],
        ["name" => "editor#download", "url" => "/downloadas", "verb" => "GET"],
        ["name" => "editor#index", "url" => "/{fileId}", "verb" => "GET"],

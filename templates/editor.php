@@ -30,6 +30,7 @@
         data-sharetoken="<?php p($_["shareToken"]) ?>"
         data-version="<?php p($_["version"]) ?>"
         data-template="<?php p($_["template"]) ?>"
+        data-anchor="<?php p($_["anchor"]) ?>"
         data-inframe="<?php p($_["inframe"]) ?>"></div>
 
     <?php if (!empty($_["documentServerUrl"])) { ?>

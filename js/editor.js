@@ -140,6 +140,7 @@
                         config.events.onRequestInsertImage = OCA.Onlyoffice.onRequestInsertImage;
                         config.events.onRequestMailMergeRecipients = OCA.Onlyoffice.onRequestMailMergeRecipients;
                         config.events.onRequestCompareFile = OCA.Onlyoffice.onRequestCompareFile;
+                        config.events.onRequestUsers = OCA.Onlyoffice.onRequestUsers;
                     }
 
                     if (OCA.Onlyoffice.inframe) {
@@ -446,6 +447,15 @@
         }
 
         OCA.Onlyoffice.docEditor.setActionLink(url);
+    };
+
+    OCA.Onlyoffice.onRequestUsers = function (event) {
+        $.get(OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/users"),
+        function onSuccess(response) {
+            OCA.Onlyoffice.docEditor.setUsers({
+                "users": response
+            });
+        });
     };
 
     $(document).ready(OCA.Onlyoffice.InitEditor);

@@ -804,13 +804,14 @@ class EditorController extends Controller {
      * @param integer $version - file version
      * @param bool $inframe - open in frame
      * @param bool $template - file is template
+     * @param string $anchor - anchor for file content
      *
      * @return TemplateResponse|RedirectResponse
      *
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function index($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $template = false) {
+    public function index($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $template = false, $anchor = null) {
         $this->logger->debug("Open: $fileId ($version) $filePath", ["app" => $this->appName]);
 
         if (empty($shareToken) && !$this->userSession->isLoggedIn()) {
@@ -838,7 +839,8 @@ class EditorController extends Controller {
             "shareToken" => $shareToken,
             "version" => $version,
             "template" => $template,
-            "inframe" => false
+            "inframe" => false,
+            "anchor" => $anchor
         ];
 
         if ($inframe === true) {
@@ -890,13 +892,14 @@ class EditorController extends Controller {
      * @param bool $inframe - open in frame
      * @param bool $desktop - desktop label
      * @param bool $template - file is template
+     * @param string $anchor - anchor for file content
      *
      * @return array
      *
      * @NoAdminRequired
      * @PublicPage
      */
-    public function config($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $desktop = false, $template = false) {
+    public function config($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $desktop = false, $template = false, $anchor = null) {
 
         if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
             return ["error" => $this->trans->t("Not permitted")];
@@ -1137,6 +1140,16 @@ class EditorController extends Controller {
 
         if ($this->config->UseDemo()) {
             $params["editorConfig"]["tenant"] = $this->config->GetSystemValue("instanceid", true);
+        }
+
+        if ($anchor !== null) {
+            try {
+                $actionLink = json_decode($anchor, true);
+
+                $params["editorConfig"]["actionLink"] = $actionLink;
+            } catch (\Exception $e) {
+                $this->logger->logException($e, ["message" => "Config: $fileId decode $anchor", "app" => $this->appName]);
+            }
         }
 
         if (!empty($this->config->GetDocumentServerSecret())) {

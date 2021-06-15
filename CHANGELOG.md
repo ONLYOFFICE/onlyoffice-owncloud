@@ -3,6 +3,7 @@
 ## Added
 - download as
 - downloading a template from settings
+- opening action link
 
 ## 6.4.3
 ## Changed

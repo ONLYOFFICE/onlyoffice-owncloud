@@ -46,6 +46,7 @@ return [
         ["name" => "federation#key", "url" => "/api/v1/key", "verb" => "POST"],
         ["name" => "federation#keylock", "url" => "/api/v1/keylock", "verb" => "POST"],
         ["name" => "editorapi#config", "url" => "/api/v1/config/{fileId}", "verb" => "GET"],
+        ["name" => "editorapi#fillempty", "url" => "/api/v1/empty/{fileId}", "verb" => "GET"],
         ["name" => "settingsapi#get_doc_server_url", "url" => "/api/v1/settings/docserver", "verb" => "GET"],
     ]
 ];

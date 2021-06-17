@@ -169,6 +169,61 @@ class EditorApiController extends OCSController {
     }
 
     /**
+     * Filling empty file an template
+     *
+     * @param int $fileId - file identificator
+     *
+     * @return JSONResponse
+     *
+     * @NoAdminRequired
+     * @PublicPage
+     */
+    public function fillempty($fileId) {
+        $this->logger->debug("Fill empty: $fileId", ["app" => $this->appName]);
+
+        if (empty($fileId)) {
+            $this->logger->error("File for filling was not found: $fileId", ["app" => $this->appName]);
+            return new JSONResponse(["error" => $this->trans->t("FileId is empty")]);
+        }
+
+        $userId = $this->userSession->getUser()->getUID();
+
+        list ($file, $error, $share) = $this->getFile($userId, $fileId);
+        if (isset($error)) {
+            $this->logger->error("Fill empty: $fileId $error", ["app" => $this->appName]);
+            return new JSONResponse(["error" => $error]);
+        }
+
+        if ($file->getSize() > 0) {
+            $this->logger->error("File is't empty: $fileId", ["app" => $this->appName]);
+            return new JSONResponse(["error" => $this->trans->t("Not permitted")]);
+        }
+
+        if (!$file->isUpdateable()) {
+            $this->logger->error("File without permission: $fileId", ["app" => $this->appName]);
+            return new JSONResponse(["error" => $this->trans->t("Not permitted")]);
+        }
+
+        $name = $file->getName();
+        $template = TemplateManager::GetEmptyTemplate($name);
+
+        if (!$template) {
+            $this->logger->error("Template for file filling not found: $name ($fileId)", ["app" => $this->appName]);
+            return new JSONResponse(["error" => $this->trans->t("Template not found")]);
+        }
+
+        try {
+            $file->putContent($template);
+        } catch (NotPermittedException $e) {
+            $this->logger->logException($e, ["message" => "Can't put file: $name", "app" => $this->appName]);
+            return new JSONResponse(["error" => $this->trans->t("Can't create file")]);
+        }
+
+        return new JSONResponse([
+            ]);
+    }
+
+    /**
      * Collecting the file parameters for the document service
      *
      * @param integer $fileId - file identifier

@@ -23,6 +23,7 @@ use OCP\AppFramework\App;
 use OCP\Files\IMimeTypeDetector;
 use OCP\Util;
 use OCP\IPreview;
+use OCP\ITagManager;
 
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Controller\CallbackController;
@@ -147,7 +148,8 @@ class Application extends App {
                 $this->appConfig,
                 $this->crypt,
                 $c->query("IManager"),
-                $c->query("Session")
+                $c->query("Session"),
+                $c->get(ITagManager::class)
             );
         });
 

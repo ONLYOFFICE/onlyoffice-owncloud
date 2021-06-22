@@ -1,6 +1,7 @@
 # Change Log
 
 ## Added
+- favorite status in the editor
 - download as
 - downloading a template from settings
 - opening action link

@@ -122,7 +122,7 @@
             <button id="onlyofficeClearVersionHistory" class="button"><?php p($l->t("Clear")) ?></button>
         </p>
 
-        <p class="onlyoffice-header"><?php p($l->t("The default application for opening the format")) ?></p>
+        <p class="onlyoffice-header"><?php p($l->t("File types associated with ONLYOFFICE")) ?></p>
         <div class="onlyoffice-exts">
             <?php foreach ($_["formats"] as $format => $setting) { ?>
                 <?php if (array_key_exists("mime", $setting)) { ?>

@@ -1129,6 +1129,7 @@ class EditorController extends Controller {
             $params["editorConfig"]["createUrl"] = urldecode($createUrl);
 
             $params["document"]["info"]["favorite"] = $this->isFavorite($fileId);
+            $params["_file_path"] = $userFolder->getRelativePath($file->getPath());
         }
 
         if ($folderLink !== null

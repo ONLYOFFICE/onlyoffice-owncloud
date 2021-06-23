@@ -3,6 +3,7 @@
 ## Added
 - mentions in comments
 - favorite status in the editor
+- creation from a template from the editor
 - download as
 - downloading a template from settings
 - opening action link

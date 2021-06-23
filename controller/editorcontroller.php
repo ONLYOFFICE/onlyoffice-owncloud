@@ -281,16 +281,17 @@ class EditorController extends Controller {
      *
      * @param string $name - file name
      * @param string $dir - folder path
+     * @param string $templateId - file identifier
      * 
      * @return TemplateResponse|RedirectResponse
      *
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function createNew($name, $dir) {
+    public function createNew($name, $dir, $templateId = null) {
         $this->logger->debug("Create from editor: $name in $dir", ["app" => $this->appName]);
 
-        $result = $this->create($name, $dir);
+        $result = $this->create($name, $dir, $templateId);
         if (isset($result["error"])) {
             return $this->renderError($result["error"]);
         }
@@ -1261,6 +1262,23 @@ class EditorController extends Controller {
             $createUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.create_new", $createParam);
 
             $params["editorConfig"]["createUrl"] = urldecode($createUrl);
+
+            $templatesList = TemplateManager::GetGlobalTemplates($file->getMimeType());
+            if (!empty($templatesList)) {
+                $templates = [];
+                foreach($templatesList as $template) {
+                    $createParam["templateId"] = $template->getId();
+                    $createParam["name"] = $template->getName();
+
+                    array_push($templates, [
+                        "image" => "",
+                        "title" => $template->getName(),
+                        "url" => urldecode($this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.create_new", $createParam))
+                    ]);
+                }
+
+                $params["editorConfig"]["templates"] = $templates;
+            }
 
             $params["document"]["info"]["favorite"] = $this->isFavorite($fileId);
             $params["_file_path"] = $userFolder->getRelativePath($file->getPath());

@@ -64,14 +64,22 @@ class TemplateController extends Controller {
     /**
      * Get templates
      *
-     * @param string $type - template format type
-     *
      * @return array
      *
      * @NoAdminRequired
      */
-    public function GetTemplates($type = null) {
-        $templates = TemplateManager::GetGlobalTemplates($type);
+    public function GetTemplates() {
+        $templatesList = TemplateManager::GetGlobalTemplates();
+
+        $templates = [];
+        foreach ($templatesList as $templatesItem) {
+            $template = [
+                "id" => $templatesItem->getId(),
+                "name" => $templatesItem->getName(),
+                "type" => TemplateManager::GetTypeTemplate($templatesItem->getMimeType())
+            ];
+            array_push($templates, $template);
+        }
 
         return $templates;
     }

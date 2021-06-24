@@ -19,13 +19,6 @@
 
 namespace OCA\Onlyoffice;
 
-use OCP\Notification\IManager as INotificationManager;
-use OCP\Share\IManager as IShareManager;
-use OCP\Share\Exceptions\ShareNotFound;
-use OCP\IGroupManager;
-use OCP\IConfig;
-use OC\L10N\L10N;
-
 use OCP\IURLGenerator;
 use OCP\ILogger;
 use OCP\IUserManager;

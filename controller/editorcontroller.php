@@ -40,6 +40,7 @@ use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IUserSession;
 use OCP\Share\IManager;
+use OCP\Share;
 
 use OCA\Files\Helper;
 
@@ -122,6 +123,13 @@ class EditorController extends Controller {
     private $versionManager;
 
     /**
+     * Share manager
+     *
+     * @var IManager
+     */
+    private $shareManager;
+
+    /**
      * Tag manager
      *
      * @var ITagManager
@@ -169,6 +177,7 @@ class EditorController extends Controller {
         $this->logger = $logger;
         $this->config = $config;
         $this->crypt = $crypt;
+        $this->shareManager = $shareManager;
         $this->tagManager = $tagManager;
 
         $this->versionManager = new VersionManager($AppName, $root);
@@ -288,6 +297,131 @@ class EditorController extends Controller {
 
         $openEditor = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.index", ["fileId" => $result["id"]]);
         return new RedirectResponse($openEditor);
+    }
+
+    /**
+     * Get users
+     *
+     * @return array
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     */
+    public function users() {
+        $this->logger->debug("Search users", ["app" => $this->appName]);
+        $result = [];
+
+        if (!$this->config->isUserAllowedToUse()) {
+            return $result;
+        }
+
+        $userId = $this->userSession->getUser()->getUID();
+        $users = \OC::$server->getUserManager()->search("");
+        foreach ($users as $user) {
+            $email = $user->getEMailAddress();
+            if ($user->getUID() != $userId
+                && !empty($email)) {
+                array_push($result, [
+                    "email" => $email,
+                    "name" => $user->getDisplayName()
+                ]);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Send notify about mention
+     *
+     * @param int $fileId - file identifier
+     * @param string $anchor - the anchor on target content
+     * @param string $comment - comment
+     * @param array $emails - emails array to whom to send notify
+     *
+     * @return array
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     */
+    public function mention($fileId, $anchor, $comment, $emails) {
+        $this->logger->debug("mention: from $fileId to " . json_encode($emails), ["app" => $this->appName]);
+
+        if (!$this->config->isUserAllowedToUse()) {
+            return ["error" => $this->trans->t("Not permitted")];
+        }
+
+        if (empty($emails)) {
+            return ["error" => $this->trans->t("Failed to send notification")];
+        }
+
+        $recipientIds = [];
+        foreach ($emails as $email) {
+            $recipients = \OC::$server->getUserManager()->getByEmail($email);
+            foreach ($recipients as $recipient) {
+                $recipientId = $recipient->getUID(); 
+                if (!in_array($recipientId, $recipientIds)) {
+                    array_push($recipientIds, $recipientId);
+                }
+            }
+        }
+
+        $user = $this->userSession->getUser();
+        $userId = null;
+        if (!empty($user)) {
+            $userId = $user->getUID();
+        }
+
+        list ($file, $error, $share) = $this->getFile($userId, $fileId);
+        if (isset($error)) {
+            $this->logger->error("Mention: $fileId $error", ["app" => $this->appName]);
+            return ["error" => $this->trans->t("Failed to send notification")];
+        }
+
+        $notificationManager = \OC::$server->getNotificationManager();
+        $notification = $notificationManager->createNotification();
+        $notification->setApp($this->appName)
+            ->setDateTime(new \DateTime())
+            ->setObject("mention", $comment)
+            ->setSubject("mention_info", [
+                "notifierId" => $userId,
+                "fileId" => $file->getId(),
+                "fileName" => $file->getName(),
+                "anchor" => $anchor
+            ]);
+
+        $canShare = ($file->getPermissions() & Constants::PERMISSION_SHARE) === Constants::PERMISSION_SHARE;
+
+        $accessList = [];
+        foreach ($this->shareManager->getSharesByPath($file) as $share) {
+            array_push($accessList, $share->getSharedWith());
+        }
+
+        foreach ($recipientIds as $recipientId) {
+            if (!in_array($recipientId, $accessList)) {
+                if (!$canShare) {
+                    continue;
+                }
+
+                $share = $this->shareManager->newShare();
+                $share->setNode($file)
+                    ->setShareType(Share::SHARE_TYPE_USER)
+                    ->setSharedBy($userId)
+                    ->setSharedWith($recipientId)
+                    ->setShareOwner($userId)
+                    ->setPermissions(Constants::PERMISSION_READ);
+
+                $this->shareManager->createShare($share);
+
+                $this->logger->debug("mention: share $fileId to $recipientId", ["app" => $this->appName]);
+            }
+
+            $notification->setUser($recipientId);
+
+            $notificationManager->notify($notification);
+        }
+
+        return ["message" => $this->trans->t("Notification sent successfully")];
     }
 
     /**

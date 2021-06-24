@@ -1,6 +1,7 @@
 # Change Log
 
 ## Added
+- mentions in comments
 - download as
 - downloading a template from settings
 - opening action link

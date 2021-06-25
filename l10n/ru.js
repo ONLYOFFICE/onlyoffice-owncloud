@@ -91,6 +91,7 @@ OC.L10N.register(
     "Template successfully deleted": "Шаблон успешно удален",
     "Common templates": "Общие шаблоны",
     "Failed to delete template": "Не удалось удалить шаблон",
+    "File has been converted. Its content might look different.": "Файл был сконвертирован. Его форматирование могло измениться.",
     "Download as": "Скачать как",
     "Download": "Скачать",
     "Convert into": "Конвертировать в",

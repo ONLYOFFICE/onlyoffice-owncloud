@@ -184,7 +184,7 @@
                     fileList.add(response, { animate: true });
                 }
 
-                OC.Notification.show(t(OCA.Onlyoffice.AppName, "File created"), {
+                OC.Notification.show(t(OCA.Onlyoffice.AppName, "File has been converted. Its content might look different."), {
                     timeout: 3
                 });
             });

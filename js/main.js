@@ -216,16 +216,17 @@
                 if (!config.mime) {
                     return true;
                 }
-                OCA.Files.fileActions.registerAction({
-                    name: "onlyofficeOpen",
-                    displayName: t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE"),
-                    mime: config.mime,
-                    permissions: OC.PERMISSION_READ,
-                    iconClass: "icon-onlyoffice-open",
-                    actionHandler: OCA.Onlyoffice.FileClick
-                });
 
-                if (config.def) {
+                if(config.def) {
+                    OCA.Files.fileActions.registerAction({
+                        name: "onlyofficeOpen",
+                        displayName: t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE"),
+                        mime: config.mime,
+                        permissions: OC.PERMISSION_READ,
+                        iconClass: "icon-onlyoffice-open",
+                        actionHandler: OCA.Onlyoffice.FileClick
+                    });
+
                     OCA.Files.fileActions.setDefault(config.mime, "onlyofficeOpen");
                 }
 

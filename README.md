@@ -9,6 +9,7 @@ The app allows to:
 * Create and edit text documents, spreadsheets, and presentations.
 * Share files with different permission types - viewing/editing, commenting, reviewing, filling forms. It's also possible to restrict downloading (in all editors) and modifying filters (in spreadshhets). Sharing via public link is also available. 
 * Co-edit documents in real-time: use two co-editing modes (Fast and Strict), Track Changes, comments, and built-in chat. Co-editing is also available several federated ownCloud instances connected to one Document Server.
+* Work with documents, spreadsheets, and presentations within ownCloud Web. 
 
 Supported formats:
 

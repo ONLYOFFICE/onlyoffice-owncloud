@@ -1018,7 +1018,7 @@ class AppConfig {
         "csv" => [ "mime" => "text/csv", "type" => "spreadsheet", "edit" => true, "editable" => true, "saveas" => ["ods", "pdf", "xlsx"] ],
         "doc" => [ "mime" => "application/msword", "type" => "text", "conv" => true, "saveas" => ["docx", "odt", "pdf", "rtf", "txt"] ],
         "docm" => [ "mime" => "application/vnd.ms-word.document.macroEnabled.12", "type" => "text", "conv" => true, "saveas" => ["docx", "odt", "pdf", "rtf", "txt"] ],
-        "docx" => [ "mime" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "type" => "text", "edit" => true, "def" => true, "review" => true, "fillForms" => true, "saveas" => ["odt", "pdf", "rtf", "txt"] ],
+        "docx" => [ "mime" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "type" => "text", "edit" => true, "def" => true, "review" => true, "fillForms" => true, "comment" => true, "saveas" => ["odt", "pdf", "rtf", "txt"] ],
         "dot" => [ "type" => "text", "conv" => true, "saveas" => ["docx", "odt", "pdf", "rtf", "txt"] ],
         "dotx" => [ "mime" => "application/vnd.openxmlformats-officedocument.wordprocessingml.template", "type" => "text", "conv" => true, "saveas" => ["docx", "odt", "pdf", "rtf", "txt"] ],
         "epub" => [ "mime" => "application/epub+zip", "type" => "text", "conv" => true, "saveas" => ["docx", "odt", "pdf", "rtf", "txt"] ],

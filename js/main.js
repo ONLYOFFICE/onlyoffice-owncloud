@@ -192,6 +192,8 @@
     };
 
     OCA.Onlyoffice.DownloadClick = function (fileName, context) {
+        var fileInfoModel = context.fileInfoModel || context.fileList.getModelForFile(fileName);
+
         $("#download-picker").remove();
         $.get(OC.filePath(OCA.Onlyoffice.AppName, "templates", "downloadPicker.html"), 
             function (tmpl) {
@@ -239,7 +241,7 @@
                         classes: "primary",
                         click: function() {
                             var format = this.dataset.format;
-                            var fileId = context.fileInfoModel.id;
+                            var fileId = fileInfoModel.id;
                             var downloadLink = OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/downloadas?fileId={fileId}&toExtension={toExtension}",{
                                 fileId: fileId,
                                 toExtension: format

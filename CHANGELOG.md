@@ -1,6 +1,7 @@
 # Change Log
 
 ## Added
+- support ownCloud Web
 - mentions in comments
 - favorite status in the editor
 - creation from a template from the editor

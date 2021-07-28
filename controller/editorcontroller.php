@@ -541,7 +541,7 @@ class EditorController extends Controller {
             $this->logger->error("Folder for saving file was not found: $dir", ["app" => $this->appName]);
             return ["error" => $this->trans->t("The required folder was not found")];
         }
-        if (!$folder->isCreatable()) {
+        if (!($folder->isCreatable() && $folder->isUpdateable())) {
             $this->logger->error("Folder for saving file without permission: $dir", ["app" => $this->appName]);
             return ["error" => $this->trans->t("You don't have enough permission to create")];
         }

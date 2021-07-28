@@ -9,6 +9,7 @@ The app allows to:
 * Create and edit text documents, spreadsheets, and presentations.
 * Share files with different permission types - viewing/editing, commenting, reviewing, filling forms. It's also possible to restrict downloading (in all editors) and modifying filters (in spreadshhets). Sharing via public link is also available. 
 * Co-edit documents in real-time: use two co-editing modes (Fast and Strict), Track Changes, comments, and built-in chat. Co-editing is also available several federated ownCloud instances connected to one Document Server.
+* Work with documents, spreadsheets, and presentations within ownCloud Web. 
 
 Supported formats:
 
@@ -50,6 +51,7 @@ If the server with the ownCloud installed does not have an Internet access, or i
     ```
 
 2. Get the ownCloud ONLYOFFICE integration app.
+
 There are several ways to do that:
 
     a. Download the latest signed version from the official store for [ownCloud](https://marketplace.owncloud.com/apps/onlyoffice).
@@ -106,7 +108,25 @@ You can check the connection to ONLYOFFICE Document Server by using the followin
 
 `occ onlyoffice:documentserver --check`
 
-You will see a text either with information about the successful connection or the cause of the error. 
+You will see a text either with information about the successful connection or the cause of the error.
+
+## Enabling editing for ownCloud Web
+
+To enable work within ownCloud web, register the connector in the ownCloud Web config.json:
+
+* If you installed ownCloud Web from the official marketplace, the path is `<owncloud-root-catalog>/config/config.json`
+* If you compiled it from source code yourself using [this instruction](https://owncloud.dev/clients/web/backend-oc10/#running-web), the path is `<owncloud-web-root-catalog>/config/config.json`.
+
+To register the connector, use these lines:
+
+```
+"external_apps": [
+    {
+        "id": "onlyoffice",
+        "path": "http(s)://<owncloud-10-server-address>/custom/onlyoffice/js/web/onlyoffice.js",
+    }
+]
+```
 
 ## How it works
 

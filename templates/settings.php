@@ -40,7 +40,7 @@
     <div id="onlyofficeAddrSettings">
         <p><?php p($l->t("ONLYOFFICE Docs Location specifies the address of the server with the document services installed. Please change the '<documentserver>' for the server address in the below line.")) ?></p>
 
-        <p><?php p($l->t("ONLYOFFICE Docs address")) ?></p>
+        <p class="onlyoffice-header"><?php p($l->t("ONLYOFFICE Docs address")) ?></p>
         <p><input id="onlyofficeUrl" value="<?php p($_["documentserver"]) ?>" placeholder="https://<documentserver>/" type="text"></p>
 
         <p>

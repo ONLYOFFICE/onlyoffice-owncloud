@@ -39,6 +39,7 @@
         OCA.Onlyoffice.version = $("#iframeEditor").data("version");
         OCA.Onlyoffice.template = $("#iframeEditor").data("template");
         OCA.Onlyoffice.inframe = !!$("#iframeEditor").data("inframe");
+        OCA.Onlyoffice.anchor = $("#iframeEditor").attr("data-anchor");
         if (!OCA.Onlyoffice.fileId && !OCA.Onlyoffice.shareToken) {
             displayError(t(OCA.Onlyoffice.AppName, "FileId is empty"));
             return;
@@ -49,10 +50,7 @@
             return;
         }
 
-        var configUrl = OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/config/{fileId}",
-            {
-                fileId: OCA.Onlyoffice.fileId || 0
-            });
+        var configUrl = OC.linkToOCS("apps/" + OCA.Onlyoffice.AppName + "/api/v1/config", 2) + (OCA.Onlyoffice.fileId || 0);
 
         var params = [];
         if (filePath) {
@@ -70,6 +68,10 @@
 
         if (OCA.Onlyoffice.inframe) {
             params.push("inframe=true");
+        }
+
+        if (OCA.Onlyoffice.anchor) {
+            params.push("anchor=" + encodeURIComponent(OCA.Onlyoffice.anchor));
         }
 
         if (OCA.Onlyoffice.Desktop) {
@@ -113,18 +115,22 @@
 
                     config.events = {
                         "onDocumentStateChange": setPageTitle,
-                        "onRequestHistory": OCA.Onlyoffice.onRequestHistory,
-                        "onRequestHistoryData": OCA.Onlyoffice.onRequestHistoryData,
                         "onDocumentReady": OCA.Onlyoffice.onDocumentReady,
+                        "onMakeActionLink": OCA.Onlyoffice.onMakeActionLink,
                     };
 
-                    if (!OCA.Onlyoffice.version) {
-                        config.events.onRequestHistoryClose = OCA.Onlyoffice.onRequestHistoryClose;
+                    if (!OCA.Onlyoffice.template) {
+                        config.events.onRequestHistory = OCA.Onlyoffice.onRequestHistory;
+                        config.events.onRequestHistoryData = OCA.Onlyoffice.onRequestHistoryData;
+
+                        if (!OCA.Onlyoffice.version) {
+                            config.events.onRequestHistoryClose = OCA.Onlyoffice.onRequestHistoryClose;
+                        }
                     }
 
                     if (config.editorConfig.tenant) {
                         config.events.onAppReady = function () {
-                            OCA.Onlyoffice.docEditor.showMessage(t(OCA.Onlyoffice.AppName, "You are using public demo ONLYOFFICE Document Server. Please do not store private sensitive data."));
+                            OCA.Onlyoffice.docEditor.showMessage(t(OCA.Onlyoffice.AppName, "You are using public demo ONLYOFFICE Docs server. Please do not store private sensitive data."));
                         };
                     }
 
@@ -134,6 +140,13 @@
                         config.events.onRequestInsertImage = OCA.Onlyoffice.onRequestInsertImage;
                         config.events.onRequestMailMergeRecipients = OCA.Onlyoffice.onRequestMailMergeRecipients;
                         config.events.onRequestCompareFile = OCA.Onlyoffice.onRequestCompareFile;
+                        config.events.onRequestUsers = OCA.Onlyoffice.onRequestUsers;
+                        config.events.onRequestSendNotify = OCA.Onlyoffice.onRequestSendNotify;
+                        config.events.onMetaChange = OCA.Onlyoffice.onMetaChange;
+
+                        if (!OCA.Onlyoffice.filePath) {
+                            OCA.Onlyoffice.filePath = config._file_path;
+                        }
                     }
 
                     if (OCA.Onlyoffice.inframe) {
@@ -250,7 +263,8 @@
                     OCA.Onlyoffice.editorSaveAs(saveData);
                 },
                 false,
-                "httpd/unix-directory");
+                "httpd/unix-directory",
+                true);
         }
     };
 
@@ -291,7 +305,11 @@
             },
             "*");
         } else {
-            OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Insert image"), OCA.Onlyoffice.editorInsertImage, false, imageMimes);
+            OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Insert image"),
+                OCA.Onlyoffice.editorInsertImage,
+                false,
+                imageMimes,
+                true);
         }
     };
 
@@ -329,7 +347,11 @@
             },
             "*");
         } else {
-            OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Select recipients"), OCA.Onlyoffice.editorSetRecipient, false, recipientMimes);
+            OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Select recipients"),
+                OCA.Onlyoffice.editorSetRecipient,
+                false,
+                recipientMimes,
+                true);
         }
     };
 
@@ -379,7 +401,11 @@
             },
             "*");
         } else {
-            OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Select file to compare"), OCA.Onlyoffice.editorSetRevised, false, revisedMimes);
+            OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Select file to compare"),
+                OCA.Onlyoffice.editorSetRevised,
+                false,
+                revisedMimes,
+                true);
         }
     };
 
@@ -400,6 +426,89 @@
                 OCA.Onlyoffice.docEditor.setRevisedFile(response);
             });
     };
+
+    OCA.Onlyoffice.onMakeActionLink = function (event) {
+        var url = location.href;
+        if (event && event.data) {
+            var indexAnchor = url.indexOf("#");
+            if (indexAnchor != -1) {
+                url = url.substring(0, indexAnchor);
+            }
+
+            var data = JSON.stringify(event.data);
+            data = "anchor=" + encodeURIComponent(data);
+
+            var inframeRegex = /inframe=([^&]*&?)/g;
+            if (inframeRegex.test(url)) {
+                url = url.replace(inframeRegex, data);
+            }
+
+            var anchorRegex = /anchor=([^&]*)/g;
+            if (anchorRegex.test(url)) {
+                url = url.replace(anchorRegex, data);
+            } else {
+                url += (url.indexOf("?") == -1) ? "?" : "&";
+                url += data;
+            }
+        }
+
+        OCA.Onlyoffice.docEditor.setActionLink(url);
+    };
+
+    OCA.Onlyoffice.onRequestUsers = function (event) {
+        $.get(OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/users"),
+        function onSuccess(response) {
+            OCA.Onlyoffice.docEditor.setUsers({
+                "users": response
+            });
+        });
+    };
+
+    OCA.Onlyoffice.onRequestSendNotify = function (event) {
+        var actionLink = event.data.actionLink;
+        var comment = event.data.message;
+        var emails = event.data.emails;
+
+        var fileId = OCA.Onlyoffice.fileId;
+
+        $.post(OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/mention"),
+            {
+                fileId: fileId,
+                anchor: JSON.stringify(actionLink),
+                comment: comment,
+                emails: emails
+            },
+            function onSuccess(response) {
+                if (response.error) {
+                    OC.Notification.show(response.error, {
+                        type: "error",
+                        timeout: 3
+                    });
+                    return;
+                }
+
+                OC.Notification.show(response.message, {
+                    timeout: 3
+                });
+            });
+    };
+
+    OCA.Onlyoffice.onMetaChange = function (event) {
+        if (event.data.favorite !== undefined) {
+            $.ajax({
+                url: OC.generateUrl("apps/files/api/v1/files" + OC.encodePath(OCA.Onlyoffice.filePath)),
+                type: "post",
+                data: JSON.stringify({
+                    tags: event.data.favorite ? [OC.TAG_FAVORITE] : []
+                }),
+                contentType: "application/json",
+                dataType: "json",
+                success: function(){
+                    OCA.Onlyoffice.docEditor.setFavorite(event.data.favorite);
+                }
+            });
+        }
+    }
 
     $(document).ready(OCA.Onlyoffice.InitEditor);
 

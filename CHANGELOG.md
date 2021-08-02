@@ -1,5 +1,15 @@
 # Change Log
 
+## 7.1.1
+## Added
+- support ownCloud Web
+- mentions in comments
+- favorite status in the editor
+- creation from a template from the editor
+- download as
+- downloading a template from settings
+- opening action link
+
 ## 6.4.3
 ## Changed
 - fixed registration of file actions

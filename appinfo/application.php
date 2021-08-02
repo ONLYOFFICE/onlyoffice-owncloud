@@ -23,15 +23,19 @@ use OCP\AppFramework\App;
 use OCP\Files\IMimeTypeDetector;
 use OCP\Util;
 use OCP\IPreview;
+use OCP\ITagManager;
 
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Controller\CallbackController;
+use OCA\Onlyoffice\Controller\EditorApiController;
 use OCA\Onlyoffice\Controller\EditorController;
+use OCA\Onlyoffice\Controller\SettingsApiController;
 use OCA\Onlyoffice\Controller\SettingsController;
 use OCA\Onlyoffice\Controller\TemplateController;
 use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\Hookhandler;
 use OCA\Onlyoffice\Hooks;
+use OCA\Onlyoffice\Notifier;
 use OCA\Onlyoffice\Preview;
 
 class Application extends App {
@@ -101,6 +105,22 @@ class Application extends App {
             });
         }
 
+        $notificationManager = \OC::$server->getNotificationManager();
+        $notificationManager->registerNotifier(function () use ($appName) {
+            return new Notifier(
+                $appName,
+                \OC::$server->getL10NFactory(),
+                \OC::$server->getURLGenerator(),
+                \OC::$server->getLogger(),
+                \OC::$server->getUserManager()
+            );
+        }, function () use ($appName) {
+            return [
+                "id" => $appName,
+                "name" => $appName,
+            ];
+        });
+
         $container->registerService("L10N", function ($c) {
             return $c->query("ServerContainer")->getL10N($c->query("AppName"));
         });
@@ -135,6 +155,15 @@ class Application extends App {
             );
         });
 
+        $container->registerService("SettingsApiController", function ($c) {
+            return new SettingsApiController(
+                $c->query("AppName"),
+                $c->query("Request"),
+                $c->query("URLGenerator"),
+                $this->appConfig
+            );
+        });
+
         $container->registerService("EditorController", function ($c) {
             return new EditorController(
                 $c->query("AppName"),
@@ -147,8 +176,24 @@ class Application extends App {
                 $this->appConfig,
                 $this->crypt,
                 $c->query("IManager"),
+                $c->query("Session")
+            );
+        });
+
+        $container->registerService("EditorApiController", function ($c) {
+            return new EditorApiController(
+                $c->query("AppName"),
+                $c->query("Request"),
+                $c->query("RootStorage"),
+                $c->query("UserSession"),
+                $c->query("URLGenerator"),
+                $c->query("L10N"),
+                $c->query("Logger"),
+                $this->appConfig,
+                $this->crypt,
+                $c->query("IManager"),
                 $c->query("Session"),
-                $c->query("LockManager")
+                $c->get(ITagManager::class)
             );
         });
 

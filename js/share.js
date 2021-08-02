@@ -445,6 +445,10 @@
             if (_.isUndefined(view) || _.isUndefined(view.model) || OCA.Onlyoffice.setting.shareAttributesVersion !== "v2") {
                 return;
             }
+            if (view.model.getFileInfo().attributes.type !== "file") {
+                return;
+            }
+
             var fileName = view.model.getFileInfo().attributes.name;
 
             var extension = OCA.Onlyoffice.GetFileExtension(fileName);
@@ -518,6 +522,10 @@
             if (_.isUndefined(model) || OCA.Onlyoffice.setting.shareAttributesVersion !== "v1") {
                 return;
             }
+            if (model.getFileInfo().attributes.type !== "file") {
+                return;
+            }
+
             var fileName = model.getFileInfo().attributes.name;
 
             var extension = OCA.Onlyoffice.GetFileExtension(fileName);

@@ -59,38 +59,28 @@ class TemplateManager {
     /**
      * Get global templates
      *
-     * @param string $type - template format type
+     * @param string $mimetype - mimetype of the template
      *
      * @return array
      */
-    public static function GetGlobalTemplates($type = null) {
-        $templates = [];
+    public static function GetGlobalTemplates($mimetype = null) {
         $templateDir = self::GetGlobalTemplateDir();
 
-        if (!empty($type)) {
-            $mime = self::GetMimeTemplate($type);
-            $templatesList = $templateDir->searchByMime($mime);
+        if (!empty($mimetype)) {
+            $templatesList = $templateDir->searchByMime($mimetype);
         } else {
             $templatesList = $templateDir->getDirectoryListing();
         }
-        foreach ($templatesList as $templateItem) {
-            $template = [
-                "id" => $templateItem->getId(),
-                "name" => $templateItem->getName(),
-                "type" => self::GetTypeTemplate($templateItem->getMimeType())
-            ];
-            array_push($templates, $template);
-        }
 
-        return $templates;
+        return $templatesList;
     }
 
     /**
-     * Get template content
+     * Get template file
      *
      * @param string $templateId - identifier file template
      *
-     * @return string
+     * @return File
      */
     public static function GetTemplate($templateId) {
         $logger = \OC::$server->getLogger();
@@ -108,9 +98,7 @@ class TemplateManager {
             return null;
         }
 
-        $content = $templates[0]->getContent();
-
-        return $content;
+        return $templates[0];
     }
 
     /**
@@ -128,26 +116,6 @@ class TemplateManager {
                 return "spreadsheet";
             case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
                 return "presentation";
-        }
-
-        return "";
-    }
-
-    /**
-     * Get mimetype template from format type
-     *
-     * @param string $type - format type
-     *
-     * @return string
-     */
-    public static function GetMimeTemplate($type) {
-        switch($type) {
-            case "document":
-                return "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-            case "spreadsheet":
-                return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-            case "presentation":
-                return "application/vnd.openxmlformats-officedocument.presentationml.presentation";
         }
 
         return "";

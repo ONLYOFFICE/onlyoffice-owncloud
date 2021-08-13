@@ -123,10 +123,12 @@ To register the connector, use these lines:
 "external_apps": [
     {
         "id": "onlyoffice",
-        "path": "http(s)://<owncloud-10-server-address>/custom/onlyoffice/js/web/onlyoffice.js",
+        "path": "http(s)://<owncloud-10-server-address>/index.php/apps/onlyoffice/js/onlyoffice.js",
     }
 ]
 ```
+
+Depending on your webserver configuration you can drop the `index.php` segment from the url path.
 
 ## How it works
 

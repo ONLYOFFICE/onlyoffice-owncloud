@@ -94,10 +94,10 @@ OC.L10N.register(
     "File has been converted. Its content might look different.": "Plik został przekonwertowany. Jego zawartość może wyglądać inaczej.",
     "Download as": "Pobierz jako",
     "Download": "Pobierz",
-    "Convert into": "Konwertuj do",
     "Origin format": "Oryginalny format",
     "Failed to send notification": "Nie udało się wysłać powiadomienia",
     "Notification sent successfully": "Powiadomienie zostało wysłane",
-    "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s dodał(a) w %2\$s następujący komentarz: \"%3\$s\"."
+    "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s dodał(a) w %2\$s następujący komentarz: \"%3\$s\".",
+    "Choose a format to convert {fileName}": "Wybierz format, do którego chcesz przekonwertować {fileName}"
 },
 "nplurals=2; plural=(n != 1);");

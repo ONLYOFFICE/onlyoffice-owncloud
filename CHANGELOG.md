@@ -1,5 +1,8 @@
 # Change Log
 
+## Changed
+- open share link directly
+
 ## 7.1.1
 ## Added
 - support ownCloud Web

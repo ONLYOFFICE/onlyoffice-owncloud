@@ -394,6 +394,14 @@ class EditorApiController extends OCSController {
             $params["type"] = "mobile";
         }
 
+        if (!$template
+            && $file->isUpdateable()
+            && !$isPersistentLock
+            && (empty($shareToken) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE)) {
+
+            $params["document"]["permissions"]["changeHistory"] = true;
+        }
+
         if (!empty($userId)) {
             $params["editorConfig"]["user"] = [
                 "id" => $this->buildUserId($userId),

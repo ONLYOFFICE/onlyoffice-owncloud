@@ -214,6 +214,13 @@
             },
             success: function onSuccess(response) {
                 OCA.Onlyoffice.refreshHistory(response, version);
+
+                if (OCA.Onlyoffice.inframe) {
+                    window.parent.postMessage({
+                        method: "onRefreshVersionsDialog"
+                    },
+                    "*");
+                }
             }
         })
     };

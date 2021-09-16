@@ -1,5 +1,8 @@
 # Change Log
 
+## Added
+- versions restore from editor
+
 ## 7.1.1
 ## Added
 - support ownCloud Web

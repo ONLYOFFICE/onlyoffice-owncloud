@@ -184,7 +184,7 @@ class FileUtility {
      *
      * @return array
      */
-    private function getShare($shareToken) {
+    public function getShare($shareToken) {
         if (empty($shareToken)) {
             return [null, $this->trans->t("FileId is empty")];
         }

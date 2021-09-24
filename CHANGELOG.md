@@ -1,5 +1,8 @@
 # Change Log
 
+## Added
+- versions restore from editor
+
 ## Changed
 - editing by link only for available groups
 

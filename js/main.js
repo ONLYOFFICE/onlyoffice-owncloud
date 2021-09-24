@@ -150,6 +150,16 @@
         }
     };
 
+    OCA.Onlyoffice.RefreshVersionsDialog = function () {
+        if (OCA.Onlyoffice.context) {
+            if ($("#app-content").hasClass("with-app-sidebar")) {
+                OC.Apps.hideAppSidebar();
+                OCA.Onlyoffice.context.fileList.showDetailsView(OCA.Onlyoffice.context.fileName, "versionsTabView");
+                OC.Apps.showAppSidebar();
+            }
+        }
+    };
+
     OCA.Onlyoffice.FileClick = function (fileName, context) {
         var fileInfoModel = context.fileInfoModel || context.fileList.getModelForFile(fileName);
         OCA.Onlyoffice.OpenEditor(fileInfoModel.id, context.dir, fileName);

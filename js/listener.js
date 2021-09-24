@@ -65,7 +65,7 @@
     };
 
     OCA.Onlyoffice.onDocumentReady = function (documentType) {
-        if (documentType === "text") {
+        if (documentType === "word") {
             OCA.Onlyoffice.bindVersionClick();
         } else {
             OCA.Onlyoffice.unbindVersionClick();

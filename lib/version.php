@@ -43,6 +43,13 @@ class Version {
     private $revisionId;
 
     /** 
+     * File path
+     *
+     * @var string 
+     * */
+    private $path;
+
+    /** 
      * Source file properties
      * 
      * @var FileInfo 
@@ -56,10 +63,12 @@ class Version {
      */
     public function __construct(int $timestamp,
                                 int $revisionId,
+                                string $path,
                                 FileInfo $sourceFileInfo
                                 ) {
         $this->timestamp = $timestamp;
         $this->revisionId = $revisionId;
+        $this->path = $path;
         $this->sourceFileInfo = $sourceFileInfo;
     }
 
@@ -88,5 +97,14 @@ class Version {
      */
     public function getTimestamp() {
         return $this->timestamp;
+    }
+
+    /**
+     * Get file path
+     *
+     * @return string
+     */
+    public function getPath() {
+        return $this->path;
     }
 }

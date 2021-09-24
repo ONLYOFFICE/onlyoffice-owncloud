@@ -242,10 +242,6 @@ class EditorApiController extends OCSController {
      */
     public function config($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $desktop = false, $template = false, $anchor = null) {
 
-        if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
-            return new JSONResponse(["error" => $this->trans->t("Not permitted")]);
-        }
-
         $user = $this->userSession->getUser();
         $userId = null;
         if (!empty($user)) {
@@ -257,6 +253,14 @@ class EditorApiController extends OCSController {
         if (isset($error)) {
             $this->logger->error("Config: $fileId $error", ["app" => $this->appName]);
             return new JSONResponse(["error" => $error]);
+        }
+
+        $checkUserAllowGroups = $userId;
+        if (!empty($share)) {
+            $checkUserAllowGroups = $share->getSharedBy();
+        }
+        if (!$this->config->isUserAllowedToUse($checkUserAllowGroups)) {
+            return new JSONResponse(["error" => $this->trans->t("Not permitted")]);
         }
 
         $fileName = $file->getName();
@@ -392,6 +396,14 @@ class EditorApiController extends OCSController {
 
         if (\OC::$server->getRequest()->isUserAgent([$this::USER_AGENT_MOBILE])) {
             $params["type"] = "mobile";
+        }
+
+        if (!$template
+            && $file->isUpdateable()
+            && !$isPersistentLock
+            && (empty($shareToken) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE)) {
+
+            $params["document"]["permissions"]["changeHistory"] = true;
         }
 
         if (!empty($userId)) {

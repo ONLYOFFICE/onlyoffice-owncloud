@@ -1,6 +1,10 @@
 # Change Log
 
+## Added
+- versions restore from editor
+
 ## Changed
+- editing by link only for available groups
 - open share link directly
 
 ## 7.1.1

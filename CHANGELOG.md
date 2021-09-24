@@ -3,6 +3,9 @@
 ## Added
 - versions restore from editor
 
+## Changed
+- editing by link only for available groups
+
 ## 7.1.1
 ## Added
 - support ownCloud Web

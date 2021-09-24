@@ -444,16 +444,26 @@
                     return;
                 }
 
-                var button = document.createElement("a");
-                button.href = OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/s/" + encodeURIComponent($("#sharingToken").val()));
-                button.className = "onlyoffice-public-open button";
-                button.innerText = t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE")
+                var editorUrl = OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/s/" + encodeURIComponent($("#sharingToken").val()));
 
-                if (!OCA.Onlyoffice.setting.sameTab) {
-                    button.target = "_blank";
+                if (oc_appswebroots.richdocuments
+                    || oc_appswebroots.files_pdfviewer && extension === "pdf"
+                    || oc_appswebroots.files_texteditor && extension === "txt") {
+
+                    var button = document.createElement("a");
+                    button.href = editorUrl;
+                    button.className = "onlyoffice-public-open button";
+                    button.innerText = t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE")
+
+                    if (!OCA.Onlyoffice.setting.sameTab) {
+                        button.target = "_blank";
+                    }
+
+                    $("#preview").prepend(button);
+                } else {
+                    var $iframe = $("<iframe id=\"onlyofficeFrame\" nonce=\"" + btoa(OC.requestToken) + "\" scrolling=\"no\" allowfullscreen src=\"" + editorUrl + "?inframe=true\" />");
+                    $("#preview").append($iframe);
                 }
-
-                $("#preview").prepend(button);
             };
 
             OCA.Onlyoffice.GetSettings(initSharedButton);

@@ -5,6 +5,7 @@
 
 ## Changed
 - editing by link only for available groups
+- open share link directly
 
 ## 7.1.1
 ## Added

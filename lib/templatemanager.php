@@ -20,6 +20,7 @@
 namespace OCA\Onlyoffice;
 
 use OCP\Files\Folder;
+use OCP\Files\NotFoundException;
 
 /**
  * Template manager
@@ -48,10 +49,15 @@ class TemplateManager {
      * @return Folder
      */
     public static function GetGlobalTemplateDir() {
-        $rootFolder = \OC::$server->getRootFolder();
+        $dirPath = self::$appName . "/" . self::$templateFolderName;
 
-        $appDir = $rootFolder->nodeExists(self::$appName) ? $rootFolder->get(self::$appName) : $rootFolder->newFolder(self::$appName);
-        $templateDir = $appDir->nodeExists(self::$templateFolderName) ? $appDir->get(self::$templateFolderName) : $appDir->newFolder(self::$templateFolderName);
+        $rootFolder = \OC::$server->getRootFolder();
+        $templateDir = null;
+        try {
+            $templateDir = $rootFolder->get($dirPath);
+        } catch (NotFoundException $e) {
+            $templateDir = $rootFolder->newFolder($dirPath);
+        }
 
         return $templateDir;
     }

@@ -153,11 +153,37 @@ class VersionManager {
         foreach($propsVersions as $propVersion) {
             $version = new Version($propVersion["timestamp"],
                                     $propVersion["version"],
+                                    $propVersion["path"],
                                     $file);
 
             array_push($versions, $version);
         }
 
         return $versions;
+    }
+
+    /**
+     * Restore version
+     *
+     * @param Version $version - version for restore
+     *
+     */
+    public function rollback($version) {
+       $sourceFile = $version->getSourceFile();
+
+       $ownerId = null;
+       $owner = $sourceFile->getOwner();
+       if (!empty($owner)) {
+           $ownerId = $owner->getUID();
+       }
+
+       $path = $version->getPath();
+       $revision = $version->getTimestamp();
+
+       $versionFile = $this->getVersionFile($owner, $sourceFile, $revision);
+       $versionFileInfo = $versionFile->getFileInfo();
+       $versionPath = $versionFileInfo->getInternalPath();
+
+       $this->storage->restoreVersion($ownerId, $path, $versionPath, $revision);
     }
 }

@@ -40,6 +40,11 @@
         OCA.Onlyoffice.template = $("#iframeEditor").data("template");
         OCA.Onlyoffice.inframe = !!$("#iframeEditor").data("inframe");
         OCA.Onlyoffice.anchor = $("#iframeEditor").attr("data-anchor");
+
+        if (OCA.Onlyoffice.inframe) {
+            OCA.Onlyoffice.faviconBase = $('link[rel="icon"]').attr("href");
+        }
+
         if (!OCA.Onlyoffice.fileId && !OCA.Onlyoffice.shareToken) {
             displayError(t(OCA.Onlyoffice.AppName, "FileId is empty"));
             return;
@@ -164,6 +169,17 @@
 
                     if (config.type === "mobile" && $("#app > iframe").css("position") === "fixed") {
                         $("#app > iframe").css("height", "calc(100% - 45px)");
+                    }
+
+                    var favicon = OC.filePath(OCA.Onlyoffice.AppName, "img", OCA.Onlyoffice.documentType + ".ico");
+                    if (OCA.Onlyoffice.inframe) {
+                        window.parent.postMessage({
+                            method: "changeFavicon",
+                            param: favicon
+                        },
+                        "*");
+                    } else {
+                        $('link[rel="icon"]').attr("href", favicon);
                     }
                 }
             }

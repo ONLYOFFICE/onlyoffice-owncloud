@@ -288,25 +288,75 @@ class EditorController extends Controller {
     /**
      * Get users
      *
+     * @param $fileId - file identifier
+     *
      * @return array
      *
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function users() {
+    public function users($fileId) {
         $this->logger->debug("Search users", ["app" => $this->appName]);
+        $userManager = \OC::$server->getUserManager();
         $result = [];
 
         if (!$this->config->isUserAllowedToUse()) {
             return $result;
         }
 
-        $userId = $this->userSession->getUser()->getUID();
-        $users = \OC::$server->getUserManager()->search("");
+        $currentUser = $this->userSession->getUser();
+        $currentUserId = $currentUser->getUID();
+
+        list ($file, $error, $share) = $this->getFile($currentUserId, $fileId);
+        if (isset($error)) {
+            $this->logger->error("Users: $fileId $error", ["app" => $this->appName]);
+            return $result;
+        }
+
+        $canShare = (($file->getPermissions() & Constants::PERMISSION_SHARE) === Constants::PERMISSION_SHARE);
+
+        $shareMemberGroups = $this->shareManager->shareWithGroupMembersOnly();
+
+        $all = false;
+        $users = [];
+        if ($canShare) {
+            if ($shareMemberGroups) {
+                $groupManager = \OC::$server->getGroupManager();
+                $currentUserGroups = $groupManager->getUserGroupIds($currentUser);
+                foreach ($currentUserGroups as $currentUserGroup) {
+                    $group = $groupManager->get($currentUserGroup);
+                    foreach ($group->getUsers() as $user) {
+                        if (!in_array($user, $users)) {
+                            array_push($users, $user);
+                        }
+                    }
+                }
+            } else {
+                $users = $userManager->search("");
+                $all = true;
+            }
+        }
+
+        if (!$all) {
+            $accessList = [];
+            foreach ($this->shareManager->getSharesByPath($file) as $share) {
+                array_push($accessList, $share->getSharedWith());
+                $sharedBy = $share->getSharedBy();
+                if (!in_array($sharedBy, $accessList)) {
+                    array_push($accessList, $sharedBy);
+                }
+            }
+            foreach ($accessList as $accessUser) {
+                $user = $userManager->get($accessUser);
+                if (!in_array($user, $users)) {
+                    array_push($users, $userManager->get($accessUser));
+                }
+            }
+        }
+
         foreach ($users as $user) {
             $email = $user->getEMailAddress();
-            if ($user->getUID() != $userId
-                && !empty($email)) {
+            if ($user->getUID() != $currentUserId && !empty($email)) {
                 array_push($result, [
                     "email" => $email,
                     "name" => $user->getDisplayName()

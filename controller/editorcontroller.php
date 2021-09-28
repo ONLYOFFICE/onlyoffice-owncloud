@@ -391,9 +391,12 @@ class EditorController extends Controller {
             return ["error" => $this->trans->t("Failed to send notification")];
         }
 
+        $groupManager = \OC::$server->getGroupManager();
+        $userManager = \OC::$server->getUserManager();
+
         $recipientIds = [];
         foreach ($emails as $email) {
-            $recipients = \OC::$server->getUserManager()->getByEmail($email);
+            $recipients = $userManager->getByEmail($email);
             foreach ($recipients as $recipient) {
                 $recipientId = $recipient->getUID(); 
                 if (!in_array($recipientId, $recipientIds)) {
@@ -426,17 +429,34 @@ class EditorController extends Controller {
                 "anchor" => $anchor
             ]);
 
+        $shareMemberGroups = $this->shareManager->shareWithGroupMembersOnly();
         $canShare = ($file->getPermissions() & Constants::PERMISSION_SHARE) === Constants::PERMISSION_SHARE;
+
+        $currentUserGroups = [];
+        if ($shareMemberGroups) {
+            $currentUserGroups = $groupManager->getUserGroupIds($user);
+        }
 
         $accessList = [];
         foreach ($this->shareManager->getSharesByPath($file) as $share) {
             array_push($accessList, $share->getSharedWith());
+            $sharedBy = $share->getSharedBy();
+            if (!in_array($sharedBy, $accessList)) {
+                array_push($accessList, $sharedBy);
+            }
         }
 
         foreach ($recipientIds as $recipientId) {
             if (!in_array($recipientId, $accessList)) {
                 if (!$canShare) {
                     continue;
+                }
+                if ($shareMemberGroups) {
+                    $recipient = $userManager->get($recipientId);
+                    $recipientGroups = $groupManager->getUserGroupIds($recipient);
+                    if (empty(array_intersect($currentUserGroups, $recipientGroups))) {
+                        continue;
+                    }
                 }
 
                 $share = $this->shareManager->newShare();

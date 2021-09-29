@@ -36,6 +36,8 @@ use OCP\ISession;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IUserSession;
+use OCP\IUserManager;
+use OCP\IGroupManager;
 use OCP\Share\IManager;
 use OCP\Share;
 
@@ -60,6 +62,13 @@ class EditorController extends Controller {
      * @var IUserSession
      */
     private $userSession;
+
+    /**
+     * Current user manager
+     *
+     * @var IUserManager
+     */
+    private $userManager;
 
     /**
      * Root folder
@@ -125,6 +134,13 @@ class EditorController extends Controller {
     private $shareManager;
 
     /**
+     * Group manager
+     *
+     * @var IGroupManager
+     */
+    private $groupManager;
+
+    /**
      * Mobile regex from https://github.com/ONLYOFFICE/CommunityServer/blob/v9.1.1/web/studio/ASC.Web.Studio/web.appsettings.config#L35
      */
     const USER_AGENT_MOBILE = "/android|avantgo|playbook|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od|ad)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\\/|plucker|pocket|psp|symbian|treo|up\\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i";
@@ -134,29 +150,34 @@ class EditorController extends Controller {
      * @param IRequest $request - request object
      * @param IRootFolder $root - root folder
      * @param IUserSession $userSession - current user session
+     * @param IUserManager $userManager - current user manager
      * @param IURLGenerator $urlGenerator - url generator service
      * @param IL10N $trans - l10n service
      * @param ILogger $logger - logger
      * @param AppConfig $config - application configuration
      * @param Crypt $crypt - hash generator
      * @param IManager $shareManager - Share manager
-     * @param ISession $ISession - Session
+     * @param ISession $session - Session
+     * @param IGroupManager $groupManager - Group manager
      */
     public function __construct($AppName,
                                     IRequest $request,
                                     IRootFolder $root,
                                     IUserSession $userSession,
+                                    IUserManager $userManager,
                                     IURLGenerator $urlGenerator,
                                     IL10N $trans,
                                     ILogger $logger,
                                     AppConfig $config,
                                     Crypt $crypt,
                                     IManager $shareManager,
-                                    ISession $session
+                                    ISession $session,
+                                    IGroupManager $groupManager
                                     ) {
         parent::__construct($AppName, $request);
 
         $this->userSession = $userSession;
+        $this->userManager = $userManager;
         $this->root = $root;
         $this->urlGenerator = $urlGenerator;
         $this->trans = $trans;
@@ -164,6 +185,7 @@ class EditorController extends Controller {
         $this->config = $config;
         $this->crypt = $crypt;
         $this->shareManager = $shareManager;
+        $this->groupManager = $groupManager;
 
         $this->versionManager = new VersionManager($AppName, $root);
 
@@ -297,8 +319,6 @@ class EditorController extends Controller {
      */
     public function users($fileId) {
         $this->logger->debug("Search users", ["app" => $this->appName]);
-        $userManager = \OC::$server->getUserManager();
-        $groupManager = \OC::$server->getGroupManager();
         $result = [];
 
         if (!$this->config->isUserAllowedToUse()) {
@@ -322,9 +342,9 @@ class EditorController extends Controller {
         $users = [];
         if ($canShare) {
             if ($shareMemberGroups) {
-                $currentUserGroups = $groupManager->getUserGroupIds($currentUser);
+                $currentUserGroups = $this->groupManager->getUserGroupIds($currentUser);
                 foreach ($currentUserGroups as $currentUserGroup) {
-                    $group = $groupManager->get($currentUserGroup);
+                    $group = $this->groupManager->get($currentUserGroup);
                     foreach ($group->getUsers() as $user) {
                         if (!in_array($user, $users)) {
                             array_push($users, $user);
@@ -332,7 +352,7 @@ class EditorController extends Controller {
                     }
                 }
             } else {
-                $users = $userManager->search("");
+                $users = $this->userManager->search("");
                 $all = true;
             }
         }
@@ -342,13 +362,13 @@ class EditorController extends Controller {
                 $accessList = [];
                 $shareWith = $share->getSharedWith();
                 if ($share->getShareType() === Share::SHARE_TYPE_GROUP) {
-                    $group = $groupManager->get($shareWith);
+                    $group = $this->groupManager->get($shareWith);
                     $accessList = $group->getUsers();
                 } else if ($share->getShareType() === Share::SHARE_TYPE_USER) {
-                    array_push($accessList, $userManager->get($shareWith));
+                    array_push($accessList, $this->userManager->get($shareWith));
                 }
                 $shareBy = $share->getSharedBy();
-                array_push($accessList, $userManager->get($shareBy));
+                array_push($accessList, $this->userManager->get($shareBy));
 
                 foreach ($accessList as $accessUser) {
                     if (!in_array($accessUser, $users)) {
@@ -395,12 +415,9 @@ class EditorController extends Controller {
             return ["error" => $this->trans->t("Failed to send notification")];
         }
 
-        $groupManager = \OC::$server->getGroupManager();
-        $userManager = \OC::$server->getUserManager();
-
         $recipientIds = [];
         foreach ($emails as $email) {
-            $recipients = $userManager->getByEmail($email);
+            $recipients = $this->userManager->getByEmail($email);
             foreach ($recipients as $recipient) {
                 $recipientId = $recipient->getUID(); 
                 if (!in_array($recipientId, $recipientIds)) {
@@ -438,7 +455,7 @@ class EditorController extends Controller {
 
         $currentUserGroups = [];
         if ($shareMemberGroups) {
-            $currentUserGroups = $groupManager->getUserGroupIds($user);
+            $currentUserGroups = $this->groupManager->getUserGroupIds($user);
         }
 
         $accessList = [];
@@ -456,8 +473,8 @@ class EditorController extends Controller {
                     continue;
                 }
                 if ($shareMemberGroups) {
-                    $recipient = $userManager->get($recipientId);
-                    $recipientGroups = $groupManager->getUserGroupIds($recipient);
+                    $recipient = $this->userManager->get($recipientId);
+                    $recipientGroups = $this->groupManager->getUserGroupIds($recipient);
                     if (empty(array_intersect($currentUserGroups, $recipientGroups))) {
                         continue;
                     }

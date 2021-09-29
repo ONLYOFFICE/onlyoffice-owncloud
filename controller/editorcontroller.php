@@ -298,6 +298,7 @@ class EditorController extends Controller {
     public function users($fileId) {
         $this->logger->debug("Search users", ["app" => $this->appName]);
         $userManager = \OC::$server->getUserManager();
+        $groupManager = \OC::$server->getGroupManager();
         $result = [];
 
         if (!$this->config->isUserAllowedToUse()) {
@@ -321,7 +322,6 @@ class EditorController extends Controller {
         $users = [];
         if ($canShare) {
             if ($shareMemberGroups) {
-                $groupManager = \OC::$server->getGroupManager();
                 $currentUserGroups = $groupManager->getUserGroupIds($currentUser);
                 foreach ($currentUserGroups as $currentUserGroup) {
                     $group = $groupManager->get($currentUserGroup);
@@ -338,18 +338,22 @@ class EditorController extends Controller {
         }
 
         if (!$all) {
-            $accessList = [];
             foreach ($this->shareManager->getSharesByPath($file) as $share) {
-                array_push($accessList, $share->getSharedWith());
-                $sharedBy = $share->getSharedBy();
-                if (!in_array($sharedBy, $accessList)) {
-                    array_push($accessList, $sharedBy);
+                $accessList = [];
+                $shareWith = $share->getSharedWith();
+                if ($share->getShareType() === Share::SHARE_TYPE_GROUP) {
+                    $group = $groupManager->get($shareWith);
+                    $accessList = $group->getUsers();
+                } else if ($share->getShareType() === Share::SHARE_TYPE_USER) {
+                    array_push($accessList, $userManager->get($shareWith));
                 }
-            }
-            foreach ($accessList as $accessUser) {
-                $user = $userManager->get($accessUser);
-                if (!in_array($user, $users)) {
-                    array_push($users, $userManager->get($accessUser));
+                $shareBy = $share->getSharedBy();
+                array_push($accessList, $userManager->get($shareBy));
+
+                foreach ($accessList as $accessUser) {
+                    if (!in_array($accessUser, $users)) {
+                        array_push($users, $accessUser);
+                    }
                 }
             }
         }

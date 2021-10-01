@@ -171,13 +171,15 @@ class Application extends App {
                 $c->query("Request"),
                 $c->query("RootStorage"),
                 $c->query("UserSession"),
+                $c->query("ServerContainer")->getUserManager(),
                 $c->query("URLGenerator"),
                 $c->query("L10N"),
                 $c->query("Logger"),
                 $this->appConfig,
                 $this->crypt,
                 $c->query("IManager"),
-                $c->query("Session")
+                $c->query("Session"),
+                $c->query("ServerContainer")->getGroupManager()
             );
         });
 

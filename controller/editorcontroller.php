@@ -358,22 +358,10 @@ class EditorController extends Controller {
         }
 
         if (!$all) {
-            foreach ($this->shareManager->getSharesByPath($file) as $share) {
-                $accessList = [];
-                $shareWith = $share->getSharedWith();
-                if ($share->getShareType() === Share::SHARE_TYPE_GROUP) {
-                    $group = $this->groupManager->get($shareWith);
-                    $accessList = $group->getUsers();
-                } else if ($share->getShareType() === Share::SHARE_TYPE_USER) {
-                    array_push($accessList, $this->userManager->get($shareWith));
-                }
-                $shareBy = $share->getSharedBy();
-                array_push($accessList, $this->userManager->get($shareBy));
-
-                foreach ($accessList as $accessUser) {
-                    if (!in_array($accessUser, $users)) {
-                        array_push($users, $accessUser);
-                    }
+            $accessList = $this->getAccessList($file);
+            foreach ($accessList as $accessUser) {
+                if (!in_array($accessUser, $users)) {
+                    array_push($users, $accessUser);
                 }
             }
         }
@@ -458,22 +446,15 @@ class EditorController extends Controller {
             $currentUserGroups = $this->groupManager->getUserGroupIds($user);
         }
 
-        $accessList = [];
-        foreach ($this->shareManager->getSharesByPath($file) as $share) {
-            array_push($accessList, $share->getSharedWith());
-            $sharedBy = $share->getSharedBy();
-            if (!in_array($sharedBy, $accessList)) {
-                array_push($accessList, $sharedBy);
-            }
-        }
+        $accessList = $this->getAccessList($file);
 
         foreach ($recipientIds as $recipientId) {
-            if (!in_array($recipientId, $accessList)) {
+            $recipient = $this->userManager->get($recipientId);
+            if (!in_array($recipient, $accessList)) {
                 if (!$canShare) {
                     continue;
                 }
                 if ($shareMemberGroups) {
-                    $recipient = $this->userManager->get($recipientId);
                     $recipientGroups = $this->groupManager->getUserGroupIds($recipient);
                     if (empty(array_intersect($currentUserGroups, $recipientGroups))) {
                         continue;
@@ -1284,6 +1265,40 @@ class EditorController extends Controller {
         $instanceId = $this->config->GetSystemValue("instanceid", true);
         $userId = $instanceId . "_" . $userId;
         return $userId;
+    }
+
+    /**
+     * Return list users who has access to file
+     *
+     * @param File $file - file
+     *
+     * @return array
+     */
+    private function getAccessList($file) {
+        $result = [];
+
+        foreach ($this->shareManager->getSharesByPath($file) as $share) {
+            $accessList = [];
+            $shareWith = $share->getSharedWith();
+            if ($share->getShareType() === Share::SHARE_TYPE_GROUP) {
+                $group = $this->groupManager->get($shareWith);
+                $accessList = $group->getUsers();
+            } else if ($share->getShareType() === Share::SHARE_TYPE_USER) {
+                array_push($accessList, $this->userManager->get($shareWith));
+            }
+
+            foreach ($accessList as $accessUser) {
+                if (!in_array($accessUser, $result)) {
+                    array_push($result, $accessUser);
+                }
+            }
+        }
+
+        if (!in_array($file->getOwner(), $result)) {
+            array_push($result, $file->getOwner());
+        }
+
+        return $result;
     }
 
     /**

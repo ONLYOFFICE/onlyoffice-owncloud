@@ -72,10 +72,10 @@ class TemplateManager {
     public static function GetGlobalTemplates($mimetype = null) {
         $templateDir = self::GetGlobalTemplateDir();
 
-        if (!empty($mimetype)) {
+        $templatesList = $templateDir->getDirectoryListing();
+        if (!empty($mimetype)
+            && is_array($templatesList) && count($templatesList) > 0) {
             $templatesList = $templateDir->searchByMime($mimetype);
-        } else {
-            $templatesList = $templateDir->getDirectoryListing();
         }
 
         return $templatesList;

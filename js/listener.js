@@ -117,7 +117,8 @@
     }, false);
 
     window.addEventListener("popstate", function (event) {
-        if ($("#onlyofficeFrame").length) {
+        if ($("#onlyofficeFrame").length
+            && location.href.indexOf(OCA.Onlyoffice.AppName) == -1) {
             OCA.Onlyoffice.onRequestClose();
         }
     });

@@ -414,6 +414,7 @@ class EditorApiController extends OCSController {
         }
 
         $folderLink = null;
+        $publicPageLink = null;
 
         if (!empty($shareToken)) {
             $node = $share->getNode();
@@ -428,6 +429,11 @@ class EditorApiController extends OCSController {
                     ];
                     $folderLink = $this->urlGenerator->linkToRouteAbsolute("files_sharing.sharecontroller.showShare", $linkAttr);
                 }
+            } else if ($node instanceof File) {
+                $linkAttr = [
+                    "token" => $shareToken
+                ];
+                $publicPageLink = $this->urlGenerator->linkToRouteAbsolute("files_sharing.sharecontroller.showShare", $linkAttr);
             }
         } else if (!empty($userId)) {
             $userFolder = $this->root->getUserFolder($userId);
@@ -491,14 +497,14 @@ class EditorApiController extends OCSController {
             $params["_file_path"] = $userFolder->getRelativePath($file->getPath());
         }
 
-        if ($folderLink !== null
+        if (($folderLink !== null || $publicPageLink !== null)
             && $this->config->GetSystemValue($this->config->_customization_goback) !== false) {
             $params["editorConfig"]["customization"]["goback"] = [
-                "url"  => $folderLink
+                "url"  => $folderLink !== null ? $folderLink : $publicPageLink
             ];
 
             if (!$desktop) {
-                if ($this->config->GetSameTab()) {
+                if ($this->config->GetSameTab() || $publicPageLink !== null) {
                     $params["editorConfig"]["customization"]["goback"]["blank"] = false;
                     if ($inframe === true) {
                         $params["editorConfig"]["customization"]["goback"]["requestClose"] = true;

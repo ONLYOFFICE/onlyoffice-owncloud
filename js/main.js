@@ -451,16 +451,14 @@
                     || oc_appswebroots.files_pdfviewer && extension === "pdf"
                     || oc_appswebroots.files_texteditor && extension === "txt") {
 
-                    var button = document.createElement("a");
-                    button.href = editorUrl;
+                    var button = document.createElement("button");
                     button.className = "onlyoffice-public-open button";
-                    button.innerText = t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE")
-
-                    if (!OCA.Onlyoffice.setting.sameTab) {
-                        button.target = "_blank";
-                    }
+                    button.innerText = t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE");
 
                     $("#preview").prepend(button);
+                    button.addEventListener("click", function(event) {
+                        OCA.Onlyoffice.OpenEditor();
+                    });
                 } else {
                     var $iframe = $("<iframe id=\"onlyofficeFrame\" nonce=\"" + btoa(OC.requestToken) + "\" scrolling=\"no\" allowfullscreen src=\"" + editorUrl + "?inframe=true\" />");
                     $("#preview").append($iframe);

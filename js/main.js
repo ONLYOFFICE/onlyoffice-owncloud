@@ -445,10 +445,17 @@
                     return;
                 }
 
-                if (oc_appswebroots.richdocuments
-                    || oc_appswebroots.files_pdfviewer && extension === "pdf"
-                    || oc_appswebroots.files_texteditor && extension === "txt") {
+                var redirect = true;
+                var flag = /\?redirect=([\w-]{1})/.exec(location.search);
+                if (flag && flag.length > 0 && flag[1] === "0") {
+                    redirect = false;
+                }
 
+                var isThirdPartyApps = oc_appswebroots.richdocuments 
+                                        || oc_appswebroots.files_pdfviewer && extension === "pdf"
+                                        || oc_appswebroots.files_texteditor && extension === "txt";
+
+                if (!redirect || isThirdPartyApps) {
                     var button = document.createElement("button");
                     button.className = "onlyoffice-public-open button";
                     button.innerText = t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE");
@@ -457,16 +464,10 @@
                     button.addEventListener("click", function(event) {
                         OCA.Onlyoffice.OpenEditor();
                     });
-                } else {
-                    var redirect = true;
-                    var flag = /\?redirect=([\w-]{1})/.exec(location.search);
-                    if (flag && flag.length > 0 && flag[1] === "0") {
-                        redirect = false;
-                    }
+                }
 
-                    if (redirect) {
-                        OCA.Onlyoffice.OpenEditor(0, "", "", 0, null, redirect);
-                    }
+                if (redirect && !isThirdPartyApps) {
+                    OCA.Onlyoffice.OpenEditor(0, "", "", 0, null, redirect);
                 }
             };
 

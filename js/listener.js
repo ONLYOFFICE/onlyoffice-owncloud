@@ -76,6 +76,10 @@
         $('link[rel="icon"]').attr("href", favicon);
     };
 
+    OCA.Onlyoffice.onShowMessage = function (messageObj) {
+        OC.Notification.show(messageObj.message, messageObj.props);
+    }
+
     window.addEventListener("message", function (event) {
         if ($("#onlyofficeFrame")[0].contentWindow !== event.source
             || !event.data["method"]) {
@@ -113,6 +117,8 @@
             case "changeFavicon":
                 OCA.Onlyoffice.changeFavicon(event.data.param);
                 break;
+            case "onShowMessage":
+                OCA.Onlyoffice.onShowMessage(event.data.param);
         }
     }, false);
 

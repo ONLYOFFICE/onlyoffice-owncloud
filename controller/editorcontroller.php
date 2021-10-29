@@ -325,6 +325,15 @@ class EditorController extends Controller {
             return $result;
         }
 
+        if (!$this->allowEnumeration()) {
+            return $result;
+        }
+
+        $autocompleteMemberGroup = false;
+        if ($this->limitEnumerationToGroups()) {
+            $autocompleteMemberGroup = true;
+        }
+
         $currentUser = $this->userSession->getUser();
         $currentUserId = $currentUser->getUID();
 
@@ -341,7 +350,7 @@ class EditorController extends Controller {
         $all = false;
         $users = [];
         if ($canShare) {
-            if ($shareMemberGroups) {
+            if ($shareMemberGroups || $autocompleteMemberGroup) {
                 $currentUserGroups = $this->groupManager->getUserGroupIds($currentUser);
                 foreach ($currentUserGroups as $currentUserGroup) {
                     $group = $this->groupManager->get($currentUserGroup);
@@ -1299,6 +1308,28 @@ class EditorController extends Controller {
         }
 
         return $result;
+    }
+
+    /**
+     * Return allow autocomplete usernames
+     *
+     * @return bool
+     */
+    private function allowEnumeration() {
+        return \OC::$server->getConfig()->getAppValue("core", "shareapi_allow_share_dialog_user_enumeration", "yes") === "yes";
+    }
+
+    /**
+     * Return allow autocomplete usernames group member only
+     *
+     * @return bool
+     */
+    private function limitEnumerationToGroups() {
+        if ($this->allowEnumeration()) {
+            return \OC::$server->getConfig()->getAppValue("core", "shareapi_share_dialog_user_enumeration_group_members", "no") === "yes";
+        }
+
+        return false;
     }
 
     /**

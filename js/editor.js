@@ -27,11 +27,6 @@
         }, OCA.Onlyoffice);
 
     OCA.Onlyoffice.InitEditor = function () {
-        var displayError = function (error) {
-            OC.Notification.show(error, {
-                type: "error"
-            });
-        };
 
         OCA.Onlyoffice.fileId = $("#iframeEditor").data("id");
         var filePath = $("#iframeEditor").data("path");
@@ -46,12 +41,12 @@
         }
 
         if (!OCA.Onlyoffice.fileId && !OCA.Onlyoffice.shareToken) {
-            displayError(t(OCA.Onlyoffice.AppName, "FileId is empty"));
+            OCA.Onlyoffice.showMessage(t(OCA.Onlyoffice.AppName, "FileId is empty"), {type: "error"});
             return;
         }
 
         if (typeof DocsAPI === "undefined") {
-            displayError(t(OCA.Onlyoffice.AppName, "ONLYOFFICE cannot be reached. Please contact admin"));
+            OCA.Onlyoffice.showMessage(t(OCA.Onlyoffice.AppName, "ONLYOFFICE cannot be reached. Please contact admin"), {type: "error"});
             return;
         }
 
@@ -91,7 +86,7 @@
             success: function onSuccess(config) {
                 if (config) {
                     if (config.error != null) {
-                        displayError(config.error);
+                        OCA.Onlyoffice.showMessage(config.error, {type: "error"});
                         return;
                     }
 
@@ -288,14 +283,14 @@
             saveData,
             function onSuccess(response) {
                 if (response.error) {
-                    OC.Notification.show(response.error, {
+                    OCA.Onlyoffice.showMessage(response.error, {
                         type: "error",
                         timeout: 3
                     });
                     return;
                 }
 
-                OC.Notification.show(t(OCA.Onlyoffice.AppName, "File saved") + " (" + response.name + ")", {
+                OCA.Onlyoffice.showMessage(t(OCA.Onlyoffice.AppName, "File saved") + " (" + response.name + ")", {
                     timeout: 3
                 });
             });
@@ -335,7 +330,7 @@
             }),
             function onSuccess(response) {
                 if (response.error) {
-                    OC.Notification.show(response.error, {
+                    OCA.Onlyoffice.showMessage(response.error, {
                         type: "error",
                         timeout: 3
                     });
@@ -377,7 +372,7 @@
             }),
             function onSuccess(response) {
                 if (response.error) {
-                    OC.Notification.show(response.error, {
+                    OCA.Onlyoffice.showMessage(response.error, {
                         type: "error",
                         timeout: 3
                     });
@@ -431,7 +426,7 @@
             }),
             function onSuccess(response) {
                 if (response.error) {
-                    OC.Notification.show(response.error, {
+                    OCA.Onlyoffice.showMessage(response.error, {
                         type: "error",
                         timeout: 3
                     });
@@ -498,14 +493,14 @@
             },
             function onSuccess(response) {
                 if (response.error) {
-                    OC.Notification.show(response.error, {
+                    OCA.Onlyoffice.showMessage(response.error, {
                         type: "error",
                         timeout: 3
                     });
                     return;
                 }
 
-                OC.Notification.show(response.message, {
+                OCA.Onlyoffice.showMessage(response.message, {
                     timeout: 3
                 });
             });
@@ -527,6 +522,22 @@
             });
         }
     }
+
+    OCA.Onlyoffice.showMessage = function (message, props = null) {
+        if (OCA.Onlyoffice.inframe) {
+            window.parent.postMessage({
+                method: "onShowMessage",
+                param: {
+                    message: message,
+                    props: props
+                }
+            },
+            "*");
+            return;
+        }
+
+        OC.Notification.show(message, props);
+    };
 
     OCA.Onlyoffice.refreshHistory = function (response, version) {
         if (response.error) {

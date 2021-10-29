@@ -119,16 +119,6 @@
                         "onMakeActionLink": OCA.Onlyoffice.onMakeActionLink,
                     };
 
-                    if (!OCA.Onlyoffice.template) {
-                        config.events.onRequestHistory = OCA.Onlyoffice.onRequestHistory;
-                        config.events.onRequestHistoryData = OCA.Onlyoffice.onRequestHistoryData;
-                        config.events.onRequestRestore = OCA.Onlyoffice.onRequestRestore;
-
-                        if (!OCA.Onlyoffice.version) {
-                            config.events.onRequestHistoryClose = OCA.Onlyoffice.onRequestHistoryClose;
-                        }
-                    }
-
                     if (config.editorConfig.tenant) {
                         config.events.onAppReady = function () {
                             OCA.Onlyoffice.docEditor.showMessage(t(OCA.Onlyoffice.AppName, "You are using public demo ONLYOFFICE Docs server. Please do not store private sensitive data."));
@@ -147,6 +137,16 @@
 
                         if (!OCA.Onlyoffice.filePath) {
                             OCA.Onlyoffice.filePath = config._file_path;
+                        }
+
+                        if (!OCA.Onlyoffice.template) {
+                            config.events.onRequestHistory = OCA.Onlyoffice.onRequestHistory;
+                            config.events.onRequestHistoryData = OCA.Onlyoffice.onRequestHistoryData;
+                            config.events.onRequestRestore = OCA.Onlyoffice.onRequestRestore;
+
+                            if (!OCA.Onlyoffice.version) {
+                                config.events.onRequestHistoryClose = OCA.Onlyoffice.onRequestHistoryClose;
+                            }
                         }
                     }
 

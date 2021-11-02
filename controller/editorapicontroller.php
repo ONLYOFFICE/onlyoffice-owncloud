@@ -242,10 +242,6 @@ class EditorApiController extends OCSController {
      */
     public function config($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $desktop = false, $template = false, $anchor = null) {
 
-        if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
-            return new JSONResponse(["error" => $this->trans->t("Not permitted")]);
-        }
-
         $user = $this->userSession->getUser();
         $userId = null;
         if (!empty($user)) {
@@ -257,6 +253,14 @@ class EditorApiController extends OCSController {
         if (isset($error)) {
             $this->logger->error("Config: $fileId $error", ["app" => $this->appName]);
             return new JSONResponse(["error" => $error]);
+        }
+
+        $checkUserAllowGroups = $userId;
+        if (!empty($share)) {
+            $checkUserAllowGroups = $share->getSharedBy();
+        }
+        if (!$this->config->isUserAllowedToUse($checkUserAllowGroups)) {
+            return new JSONResponse(["error" => $this->trans->t("Not permitted")]);
         }
 
         $fileName = $file->getName();
@@ -394,6 +398,14 @@ class EditorApiController extends OCSController {
             $params["type"] = "mobile";
         }
 
+        if (!$template
+            && $file->isUpdateable()
+            && !$isPersistentLock
+            && (empty($shareToken) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE)) {
+
+            $params["document"]["permissions"]["changeHistory"] = true;
+        }
+
         if (!empty($userId)) {
             $params["editorConfig"]["user"] = [
                 "id" => $this->buildUserId($userId),
@@ -428,14 +440,14 @@ class EditorApiController extends OCSController {
                 $folderLink = $this->urlGenerator->linkToRouteAbsolute("files.view.index", $linkAttr);
             }
 
-            switch($params["documentType"]) {
-                case "text":
+            switch ($params["documentType"]) {
+                case "word":
                     $createName = $this->trans->t("Document") . ".docx";
                     break;
-                case "spreadsheet":
+                case "cell":
                     $createName = $this->trans->t("Spreadsheet") . ".xlsx";
                     break;
-                case "presentation":
+                case "slide":
                     $createName = $this->trans->t("Presentation") . ".pptx";
                     break;
             }

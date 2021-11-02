@@ -34,6 +34,7 @@ return [
        ["name" => "editor#url", "url" => "/ajax/url", "verb" => "GET"],
        ["name" => "editor#history", "url" => "/ajax/history", "verb" => "GET"],
        ["name" => "editor#version", "url" => "/ajax/version", "verb" => "GET"],
+       ["name" => "editor#restore", "url" => "/ajax/restore", "verb" => "PUT"],
        ["name" => "settings#save_address", "url" => "/ajax/settings/address", "verb" => "PUT"],
        ["name" => "settings#save_common", "url" => "/ajax/settings/common", "verb" => "PUT"],
        ["name" => "settings#get_settings", "url" => "/ajax/settings", "verb" => "GET"],
@@ -41,6 +42,7 @@ return [
        ["name" => "template#add_template", "url" => "/ajax/template", "verb" => "POST"],
        ["name" => "template#get_templates", "url" => "/ajax/template", "verb" => "GET"],
        ["name" => "template#delete_template", "url" => "/ajax/template", "verb" => "DELETE"],
+       ["name" => "webasset#get", "url" => "/js/onlyoffice.js", "verb" => "GET"],
     ],
     "ocs" => [
         ["name" => "federation#key", "url" => "/api/v1/key", "verb" => "POST"],

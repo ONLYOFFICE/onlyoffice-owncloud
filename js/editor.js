@@ -27,11 +27,6 @@
         }, OCA.Onlyoffice);
 
     OCA.Onlyoffice.InitEditor = function () {
-        var displayError = function (error) {
-            OC.Notification.show(error, {
-                type: "error"
-            });
-        };
 
         OCA.Onlyoffice.fileId = $("#iframeEditor").data("id");
         var filePath = $("#iframeEditor").data("path");
@@ -40,13 +35,18 @@
         OCA.Onlyoffice.template = $("#iframeEditor").data("template");
         OCA.Onlyoffice.inframe = !!$("#iframeEditor").data("inframe");
         OCA.Onlyoffice.anchor = $("#iframeEditor").attr("data-anchor");
+
+        if (OCA.Onlyoffice.inframe) {
+            OCA.Onlyoffice.faviconBase = $('link[rel="icon"]').attr("href");
+        }
+
         if (!OCA.Onlyoffice.fileId && !OCA.Onlyoffice.shareToken) {
-            displayError(t(OCA.Onlyoffice.AppName, "FileId is empty"));
+            OCA.Onlyoffice.showMessage(t(OCA.Onlyoffice.AppName, "FileId is empty"), {type: "error"});
             return;
         }
 
         if (typeof DocsAPI === "undefined") {
-            displayError(t(OCA.Onlyoffice.AppName, "ONLYOFFICE cannot be reached. Please contact admin"));
+            OCA.Onlyoffice.showMessage(t(OCA.Onlyoffice.AppName, "ONLYOFFICE cannot be reached. Please contact admin"), {type: "error"});
             return;
         }
 
@@ -86,7 +86,7 @@
             success: function onSuccess(config) {
                 if (config) {
                     if (config.error != null) {
-                        displayError(config.error);
+                        OCA.Onlyoffice.showMessage(config.error, {type: "error"});
                         return;
                     }
 
@@ -119,15 +119,6 @@
                         "onMakeActionLink": OCA.Onlyoffice.onMakeActionLink,
                     };
 
-                    if (!OCA.Onlyoffice.template) {
-                        config.events.onRequestHistory = OCA.Onlyoffice.onRequestHistory;
-                        config.events.onRequestHistoryData = OCA.Onlyoffice.onRequestHistoryData;
-
-                        if (!OCA.Onlyoffice.version) {
-                            config.events.onRequestHistoryClose = OCA.Onlyoffice.onRequestHistoryClose;
-                        }
-                    }
-
                     if (config.editorConfig.tenant) {
                         config.events.onAppReady = function () {
                             OCA.Onlyoffice.docEditor.showMessage(t(OCA.Onlyoffice.AppName, "You are using public demo ONLYOFFICE Docs server. Please do not store private sensitive data."));
@@ -147,6 +138,16 @@
                         if (!OCA.Onlyoffice.filePath) {
                             OCA.Onlyoffice.filePath = config._file_path;
                         }
+
+                        if (!OCA.Onlyoffice.template) {
+                            config.events.onRequestHistory = OCA.Onlyoffice.onRequestHistory;
+                            config.events.onRequestHistoryData = OCA.Onlyoffice.onRequestHistoryData;
+                            config.events.onRequestRestore = OCA.Onlyoffice.onRequestRestore;
+
+                            if (!OCA.Onlyoffice.version) {
+                                config.events.onRequestHistoryClose = OCA.Onlyoffice.onRequestHistoryClose;
+                            }
+                        }
                     }
 
                     if (OCA.Onlyoffice.inframe) {
@@ -164,6 +165,17 @@
                     if (config.type === "mobile" && $("#app > iframe").css("position") === "fixed") {
                         $("#app > iframe").css("height", "calc(100% - 45px)");
                     }
+
+                    var favicon = OC.filePath(OCA.Onlyoffice.AppName, "img", OCA.Onlyoffice.documentType + ".ico");
+                    if (OCA.Onlyoffice.inframe) {
+                        window.parent.postMessage({
+                            method: "changeFavicon",
+                            param: favicon
+                        },
+                        "*");
+                    } else {
+                        $('link[rel="icon"]').attr("href", favicon);
+                    }
                 }
             }
         });
@@ -176,33 +188,7 @@
                 shareToken: OCA.Onlyoffice.shareToken || "",
             }),
             function onSuccess(response) {
-                if (response.error) {
-                    var data = {error: response.error};
-                } else {
-                    var currentVersion = 0;
-                    $.each(response, function (i, fileVersion) {
-                        if (fileVersion.version >= currentVersion) {
-                            currentVersion = fileVersion.version;
-                        }
-
-                        fileVersion.created = moment(fileVersion.created * 1000).format("L LTS");
-                        if (fileVersion.changes) {
-                            $.each(fileVersion.changes, function (j, change) {
-                                change.created = moment(change.created + "+00:00").format("L LTS");
-                            });
-                        }
-                    });
-
-                    if (version) {
-                        currentVersion = Math.min(currentVersion, version);
-                    }
-
-                    data = {
-                        currentVersion: currentVersion,
-                        history: response,
-                    };
-                }
-                OCA.Onlyoffice.docEditor.refreshHistory(data);
+                OCA.Onlyoffice.refreshHistory(response, version);
         });
     };
 
@@ -224,6 +210,30 @@
                 }
                 OCA.Onlyoffice.docEditor.setHistoryData(response);
         });
+    };
+
+    OCA.Onlyoffice.onRequestRestore = function (event) {
+        var version = event.data.version;
+
+        $.ajax({
+            method: "PUT",
+            url: OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/restore"),
+            data: {
+                fileId: OCA.Onlyoffice.fileId || 0,
+                version: version,
+                shareToken: OCA.Onlyoffice.shareToken || "",
+            },
+            success: function onSuccess(response) {
+                OCA.Onlyoffice.refreshHistory(response, version);
+
+                if (OCA.Onlyoffice.inframe) {
+                    window.parent.postMessage({
+                        method: "onRefreshVersionsDialog"
+                    },
+                    "*");
+                }
+            }
+        })
     };
 
     OCA.Onlyoffice.onRequestHistoryClose = function () {
@@ -273,14 +283,14 @@
             saveData,
             function onSuccess(response) {
                 if (response.error) {
-                    OC.Notification.show(response.error, {
+                    OCA.Onlyoffice.showMessage(response.error, {
                         type: "error",
                         timeout: 3
                     });
                     return;
                 }
 
-                OC.Notification.show(t(OCA.Onlyoffice.AppName, "File saved") + " (" + response.name + ")", {
+                OCA.Onlyoffice.showMessage(t(OCA.Onlyoffice.AppName, "File saved") + " (" + response.name + ")", {
                     timeout: 3
                 });
             });
@@ -320,7 +330,7 @@
             }),
             function onSuccess(response) {
                 if (response.error) {
-                    OC.Notification.show(response.error, {
+                    OCA.Onlyoffice.showMessage(response.error, {
                         type: "error",
                         timeout: 3
                     });
@@ -362,7 +372,7 @@
             }),
             function onSuccess(response) {
                 if (response.error) {
-                    OC.Notification.show(response.error, {
+                    OCA.Onlyoffice.showMessage(response.error, {
                         type: "error",
                         timeout: 3
                     });
@@ -416,7 +426,7 @@
             }),
             function onSuccess(response) {
                 if (response.error) {
-                    OC.Notification.show(response.error, {
+                    OCA.Onlyoffice.showMessage(response.error, {
                         type: "error",
                         timeout: 3
                     });
@@ -456,7 +466,10 @@
     };
 
     OCA.Onlyoffice.onRequestUsers = function (event) {
-        $.get(OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/users"),
+        $.get(OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/users?fileId={fileId}", 
+        {
+            fileId: OCA.Onlyoffice.fileId || 0
+        }),
         function onSuccess(response) {
             OCA.Onlyoffice.docEditor.setUsers({
                 "users": response
@@ -480,14 +493,14 @@
             },
             function onSuccess(response) {
                 if (response.error) {
-                    OC.Notification.show(response.error, {
+                    OCA.Onlyoffice.showMessage(response.error, {
                         type: "error",
                         timeout: 3
                     });
                     return;
                 }
 
-                OC.Notification.show(response.message, {
+                OCA.Onlyoffice.showMessage(response.message, {
                     timeout: 3
                 });
             });
@@ -508,6 +521,52 @@
                 }
             });
         }
+    }
+
+    OCA.Onlyoffice.showMessage = function (message, props = null) {
+        if (OCA.Onlyoffice.inframe) {
+            window.parent.postMessage({
+                method: "onShowMessage",
+                param: {
+                    message: message,
+                    props: props
+                }
+            },
+            "*");
+            return;
+        }
+
+        OC.Notification.show(message, props);
+    };
+
+    OCA.Onlyoffice.refreshHistory = function (response, version) {
+        if (response.error) {
+            var data = {error: response.error};
+        } else {
+            var currentVersion = 0;
+            $.each(response, function (i, fileVersion) {
+                if (fileVersion.version >= currentVersion) {
+                    currentVersion = fileVersion.version;
+                }
+
+                fileVersion.created = moment(fileVersion.created * 1000).format("L LTS");
+                if (fileVersion.changes) {
+                    $.each(fileVersion.changes, function (j, change) {
+                        change.created = moment(change.created + "+00:00").format("L LTS");
+                    });
+                }
+            });
+
+            if (version) {
+                currentVersion = Math.min(currentVersion, version);
+            }
+
+            data = {
+                currentVersion: currentVersion,
+                history: response,
+            };
+        }
+        OCA.Onlyoffice.docEditor.refreshHistory(data);
     }
 
     $(document).ready(OCA.Onlyoffice.InitEditor);

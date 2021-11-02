@@ -32,6 +32,7 @@ use OCA\Onlyoffice\Controller\EditorController;
 use OCA\Onlyoffice\Controller\SettingsApiController;
 use OCA\Onlyoffice\Controller\SettingsController;
 use OCA\Onlyoffice\Controller\TemplateController;
+use OCA\Onlyoffice\Controller\WebAssetController;
 use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\Hookhandler;
 use OCA\Onlyoffice\Hooks;
@@ -170,13 +171,15 @@ class Application extends App {
                 $c->query("Request"),
                 $c->query("RootStorage"),
                 $c->query("UserSession"),
+                $c->query("ServerContainer")->getUserManager(),
                 $c->query("URLGenerator"),
                 $c->query("L10N"),
                 $c->query("Logger"),
                 $this->appConfig,
                 $this->crypt,
                 $c->query("IManager"),
-                $c->query("Session")
+                $c->query("Session"),
+                $c->query("ServerContainer")->getGroupManager()
             );
         });
 
@@ -217,6 +220,14 @@ class Application extends App {
                 $c->query("AppName"),
                 $c->query("Request"),
                 $c->query("L10N"),
+                $c->query("Logger")
+            );
+        });
+
+        $container->registerService("WebAssetController", function ($c) {
+            return new WebAssetController(
+                $c->query("AppName"),
+                $c->query("Request"),
                 $c->query("Logger")
             );
         });

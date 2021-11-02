@@ -36,6 +36,8 @@ use OCP\ISession;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IUserSession;
+use OCP\IUserManager;
+use OCP\IGroupManager;
 use OCP\Share\IManager;
 use OCP\Share;
 
@@ -60,6 +62,13 @@ class EditorController extends Controller {
      * @var IUserSession
      */
     private $userSession;
+
+    /**
+     * Current user manager
+     *
+     * @var IUserManager
+     */
+    private $userManager;
 
     /**
      * Root folder
@@ -125,6 +134,13 @@ class EditorController extends Controller {
     private $shareManager;
 
     /**
+     * Group manager
+     *
+     * @var IGroupManager
+     */
+    private $groupManager;
+
+    /**
      * Mobile regex from https://github.com/ONLYOFFICE/CommunityServer/blob/v9.1.1/web/studio/ASC.Web.Studio/web.appsettings.config#L35
      */
     const USER_AGENT_MOBILE = "/android|avantgo|playbook|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od|ad)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\\/|plucker|pocket|psp|symbian|treo|up\\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i";
@@ -134,29 +150,34 @@ class EditorController extends Controller {
      * @param IRequest $request - request object
      * @param IRootFolder $root - root folder
      * @param IUserSession $userSession - current user session
+     * @param IUserManager $userManager - current user manager
      * @param IURLGenerator $urlGenerator - url generator service
      * @param IL10N $trans - l10n service
      * @param ILogger $logger - logger
      * @param AppConfig $config - application configuration
      * @param Crypt $crypt - hash generator
      * @param IManager $shareManager - Share manager
-     * @param ISession $ISession - Session
+     * @param ISession $session - Session
+     * @param IGroupManager $groupManager - Group manager
      */
     public function __construct($AppName,
                                     IRequest $request,
                                     IRootFolder $root,
                                     IUserSession $userSession,
+                                    IUserManager $userManager,
                                     IURLGenerator $urlGenerator,
                                     IL10N $trans,
                                     ILogger $logger,
                                     AppConfig $config,
                                     Crypt $crypt,
                                     IManager $shareManager,
-                                    ISession $session
+                                    ISession $session,
+                                    IGroupManager $groupManager
                                     ) {
         parent::__construct($AppName, $request);
 
         $this->userSession = $userSession;
+        $this->userManager = $userManager;
         $this->root = $root;
         $this->urlGenerator = $urlGenerator;
         $this->trans = $trans;
@@ -164,6 +185,7 @@ class EditorController extends Controller {
         $this->config = $config;
         $this->crypt = $crypt;
         $this->shareManager = $shareManager;
+        $this->groupManager = $groupManager;
 
         $this->versionManager = new VersionManager($AppName, $root);
 
@@ -288,12 +310,14 @@ class EditorController extends Controller {
     /**
      * Get users
      *
+     * @param $fileId - file identifier
+     *
      * @return array
      *
      * @NoAdminRequired
      * @NoCSRFRequired
      */
-    public function users() {
+    public function users($fileId) {
         $this->logger->debug("Search users", ["app" => $this->appName]);
         $result = [];
 
@@ -301,12 +325,59 @@ class EditorController extends Controller {
             return $result;
         }
 
-        $userId = $this->userSession->getUser()->getUID();
-        $users = \OC::$server->getUserManager()->search("");
+        if (!$this->allowEnumeration()) {
+            return $result;
+        }
+
+        $autocompleteMemberGroup = false;
+        if ($this->limitEnumerationToGroups()) {
+            $autocompleteMemberGroup = true;
+        }
+
+        $currentUser = $this->userSession->getUser();
+        $currentUserId = $currentUser->getUID();
+
+        list ($file, $error, $share) = $this->getFile($currentUserId, $fileId);
+        if (isset($error)) {
+            $this->logger->error("Users: $fileId $error", ["app" => $this->appName]);
+            return $result;
+        }
+
+        $canShare = (($file->getPermissions() & Constants::PERMISSION_SHARE) === Constants::PERMISSION_SHARE);
+
+        $shareMemberGroups = $this->shareManager->shareWithGroupMembersOnly();
+
+        $all = false;
+        $users = [];
+        if ($canShare) {
+            if ($shareMemberGroups || $autocompleteMemberGroup) {
+                $currentUserGroups = $this->groupManager->getUserGroupIds($currentUser);
+                foreach ($currentUserGroups as $currentUserGroup) {
+                    $group = $this->groupManager->get($currentUserGroup);
+                    foreach ($group->getUsers() as $user) {
+                        if (!in_array($user, $users)) {
+                            array_push($users, $user);
+                        }
+                    }
+                }
+            } else {
+                $users = $this->userManager->search("");
+                $all = true;
+            }
+        }
+
+        if (!$all) {
+            $accessList = $this->getAccessList($file);
+            foreach ($accessList as $accessUser) {
+                if (!in_array($accessUser, $users)) {
+                    array_push($users, $accessUser);
+                }
+            }
+        }
+
         foreach ($users as $user) {
             $email = $user->getEMailAddress();
-            if ($user->getUID() != $userId
-                && !empty($email)) {
+            if ($user->getUID() != $currentUserId && !empty($email)) {
                 array_push($result, [
                     "email" => $email,
                     "name" => $user->getDisplayName()
@@ -343,7 +414,7 @@ class EditorController extends Controller {
 
         $recipientIds = [];
         foreach ($emails as $email) {
-            $recipients = \OC::$server->getUserManager()->getByEmail($email);
+            $recipients = $this->userManager->getByEmail($email);
             foreach ($recipients as $recipient) {
                 $recipientId = $recipient->getUID(); 
                 if (!in_array($recipientId, $recipientIds)) {
@@ -376,17 +447,27 @@ class EditorController extends Controller {
                 "anchor" => $anchor
             ]);
 
+        $shareMemberGroups = $this->shareManager->shareWithGroupMembersOnly();
         $canShare = ($file->getPermissions() & Constants::PERMISSION_SHARE) === Constants::PERMISSION_SHARE;
 
-        $accessList = [];
-        foreach ($this->shareManager->getSharesByPath($file) as $share) {
-            array_push($accessList, $share->getSharedWith());
+        $currentUserGroups = [];
+        if ($shareMemberGroups) {
+            $currentUserGroups = $this->groupManager->getUserGroupIds($user);
         }
 
+        $accessList = $this->getAccessList($file);
+
         foreach ($recipientIds as $recipientId) {
-            if (!in_array($recipientId, $accessList)) {
+            $recipient = $this->userManager->get($recipientId);
+            if (!in_array($recipient, $accessList)) {
                 if (!$canShare) {
                     continue;
+                }
+                if ($shareMemberGroups) {
+                    $recipientGroups = $this->groupManager->getUserGroupIds($recipient);
+                    if (empty(array_intersect($currentUserGroups, $recipientGroups))) {
+                        continue;
+                    }
                 }
 
                 $share = $this->shareManager->newShare();
@@ -461,10 +542,10 @@ class EditorController extends Controller {
 
         $internalExtension = "docx";
         switch ($format["type"]) {
-            case "spreadsheet":
+            case "cell":
                 $internalExtension = "xlsx";
                 break;
-            case "presentation":
+            case "slide":
                 $internalExtension = "pptx";
                 break;
         }
@@ -585,7 +666,6 @@ class EditorController extends Controller {
      * @return array
      *
      * @NoAdminRequired
-     * @PublicPage
      */
     public function history($fileId, $shareToken = null) {
         $this->logger->debug("Request history for: $fileId", ["app" => $this->appName]);
@@ -706,7 +786,6 @@ class EditorController extends Controller {
      * @return array
      *
      * @NoAdminRequired
-     * @PublicPage
      */
     public function version($fileId, $version, $shareToken = null) {
         $this->logger->debug("Request version for: $fileId ($version)", ["app" => $this->appName]);
@@ -794,6 +873,61 @@ class EditorController extends Controller {
         }
 
         return $result;
+    }
+
+    /**
+     * Restore file version
+     *
+     * @param integer $fileId - file identifier
+     * @param integer $version - file version
+     * @param string $shareToken - access token
+     *
+     * @return array
+     *
+     * @NoAdminRequired
+     * @PublicPage
+     */
+    public function restore($fileId, $version, $shareToken = null) {
+        $this->logger->debug("Request restore version for: $fileId ($version)", ["app" => $this->appName]);
+
+        if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
+            return ["error" => $this->trans->t("Not permitted")];
+        }
+
+        $version = empty($version) ? null : $version;
+
+        $user = $this->userSession->getUser();
+        $userId = null;
+        if (!empty($user)) {
+            $userId = $user->getUID();
+        }
+
+        list ($file, $error, $share) = empty($shareToken) ? $this->getFile($userId, $fileId) : $this->fileUtility->getFileByToken($fileId, $shareToken);
+
+        if (isset($error)) {
+            $this->logger->error("Restore: $fileId $error", ["app" => $this->appName]);
+            return ["error" => $error];
+        }
+
+        if ($fileId === 0) {
+            $fileId = $file->getId();
+        }
+
+        $owner = null;
+        $versions = array();
+        if ($this->versionManager->available) {
+            $owner = $file->getFileInfo()->getOwner();
+            if ($owner !== null) {
+                $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
+            }
+
+            if (count($versions) >= $version) {
+                $fileVersion = array_values($versions)[$version - 1];
+                $this->versionManager->rollback($fileVersion);
+            }
+        }
+
+        return $this->history($fileId, $shareToken);
     }
 
     /**
@@ -962,7 +1096,15 @@ class EditorController extends Controller {
             return new RedirectResponse($redirectUrl);
         }
 
-        if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
+        $shareBy = null;
+        if (!empty($shareToken) && !$this->userSession->isLoggedIn()) {
+            list ($share, $error) = $this->fileUtility->getShare($shareToken);
+            if (!empty($share)) {
+                $shareBy = $share->getSharedBy();
+            }
+        }
+
+        if (!$this->config->isUserAllowedToUse($shareBy)) {
             return $this->renderError($this->trans->t("Not permitted"));
         }
 
@@ -1130,6 +1272,62 @@ class EditorController extends Controller {
         $instanceId = $this->config->GetSystemValue("instanceid", true);
         $userId = $instanceId . "_" . $userId;
         return $userId;
+    }
+
+    /**
+     * Return list users who has access to file
+     *
+     * @param File $file - file
+     *
+     * @return array
+     */
+    private function getAccessList($file) {
+        $result = [];
+
+        foreach ($this->shareManager->getSharesByPath($file) as $share) {
+            $accessList = [];
+            $shareWith = $share->getSharedWith();
+            if ($share->getShareType() === Share::SHARE_TYPE_GROUP) {
+                $group = $this->groupManager->get($shareWith);
+                $accessList = $group->getUsers();
+            } else if ($share->getShareType() === Share::SHARE_TYPE_USER) {
+                array_push($accessList, $this->userManager->get($shareWith));
+            }
+
+            foreach ($accessList as $accessUser) {
+                if (!in_array($accessUser, $result)) {
+                    array_push($result, $accessUser);
+                }
+            }
+        }
+
+        if (!in_array($file->getOwner(), $result)) {
+            array_push($result, $file->getOwner());
+        }
+
+        return $result;
+    }
+
+    /**
+     * Return allow autocomplete usernames
+     *
+     * @return bool
+     */
+    private function allowEnumeration() {
+        return \OC::$server->getConfig()->getAppValue("core", "shareapi_allow_share_dialog_user_enumeration", "yes") === "yes";
+    }
+
+    /**
+     * Return allow autocomplete usernames group member only
+     *
+     * @return bool
+     */
+    private function limitEnumerationToGroups() {
+        if ($this->allowEnumeration()) {
+            return \OC::$server->getConfig()->getAppValue("core", "shareapi_share_dialog_user_enumeration_group_members", "no") === "yes";
+        }
+
+        return false;
     }
 
     /**

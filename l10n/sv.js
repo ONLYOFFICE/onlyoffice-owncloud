@@ -94,10 +94,10 @@ OC.L10N.register(
     "File has been converted. Its content might look different.": "Filen har konverterats. Dess innehåll kan se annorlunda ut.",
     "Download as": "Ladda ned som",
     "Download": "Ladda ned",
-    "Convert into": "Konvertera till",
     "Origin format": "Ursprungsformat",
     "Failed to send notification": "Det gick inte att skicka aviseringen",
     "Notification sent successfully": "Aviseringen har skickats",
-    "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s har nämnt i %2\$s: \"%3\$s\"."
+    "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s har nämnt i %2\$s: \"%3\$s\".",
+    "Choose a format to convert {fileName}": "Välj det filformat som {fileName} ska konverteras till."
 },
 "nplurals=2; plural=(n != 1);");

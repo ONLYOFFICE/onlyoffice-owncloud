@@ -1,5 +1,6 @@
 # Change Log
 
+## 7.2.1
 ## Added
 - set favicon on editor page
 - versions restore from editor

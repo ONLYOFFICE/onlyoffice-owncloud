@@ -25,6 +25,9 @@
 .icon-onlyoffice-new-pptx {
     background-image: url("../img/new-pptx.svg");
 }
+.icon-onlyoffice-new-docxf {
+    background-image: url("../img/new-docxf.svg");
+}
 .icon-onlyoffice-open,
 .icon-onlyoffice-convert,
 .icon-onlyoffice-download {

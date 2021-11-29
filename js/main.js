@@ -384,6 +384,17 @@
                     }
                 }
             });
+
+            menu.addMenuEntry({
+                id: "onlyofficeDocxf",
+                displayName: t(OCA.Onlyoffice.AppName, "Master Form"),
+                templateName: t(OCA.Onlyoffice.AppName, "Master Form"),
+                iconClass: "icon-onlyoffice-new-docxf",
+                fileType: "docxf",
+                actionHandler: function (name) {
+                    OCA.Onlyoffice.CreateFile(name + ".docxf", fileList);
+                }
+            });
         }
     };
 

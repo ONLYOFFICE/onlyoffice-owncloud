@@ -28,7 +28,7 @@
     OCA.Onlyoffice.mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini|Macintosh/i.test(navigator.userAgent)
                             && navigator.maxTouchPoints && navigator.maxTouchPoints > 1;
 
-    OCA.Onlyoffice.CreateFile = function (name, fileList, templateId) {
+    OCA.Onlyoffice.CreateFile = function (name, fileList, templateId, targetPath) {
         var dir = fileList.getCurrentDirectory();
 
         if (!OCA.Onlyoffice.setting.sameTab || OCA.Onlyoffice.mobile || OCA.Onlyoffice.Desktop) {
@@ -43,6 +43,10 @@
 
         if (templateId) {
             createData.templateId = templateId;
+        }
+
+        if (targetPath) {
+            createData.targetPath = targetPath;
         }
 
         if ($("#isPublic").val()) {
@@ -266,6 +270,20 @@
             });
     }
 
+    OCA.Onlyoffice.OpenFormPicker = function (name, fileList) {
+        var filterMimes = [
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        ];
+
+        OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Create new master form"),
+            function (filePath) {
+                OCA.Onlyoffice.CreateFile(name, fileList, 0, filePath);
+            },
+            false,
+            filterMimes,
+            true);
+    }
+
     OCA.Onlyoffice.GetSettings = function (callbackSettings) {
         if (OCA.Onlyoffice.setting.formats) {
 
@@ -393,6 +411,17 @@
                 fileType: "docxf",
                 actionHandler: function (name) {
                     OCA.Onlyoffice.CreateFile(name + ".docxf", fileList);
+                }
+            });
+
+            menu.addMenuEntry({
+                id: "onlyofficeDocxfExist",
+                displayName: t(OCA.Onlyoffice.AppName, "Master Form by existing file"),
+                templateName: t(OCA.Onlyoffice.AppName, "Master Form by existing file"),
+                iconClass: "icon-onlyoffice-new-docxf",
+                fileType: "docxf",
+                actionHandler: function (name) {
+                    OCA.Onlyoffice.OpenFormPicker(name + ".docxf", fileList);
                 }
             });
         }

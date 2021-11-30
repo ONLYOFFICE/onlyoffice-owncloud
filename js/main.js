@@ -310,14 +310,16 @@
                 if (!config.mime) {
                     return true;
                 }
-                OCA.Files.fileActions.registerAction({
-                    name: "onlyofficeOpen",
-                    displayName: t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE"),
-                    mime: config.mime,
-                    permissions: OC.PERMISSION_READ,
-                    iconClass: "icon-onlyoffice-open",
-                    actionHandler: OCA.Onlyoffice.FileClick
-                });
+                if (!config.fillForms) {
+                    OCA.Files.fileActions.registerAction({
+                        name: "onlyofficeOpen",
+                        displayName: t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE"),
+                        mime: config.mime,
+                        permissions: OC.PERMISSION_READ,
+                        iconClass: "icon-onlyoffice-open",
+                        actionHandler: OCA.Onlyoffice.FileClick
+                    });
+                }
 
                 if (config.def) {
                     OCA.Files.fileActions.setDefault(config.mime, "onlyofficeOpen");
@@ -332,6 +334,21 @@
                         iconClass: "icon-onlyoffice-convert",
                         actionHandler: OCA.Onlyoffice.FileConvertClick
                     });
+                }
+
+                if (config.fillForms) {
+                    OCA.Files.fileActions.registerAction({
+                        name: "onlyofficeFill",
+                        displayName: t(OCA.Onlyoffice.AppName, "Fill in form in ONLYOFFICE"),
+                        mime: config.mime,
+                        permissions: OC.PERMISSION_READ,
+                        iconClass: "icon-onlyoffice-fill",
+                        actionHandler: OCA.Onlyoffice.FileClick
+                    });
+                }
+
+                if (config.fillForms) {
+                    OCA.Files.fileActions.setDefault(config.mime, "onlyofficeFill");
                 }
 
                 if (config.saveas && !$("#isPublic").val()) {

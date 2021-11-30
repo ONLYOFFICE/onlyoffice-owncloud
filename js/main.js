@@ -28,10 +28,10 @@
     OCA.Onlyoffice.mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini|Macintosh/i.test(navigator.userAgent)
                             && navigator.maxTouchPoints && navigator.maxTouchPoints > 1;
 
-    OCA.Onlyoffice.CreateFile = function (name, fileList, templateId, targetPath) {
+    OCA.Onlyoffice.CreateFile = function (name, fileList, templateId, targetPath, open = true) {
         var dir = fileList.getCurrentDirectory();
 
-        if (!OCA.Onlyoffice.setting.sameTab || OCA.Onlyoffice.mobile || OCA.Onlyoffice.Desktop) {
+        if ((!OCA.Onlyoffice.setting.sameTab || OCA.Onlyoffice.mobile || OCA.Onlyoffice.Desktop) && open) {
             $loaderUrl = OCA.Onlyoffice.Desktop ? "" : OC.filePath(OCA.Onlyoffice.AppName, "templates", "loader.html");
             var winEditor = window.open($loaderUrl);
         }
@@ -68,7 +68,9 @@
                 }
 
                 fileList.add(response, { animate: true });
-                OCA.Onlyoffice.OpenEditor(response.id, dir, response.name, 0, winEditor);
+                if (open) {
+                    OCA.Onlyoffice.OpenEditor(response.id, dir, response.name, 0, winEditor);
+                }
 
                 OCA.Onlyoffice.context = { fileList: fileList };
                 OCA.Onlyoffice.context.fileName = response.name;
@@ -284,6 +286,16 @@
             true);
     }
 
+    OCA.Onlyoffice.CreateFormClick = function (fileName, context) {
+        var fileList = context.fileList;
+        var name = fileName.replace(/\.[^.]+$/, ".oform");
+
+        var attr = context.fileInfoModel.attributes;
+        var targetPath = attr.path + "/" + attr.name;
+
+        OCA.Onlyoffice.CreateFile(name, fileList, 0, targetPath, false);
+    };
+
     OCA.Onlyoffice.GetSettings = function (callbackSettings) {
         if (OCA.Onlyoffice.setting.formats) {
 
@@ -349,6 +361,17 @@
 
                 if (config.fillForms) {
                     OCA.Files.fileActions.setDefault(config.mime, "onlyofficeFill");
+                }
+
+                if (config.createForm) {
+                    OCA.Files.fileActions.registerAction({
+                        name: "onlyofficeCreateForm",
+                        displayName: t(OCA.Onlyoffice.AppName, "Create form"),
+                        mime: config.mime,
+                        permissions: ($("#isPublic").val() ? OC.PERMISSION_UPDATE : OC.PERMISSION_READ),
+                        iconClass: "icon-onlyoffice-create",
+                        actionHandler: OCA.Onlyoffice.CreateFormClick
+                    });
                 }
 
                 if (config.saveas && !$("#isPublic").val()) {

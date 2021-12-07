@@ -277,7 +277,7 @@
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         ];
 
-        OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Create new master form"),
+        OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Create new Form template"),
             function (filePath) {
                 OCA.Onlyoffice.CreateFile(name, fileList, 0, filePath);
             },
@@ -445,8 +445,8 @@
 
             menu.addMenuEntry({
                 id: "onlyofficeDocxf",
-                displayName: t(OCA.Onlyoffice.AppName, "Master Form"),
-                templateName: t(OCA.Onlyoffice.AppName, "Master Form"),
+                displayName: t(OCA.Onlyoffice.AppName, "Form template"),
+                templateName: t(OCA.Onlyoffice.AppName, "Form template"),
                 iconClass: "icon-onlyoffice-new-docxf",
                 fileType: "docxf",
                 actionHandler: function (name) {
@@ -456,8 +456,8 @@
 
             menu.addMenuEntry({
                 id: "onlyofficeDocxfExist",
-                displayName: t(OCA.Onlyoffice.AppName, "Master Form by existing file"),
-                templateName: t(OCA.Onlyoffice.AppName, "Master Form by existing file"),
+                displayName: t(OCA.Onlyoffice.AppName, "Form template from existing text file"),
+                templateName: t(OCA.Onlyoffice.AppName, "Form template from existing text file"),
                 iconClass: "icon-onlyoffice-new-docxf",
                 fileType: "docxf",
                 actionHandler: function (name) {

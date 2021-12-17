@@ -322,16 +322,15 @@
                 if (!config.mime) {
                     return true;
                 }
-                if (!config.fillForms) {
-                    OCA.Files.fileActions.registerAction({
-                        name: "onlyofficeOpen",
-                        displayName: t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE"),
-                        mime: config.mime,
-                        permissions: OC.PERMISSION_READ,
-                        iconClass: "icon-onlyoffice-open",
-                        actionHandler: OCA.Onlyoffice.FileClick
-                    });
-                }
+
+                OCA.Files.fileActions.registerAction({
+                    name: "onlyofficeOpen",
+                    displayName: t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE"),
+                    mime: config.mime,
+                    permissions: OC.PERMISSION_READ,
+                    iconClass: "icon-onlyoffice-open",
+                    actionHandler: OCA.Onlyoffice.FileClick
+                });
 
                 if (config.def) {
                     OCA.Files.fileActions.setDefault(config.mime, "onlyofficeOpen");
@@ -353,7 +352,7 @@
                         name: "onlyofficeFill",
                         displayName: t(OCA.Onlyoffice.AppName, "Fill in form in ONLYOFFICE"),
                         mime: config.mime,
-                        permissions: OC.PERMISSION_READ,
+                        permissions: OC.PERMISSION_UPDATE,
                         iconClass: "icon-onlyoffice-fill",
                         actionHandler: OCA.Onlyoffice.FileClick
                     });
@@ -364,11 +363,19 @@
                 }
 
                 if (config.createForm) {
+                    var permission = OC.PERMISSION_READ;
+                    if ($("#isPublic").val()) {
+                        permission = OC.PERMISSION_UPDATE;
+                        if (parseInt($("#sharePermission").val()) === (OC.PERMISSION_READ | OC.PERMISSION_CREATE)) {
+                            permission = OC.PERMISSION_READ;
+                        }
+                    }
+
                     OCA.Files.fileActions.registerAction({
                         name: "onlyofficeCreateForm",
                         displayName: t(OCA.Onlyoffice.AppName, "Create form"),
                         mime: config.mime,
-                        permissions: ($("#isPublic").val() ? OC.PERMISSION_UPDATE : OC.PERMISSION_READ),
+                        permissions: permission,
                         iconClass: "icon-onlyoffice-create",
                         actionHandler: OCA.Onlyoffice.CreateFormClick
                     });

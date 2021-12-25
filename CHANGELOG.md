@@ -1,5 +1,9 @@
 # Change Log
 
+## 7.2.3
+## Changed
+- opening editor in new tab for ownCloud Web
+
 ## 7.2.1
 ## Added
 - set favicon on editor page

@@ -1,5 +1,11 @@
 # Change Log
 
+## Added
+- support docxf and oform formats
+- create blank docxf from creation menu
+- create docxf from docx from creation menu
+- create oform from docxf from document manager
+
 ## 7.2.3
 ## Changed
 - opening editor in new tab for ownCloud Web

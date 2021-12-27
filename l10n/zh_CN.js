@@ -98,6 +98,12 @@ OC.L10N.register(
     "Failed to send notification": "发送通知失败",
     "Notification sent successfully": "通知发送成功",
     "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s 提到 %2\$s: \"%3\$s\".",
-    "Choose a format to convert {fileName}": "选择要转换{fileName}的格式"
+    "Choose a format to convert {fileName}": "选择要转换{fileName}的格式",
+    "Form template": "表单模板",
+    "Form template from existing text file": "用现有的文本文件创建模板",
+    "Create form": "创建表单",
+    "Fill in form in ONLYOFFICE": "在ONLYOFFICE上填写表单",
+    "Create new Form template": "创建新的表单模板",
+    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "请将ONLYOFFICE Docs更新到7.0版本，以便在线编辑可填写的表单"
 },
 "nplurals=2; plural=(n != 1);");

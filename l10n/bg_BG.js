@@ -106,4 +106,4 @@ OC.L10N.register(
     "Create new Form template": "Създайте нов шаблон на формуляр",
     "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Молим да актуализирате ONLYOFFICE Docs към версия 7.0, за да работи с онлайн формуляри за попълване"
 },
-"nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);");
+"nplurals=2; plural=(n != 1);");

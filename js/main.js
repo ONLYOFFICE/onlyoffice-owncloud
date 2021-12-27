@@ -28,10 +28,10 @@
     OCA.Onlyoffice.mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini|Macintosh/i.test(navigator.userAgent)
                             && navigator.maxTouchPoints && navigator.maxTouchPoints > 1;
 
-    OCA.Onlyoffice.CreateFile = function (name, fileList, templateId) {
+    OCA.Onlyoffice.CreateFile = function (name, fileList, templateId, targetPath, open = true) {
         var dir = fileList.getCurrentDirectory();
 
-        if (!OCA.Onlyoffice.setting.sameTab || OCA.Onlyoffice.mobile || OCA.Onlyoffice.Desktop) {
+        if ((!OCA.Onlyoffice.setting.sameTab || OCA.Onlyoffice.mobile || OCA.Onlyoffice.Desktop) && open) {
             $loaderUrl = OCA.Onlyoffice.Desktop ? "" : OC.filePath(OCA.Onlyoffice.AppName, "templates", "loader.html");
             var winEditor = window.open($loaderUrl);
         }
@@ -43,6 +43,10 @@
 
         if (templateId) {
             createData.templateId = templateId;
+        }
+
+        if (targetPath) {
+            createData.targetPath = targetPath;
         }
 
         if ($("#isPublic").val()) {
@@ -64,7 +68,9 @@
                 }
 
                 fileList.add(response, { animate: true });
-                OCA.Onlyoffice.OpenEditor(response.id, dir, response.name, 0, winEditor);
+                if (open) {
+                    OCA.Onlyoffice.OpenEditor(response.id, dir, response.name, 0, winEditor);
+                }
 
                 OCA.Onlyoffice.context = { fileList: fileList };
                 OCA.Onlyoffice.context.fileName = response.name;
@@ -266,6 +272,30 @@
             });
     }
 
+    OCA.Onlyoffice.OpenFormPicker = function (name, fileList) {
+        var filterMimes = [
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        ];
+
+        OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Create new Form template"),
+            function (filePath) {
+                OCA.Onlyoffice.CreateFile(name, fileList, 0, filePath);
+            },
+            false,
+            filterMimes,
+            true);
+    }
+
+    OCA.Onlyoffice.CreateFormClick = function (fileName, context) {
+        var fileList = context.fileList;
+        var name = fileName.replace(/\.[^.]+$/, ".oform");
+
+        var attr = context.fileInfoModel.attributes;
+        var targetPath = attr.path + "/" + attr.name;
+
+        OCA.Onlyoffice.CreateFile(name, fileList, 0, targetPath, false);
+    };
+
     OCA.Onlyoffice.GetSettings = function (callbackSettings) {
         if (OCA.Onlyoffice.setting.formats) {
 
@@ -292,6 +322,7 @@
                 if (!config.mime) {
                     return true;
                 }
+
                 OCA.Files.fileActions.registerAction({
                     name: "onlyofficeOpen",
                     displayName: t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE"),
@@ -313,6 +344,40 @@
                         permissions: ($("#isPublic").val() ? OC.PERMISSION_UPDATE : OC.PERMISSION_READ),
                         iconClass: "icon-onlyoffice-convert",
                         actionHandler: OCA.Onlyoffice.FileConvertClick
+                    });
+                }
+
+                if (config.fillForms) {
+                    OCA.Files.fileActions.registerAction({
+                        name: "onlyofficeFill",
+                        displayName: t(OCA.Onlyoffice.AppName, "Fill in form in ONLYOFFICE"),
+                        mime: config.mime,
+                        permissions: OC.PERMISSION_UPDATE,
+                        iconClass: "icon-onlyoffice-fill",
+                        actionHandler: OCA.Onlyoffice.FileClick
+                    });
+                }
+
+                if (config.fillForms) {
+                    OCA.Files.fileActions.setDefault(config.mime, "onlyofficeFill");
+                }
+
+                if (config.createForm) {
+                    var permission = OC.PERMISSION_READ;
+                    if ($("#isPublic").val()) {
+                        permission = OC.PERMISSION_UPDATE;
+                        if (parseInt($("#sharePermission").val()) === (OC.PERMISSION_READ | OC.PERMISSION_CREATE)) {
+                            permission = OC.PERMISSION_READ;
+                        }
+                    }
+
+                    OCA.Files.fileActions.registerAction({
+                        name: "onlyofficeCreateForm",
+                        displayName: t(OCA.Onlyoffice.AppName, "Create form"),
+                        mime: config.mime,
+                        permissions: permission,
+                        iconClass: "icon-onlyoffice-create",
+                        actionHandler: OCA.Onlyoffice.CreateFormClick
                     });
                 }
 
@@ -382,6 +447,28 @@
                     } else {
                         OCA.Onlyoffice.CreateFile(name + ".pptx", fileList);
                     }
+                }
+            });
+
+            menu.addMenuEntry({
+                id: "onlyofficeDocxf",
+                displayName: t(OCA.Onlyoffice.AppName, "Form template"),
+                templateName: t(OCA.Onlyoffice.AppName, "Form template"),
+                iconClass: "icon-onlyoffice-new-docxf",
+                fileType: "docxf",
+                actionHandler: function (name) {
+                    OCA.Onlyoffice.CreateFile(name + ".docxf", fileList);
+                }
+            });
+
+            menu.addMenuEntry({
+                id: "onlyofficeDocxfExist",
+                displayName: t(OCA.Onlyoffice.AppName, "Form template from existing text file"),
+                templateName: t(OCA.Onlyoffice.AppName, "Form template from existing text file"),
+                iconClass: "icon-onlyoffice-new-docxf",
+                fileType: "docxf",
+                actionHandler: function (name) {
+                    OCA.Onlyoffice.OpenFormPicker(name + ".docxf", fileList);
                 }
             });
         }

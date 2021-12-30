@@ -259,6 +259,12 @@ class EditorController extends Controller {
             }
         } elseif (!empty($targetPath)) {
             $targetFile = $userFolder->get($targetPath);
+
+            $canDownload = $this->fileUtility->hasPermissionAttribute($targetFile);
+            if (!$canDownload) {
+                return ["error" => $this->trans->t("Not permitted")];
+            }
+
             $targetId = $targetFile->getId();
             $targetName = $targetFile->getName();
             $targetExt = strtolower(pathinfo($targetName, PATHINFO_EXTENSION));
@@ -546,6 +552,11 @@ class EditorController extends Controller {
         if (!empty($shareToken) && ($share->getPermissions() & Constants::PERMISSION_CREATE) === 0) {
             $this->logger->error("Convertion in public folder without access: $fileId", ["app" => $this->appName]);
             return ["error" => $this->trans->t("You do not have enough permissions to view the file")];
+        }
+
+        $canDownload = $this->fileUtility->hasPermissionAttribute($file);
+        if (!$canDownload) {
+            return ["error" => $this->trans->t("Not permitted")];
         }
 
         $fileName = $file->getName();
@@ -1042,17 +1053,9 @@ class EditorController extends Controller {
             }
         }
 
-        $fileStorage = $file->getStorage();
-        if ($fileStorage->instanceOfStorage("\OCA\Files_Sharing\SharedStorage")) {
-            $storageShare = $fileStorage->getShare();
-            if (method_exists($storageShare, "getAttributes")) {
-                $attributes = $storageShare->getAttributes();
-
-                $permissionsDownload = $attributes->getAttribute("permissions", "download");
-                if ($permissionsDownload !== null && $permissionsDownload !== true) {
-                    return $this->renderError($this->trans->t("Not permitted"));
-                }
-            }
+        $canDownload = $this->fileUtility->hasPermissionAttribute($file);
+        if (!$canDownload) {
+            return $this->renderError($this->trans->t("Not permitted"));
         }
 
         $fileName = $file->getName();

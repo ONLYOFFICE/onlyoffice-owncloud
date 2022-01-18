@@ -198,6 +198,7 @@ class EditorController extends Controller {
      * @param string $name - file name
      * @param string $dir - folder path
      * @param string $templateId - file identifier
+     * @param string $targetPath - file path for using as template for create
      * @param string $shareToken - access token
      *
      * @return array
@@ -205,7 +206,7 @@ class EditorController extends Controller {
      * @NoAdminRequired
      * @PublicPage
      */
-    public function create($name, $dir, $templateId = null, $shareToken = null) {
+    public function create($name, $dir, $templateId = null, $targetPath = null, $shareToken = null) {
         $this->logger->debug("Create: $name", ["app" => $this->appName]);
 
         if (empty($shareToken) && !$this->config->isUserAllowedToUse()) {
@@ -217,8 +218,10 @@ class EditorController extends Controller {
             return ["error" => $this->trans->t("Template not found")];
         }
 
+        $user = null;
         if (empty($shareToken)) {
-            $userId = $this->userSession->getUser()->getUID();
+            $user = $this->userSession->getUser();
+            $userId = $user->getUID();
             $userFolder = $this->root->getUserFolder($userId);
         } else {
             list ($userFolder, $error, $share) = $this->fileUtility->getNodeByToken($shareToken);
@@ -249,13 +252,37 @@ class EditorController extends Controller {
             return ["error" => $this->trans->t("You don't have enough permission to create")];
         }
 
-        if (empty($templateId)) {
-            $template = TemplateManager::GetEmptyTemplate($name);
-        } else {
+        if (!empty($templateId)) {
             $templateFile = TemplateManager::GetTemplate($templateId);
             if ($templateFile) {
                 $template = $templateFile->getContent();
             }
+        } elseif (!empty($targetPath)) {
+            $targetFile = $userFolder->get($targetPath);
+
+            $canDownload = $this->fileUtility->hasPermissionAttribute($targetFile);
+            if (!$canDownload) {
+                return ["error" => $this->trans->t("Not permitted")];
+            }
+
+            $targetId = $targetFile->getId();
+            $targetName = $targetFile->getName();
+            $targetExt = strtolower(pathinfo($targetName, PATHINFO_EXTENSION));
+            $targetKey = $this->fileUtility->getKey($targetFile);
+            
+            $fileUrl = $this->getUrl($targetFile, $user, $shareToken);
+
+            $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+            $documentService = new DocumentService($this->trans, $this->config);
+            try {
+                $newFileUri = $documentService->GetConvertedUri($fileUrl, $targetExt, $ext, $targetKey);
+            } catch (\Exception $e) {
+                $this->logger->logException($e, ["message" => "GetConvertedUri: " . $targetFile->getId(), "app" => $this->appName]);
+                return ["error" => $e->getMessage()];
+            }
+            $template = $documentService->Request($newFileUri);
+        } else {
+            $template = TemplateManager::GetEmptyTemplate($name);
         }
 
         if (!$template) {
@@ -525,6 +552,11 @@ class EditorController extends Controller {
         if (!empty($shareToken) && ($share->getPermissions() & Constants::PERMISSION_CREATE) === 0) {
             $this->logger->error("Convertion in public folder without access: $fileId", ["app" => $this->appName]);
             return ["error" => $this->trans->t("You do not have enough permissions to view the file")];
+        }
+
+        $canDownload = $this->fileUtility->hasPermissionAttribute($file);
+        if (!$canDownload) {
+            return ["error" => $this->trans->t("Not permitted")];
         }
 
         $fileName = $file->getName();
@@ -1021,17 +1053,9 @@ class EditorController extends Controller {
             }
         }
 
-        $fileStorage = $file->getStorage();
-        if ($fileStorage->instanceOfStorage("\OCA\Files_Sharing\SharedStorage")) {
-            $storageShare = $fileStorage->getShare();
-            if (method_exists($storageShare, "getAttributes")) {
-                $attributes = $storageShare->getAttributes();
-
-                $permissionsDownload = $attributes->getAttribute("permissions", "download");
-                if ($permissionsDownload !== null && $permissionsDownload !== true) {
-                    return $this->renderError($this->trans->t("Not permitted"));
-                }
-            }
+        $canDownload = $this->fileUtility->hasPermissionAttribute($file);
+        if (!$canDownload) {
+            return $this->renderError($this->trans->t("Not permitted"));
         }
 
         $fileName = $file->getName();

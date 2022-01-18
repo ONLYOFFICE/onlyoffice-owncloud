@@ -98,6 +98,12 @@ OC.L10N.register(
     "Failed to send notification": "Fehler beim Senden einer Benachrichtigung",
     "Notification sent successfully": "Benachrichtigung erfolgreich gesendet",
     "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s hat in %2\$s erwähnt: \"%3\$s\".",
-    "Choose a format to convert {fileName}": "Wählen Sie das Format für {fileName} aus"
+    "Choose a format to convert {fileName}": "Wählen Sie das Format für {fileName} aus",
+    "Form template": "Formularvorlage",
+    "Form template from existing text file": "Formularvorlage aus Textdatei",
+    "Create form": "Formular erstellen",
+    "Fill in form in ONLYOFFICE": "Formular in ONLYOFFICE ausfüllen",
+    "Create new Form template": "Neue Formularvorlage erstellen",
+    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Für Online-Arbeit mit Formularen ist Version 7.0 von ONLYOFFICE Docs erforderlich"
 },
 "nplurals=2; plural=(n != 1);");

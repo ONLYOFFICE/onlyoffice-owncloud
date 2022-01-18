@@ -98,6 +98,12 @@ OC.L10N.register(
     "Failed to send notification": "通知を送信できませんでした",
     "Notification sent successfully": "通知を送信しました",
     "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s は %2\$s: \"%3\$s\"に記載されました。",
-    "Choose a format to convert {fileName}": "{fileName}を変換する形式を選択してください"
+    "Choose a format to convert {fileName}": "{fileName}を変換する形式を選択してください",
+    "Form template": "フォーム テンプレート",
+    "Form template from existing text file": "既存のテキストファイルからフォームテンプレートを作成する",
+    "Create form": "フォームの作成",
+    "Fill in form in ONLYOFFICE": "ONLYOFFICEでフォームを記入する",
+    "Create new Form template": "新しいフォームテンプレートの作成",
+    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "オンラインで入力可能なフォームを作成するには、ONLYOFFICE Docs 7.0版まで更新してください"
 },
 "nplurals=2; plural=(n != 1);");

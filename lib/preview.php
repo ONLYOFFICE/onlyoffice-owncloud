@@ -126,6 +126,8 @@ class Preview implements IProvider2 {
         "application/msword",
         "application/vnd.ms-word.document.macroEnabled.12",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document.docxf",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document.oform",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.template",
         "application/epub+zip",
         "text/html",

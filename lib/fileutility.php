@@ -249,6 +249,31 @@ class FileUtility {
     }
 
     /**
+     * Detected attribute permission for shared file
+     *
+     * @param File $file - file
+     * @param string $attribute - request from federated store
+     *
+     * @return bool
+     */
+    public function hasPermissionAttribute($file, $attribute = "download") {
+        $fileStorage = $file->getStorage();
+        if ($fileStorage->instanceOfStorage("\OCA\Files_Sharing\SharedStorage")) {
+            $storageShare = $fileStorage->getShare();
+            if (method_exists($storageShare, "getAttributes")) {
+                $attributes = $storageShare->getAttributes();
+
+                $permissionsDownload = $attributes->getAttribute("permissions", "download");
+                if ($permissionsDownload !== null && $permissionsDownload !== true) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Generate unique identifier
      *
      * @return string

@@ -461,16 +461,18 @@
                 }
             });
 
-            menu.addMenuEntry({
-                id: "onlyofficeDocxfExist",
-                displayName: t(OCA.Onlyoffice.AppName, "Form template from existing text file"),
-                templateName: t(OCA.Onlyoffice.AppName, "Form template from existing text file"),
-                iconClass: "icon-onlyoffice-new-docxf",
-                fileType: "docxf",
-                actionHandler: function (name) {
-                    OCA.Onlyoffice.OpenFormPicker(name + ".docxf", fileList);
-                }
-            });
+            if (!$("#isPublic").val()) {
+                menu.addMenuEntry({
+                    id: "onlyofficeDocxfExist",
+                    displayName: t(OCA.Onlyoffice.AppName, "Form template from existing text file"),
+                    templateName: t(OCA.Onlyoffice.AppName, "Form template from existing text file"),
+                    iconClass: "icon-onlyoffice-new-docxf",
+                    fileType: "docxf",
+                    actionHandler: function (name) {
+                        OCA.Onlyoffice.OpenFormPicker(name + ".docxf", fileList);
+                    }
+                });
+            }
         }
     };
 

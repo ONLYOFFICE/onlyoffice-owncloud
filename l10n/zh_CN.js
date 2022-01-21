@@ -106,4 +106,4 @@ OC.L10N.register(
     "Create new Form template": "创建新的表单模板",
     "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "请将ONLYOFFICE Docs更新到7.0版本，以便在线编辑可填写的表单"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=1; plural=0;");

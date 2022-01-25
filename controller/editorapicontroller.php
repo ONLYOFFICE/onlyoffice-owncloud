@@ -34,6 +34,7 @@ use OCP\ITagManager;
 use OCP\IURLGenerator;
 use OCP\IUser;
 use OCP\IUserSession;
+use OCP\IUserManager;
 use OCP\Share\IManager;
 
 use OC\Tags;
@@ -121,6 +122,13 @@ class EditorApiController extends OCSController {
     private $tagManager;
 
     /**
+     * Current user manager
+     *
+     * @var IUserManager
+     */
+    private $userManager;
+
+    /**
      * Mobile regex from https://github.com/ONLYOFFICE/CommunityServer/blob/v9.1.1/web/studio/ASC.Web.Studio/web.appsettings.config#L35
      */
     const USER_AGENT_MOBILE = "/android|avantgo|playbook|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od|ad)|iris|kindle|lge |maemo|midp|mmp|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\\/|plucker|pocket|psp|symbian|treo|up\\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i";
@@ -130,6 +138,7 @@ class EditorApiController extends OCSController {
      * @param IRequest $request - request object
      * @param IRootFolder $root - root folder
      * @param IUserSession $userSession - current user session
+     * @param IUserManager $userManager - User manager
      * @param IURLGenerator $urlGenerator - url generator service
      * @param IL10N $trans - l10n service
      * @param ILogger $logger - logger
@@ -143,6 +152,7 @@ class EditorApiController extends OCSController {
                                     IRequest $request,
                                     IRootFolder $root,
                                     IUserSession $userSession,
+                                    IUserManager $userManager,
                                     IURLGenerator $urlGenerator,
                                     IL10N $trans,
                                     ILogger $logger,
@@ -155,6 +165,7 @@ class EditorApiController extends OCSController {
         parent::__construct($AppName, $request);
 
         $this->userSession = $userSession;
+        $this->userManager = $userManager;
         $this->root = $root;
         $this->urlGenerator = $urlGenerator;
         $this->trans = $trans;
@@ -229,6 +240,7 @@ class EditorApiController extends OCSController {
      * @param integer $fileId - file identifier
      * @param string $filePath - file path
      * @param string $shareToken - access token
+     * @param string $directToken - direct token
      * @param integer $version - file version
      * @param bool $inframe - open in frame
      * @param bool $desktop - desktop label
@@ -240,12 +252,38 @@ class EditorApiController extends OCSController {
      * @PublicPage
      * @CORS
      */
-    public function config($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $desktop = false, $template = false, $anchor = null) {
+    public function config($fileId, $filePath = null, $shareToken = null, $directToken = null, $version = 0, $inframe = false, $desktop = false, $template = false, $anchor = null) {
 
-        $user = $this->userSession->getUser();
-        $userId = null;
-        if (!empty($user)) {
-            $userId = $user->getUID();
+        if (!empty($directToken)) {
+            list ($directData, $error) = $this->crypt->ReadHash($directToken);
+            if ($directData === null) {
+                $this->logger->error("Config for directEditor with empty or not correct hash: $error", ["app" => $this->appName]);
+                return new JSONResponse(["error" => $this->trans->t("Not permitted")]);
+            }
+            if ($directData->action !== "direct") {
+                $this->logger->error("Config for directEditor with other data", ["app" => $this->appName]);
+                return new JSONResponse(["error" => $this->trans->t("Invalid request")]);
+            }
+
+            $fileId = $directData->fileId;
+            $userId = $directData->userId;
+            if ($this->userSession->isLoggedIn()
+                && $userId === $this->userSession->getUser()->getUID()) {
+                $redirectUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.index",
+                    [
+                        "fileId" => $fileId,
+                        "filePath" => $filePath
+                    ]);
+                return new JSONResponse(["redirectUrl" => $redirectUrl]);
+            }
+
+            $user = $this->userManager->get($userId);
+        } else {
+            $user = $this->userSession->getUser();
+            $userId = null;
+            if (!empty($user)) {
+                $userId = $user->getUID();
+            }
         }
 
         list ($file, $error, $share) = empty($shareToken) ? $this->getFile($userId, $fileId, $filePath, $template) : $this->fileUtility->getFileByToken($fileId, $shareToken);
@@ -487,7 +525,7 @@ class EditorApiController extends OCSController {
             }
 
             if (!$template) {
-                $params["document"]["info"]["favorite"] = $this->isFavorite($fileId);
+                $params["document"]["info"]["favorite"] = $this->isFavorite($fileId, $userId);
             }
             $params["_file_path"] = $userFolder->getRelativePath($file->getPath());
         }
@@ -731,11 +769,12 @@ class EditorApiController extends OCSController {
      * Check file favorite
      *
      * @param integer $fileId - file identifier
+     * @param string $userId - user identifier
      *
      * @return bool
      */
-    private function isFavorite($fileId) {
-        $currentTags = $this->tagManager->load("files")->getTagsForObjects([$fileId]);
+    private function isFavorite($fileId, $userId = null) {
+        $currentTags = $this->tagManager->load("files", [], false, $userId)->getTagsForObjects([$fileId]);
         if ($currentTags) {
             return in_array(Tags::TAG_FAVORITE, $currentTags[$fileId]);
         }

@@ -35,12 +35,13 @@
         OCA.Onlyoffice.template = $("#iframeEditor").data("template");
         OCA.Onlyoffice.inframe = !!$("#iframeEditor").data("inframe");
         OCA.Onlyoffice.anchor = $("#iframeEditor").attr("data-anchor");
+        var directToken = $("#iframeEditor").data("directtoken");
 
         if (OCA.Onlyoffice.inframe) {
             OCA.Onlyoffice.faviconBase = $('link[rel="icon"]').attr("href");
         }
 
-        if (!OCA.Onlyoffice.fileId && !OCA.Onlyoffice.shareToken) {
+        if (!OCA.Onlyoffice.fileId && !OCA.Onlyoffice.shareToken && !directToken) {
             OCA.Onlyoffice.showMessage(t(OCA.Onlyoffice.AppName, "FileId is empty"), {type: "error"});
             return;
         }
@@ -59,6 +60,9 @@
         if (OCA.Onlyoffice.shareToken) {
             params.push("shareToken=" + encodeURIComponent(OCA.Onlyoffice.shareToken));
         }
+        if (directToken) {
+            params.push("directToken=" + encodeURIComponent(directToken));
+        }
         if (OCA.Onlyoffice.version > 0) {
             params.push("version=" + OCA.Onlyoffice.version);
         }
@@ -66,7 +70,7 @@
             params.push("template=true");
         }
 
-        if (OCA.Onlyoffice.inframe) {
+        if (OCA.Onlyoffice.inframe || directToken) {
             params.push("inframe=true");
         }
 

@@ -234,6 +234,15 @@ class Application extends App {
             );
         });
 
+        $container->registerService("DirectEditorController", function ($c) {
+            return new DirectEditorController(
+                $c->query("AppName"),
+                $c->query("Request"),
+                $this->appConfig,
+                $this->crypt,
+                $c->query("Logger")
+            );
+        });
 
         Hooks::connectHooks();
     }

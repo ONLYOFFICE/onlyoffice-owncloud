@@ -44,6 +44,9 @@
 #onlyofficeAddrSave {
     float: left;
 }
+#onlyofficeSave {
+    margin-bottom: 25px;
+}
 .onlyoffice-demo {
     margin-left: 90px;
 }

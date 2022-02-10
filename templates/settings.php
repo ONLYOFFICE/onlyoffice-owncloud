@@ -28,7 +28,7 @@
         <a target="_blank" class="icon-info svg" title="" href="https://api.onlyoffice.com/editors/owncloud" data-original-title="<?php p($l->t("Documentation")) ?>"></a>
     </h2>
 
-    <h3><?php p($l->t("Server settings")) ?></h3>
+    <h2><?php p($l->t("Server settings")) ?></h2>
 
     <?php if ($_["encryption"]) { ?>
     <p class="onlyoffice-error">
@@ -92,7 +92,7 @@
 
     <div class="section-onlyoffice-2 <?php if (empty($_["documentserver"]) && !$_["demo"]["enabled"] || !$_["successful"]) { ?>onlyoffice-hide<?php } ?>">
         <br />
-        <h3><?php p($l->t("Common settings")) ?></h3>
+        <h2><?php p($l->t("Common settings")) ?></h2>
 
         <p>
             <input type="checkbox" class="checkbox" id="onlyofficeGroups"
@@ -156,10 +156,10 @@
         </div>
         <br />
 
-        <h3>
+        <h2>
             <?php p($l->t("Editor customization settings")) ?>
             <a target="_blank" class="icon-info svg" title="" href="https://api.onlyoffice.com/editors/config/editor/customization" data-original-title="<?php p($l->t("View details")) ?>"></a>
-        </h3>
+        </h2>
 
         <p>
         <input type="checkbox" class="checkbox" id="onlyofficeForcesave"
@@ -231,11 +231,11 @@
         <br />
         <p><button id="onlyofficeSave" class="button"><?php p($l->t("Save")) ?></button></p>
 
-        <h3>
+        <h2>
             <?php p($l->t("Common templates")) ?>
             <input id="onlyofficeAddTemplate" type="file" class="hidden-visually" />
             <label for="onlyofficeAddTemplate" class="onlyoffice-template icon-add" title="<?php p($l->t("Add a new template")) ?>"></label>
-        </h3>
+        </h2>
         <ul class="onlyoffice-template-container">
             <?php foreach ($_["templates"] as $template) { ?>
                 <li data-id=<?php p($template["id"]) ?> class="onlyoffice-template-item" >

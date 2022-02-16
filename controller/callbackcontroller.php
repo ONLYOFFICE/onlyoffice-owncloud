@@ -23,6 +23,7 @@ use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataDownloadResponse;
 use OCP\AppFramework\Http\JSONResponse;
+use OCP\AppFramework\Http\StreamResponse;
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
@@ -170,7 +171,7 @@ class CallbackController extends Controller {
      *
      * @param string $doc - verification token with the file identifier
      *
-     * @return DataDownloadResponse|JSONResponse
+     * @return StreamResponse|JSONResponse
      *
      * @NoAdminRequired
      * @NoCSRFRequired
@@ -295,7 +296,21 @@ class CallbackController extends Controller {
         }
 
         try {
-            $response = new DataDownloadResponse($file->getContent(), $file->getName(), $file->getMimeType());
+            $fileInternalPath = $file->getFileInfo()->getInternalPath();
+            $rootPath = \OC::$server->getSystemConfig()->getValue("datadirectory", \OC::$SERVERROOT . "/data");
+            if (!$template) {
+                $owner = $file->getFileInfo()->getOwner();
+                if ($owner === null) {
+                    $this->logger->error("Download: $fileId ($version) was not found", ["app" => $this->appName]);
+                    return new JSONResponse(["message" => $this->trans->t("Files not found")], Http::STATUS_NOT_FOUND);
+                }
+                $rootPath = $rootPath . "/" . $owner->getUID();
+            }
+            $fullPath = $rootPath . "/" . $fileInternalPath;
+
+            $response = new StreamResponse($fullPath);
+            $response->addHeader("Content-Disposition", 'attachment; filename="' . rawurldecode($file->getName()) . '"');
+            $response->addHeader("Content-Type", $file->getMimeType());
 
             if ($changes) {
                 $response = \OC_Response::setOptionsRequestHeaders($response);

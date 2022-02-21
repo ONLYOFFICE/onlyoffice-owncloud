@@ -21,9 +21,10 @@
     max-width: 500px;
 }
 .onlyoffice-template-container li {
-    padding-bottom: 5px;
+    height: 27px;
+    padding-top: 5px;
 }
-.onlyoffice-template-container li:hover,
+.onlyoffice-template-container.container-dialog li:hover,
 .onlyoffice-template-item.selected {
     background-color: rgb(230, 230, 230);
 }
@@ -35,10 +36,19 @@
     margin-right: 10px;
     cursor: pointer;
 }
+.onlyoffice-template-item.item-dialog {
+    padding-left: 5px;
+}
 .onlyoffice-template-delete,
 .onlyoffice-template-download {
-    margin-bottom: -4px;
+    margin-bottom: 2px;
     opacity: .8;
+}
+.onlyoffice-template-item p {
+    max-width: 400px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 .onlyoffice-template-item img {
     float: left;

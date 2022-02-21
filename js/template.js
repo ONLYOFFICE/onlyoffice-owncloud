@@ -131,6 +131,8 @@
                 name: t(OCA.Onlyoffice.AppName, "Empty"),
                 type: type
             });
+
+        $(emptyItem).addClass("selected");
     }
 
     OCA.Onlyoffice.AttachItemTemplate = function (template) {

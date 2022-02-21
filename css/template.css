@@ -18,9 +18,14 @@
 
 .onlyoffice-template-container {
     margin-left: 0px !important;
+    max-width: 500px;
 }
 .onlyoffice-template-container li {
-    margin-bottom: 10px;
+    padding-bottom: 5px;
+}
+.onlyoffice-template-container li:hover,
+.onlyoffice-template-item.selected {
+    background-color: rgb(230, 230, 230);
 }
 .onlyoffice-template-item img,
 .onlyoffice-template-item p,
@@ -39,11 +44,7 @@
     float: left;
     margin-top: 3px;
 }
-.onlyoffice-template-item input {
-    position: absolute;
-    left: -10000px;
-}
-.onlyoffice-template-item input:checked + label {
+.onlyoffice-template-item.selected label {
     color: rgb(55, 137, 243);
 }
 .onlyoffice-template-download {

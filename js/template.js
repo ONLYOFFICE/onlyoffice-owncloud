@@ -121,25 +121,18 @@
                 return;
             }
             var item = emptyItem.cloneNode(true);
-
-            $(item.querySelector("label")).attr("for", "template_picker-" + template["id"]);
-            item.querySelector("input").id = "template_picker-" + template["id"];
-            item.querySelector("img").src = "/core/img/filetypes/x-office-" + template["type"] + ".svg";
-            item.querySelector("p").textContent = template["name"];
-            item.onclick = function() {
-                dialog[0].dataset.templateId = template["id"];
-            }
+            OCA.Onlyoffice.FillItemTemplate(dialog, item, template);
             dialog[0].querySelector(".onlyoffice-template-container").appendChild(item);
         });
 
-        $(emptyItem.querySelector("label")).attr("for", "template_picker-0");
-        emptyItem.querySelector("input").id = "template_picker-0";
-        emptyItem.querySelector("input").checked = true;
-        emptyItem.querySelector("img").src = "/core/img/filetypes/x-office-" + type + ".svg";
-        emptyItem.querySelector("p").textContent = t(OCA.Onlyoffice.AppName, "Empty");
-        emptyItem.onclick = function() {
-            dialog[0].dataset.templateId = "0";
-        }
+        OCA.Onlyoffice.FillItemTemplate(dialog, emptyItem, 
+            {
+                id: 0,
+                name: t(OCA.Onlyoffice.AppName, "Empty"),
+                type: type
+            });
+
+        $(emptyItem).addClass("selected");
     }
 
     OCA.Onlyoffice.AttachItemTemplate = function (template) {
@@ -153,6 +146,17 @@
 
                 $(".onlyoffice-template-container").append(item);
             });
+    }
+
+    OCA.Onlyoffice.FillItemTemplate = function (dialog, item, template) {
+        $(item.querySelector("label")).attr("for", "template_picker-" + template.id);
+        item.querySelector("img").src = "/core/img/filetypes/x-office-" + template.type + ".svg";
+        item.querySelector("p").textContent = template.name;
+        item.onclick = function() {
+            $(".onlyoffice-template-item").removeClass("selected");
+            $(item).addClass("selected");
+            dialog[0].dataset.templateId = template.id;
+        }
     }
 
     OCA.Onlyoffice.TemplateExist = function (type) {

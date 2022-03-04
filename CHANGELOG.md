@@ -1,5 +1,8 @@
 # Change Log
 
+## Added
+- Turkish and Galician empty file templates
+
 ## Changed
 - redesign of the creation dialog
 

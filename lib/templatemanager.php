@@ -195,6 +195,7 @@ class TemplateManager {
         "en_GB" => "en-GB",
         "es" => "es-ES",
         "fr" => "fr-FR",
+        "gl" => "gl-ES",
         "it" => "it-IT",
         "ja" => "ja-JP",
         "ko" => "ko-KR",
@@ -206,6 +207,7 @@ class TemplateManager {
         "ru" => "ru-RU",
         "sk_SK" => "sk-SK",
         "sv" => "sv-SE",
+        "tr" => "tr-TR",
         "uk" => "uk-UA",
         "vi" => "vi-VN",
         "zh_CN" => "zh-CN"

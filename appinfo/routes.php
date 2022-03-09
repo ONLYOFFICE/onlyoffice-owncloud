@@ -32,9 +32,6 @@ return [
        ["name" => "editor#convert", "url" => "/ajax/convert", "verb" => "POST"],
        ["name" => "editor#save", "url" => "/ajax/save", "verb" => "POST"],
        ["name" => "editor#url", "url" => "/ajax/url", "verb" => "GET"],
-       ["name" => "editor#history", "url" => "/ajax/history", "verb" => "GET"],
-       ["name" => "editor#version", "url" => "/ajax/version", "verb" => "GET"],
-       ["name" => "editor#restore", "url" => "/ajax/restore", "verb" => "PUT"],
        ["name" => "settings#save_address", "url" => "/ajax/settings/address", "verb" => "PUT"],
        ["name" => "settings#save_common", "url" => "/ajax/settings/common", "verb" => "PUT"],
        ["name" => "settings#get_settings", "url" => "/ajax/settings", "verb" => "GET"],
@@ -49,6 +46,9 @@ return [
         ["name" => "federation#keylock", "url" => "/api/v1/keylock", "verb" => "POST"],
         ["name" => "editorapi#config", "url" => "/api/v1/config/{fileId}", "verb" => "GET"],
         ["name" => "editorapi#fillempty", "url" => "/api/v1/empty/{fileId}", "verb" => "GET"],
+        ["name" => "editorapi#history", "url" => "/api/v1/history", "verb" => "GET"],
+        ["name" => "editorapi#version", "url" => "/api/v1/version", "verb" => "GET"],
+        ["name" => "editorapi#restore", "url" => "/api/v1/restore", "verb" => "PUT"],
         ["name" => "settingsapi#get_doc_server_url", "url" => "/api/v1/settings/docserver", "verb" => "GET"],
     ]
 ];

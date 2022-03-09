@@ -195,24 +195,20 @@
     };
 
     OCA.Onlyoffice.onRequestHistory = function (version) {
-        $.get(OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/history?fileId={fileId}",
-            {
-                fileId: OCA.Onlyoffice.fileId || 0,
-            }),
-            function onSuccess(response) {
+        $.ajax({
+            url: OC.linkToOCS("apps/" + OCA.Onlyoffice.AppName + "/api/v1", 2) + "history?fileId=" + (OCA.Onlyoffice.fileId || 0),
+            success: function onSuccess(response) {
                 OCA.Onlyoffice.refreshHistory(response, version);
-        });
+            }
+        })
     };
 
     OCA.Onlyoffice.onRequestHistoryData = function (event) {
         var version = event.data; 
 
-        $.get(OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/version?fileId={fileId}&version={version}",
-            {
-                fileId: OCA.Onlyoffice.fileId || 0,
-                version: version,
-            }),
-            function onSuccess(response) {
+        $.ajax({
+            url: OC.linkToOCS("apps/" + OCA.Onlyoffice.AppName + "/api/v1", 2) + "version?fileId=" + (OCA.Onlyoffice.fileId || 0) + "&version=" + version,
+            success: function onSuccess(response) {
                 if (response.error) {
                     response = {
                         error: response.error,
@@ -220,7 +216,8 @@
                     };
                 }
                 OCA.Onlyoffice.docEditor.setHistoryData(response);
-        });
+            }
+        })
     };
 
     OCA.Onlyoffice.onRequestRestore = function (event) {
@@ -228,7 +225,7 @@
 
         $.ajax({
             method: "PUT",
-            url: OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/restore"),
+            url: OC.linkToOCS("apps/" + OCA.Onlyoffice.AppName + "/api/v1", 2) + "restore",
             data: {
                 fileId: OCA.Onlyoffice.fileId || 0,
                 version: version,

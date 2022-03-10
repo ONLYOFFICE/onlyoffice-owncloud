@@ -1,5 +1,8 @@
 # Change Log
 
+## Changed
+- redesign of the creation dialog
+
 ## 7.3.1
 ## Added
 - support docxf and oform formats

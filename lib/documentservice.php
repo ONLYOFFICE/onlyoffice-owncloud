@@ -141,7 +141,8 @@ class DocumentService {
             "outputtype" => trim($to_extension, "."),
             "filetype" => $from_extension,
             "title" => $document_revision_id . "." . $from_extension,
-            "key" => $document_revision_id
+            "key" => $document_revision_id,
+            "region" => str_replace("_", "-", \OC::$server->getL10NFactory("")->get("")->getLanguageCode())
         ];
 
         if ($this->config->UseDemo()) {

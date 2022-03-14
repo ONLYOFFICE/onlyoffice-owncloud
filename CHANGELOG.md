@@ -1,5 +1,12 @@
 # Change Log
 
+## 7.3.3
+## Added
+- Turkish and Galician empty file templates
+
+## Changed
+- redesign of the creation dialog
+
 ## 7.3.1
 ## Added
 - support docxf and oform formats

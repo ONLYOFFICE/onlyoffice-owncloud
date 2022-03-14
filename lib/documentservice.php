@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2021
+ * (c) Copyright Ascensio System SIA 2022
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -141,7 +141,8 @@ class DocumentService {
             "outputtype" => trim($to_extension, "."),
             "filetype" => $from_extension,
             "title" => $document_revision_id . "." . $from_extension,
-            "key" => $document_revision_id
+            "key" => $document_revision_id,
+            "region" => str_replace("_", "-", \OC::$server->getL10NFactory("")->get("")->getLanguageCode())
         ];
 
         if ($this->config->UseDemo()) {
@@ -414,6 +415,10 @@ class DocumentService {
             }
 
             $version = $commandResponse->version;
+            $versionF = floatval($version);
+            if ($versionF > 0.0 && $versionF <= 6.0) {
+                throw new \Exception($this->trans->t("Not supported version"));
+            }
 
         } catch (\Exception $e) {
             $logger->logException($e, ["message" => "CommandRequest on check error", "app" => self::$appName]);

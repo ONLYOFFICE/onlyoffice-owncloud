@@ -106,4 +106,4 @@ OC.L10N.register(
     "Create new Form template": "Criar novo modelo de Formulário",
     "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Atualize o ONLYOFFICE Docs para a versão 7.0 para trabalhar em formulários preenchíveis online"
 },
-"nplurals=2; plural=(n != 1);");
+"nplurals=2; plural=(n > 1);");

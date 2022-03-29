@@ -97,7 +97,7 @@ OC.L10N.register(
     "Origin format": "Формат на произход",
     "Failed to send notification": "Неуспешно изпращане на известие",
     "Notification sent successfully": "Успешно изпратено известие",
-    "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s, споменат във %2\$s: \"%3\$s\".",
+    "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s, Ви спомена във %2\$s: \"%3\$s\".",
     "Choose a format to convert {fileName}": "Изберете формат за конвертиране {fileName}",
     "Form template": "Шаблон на формуляр",
     "Form template from existing text file": "Шаблон на формуляр от съществуващ текстов файл",

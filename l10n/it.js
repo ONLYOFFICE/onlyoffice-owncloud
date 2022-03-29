@@ -97,7 +97,7 @@ OC.L10N.register(
     "Origin format": "Formato di origine",
     "Failed to send notification": "Invio di notifica non riuscito",
     "Notification sent successfully": "Notifica è stata inviata con successo",
-    "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s ha menzionato in %2\$s: \"%3\$s\".",
+    "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s ti ha menzionato in %2\$s: \"%3\$s\".",
     "Choose a format to convert {fileName}": "Scegli un formato per convertire {fileName}",
     "Form template": "Modello di modulo",
     "Form template from existing text file": "Modello di modulo da file di testo esistente",

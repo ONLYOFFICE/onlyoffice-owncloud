@@ -97,7 +97,7 @@ OC.L10N.register(
     "Origin format": "オリジンの形式",
     "Failed to send notification": "通知を送信できませんでした",
     "Notification sent successfully": "通知を送信しました",
-    "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s は %2\$s: \"%3\$s\"に記載されました。",
+    "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s は あなたを %2\$s: \"%3\$s\"に記載されました。",
     "Choose a format to convert {fileName}": "{fileName}を変換する形式を選択してください",
     "Form template": "フォーム テンプレート",
     "Form template from existing text file": "既存のテキストファイルからフォームテンプレートを作成する",

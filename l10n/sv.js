@@ -97,7 +97,7 @@ OC.L10N.register(
     "Origin format": "Ursprungsformat",
     "Failed to send notification": "Det gick inte att skicka aviseringen",
     "Notification sent successfully": "Aviseringen har skickats",
-    "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s har nämnt i %2\$s: \"%3\$s\".",
+    "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s nämnde dig i %2\$s: \"%3\$s\".",
     "Choose a format to convert {fileName}": "Välj det filformat som {fileName} ska konverteras till.",
     "Form template": "Formulärmall",
     "Form template from existing text file": "Formulärmall från befintlig textfil",

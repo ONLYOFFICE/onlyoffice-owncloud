@@ -95,7 +95,7 @@
     "Origin format": "Ursprüngliches Format",
     "Failed to send notification": "Fehler beim Senden einer Benachrichtigung",
     "Notification sent successfully": "Benachrichtigung erfolgreich gesendet",
-    "%1$s mentioned in the %2$s: \"%3$s\".": "%1$s hat in %2$s erwähnt: \"%3$s\".",
+    "%1$s mentioned in the %2$s: \"%3$s\".": "%1$s hat dich in %2$s erwähnt: \"%3$s\".",
     "Choose a format to convert {fileName}": "Wählen Sie das Format für {fileName} aus",
     "Form template": "Formularvorlage",
     "Form template from existing text file": "Formularvorlage aus Textdatei",

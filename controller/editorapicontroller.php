@@ -691,6 +691,11 @@ class EditorApiController extends OCSController {
             $params["editorConfig"]["customization"]["toolbarNoTabs"] = true;
         }
 
+        //default is true
+        if($this->config->GetCustomizationMacros() === false) {
+            $params["editorConfig"]["customization"]["macros"] = false;
+        }
+
 
         /* from system config */
 

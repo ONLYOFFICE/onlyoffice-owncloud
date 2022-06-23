@@ -246,5 +246,16 @@
                 </li>
             <?php } ?>
         </ul>
+        <br/>
+
+        <h2><?php p($l->t("Security")) ?></h2>
+        <p>
+            <input type="checkbox" class="checkbox" id="onlyofficeMacros"
+                <?php if ($_["macros"]) { ?>checked="checked"<?php } ?> />
+            <label for="onlyofficeMacros"><?php p($l->t("Run document macros")) ?></label>
+        </p>
+
+        <br />
+        <p><button id="onlyofficeSecuritySave" class="button"><?php p($l->t("Save")) ?></button></p>
     </div>
 </div>

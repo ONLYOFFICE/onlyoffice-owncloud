@@ -127,6 +127,7 @@ class SettingsController extends Controller {
             "successful" => $this->config->SettingsAreSuccessful(),
             "macros" => $this->config->GetCustomizationMacros(),
             "reviewDisplay" => $this->config->GetCustomizationReviewDisplay(),
+            "theme" => $this->config->GetCustomizationTheme(),
             "templates" => $this->GetGlobalTemplates()
         ];
         return new TemplateResponse($this->appName, "settings", $data, "blank");
@@ -204,6 +205,7 @@ class SettingsController extends Controller {
      * @param bool $help - display help
      * @param bool $toolbarNoTabs - display toolbar tab
      * @param string $reviewDisplay - review viewing mode
+     * @param string $theme - default theme mode
      *
      * @return array
      */
@@ -219,7 +221,8 @@ class SettingsController extends Controller {
                                     $forcesave,
                                     $help,
                                     $toolbarNoTabs,
-                                    $reviewDisplay
+                                    $reviewDisplay,
+                                    $theme
                                     ) {
 
         $this->config->SetDefaultFormats($defFormats);
@@ -235,6 +238,7 @@ class SettingsController extends Controller {
         $this->config->SetCustomizationHelp($help);
         $this->config->SetCustomizationToolbarNoTabs($toolbarNoTabs);
         $this->config->SetCustomizationReviewDisplay($reviewDisplay);
+        $this->config->SetCustomizationTheme($theme);
 
         return [
             ];

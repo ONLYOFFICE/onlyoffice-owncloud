@@ -3,6 +3,7 @@
 ## Added
 - Catalan translation
 - macro launch setting
+- theme setting
 
 ## 7.3.3
 ## Added

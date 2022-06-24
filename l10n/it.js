@@ -78,6 +78,7 @@ OC.L10N.register(
     "Keep intermediate versions when editing (forcesave)": "Mantieni le versioni intermedie durante la modifica (forzare salvataggio)",
     "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "Usare ONLYOFFICE per generare anteprima documenti (occuperà spazio su disco)",
     "Keep metadata for each version once the document is edited (it will take up disk space)": "Salvare metadati per ogni versione una volta modificato il documento (occuperà spazio su disco)",
+    "Clear": "Svuota",
     "All history successfully deleted": "Cronologia eliminata con successo",
     "Create": "Crea",
     "Select template" : "Seleziona modello",
@@ -104,6 +105,12 @@ OC.L10N.register(
     "Create form": "Creare modulo",
     "Fill in form in ONLYOFFICE": "Compilare il modulo in ONLYOFFICE",
     "Create new Form template": "Creare un nuovo modello di modulo",
-    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Si prega di aggiornare ONLYOFFICE Docs alla versione 7.0 per lavorare su moduli compilabili online"
+    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Si prega di aggiornare ONLYOFFICE Docs alla versione 7.0 per lavorare su moduli compilabili online",
+    "Security": "Sicurezza",
+    "Run document macros": "Esegui le macro del documento",
+    "Default editor theme": "Tema dell'editor predefinito",
+    "Light": "Chiaro",
+    "Classic Light": "Classico chiaro",
+    "Dark": "Scuro"
 },
 "nplurals=2; plural=(n != 1);");

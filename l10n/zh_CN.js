@@ -78,6 +78,7 @@ OC.L10N.register(
     "Keep intermediate versions when editing (forcesave)": "编辑时保留中间版本 (强制保存)",
     "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "使用ONLYOFFICE生成文档预览（将占用磁盘空间）",
     "Keep metadata for each version once the document is edited (it will take up disk space)": "编辑文档后保留每个版本的元数据（它将占用磁盘空间）",
+    "Clear": "清除",
     "All history successfully deleted": "所有历史记录成功删除",
     "Create": "创建",
     "Select template" : "选择模板",
@@ -104,6 +105,11 @@ OC.L10N.register(
     "Create form": "创建表单",
     "Fill in form in ONLYOFFICE": "在ONLYOFFICE上填写表单",
     "Create new Form template": "创建新的表单模板",
-    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "请将ONLYOFFICE Docs更新到7.0版本，以便在线编辑可填写的表单"
+    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "请将ONLYOFFICE Docs更新到7.0版本，以便在线编辑可填写的表单",
+    "Security": "安全",
+    "Default editor theme": "编辑器默认的主题",
+    "Light": "光",
+    "Classic Light": "经典浅色",
+    "Dark": "黑暗的"
 },
 "nplurals=1; plural=0;");

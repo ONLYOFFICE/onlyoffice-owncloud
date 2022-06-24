@@ -76,6 +76,7 @@
     "Keep intermediate versions when editing (forcesave)": "Sauvegarder les versions intermédiaires lors de l'édition (enregistrement obligatoire)",
     "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "Utilisez ONLYOFFICE pour générer l'aperçu du document (occupe de l'espace disque)",
     "Keep metadata for each version once the document is edited (it will take up disk space)": "Gardez les métadonnées pour chaque version dès que le document est modifié (occupe de l'espace disque)",
+    "Clear": "Effacer",
     "All history successfully deleted": "L'historique a été supprimé avec succès",
     "Create": "Créer",
     "Select template" : "Sélectionnez un modèle",
@@ -102,6 +103,12 @@
     "Create form": "Créer un formulaire",
     "Fill in form in ONLYOFFICE": "Remplir le formulaire dans ONLYOFFICE",
     "Create new Form template": "Créer un nouveau modèle de formulaire",
-    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Veuillez mettre à jour ONLYOFFICE Docs vers la version 7.0 pour travailler sur les formulaires à remplir en ligne"
+    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Veuillez mettre à jour ONLYOFFICE Docs vers la version 7.0 pour travailler sur les formulaires à remplir en ligne",
+    "Security": "Sécurité",
+    "Run document macros": "Exécuter des macros de documents",
+    "Default editor theme": "Thème d'éditeur par défaut",
+    "Light": "Clair",
+    "Classic Light": "Classique clair",
+    "Dark": "Sombre"
 },"pluralForm" :"nplurals=2; plural=(n > 1);"
 }

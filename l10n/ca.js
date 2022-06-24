@@ -78,6 +78,7 @@ OC.L10N.register(
     "Keep intermediate versions when editing (forcesave)": "Mantenir les versions intermèdies durant l'edició (forçar guardar)",
     "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "Usar ONLYOFFICE per a generar una vista prèvia del document (ocuparà espai en el disc)",
     "Keep metadata for each version once the document is edited (it will take up disk space)": "Guardar les metadades de cada versió en editar el document (ocuparà espai en el disc)",
+    "Clear": "Suprimeix",
     "All history successfully deleted": "Tot l'historial s'ha eliminat correctament",
     "Create": "Crear",
     "Select template" : "Seleccionar plantilla",
@@ -104,6 +105,10 @@ OC.L10N.register(
     "Create form": "Crear formulari",
     "Fill in form in ONLYOFFICE": "Omplir el formulari en ONLYOFFICE",
     "Create new Form template": "Crear nova plantilla de formulari",
-    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Si us plau, actualitzi ONLYOFFICE Docs a la versió 7.0 per a poder treballar amb formularis emplenables en línia"
+    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Si us plau, actualitzi ONLYOFFICE Docs a la versió 7.0 per a poder treballar amb formularis emplenables en línia",
+    "Security": "Seguretat",
+    "Light": "Llum",
+    "Classic Light": "Llum clàssica",
+    "Dark": "Fosc"
 },
 "nplurals=2; plural=(n != 1);");

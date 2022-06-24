@@ -78,6 +78,7 @@ OC.L10N.register(
     "Keep intermediate versions when editing (forcesave)": "Behåll mellanliggande versioner vid redigering (tvinga att spara)",
     "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "Använd ONLYOFFICE för att generera en förhandsgranskning av dokument (detta använder diskutrymme)",
     "Keep metadata for each version once the document is edited (it will take up disk space)": "Behåll metadata för varje version när dokumentet redigeras (detta använder diskutrymme) ",
+    "Clear": "Rensa",
     "All history successfully deleted": "All historik har tagits bort",
     "Create": "Skapa",
     "Select template" : "Välj mall",
@@ -104,6 +105,10 @@ OC.L10N.register(
     "Create form": "Skapa formulär",
     "Fill in form in ONLYOFFICE": "Fylla i formulär i ONLYOFFICE",
     "Create new Form template": "Skapa ny formulärmall",
-    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Uppdatera ONLYOFFICE Docs till version 7.0 för att arbeta med ifyllbart onlineformulär"
+    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Uppdatera ONLYOFFICE Docs till version 7.0 för att arbeta med ifyllbart onlineformulär",
+    "Security": "Säkerhet",
+    "Light": "Ljus",
+    "Classic Light": "Klassiskt ljus",
+    "Dark": "Mörk"
 },
 "nplurals=2; plural=(n != 1);");

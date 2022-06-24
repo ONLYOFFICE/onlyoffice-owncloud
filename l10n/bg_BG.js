@@ -78,6 +78,7 @@ OC.L10N.register(
     "Keep intermediate versions when editing (forcesave)": "Съхранявайте междинни версии при редактиране (force save)",
     "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "Използвайте ONLYOFFICE, за да генерирате преглед на документа (ще заеме дисково пространство)",
     "Keep metadata for each version once the document is edited (it will take up disk space)": "Запазете метаданните за всяка версия, щом документът бъде редактиран (ще заеме дисково пространство)",
+    "Clear": "Изчисти",
     "All history successfully deleted": "Цялата история е успешно изтрита",
     "Create": "Създай",
     "Select template" : "Избор на шаблон",
@@ -104,6 +105,10 @@ OC.L10N.register(
     "Create form": "Създайте формуляр",
     "Fill in form in ONLYOFFICE": "Попълнете формуляр в ONLYOFFICE",
     "Create new Form template": "Създайте нов шаблон на формуляр",
-    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Молим да актуализирате ONLYOFFICE Docs към версия 7.0, за да работи с онлайн формуляри за попълване"
+    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Молим да актуализирате ONLYOFFICE Docs към версия 7.0, за да работи с онлайн формуляри за попълване",
+    "Security": "Сигурност",
+    "Light": "Светла",
+    "Classic Light": "Класически светла",
+    "Dark": "Тъмна"
 },
 "nplurals=2; plural=(n != 1);");

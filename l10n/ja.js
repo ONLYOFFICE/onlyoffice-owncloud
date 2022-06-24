@@ -78,6 +78,7 @@ OC.L10N.register(
     "Keep intermediate versions when editing (forcesave)": "編集時に、中間バージョンを保持する (強制保存)",
     "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "ONLYOFFICEを使用して、ドキュメントプレビューを生成する（ディスク容量がかかる）",
     "Keep metadata for each version once the document is edited (it will take up disk space)": "ドキュメントが編集されたら、各バージョンのメタデータを保持する（ディスクス容量がかかる）",
+    "Clear": "消去",
     "All history successfully deleted": "すべての履歴が正常に削除されました",
     "Create": "作成",
     "Select template" : "テンプレートを選択する",
@@ -104,6 +105,12 @@ OC.L10N.register(
     "Create form": "フォームの作成",
     "Fill in form in ONLYOFFICE": "ONLYOFFICEでフォームを記入する",
     "Create new Form template": "新しいフォームテンプレートの作成",
-    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "オンラインで入力可能なフォームを作成するには、ONLYOFFICE Docs 7.0版まで更新してください"
+    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "オンラインで入力可能なフォームを作成するには、ONLYOFFICE Docs 7.0版まで更新してください",
+    "Security": "セキュリティ",
+    "Run document macros": "ドキュメントマクロを実行する",
+    "Default editor theme": "デフォルトのエディタテーマ",
+    "Light": "明るい",
+    "Classic Light": "明るい(クラシック)",
+    "Dark": "ダーク"
 },
 "nplurals=1; plural=0;");

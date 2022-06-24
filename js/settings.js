@@ -167,6 +167,29 @@
             });
         });
 
+        $("#onlyofficeSecuritySave").click(function () {
+            $(".section-onlyoffice").addClass("icon-loading");
+
+            var macros = $("#onlyofficeMacros").is(":checked");
+
+            $.ajax({
+                method: "PUT",
+                url: OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/settings/security"),
+                data: {
+                    macros: macros
+                },
+                success: function onSuccess(response) {
+                    $(".section-onlyoffice").removeClass("icon-loading");
+                    if (response) {
+                        var message = t(OCA.Onlyoffice.AppName, "Settings have been successfully updated");
+                        OC.Notification.show(message, {
+                            timeout: 3
+                        });
+                    }
+                }
+            });
+        });
+
         $(".section-onlyoffice input").keypress(function (e) {
             var code = e.keyCode || e.which;
             if (code === 13) {

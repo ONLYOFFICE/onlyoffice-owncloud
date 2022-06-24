@@ -125,6 +125,7 @@ class SettingsController extends Controller {
             "help" => $this->config->GetCustomizationHelp(),
             "toolbarNoTabs" => $this->config->GetCustomizationToolbarNoTabs(),
             "successful" => $this->config->SettingsAreSuccessful(),
+            "macros" => $this->config->GetCustomizationMacros(),
             "reviewDisplay" => $this->config->GetCustomizationReviewDisplay(),
             "templates" => $this->GetGlobalTemplates()
         ];
@@ -234,6 +235,21 @@ class SettingsController extends Controller {
         $this->config->SetCustomizationHelp($help);
         $this->config->SetCustomizationToolbarNoTabs($toolbarNoTabs);
         $this->config->SetCustomizationReviewDisplay($reviewDisplay);
+
+        return [
+            ];
+    }
+
+    /**
+     * Save security settings
+     *
+     * @param bool $macros - run document macros
+     *
+     * @return array
+     */
+    public function SaveSecurity($macros) {
+
+        $this->config->SetCustomizationMacros($macros);
 
         return [
             ];

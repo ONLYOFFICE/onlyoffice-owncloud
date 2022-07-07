@@ -1,5 +1,8 @@
 # Change Log
 
+## Added
+- Chinese (Traditional, Taiwan), Basque (Spain), Armenian and Malay (Malaysia) empty file templates
+
 ## Changed
 - fix edit of locked file
 

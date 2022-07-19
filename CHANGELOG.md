@@ -1,5 +1,6 @@
 # Change Log
 
+## 7.5.3
 ## Added
 - Catalan translation
 - macro launch setting

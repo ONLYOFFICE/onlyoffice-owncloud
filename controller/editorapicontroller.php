@@ -265,7 +265,7 @@ class EditorApiController extends OCSController {
 
         $fileName = $file->getName();
         $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-        $format = !empty($ext) ? $this->config->FormatsSetting()[$ext] : null;
+        $format = !empty($ext) && array_key_exists($ext, $this->config->FormatsSetting()) ? $this->config->FormatsSetting()[$ext] : null;
         if (!isset($format)) {
             $this->logger->info("Format is not supported for editing: $fileName", ["app" => $this->appName]);
             return new JSONResponse(["error" => $this->trans->t("Format is not supported")]);
@@ -626,8 +626,7 @@ class EditorApiController extends OCSController {
 
         $fileUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".callback.download", ["doc" => $hashUrl]);
 
-        if (!empty($this->config->GetStorageUrl())
-            && !$changes) {
+        if (!empty($this->config->GetStorageUrl())) {
             $fileUrl = str_replace($this->urlGenerator->getAbsoluteURL("/"), $this->config->GetStorageUrl(), $fileUrl);
         }
 
@@ -686,9 +685,19 @@ class EditorApiController extends OCSController {
             $params["editorConfig"]["customization"]["reviewDisplay"] = $reviewDisplay;
         }
 
+        $theme = $this->config->GetCustomizationTheme();
+        if (isset($theme)) {
+            $params["editorConfig"]["customization"]["uiTheme"] = $theme;
+        }
+
         //default is false
         if ($this->config->GetCustomizationToolbarNoTabs() === true) {
             $params["editorConfig"]["customization"]["toolbarNoTabs"] = true;
+        }
+
+        //default is true
+        if($this->config->GetCustomizationMacros() === false) {
+            $params["editorConfig"]["customization"]["macros"] = false;
         }
 
 

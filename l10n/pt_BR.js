@@ -78,6 +78,7 @@ OC.L10N.register(
     "Keep intermediate versions when editing (forcesave)": "Manter versões intermediárias ao editar (forçar salvar)",
     "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "Usar ONLYOFFICE para gerar uma visualização do documento (ocupará espaço em disco)",
     "Keep metadata for each version once the document is edited (it will take up disk space)": "Manter os metadados para cada versão após a edição (ocupará espaço em disco)  (ocupará espaço em disco)",
+    "Clear": "Limpar",
     "All history successfully deleted": "O histórico foi excluído com sucesso",
     "Create": "Criar",
     "Select template" : "Selecionar um modelo",
@@ -97,13 +98,17 @@ OC.L10N.register(
     "Origin format": "Formato de origem",
     "Failed to send notification": "Falha ao enviar notificação",
     "Notification sent successfully": "Notificação enviada com sucesso",
-    "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s mencionado em %2\$s: \"%3\$s\".",
+    "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s mencionado você em %2\$s: \"%3\$s\".",
     "Choose a format to convert {fileName}": "Escolha um formato para converter {fileName}",
     "Form template": "Modelo de formulário",
     "Form template from existing text file": "Modelo de formulário a partir de arquivo de texto existente",
     "Create form": "Criar formulário",
     "Fill in form in ONLYOFFICE": "Preencher formulário no ONLYOFFICE",
     "Create new Form template": "Criar novo modelo de Formulário",
-    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Atualize o ONLYOFFICE Docs para a versão 7.0 para trabalhar em formulários preenchíveis online"
+    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Atualize o ONLYOFFICE Docs para a versão 7.0 para trabalhar em formulários preenchíveis online",
+    "Security": "Segurança",
+    "Light": "Claro",
+    "Classic Light": "Clássico claro",
+    "Dark": "Escuro"
 },
 "nplurals=2; plural=(n > 1);");

@@ -78,6 +78,7 @@ OC.L10N.register(
     "Keep intermediate versions when editing (forcesave)": "Zachowuj wersje pośrednie w trakcie edycji (zapisuj automatycznie)",
     "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "Skorzystaj z ONLYOFFICE, aby wygenerować podgląd dokumentu (zajmie to miejsce na dysku)",
     "Keep metadata for each version once the document is edited (it will take up disk space)": "Zachowaj metadane dla każdej wersji, gdy dokument jest edytowany (zajmie to miejsce na dysku)",
+    "Clear": "Wyczyść",
     "All history successfully deleted": "Cała historia została pomyślnie usunięta",
     "Create": "Utwórz",
     "Select template" : "Wybierz szablon",
@@ -97,13 +98,17 @@ OC.L10N.register(
     "Origin format": "Oryginalny format",
     "Failed to send notification": "Nie udało się wysłać powiadomienia",
     "Notification sent successfully": "Powiadomienie zostało wysłane",
-    "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s dodał(a) w %2\$s następujący komentarz: \"%3\$s\".",
+    "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s dodał(a) Cię w %2\$s następujący komentarz: \"%3\$s\".",
     "Choose a format to convert {fileName}": "Wybierz format, do którego chcesz przekonwertować {fileName}",
     "Form template": "Szablon formularza",
     "Form template from existing text file": "Szablon formularza z istniejącego pliku tekstowego",
     "Create form": "Utwórz formularz",
     "Fill in form in ONLYOFFICE": "Wypełnić formularz w ONLYOFFICE",
     "Create new Form template": "Utwórz nowy szablon formularza",
-    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Zaktualizuj ONLYOFFICE Docs do wersji 7.0, aby działały w formularzach do wypełniania online"
+    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Zaktualizuj ONLYOFFICE Docs do wersji 7.0, aby działały w formularzach do wypełniania online",
+    "Security": "Bezpieczeństwo",
+    "Light": "Jasny",
+    "Classic Light": "Klasyczny jasny",
+    "Dark": "Ciemny"
 },
 "nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);");

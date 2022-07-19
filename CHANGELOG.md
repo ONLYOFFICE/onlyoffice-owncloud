@@ -1,5 +1,11 @@
 # Change Log
 
+## 7.5.3
+## Added
+- Catalan translation
+- macro launch setting
+- theme setting
+
 ## 7.3.3
 ## Added
 - Turkish and Galician empty file templates

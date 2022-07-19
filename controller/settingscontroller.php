@@ -125,7 +125,9 @@ class SettingsController extends Controller {
             "help" => $this->config->GetCustomizationHelp(),
             "toolbarNoTabs" => $this->config->GetCustomizationToolbarNoTabs(),
             "successful" => $this->config->SettingsAreSuccessful(),
+            "macros" => $this->config->GetCustomizationMacros(),
             "reviewDisplay" => $this->config->GetCustomizationReviewDisplay(),
+            "theme" => $this->config->GetCustomizationTheme(),
             "templates" => $this->GetGlobalTemplates()
         ];
         return new TemplateResponse($this->appName, "settings", $data, "blank");
@@ -203,6 +205,7 @@ class SettingsController extends Controller {
      * @param bool $help - display help
      * @param bool $toolbarNoTabs - display toolbar tab
      * @param string $reviewDisplay - review viewing mode
+     * @param string $theme - default theme mode
      *
      * @return array
      */
@@ -218,7 +221,8 @@ class SettingsController extends Controller {
                                     $forcesave,
                                     $help,
                                     $toolbarNoTabs,
-                                    $reviewDisplay
+                                    $reviewDisplay,
+                                    $theme
                                     ) {
 
         $this->config->SetDefaultFormats($defFormats);
@@ -234,6 +238,22 @@ class SettingsController extends Controller {
         $this->config->SetCustomizationHelp($help);
         $this->config->SetCustomizationToolbarNoTabs($toolbarNoTabs);
         $this->config->SetCustomizationReviewDisplay($reviewDisplay);
+        $this->config->SetCustomizationTheme($theme);
+
+        return [
+            ];
+    }
+
+    /**
+     * Save security settings
+     *
+     * @param bool $macros - run document macros
+     *
+     * @return array
+     */
+    public function SaveSecurity($macros) {
+
+        $this->config->SetCustomizationMacros($macros);
 
         return [
             ];

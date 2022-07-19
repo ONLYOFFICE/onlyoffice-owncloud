@@ -76,6 +76,7 @@
     "Keep intermediate versions when editing (forcesave)": "Хранить промежуточные версии при редактировании (принудительное сохранение)",
     "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "Использовать ONLYOFFICE для создания превью документа (займет место на диске)",
     "Keep metadata for each version once the document is edited (it will take up disk space)": "Сохранять метаданные для каждой версии после редактирования (займет место на диске)",
+    "Clear": "Очистить",
     "All history successfully deleted": "История успешно удалена",
     "Create": "Создать",
     "Select template" : "Выбрать шаблон",
@@ -95,13 +96,19 @@
     "Origin format": "Оригинальный формат",
     "Failed to send notification": "Ошибка отправки оповещения",
     "Notification sent successfully": "Оповещение успешно отправлено",
-    "%1$s mentioned in the %2$s: \"%3$s\".": "%1$s упомянул в %2$s: \"%3$s\".",
+    "%1$s mentioned in the %2$s: \"%3$s\".": "%1$s упомянул вас в %2$s: \"%3$s\".",
     "Choose a format to convert {fileName}": "Выберите формат для {fileName}",
     "Form template": "Шаблон формы",
     "Form template from existing text file": "Шаблон формы из существующего текстового файла",
     "Create form": "Создать форму",
     "Fill in form in ONLYOFFICE": "Заполнить форму в ONLYOFFICE",
     "Create new Form template": "Создать новый шаблон формы",
-    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Обновите сервер ONLYOFFICE Docs до версии 7.0 для работы с формами онлайн"
+    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Обновите сервер ONLYOFFICE Docs до версии 7.0 для работы с формами онлайн",
+    "Security": "Безопасность",
+    "Run document macros": "Запускать макросы документа",
+    "Default editor theme": "Тема редактора по умолчанию",
+    "Light": "Светлая",
+    "Classic Light": "Светлая классическая",
+    "Dark": "Темная"
 },"pluralForm" :"nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);"
 }

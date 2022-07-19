@@ -136,6 +136,7 @@
             var help = $("#onlyofficeHelp").is(":checked");
             var toolbarNoTabs = $("#onlyofficeToolbarNoTabs").is(":checked");
             var reviewDisplay = $("input[type='radio'][name='reviewDisplay']:checked").attr("id").replace("onlyofficeReviewDisplay_", "");
+            var theme = $("input[type='radio'][name='theme']:checked").attr("id").replace("onlyofficeTheme_", "");
 
             $.ajax({
                 method: "PUT",
@@ -153,7 +154,31 @@
                     forcesave: forcesave,
                     help: help,
                     toolbarNoTabs: toolbarNoTabs,
-                    reviewDisplay: reviewDisplay
+                    reviewDisplay: reviewDisplay,
+                    theme: theme
+                },
+                success: function onSuccess(response) {
+                    $(".section-onlyoffice").removeClass("icon-loading");
+                    if (response) {
+                        var message = t(OCA.Onlyoffice.AppName, "Settings have been successfully updated");
+                        OC.Notification.show(message, {
+                            timeout: 3
+                        });
+                    }
+                }
+            });
+        });
+
+        $("#onlyofficeSecuritySave").click(function () {
+            $(".section-onlyoffice").addClass("icon-loading");
+
+            var macros = $("#onlyofficeMacros").is(":checked");
+
+            $.ajax({
+                method: "PUT",
+                url: OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/settings/security"),
+                data: {
+                    macros: macros
                 },
                 success: function onSuccess(response) {
                     $(".section-onlyoffice").removeClass("icon-loading");

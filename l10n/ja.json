@@ -76,6 +76,7 @@
     "Keep intermediate versions when editing (forcesave)": "編集時に、中間バージョンを保持する (強制保存)",
     "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "ONLYOFFICEを使用して、ドキュメントプレビューを生成する（ディスク容量がかかる）",
     "Keep metadata for each version once the document is edited (it will take up disk space)": "ドキュメントが編集されたら、各バージョンのメタデータを保持する（ディスクス容量がかかる）",
+    "Clear": "消去",
     "All history successfully deleted": "すべての履歴が正常に削除されました",
     "Create": "作成",
     "Select template" : "テンプレートを選択する",
@@ -95,13 +96,19 @@
     "Origin format": "オリジンの形式",
     "Failed to send notification": "通知を送信できませんでした",
     "Notification sent successfully": "通知を送信しました",
-    "%1$s mentioned in the %2$s: \"%3$s\".": "%1$s は %2$s: \"%3$s\"に記載されました。",
+    "%1$s mentioned in the %2$s: \"%3$s\".": "%1$s は あなたを %2$s: \"%3$s\"に記載されました。",
     "Choose a format to convert {fileName}": "{fileName}を変換する形式を選択してください",
     "Form template": "フォーム テンプレート",
     "Form template from existing text file": "既存のテキストファイルからフォームテンプレートを作成する",
     "Create form": "フォームの作成",
     "Fill in form in ONLYOFFICE": "ONLYOFFICEでフォームを記入する",
     "Create new Form template": "新しいフォームテンプレートの作成",
-    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "オンラインで入力可能なフォームを作成するには、ONLYOFFICE Docs 7.0版まで更新してください"
+    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "オンラインで入力可能なフォームを作成するには、ONLYOFFICE Docs 7.0版まで更新してください",
+    "Security": "セキュリティ",
+    "Run document macros": "ドキュメントマクロを実行する",
+    "Default editor theme": "デフォルトのエディタテーマ",
+    "Light": "明るい",
+    "Classic Light": "明るい(クラシック)",
+    "Dark": "ダーク"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

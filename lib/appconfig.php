@@ -173,6 +173,13 @@ class AppConfig {
     private $_customizationReviewDisplay = "customizationReviewDisplay";
 
     /**
+     * The config key for the theme setting
+     *
+     * @var string
+     */
+    private $_customizationTheme = "customizationTheme";
+
+    /**
      * The config key for the setting limit groups
      *
      * @var string
@@ -262,6 +269,13 @@ class AppConfig {
      * @var string
      */
     public $_customization_goback = "customization_goback";
+
+    /**
+     * The config key for the macros
+     *
+     * @var string
+     */
+    public $_customization_macros = "customization_macros";
 
     /**
      * @param string $AppName - application name
@@ -807,6 +821,53 @@ class AppConfig {
     }
 
     /**
+     * Save theme setting
+     *
+     * @param string $value - theme
+     */
+    public function SetCustomizationTheme($value) {
+        $this->logger->info("Set theme: " . $value, array("app" => $this->appName));
+
+        $this->config->setAppValue($this->appName, $this->_customizationTheme, $value);
+    }
+
+    /**
+     * Get theme setting
+     *
+     * @return string
+     */
+    public function GetCustomizationTheme() {
+        $value = $this->config->getAppValue($this->appName, $this->_customizationTheme, "theme-classic-light");
+        if ($value === "theme-light") {
+            return "theme-light";
+        }
+        if ($value === "theme-dark") {
+            return "theme-dark";
+        }
+        return "theme-classic-light";
+    }
+
+    /**
+     * Save macros setting
+     *
+     * @param bool $value - enable macros
+     */
+    public function SetCustomizationMacros($value) {
+        $this->logger->info("Set macros enabled: " . json_encode($value), ["app" => $this->appName]);
+
+        $this->config->setAppValue($this->appName, $this->_customization_macros, json_encode($value));
+    }
+
+    /**
+     * Get macros setting
+     *
+     * @return bool
+     */
+    public function GetCustomizationMacros() {
+        return $this->config->getAppValue($this->appName, $this->_customization_macros, "true") === "true";
+    }
+
+    /**
      * Save the list of groups
      *
      * @param array $groups - the list of groups
@@ -1016,7 +1077,6 @@ class AppConfig {
         }
         return "";
     }
-
 
     /**
      * Additional data about formats

@@ -78,6 +78,7 @@ OC.L10N.register(
     "Keep intermediate versions when editing (forcesave)": "Хранить промежуточные версии при редактировании (принудительное сохранение)",
     "Use ONLYOFFICE to generate a document preview (it will take up disk space)": "Использовать ONLYOFFICE для создания превью документа (займет место на диске)",
     "Keep metadata for each version once the document is edited (it will take up disk space)": "Сохранять метаданные для каждой версии после редактирования (займет место на диске)",
+    "Clear": "Очистить",
     "All history successfully deleted": "История успешно удалена",
     "Create": "Создать",
     "Select template" : "Выбрать шаблон",

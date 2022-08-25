@@ -750,7 +750,9 @@ class AppConfig {
      * @return bool
      */
     public function GetCustomizationForcesave() {
-        return $this->config->getAppValue($this->appName, $this->_customizationForcesave, "false") === "true";
+        $value = $this->config->getAppValue($this->appName, $this->_customizationForcesave, "false") === "true";
+
+        return $value && ($this->checkEncryptionModule() === false);
     }
 
     /**

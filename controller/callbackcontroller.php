@@ -573,6 +573,11 @@ class CallbackController extends Controller {
                         FileVersions::saveAuthor($file->getFileInfo(), $user);
                     }
 
+                    if ($this->config->checkEncryptionModule() === "master"
+                        && !$isForcesave) {
+                        KeyManager::delete($fileId);
+                    }
+
                     $result = 0;
                 } catch (\Exception $e) {
                     $this->logger->logException($e, ["message" => "Track: $fileId status $status error", "app" => $this->appName]);

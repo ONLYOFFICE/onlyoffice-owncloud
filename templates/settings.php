@@ -167,7 +167,7 @@
             <?php if ($_["encryption"] !== false) { ?>disabled="disabled"<?php } ?>/>
         <label for="onlyofficeForcesave"><?php p($l->t("Keep intermediate versions when editing (forcesave)")) ?></label>
         <br />
-        <em><?php p($l->t("This feature is unavailable due to encryption settings.")) ?></em>
+        <em class="onlyoffice-option-desc"><?php p($l->t("This feature is unavailable due to encryption settings.")) ?></em>
         </p>
 
         <p class="onlyoffice-header">

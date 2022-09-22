@@ -365,6 +365,7 @@ class EditorApiController extends OCSController {
 
                 if ($accountId !== $activeLock->getOwnerAccountId()) {
                     $isPersistentLock = true;
+                    $lockOwner = $activeLock->getOwner();
                     $this->logger->debug("File $fileId is locked by $lockOwner", ["app" => $this->appName]);
                 }
             }

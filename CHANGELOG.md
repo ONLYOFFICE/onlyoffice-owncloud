@@ -1,5 +1,9 @@
 # Change Log
 
+##
+## Changed
+- compatible with ownCloud 10.11
+
 ## 7.5.3
 ## Added
 - Catalan translation

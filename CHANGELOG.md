@@ -1,6 +1,6 @@
 # Change Log
 
-##
+## 7.5.4
 ## Changed
 - compatible with ownCloud 10.11
 

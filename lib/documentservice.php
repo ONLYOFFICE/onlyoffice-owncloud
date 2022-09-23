@@ -97,7 +97,7 @@ class DocumentService {
         $isEndConvert = $responceFromConvertService->EndConvert;
 
         if ($isEndConvert !== null && strtolower($isEndConvert) === "true") {
-            return $responceFromConvertService->FileUrl;
+            return (string)$responceFromConvertService->FileUrl;
         }
 
         return "";

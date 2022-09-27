@@ -3,6 +3,10 @@
 ## Changed
 - fix edit of locked file
 
+## 7.5.4
+## Changed
+- compatible with ownCloud 10.11
+
 ## 7.5.3
 ## Added
 - Catalan translation

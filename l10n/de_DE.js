@@ -111,6 +111,7 @@ OC.L10N.register(
     "Default editor theme": "Standardmäßiges Thema des Editors",
     "Light": "Hell",
     "Classic Light": "Klassisch Hell",
-    "Dark": "Dunkel"
+    "Dark": "Dunkel",
+    "This feature is unavailable due to encryption settings.": "Diese Funktion ist wegen der Verschlüsselungseinstellungen nicht verfügbar"
 },
 "nplurals=2; plural=(n != 1);");

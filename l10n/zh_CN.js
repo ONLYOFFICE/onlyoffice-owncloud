@@ -110,6 +110,7 @@ OC.L10N.register(
     "Default editor theme": "编辑器默认的主题",
     "Light": "光",
     "Classic Light": "经典浅色",
-    "Dark": "黑暗的"
+    "Dark": "黑暗的",
+    "This feature is unavailable due to encryption settings.": "由于加密设置，该功能不可用。"
 },
 "nplurals=1; plural=0;");

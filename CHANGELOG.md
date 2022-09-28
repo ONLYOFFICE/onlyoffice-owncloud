@@ -2,6 +2,7 @@
 
 ## Added
 - Chinese (Traditional, Taiwan), Basque (Spain), Armenian and Malay (Malaysia) empty file templates
+- disable plugins setting
 
 ## Changed
 - fix edit of locked file

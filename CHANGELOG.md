@@ -1,6 +1,7 @@
 # Change Log
 
 ## Added
+- Dutch translation
 - Chinese (Traditional, Taiwan), Basque (Spain), Armenian and Malay (Malaysia) empty file templates
 
 ## Changed

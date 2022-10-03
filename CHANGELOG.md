@@ -5,6 +5,7 @@
 
 ## Changed
 - fix edit of locked file
+- generate preview by default
 
 ## 7.5.4
 ## Changed

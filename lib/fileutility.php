@@ -304,7 +304,7 @@ class FileUtility {
         $client = $httpClientService->newClient();
         $response = $client->post($remote . "/ocs/v2.php/apps/" . $this->appName . "/api/v1/key?format=json", [
             "timeout" => 5,
-            "body" => [
+            "json" => [
                 "shareToken" => $shareToken,
                 "path" => $internalPath
             ]

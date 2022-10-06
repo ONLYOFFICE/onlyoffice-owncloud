@@ -7,6 +7,7 @@
 ## Changed
 - fix edit of locked file
 - generate preview by default
+- fix collaboration of federated files
 
 ## 7.5.4
 ## Changed

@@ -152,4 +152,19 @@ class FederationController extends OCSController {
         $this->logger->debug("Federated request lock for " . $fileId, ["app" => $this->appName]);
         return new Result();
     }
+
+    /**
+     * Health check instance
+     *
+     * @return Result
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * @PublicPage
+     */
+    public function healthcheck() {
+        $this->logger->debug("Federated healthcheck", ["app" => $this->appName]);
+
+        return new Result(["alive" => true]);
+    }
 }

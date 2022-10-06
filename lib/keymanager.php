@@ -175,7 +175,7 @@ class KeyManager {
         $client = $httpClientService->newClient();
         $data = [
             "timeout" => 5,
-            "body" => [
+            "json" => [
                 "shareToken" => $shareToken,
                 "path" => $internalPath,
                 "lock" => $lock

@@ -182,7 +182,7 @@ class KeyManager {
             ]
         ];
         if (!empty($fs)) {
-            $data["body"]["fs"] = $fs;
+            $data["json"]["fs"] = $fs;
         }
 
         try {

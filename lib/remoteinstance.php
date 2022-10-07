@@ -19,6 +19,8 @@
 
 namespace OCA\Onlyoffice;
 
+use OCP\Files\File;
+
 /**
  * Remote instance manager
  *
@@ -153,5 +155,94 @@ class RemoteInstance {
         self::$healthRemote[$remote] = $status;
 
         return self::$healthRemote[$remote];
+    }
+
+    /**
+     * Generate unique document identifier in federated share
+     *
+     * @param File $file - file
+     *
+     * @return string
+     */
+    public function getRemoteKey($file) {
+        $logger = \OC::$server->getLogger();
+
+        $remote = $file->getStorage()->getRemote();
+        $shareToken = $file->getStorage()->getToken();
+        $internalPath = $file->getInternalPath();
+
+        $httpClientService = \OC::$server->getHTTPClientService();
+        $client = $httpClientService->newClient();
+        $response = $client->post($remote . "/ocs/v2.php/apps/" . self::App_Name . "/api/v1/key?format=json", [
+            "timeout" => 5,
+            "json" => [
+                "shareToken" => $shareToken,
+                "path" => $internalPath
+            ]
+        ]);
+        $body = \json_decode($response->getBody(), true);
+
+        $data = $body["ocs"]["data"];
+        if (!empty($data["error"])) {
+            $logger->error("Error federated key " . $data["error"], ["app" => self::App_Name]);
+            return null;
+        }
+
+        $key = $data["key"];
+        $logger->debug("Federated key: $key", ["app" => self::App_Name]);
+
+        return $key;
+    }
+
+    /**
+     * Change lock status in the federated share
+     *
+     * @param File $file - file
+     * @param bool $lock - status
+     * @param bool $fs - status
+     *
+     * @return bool
+     */
+    public static function lockRemoteKey($file, $lock, $fs) {
+        $logger = \OC::$server->getLogger();
+        $action = $lock ? "lock" : "unlock";
+
+        $remote = $file->getStorage()->getRemote();
+        $shareToken = $file->getStorage()->getToken();
+        $internalPath = $file->getInternalPath();
+
+        $httpClientService = \OC::$server->getHTTPClientService();
+        $client = $httpClientService->newClient();
+        $data = [
+            "timeout" => 5,
+            "json" => [
+                "shareToken" => $shareToken,
+                "path" => $internalPath,
+                "lock" => $lock
+            ]
+        ];
+        if (!empty($fs)) {
+            $data["json"]["fs"] = $fs;
+        }
+
+        try {
+            $response = $client->post($remote . "/ocs/v2.php/apps/" . self::App_Name . "/api/v1/keylock?format=json", $data);
+            $body = \json_decode($response->getBody(), true);
+
+            $data = $body["ocs"]["data"];
+
+            if (empty($data)) {
+                $logger->debug("Federated request" . $action . "for " . $file->getFileInfo()->getId() . " is successful", ["app" => self::App_Name]);
+                return true;
+            }
+
+            if (!empty($data["error"])) {
+                $logger->error("Error" . $action . "federated key for " . $file->getFileInfo()->getId() . ": " . $data["error"], ["app" => self::App_Name]);
+                return false;
+            }
+        } catch(\Exception $e) {
+            $logger->logException($e, ["message" => "Failed to request federated " . $action . " for " . $file->getFileInfo()->getId(), "app" => self::App_Name]);
+            return false;
+        }
     }
 }

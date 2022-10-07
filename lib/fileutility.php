@@ -32,6 +32,7 @@ use OCA\Files_Sharing\External\Storage as SharingExternalStorage;
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Version;
 use OCA\Onlyoffice\KeyManager;
+use OCA\Onlyoffice\RemoteInstance;
 
 /**
  * File utility
@@ -225,7 +226,7 @@ class FileUtility {
             && $file->getStorage()->instanceOfStorage(SharingExternalStorage::class)) {
 
             try {
-                $key = $this->getFederatedKey($file);
+                $key = RemoteInstance::getRemoteKey($file);
 
                 if (!empty($key)) {
                     return $key;
@@ -286,41 +287,6 @@ class FileUtility {
         }
 
         return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
-    }
-
-    /**
-     * Generate unique document identifier in federated share
-     *
-     * @param File $file - file
-     *
-     * @return string
-     */
-    private function getFederatedKey($file) {
-        $remote = $file->getStorage()->getRemote();
-        $shareToken = $file->getStorage()->getToken();
-        $internalPath = $file->getInternalPath();
-
-        $httpClientService = \OC::$server->getHTTPClientService();
-        $client = $httpClientService->newClient();
-        $response = $client->post($remote . "/ocs/v2.php/apps/" . $this->appName . "/api/v1/key?format=json", [
-            "timeout" => 5,
-            "json" => [
-                "shareToken" => $shareToken,
-                "path" => $internalPath
-            ]
-        ]);
-        $body = \json_decode($response->getBody(), true);
-
-        $data = $body["ocs"]["data"];
-        if (!empty($data["error"])) {
-            $this->logger->error("Error federated key " . $data["error"], ["app" => $this->appName]);
-            return null;
-        }
-
-        $key = $data["key"];
-        $this->logger->debug("Federated key: $key", ["app" => $this->appName]);
-
-        return $key;
     }
 
     /**

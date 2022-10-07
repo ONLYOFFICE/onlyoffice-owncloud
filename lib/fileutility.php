@@ -27,8 +27,6 @@ use OCP\ILogger;
 use OCP\ISession;
 use OCP\Share\IManager;
 
-use OCA\Files_Sharing\External\Storage as SharingExternalStorage;
-
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Version;
 use OCA\Onlyoffice\KeyManager;
@@ -223,7 +221,7 @@ class FileUtility {
         $fileId = $file->getId();
 
         if ($origin
-            && $file->getStorage()->instanceOfStorage(SharingExternalStorage::class)) {
+            && RemoteInstance::isRemoteFile($file)) {
 
             try {
                 $key = RemoteInstance::getRemoteKey($file);

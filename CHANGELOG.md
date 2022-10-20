@@ -1,5 +1,16 @@
 # Change Log
 
+## 7.6.7
+## Added
+- Dutch translation
+- Chinese (Traditional, Taiwan), Basque (Spain), Armenian and Malay (Malaysia) empty file templates
+
+## Changed
+- fix edit locked file
+- generate preview by default
+- fix collaboration of federated files
+- disable forcesave on encryption
+
 ## 7.5.4
 ## Changed
 - compatible with ownCloud 10.11

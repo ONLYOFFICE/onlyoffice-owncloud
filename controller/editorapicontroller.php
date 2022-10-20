@@ -244,8 +244,10 @@ class EditorApiController extends OCSController {
 
         $user = $this->userSession->getUser();
         $userId = null;
+        $accountId = null;
         if (!empty($user)) {
             $userId = $user->getUID();
+            $accountId = $user->getAccountId();
         }
 
         list ($file, $error, $share) = empty($shareToken) ? $this->getFile($userId, $fileId, $filePath, $template) : $this->fileUtility->getFileByToken($fileId, $shareToken);
@@ -360,9 +362,10 @@ class EditorApiController extends OCSController {
             $locks = $fileStorage->getLocks($file->getFileInfo()->getInternalPath(), false);
             if (count($locks) > 0) {
                 $activeLock = $locks[0];
-                $lockOwner = explode(' ', trim($activeLock->getOwner()))[0];
-                if ($userId !== $lockOwner) {
+
+                if ($accountId !== $activeLock->getOwnerAccountId()) {
                     $isPersistentLock = true;
+                    $lockOwner = $activeLock->getOwner();
                     $this->logger->debug("File $fileId is locked by $lockOwner", ["app" => $this->appName]);
                 }
             }

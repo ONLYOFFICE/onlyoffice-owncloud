@@ -111,6 +111,7 @@ OC.L10N.register(
     "Default editor theme": "Tema del editor predeterminado",
     "Light": "Claro",
     "Classic Light": "Clásico claro",
-    "Dark": "Oscuro"
+    "Dark": "Oscuro",
+    "This feature is unavailable due to encryption settings.": "Esta característica no está disponible debido a la configuración de cifrado."
 },
 "nplurals=2; plural=(n != 1);");

@@ -116,7 +116,7 @@ class SettingsController extends Controller {
             "sameTab" => $this->config->GetSameTab(),
             "preview" => $this->config->GetPreview(),
             "versionHistory" => $this->config->GetVersionHistory(),
-            "encryption" => ($this->config->checkEncryptionModule() === true),
+            "encryption" => $this->config->checkEncryptionModule(),
             "limitGroups" => $this->config->GetLimitGroups(),
             "chat" => $this->config->GetCustomizationChat(),
             "compactHeader" => $this->config->GetCustomizationCompactHeader(),

@@ -63,7 +63,10 @@
     -moz-column-width: 140px;
     -webkit-column-width: 140px;
 }
-#personal-show + label{
+#personal-show + label {
     margin-top: -25px;
     margin-left: 230px;
+}
+.onlyoffice-option-desc {
+    margin-left: 20px;
 }

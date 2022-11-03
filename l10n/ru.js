@@ -112,6 +112,7 @@ OC.L10N.register(
     "Light": "Светлая",
     "Classic Light": "Светлая классическая",
     "Dark": "Темная",
-    "This feature is unavailable due to encryption settings.": "Данная функция недоступна из-за настроек шифрования"
+    "This feature is unavailable due to encryption settings.": "Данная функция недоступна из-за настроек шифрования",
+    "Enable plugins": "Включить работу с плагинами"
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");

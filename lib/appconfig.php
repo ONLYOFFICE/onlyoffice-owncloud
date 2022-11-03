@@ -657,7 +657,7 @@ class AppConfig {
      * @return bool
      */
     public function GetPreview() {
-        return $this->config->getAppValue($this->appName, $this->_preview, "false") === "true";
+        return $this->config->getAppValue($this->appName, $this->_preview, "true") === "true";
     }
 
     /**
@@ -757,7 +757,9 @@ class AppConfig {
      * @return bool
      */
     public function GetCustomizationForcesave() {
-        return $this->config->getAppValue($this->appName, $this->_customizationForcesave, "false") === "true";
+        $value = $this->config->getAppValue($this->appName, $this->_customizationForcesave, "false") === "true";
+
+        return $value && ($this->checkEncryptionModule() === false);
     }
 
     /**

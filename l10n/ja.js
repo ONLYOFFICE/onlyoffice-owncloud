@@ -111,6 +111,7 @@ OC.L10N.register(
     "Default editor theme": "エディターのデフォルトテーマ",
     "Light": "明るい",
     "Classic Light": "ライト(クラシック)",
-    "Dark": "ダーク"
+    "Dark": "ダーク",
+    "This feature is unavailable due to encryption settings.": "この機能は暗号化の設定により使用できません。"
 },
 "nplurals=1; plural=0;");

@@ -30,7 +30,7 @@
 
     <h2><?php p($l->t("Server settings")) ?></h2>
 
-    <?php if ($_["encryption"]) { ?>
+    <?php if ($_["encryption"] === true) { ?>
     <p class="onlyoffice-error">
         <?php p($l->t("Encryption App is enabled, the application cannot work. You can continue working with the application if you enable master key.")) ?>
         <a target="_blank" class="icon-info svg" title="" href="https://api.onlyoffice.com/editors/owncloud#masterKey" data-original-title="encryption:enable-master-key"></a>
@@ -169,8 +169,13 @@
 
         <p>
         <input type="checkbox" class="checkbox" id="onlyofficeForcesave"
-            <?php if ($_["forcesave"]) { ?>checked="checked"<?php } ?> />
+            <?php if ($_["forcesave"]) { ?>checked="checked"<?php } ?>
+            <?php if ($_["encryption"] !== false) { ?>disabled="disabled"<?php } ?>/>
         <label for="onlyofficeForcesave"><?php p($l->t("Keep intermediate versions when editing (forcesave)")) ?></label>
+        <?php if ($_["encryption"] !== false) { ?>
+            <br />
+            <em class="onlyoffice-option-desc"><?php p($l->t("This feature is unavailable due to encryption settings.")) ?></em>
+        <?php } ?>
         </p>
 
         <p class="onlyoffice-header">

@@ -28,12 +28,11 @@ use OCP\Share\IManager;
 
 use OC\OCS\Result;
 
-use OCA\Files_Sharing\External\Storage as SharingExternalStorage;
-
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\DocumentService;
 use OCA\Onlyoffice\FileUtility;
 use OCA\Onlyoffice\KeyManager;
+use OCA\Onlyoffice\RemoteInstance;
 
 /**
  * OCS handler
@@ -137,8 +136,8 @@ class FederationController extends OCSController {
 
         $fileId = $file->getId();
 
-        if ($file->getStorage()->instanceOfStorage(SharingExternalStorage::class)) {
-            $isLock = KeyManager::lockFederatedKey($file, $lock, $fs);
+        if (RemoteInstance::isRemoteFile($file)) {
+            $isLock = RemoteInstance::lockRemoteKey($file, $lock, $fs);
             if (!$isLock) {
                 return new Result(["error" => "Failed request"]);
             }
@@ -151,5 +150,20 @@ class FederationController extends OCSController {
 
         $this->logger->debug("Federated request lock for " . $fileId, ["app" => $this->appName]);
         return new Result();
+    }
+
+    /**
+     * Health check instance
+     *
+     * @return Result
+     *
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * @PublicPage
+     */
+    public function healthcheck() {
+        $this->logger->debug("Federated healthcheck", ["app" => $this->appName]);
+
+        return new Result(["alive" => true]);
     }
 }

@@ -109,7 +109,7 @@
             winEditor.location.href = url;
         } else if (!OCA.Onlyoffice.setting.sameTab || OCA.Onlyoffice.mobile || OCA.Onlyoffice.Desktop) {
             winEditor = window.open(url, "_blank");
-        } else if ($("#isPublic").val() === "1" && !$("#filestable").length) {
+        } else if ($("#isPublic").val() === "1" && $("#mimetype").val() !== "httpd/unix-directory") {
             location.href = url;
         } else {
             var $iframe = $("<iframe id=\"onlyofficeFrame\" nonce=\"" + btoa(OC.requestToken) + "\" scrolling=\"no\" allowfullscreen src=\"" + url + "&inframe=true\" />");
@@ -522,7 +522,7 @@
     }
 
     var initPage = function () {
-        if ($("#isPublic").val() === "1" && !$("#filestable").length) {
+        if ($("#isPublic").val() === "1" && $("#mimetype").val() !== "httpd/unix-directory") {
             var fileName = $("#filename").val();
             var extension = OCA.Onlyoffice.GetFileExtension(fileName);
 

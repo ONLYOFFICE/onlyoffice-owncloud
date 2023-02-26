@@ -51,7 +51,6 @@ If the server with the ownCloud installed does not have an Internet access, or i
     ```
 
 2. Get the ownCloud ONLYOFFICE integration app.
-
 There are several ways to do that:
 
     a. Download the latest signed version from the official store for [ownCloud](https://marketplace.owncloud.com/apps/onlyoffice).
@@ -59,14 +58,13 @@ There are several ways to do that:
     b. Or you can download the latest signed version from the application [release page](https://github.com/ONLYOFFICE/onlyoffice-owncloud/releases) on GitHub.
 
     c. Or you can clone the application source code and compile it yourself:
-
     ```bash
     git clone https://github.com/ONLYOFFICE/onlyoffice-owncloud.git onlyoffice
     cd onlyoffice
     git submodule update --init --recursive
     ```
 
-    > ownCloud does not work with unsigned applications giving an alert, so you will need to use either option **a** or **b** to get the application.
+    ownCloud does not work with unsigned applications giving an alert, so you will need to use either option **a** or **b** to get the application.
 
 3. Change the owner to update the application right from ownCloud web interface:
 

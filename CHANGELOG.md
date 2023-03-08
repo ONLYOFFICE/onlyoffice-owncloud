@@ -1,5 +1,8 @@
 # Change Log
 
+## Added
+- jwt leeway setting
+
 ## 7.6.7
 ## Added
 - Dutch translation

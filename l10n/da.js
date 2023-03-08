@@ -1,7 +1,7 @@
 OC.L10N.register(
     "onlyoffice",
     {
-    "Access denied" : "Adgang nægtet",
+    "Access denied": "Adgang nægtet",
     "Invalid request": "Ugyldig anmodning",
     "Files not found": "Filer ikke fundet",
     "File not found": "Fil ikke fundet",

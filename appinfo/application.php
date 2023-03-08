@@ -91,6 +91,9 @@ class Application extends App {
         require_once __DIR__ . "/../3rdparty/jwt/SignatureInvalidException.php";
         require_once __DIR__ . "/../3rdparty/jwt/JWT.php";
 
+        // Set the leeway for the JWT library in case the system clock is a second off
+        \Firebase\JWT\JWT::$leeway = $this->appConfig->GetJwtLeeway();
+
         $container = $this->getContainer();
 
         $detector = $container->query(IMimeTypeDetector::class);

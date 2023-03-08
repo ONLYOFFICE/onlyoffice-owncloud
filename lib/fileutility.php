@@ -223,14 +223,9 @@ class FileUtility {
         if ($origin
             && RemoteInstance::isRemoteFile($file)) {
 
-            try {
-                $key = RemoteInstance::getRemoteKey($file);
-
-                if (!empty($key)) {
-                    return $key;
-                }
-            } catch (\Exception $e) {
-                $this->logger->logException($e, ["message" => "Failed to request federated key " . $file->getId(), "app" => $this->appName]);
+            $key = RemoteInstance::getRemoteKey($file);
+            if (!empty($key)) {
+                return $key;
             }
         }
 

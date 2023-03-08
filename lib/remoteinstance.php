@@ -184,7 +184,7 @@ class RemoteInstance {
                     "path" => $internalPath
                 ]
             ]);
-            
+
             $body = \json_decode($response->getBody(), true);
 
             $data = $body["ocs"]["data"];

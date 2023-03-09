@@ -4,6 +4,9 @@
 - disable plugins setting
 - jwt leeway setting
 
+## Changed
+- additional check availability for external files when mention
+
 ## 7.6.7
 ## Added
 - Dutch translation

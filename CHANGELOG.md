@@ -4,6 +4,9 @@
 - disable plugins setting
 - jwt leeway setting
 
+## Changed
+- fix notification length
+
 ## 7.6.7
 ## Added
 - Dutch translation

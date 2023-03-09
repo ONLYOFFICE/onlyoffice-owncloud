@@ -116,6 +116,7 @@ class SettingsController extends Controller {
             "sameTab" => $this->config->GetSameTab(),
             "preview" => $this->config->GetPreview(),
             "versionHistory" => $this->config->GetVersionHistory(),
+            "protection" => $this->config->GetProtection(),
             "encryption" => $this->config->checkEncryptionModule(),
             "limitGroups" => $this->config->GetLimitGroups(),
             "chat" => $this->config->GetCustomizationChat(),
@@ -252,12 +253,17 @@ class SettingsController extends Controller {
      * Save security settings
      *
      * @param bool $macros - run document macros
+     * 
+     * @param string $protection - protection
      *
      * @return array
      */
-    public function SaveSecurity($macros) {
+    public function SaveSecurity($macros,
+                                $protection
+                                ) {
 
         $this->config->SetCustomizationMacros($macros);
+        $this->config->SetProtection($protection);
 
         return [
             ];

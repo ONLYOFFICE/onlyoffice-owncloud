@@ -175,12 +175,14 @@
             $(".section-onlyoffice").addClass("icon-loading");
 
             var macros = $("#onlyofficeMacros").is(":checked");
+            var protection = $("input[type='radio'][name='protection']:checked").attr("id").replace("onlyofficeProtection_", "");
 
             $.ajax({
                 method: "PUT",
                 url: OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/settings/security"),
                 data: {
-                    macros: macros
+                    macros: macros,
+                    protection: protection
                 },
                 success: function onSuccess(response) {
                     $(".section-onlyoffice").removeClass("icon-loading");

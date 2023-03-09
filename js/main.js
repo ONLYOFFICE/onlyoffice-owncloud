@@ -477,7 +477,7 @@
     };
 
     OCA.Onlyoffice.GetFileExtension = function (fileName) {
-        var extension = fileName.substr(fileName.lastIndexOf(".") + 1).toLowerCase();
+        var extension = OCA.Onlyoffice.getFileExtension(fileName);
         return extension;
     };
 
@@ -493,7 +493,7 @@
     OCA.Onlyoffice.bindVersionClick = function () {
         OCA.Onlyoffice.unbindVersionClick();
         $(document).on("click.onlyoffice-version", "#versionsTabView .downloadVersion", function() {
-            var ext = $("#app-sidebar .fileName h3").text().split(".").pop();
+            var ext = OCA.Onlyoffice.GetFileExtension($("#app-sidebar .fileName h3").text());
             if (!OCA.Onlyoffice.setting.formats[ext]
                 || !OCA.Onlyoffice.setting.formats[ext].def) {
                 return true;

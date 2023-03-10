@@ -207,7 +207,6 @@ class SettingsController extends Controller {
      * @param bool $toolbarNoTabs - display toolbar tab
      * @param string $reviewDisplay - review viewing mode
      * @param string $theme - default theme mode
-     * @param bool $plugins - enable plugins
      *
      * @return array
      */
@@ -224,8 +223,7 @@ class SettingsController extends Controller {
                                     $help,
                                     $toolbarNoTabs,
                                     $reviewDisplay,
-                                    $theme,
-                                    $plugins
+                                    $theme
                                     ) {
 
         $this->config->SetDefaultFormats($defFormats);
@@ -242,7 +240,6 @@ class SettingsController extends Controller {
         $this->config->SetCustomizationToolbarNoTabs($toolbarNoTabs);
         $this->config->SetCustomizationReviewDisplay($reviewDisplay);
         $this->config->SetCustomizationTheme($theme);
-        $this->config->SetCustomizationPlugins($plugins);
 
         return [
             ];
@@ -252,12 +249,16 @@ class SettingsController extends Controller {
      * Save security settings
      *
      * @param bool $macros - run document macros
-     *
+     * @param bool $plugins - enable plugins
+     * 
      * @return array
      */
-    public function SaveSecurity($macros) {
+    public function SaveSecurity($macros,
+                                $plugins
+                                ) {
 
         $this->config->SetCustomizationMacros($macros);
+        $this->config->SetCustomizationPlugins($plugins);
 
         return [
             ];

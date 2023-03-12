@@ -3,6 +3,7 @@
 ## Added
 - disable plugins setting
 - jwt leeway setting
+- document protection setting
 
 ## Changed
 - fix notification length

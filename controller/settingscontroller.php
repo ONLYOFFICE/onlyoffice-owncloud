@@ -253,7 +253,6 @@ class SettingsController extends Controller {
      * Save security settings
      *
      * @param bool $macros - run document macros
-     * 
      * @param string $protection - protection
      *
      * @return array

@@ -126,8 +126,8 @@ class SettingsController extends Controller {
             "help" => $this->config->GetCustomizationHelp(),
             "toolbarNoTabs" => $this->config->GetCustomizationToolbarNoTabs(),
             "successful" => $this->config->SettingsAreSuccessful(),
-            "macros" => $this->config->GetCustomizationMacros(),
             "plugins" => $this->config->GetCustomizationPlugins(),
+            "macros" => $this->config->GetCustomizationMacros(),
             "reviewDisplay" => $this->config->GetCustomizationReviewDisplay(),
             "theme" => $this->config->GetCustomizationTheme(),
             "templates" => $this->GetGlobalTemplates()
@@ -208,7 +208,6 @@ class SettingsController extends Controller {
      * @param bool $toolbarNoTabs - display toolbar tab
      * @param string $reviewDisplay - review viewing mode
      * @param string $theme - default theme mode
-     * @param bool $plugins - enable plugins
      *
      * @return array
      */
@@ -225,8 +224,7 @@ class SettingsController extends Controller {
                                     $help,
                                     $toolbarNoTabs,
                                     $reviewDisplay,
-                                    $theme,
-                                    $plugins
+                                    $theme
                                     ) {
 
         $this->config->SetDefaultFormats($defFormats);
@@ -243,7 +241,6 @@ class SettingsController extends Controller {
         $this->config->SetCustomizationToolbarNoTabs($toolbarNoTabs);
         $this->config->SetCustomizationReviewDisplay($reviewDisplay);
         $this->config->SetCustomizationTheme($theme);
-        $this->config->SetCustomizationPlugins($plugins);
 
         return [
             ];
@@ -252,15 +249,18 @@ class SettingsController extends Controller {
     /**
      * Save security settings
      *
+     * @param bool $plugins - enable plugins
      * @param bool $macros - run document macros
      * @param string $protection - protection
      *
      * @return array
      */
-    public function SaveSecurity($macros,
+    public function SaveSecurity($plugins,
+                                $macros,
                                 $protection
                                 ) {
 
+        $this->config->SetCustomizationPlugins($plugins);
         $this->config->SetCustomizationMacros($macros);
         $this->config->SetProtection($protection);
 

@@ -1,10 +1,17 @@
 # Change Log
 
+## Added
+- disable plugins setting
+- jwt leeway setting
+- document protection setting
+
+## Changed
+- fix notification length
+
 ## 7.6.7
 ## Added
 - Dutch translation
 - Chinese (Traditional, Taiwan), Basque (Spain), Armenian and Malay (Malaysia) empty file templates
-- disable plugins setting
 
 ## Changed
 - fix edit locked file

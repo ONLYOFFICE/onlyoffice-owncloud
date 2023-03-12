@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2022
+ * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -116,6 +116,7 @@ class SettingsController extends Controller {
             "sameTab" => $this->config->GetSameTab(),
             "preview" => $this->config->GetPreview(),
             "versionHistory" => $this->config->GetVersionHistory(),
+            "protection" => $this->config->GetProtection(),
             "encryption" => $this->config->checkEncryptionModule(),
             "limitGroups" => $this->config->GetLimitGroups(),
             "chat" => $this->config->GetCustomizationChat(),
@@ -250,15 +251,18 @@ class SettingsController extends Controller {
      *
      * @param bool $plugins - enable plugins
      * @param bool $macros - run document macros
+     * @param string $protection - protection
      *
      * @return array
      */
     public function SaveSecurity($plugins,
-                                $macros
+                                $macros,
+                                $protection
                                 ) {
 
         $this->config->SetCustomizationPlugins($plugins);
         $this->config->SetCustomizationMacros($macros);
+        $this->config->SetProtection($protection);
 
         return [
             ];

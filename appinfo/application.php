@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2022
+ * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -90,6 +90,9 @@ class Application extends App {
         require_once __DIR__ . "/../3rdparty/jwt/ExpiredException.php";
         require_once __DIR__ . "/../3rdparty/jwt/SignatureInvalidException.php";
         require_once __DIR__ . "/../3rdparty/jwt/JWT.php";
+
+        // Set the leeway for the JWT library in case the system clock is a second off
+        \Firebase\JWT\JWT::$leeway = $this->appConfig->GetJwtLeeway();
 
         $container = $this->getContainer();
 

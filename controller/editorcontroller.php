@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2022
+ * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -455,6 +455,19 @@ class EditorController extends Controller {
         if (isset($error)) {
             $this->logger->error("Mention: $fileId $error", ["app" => $this->appName]);
             return ["error" => $this->trans->t("Failed to send notification")];
+        }
+
+        foreach ($emails as $email) {
+            $substrToDelete = "+" . $email . " ";
+            $comment = str_replace($substrToDelete, "", $comment);
+        }
+
+        //Length from ownCloud:
+        //https://github.com/owncloud/core/blob/master/lib/private/Notification/Notification.php#L181
+        $maxLen = 64;
+        if (strlen($comment) > $maxLen) {
+            $ending = "...";
+            $comment = substr($comment, 0, ($maxLen - strlen($ending))) . $ending;
         }
 
         $notificationManager = \OC::$server->getNotificationManager();

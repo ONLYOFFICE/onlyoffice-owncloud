@@ -281,16 +281,17 @@
         <br/>
 
         <h2><?php p($l->t("Security")) ?></h2>
-        <p>
-            <input type="checkbox" class="checkbox" id="onlyofficeMacros"
-                <?php if ($_["macros"]) { ?>checked="checked"<?php } ?> />
-            <label for="onlyofficeMacros"><?php p($l->t("Run document macros")) ?></label>
-        </p>
 
         <p>
             <input type="checkbox" class="checkbox" id="onlyofficePlugins"
                 <?php if ($_["plugins"]) { ?>checked="checked"<?php } ?> />
             <label for="onlyofficePlugins"><?php p($l->t("Enable plugins")) ?></label>
+        </p>
+
+        <p>
+            <input type="checkbox" class="checkbox" id="onlyofficeMacros"
+                <?php if ($_["macros"]) { ?>checked="checked"<?php } ?> />
+            <label for="onlyofficeMacros"><?php p($l->t("Run document macros")) ?></label>
         </p>
 
         <br />

@@ -494,7 +494,18 @@ class EditorController extends Controller {
 
         foreach ($recipientIds as $recipientId) {
             $recipient = $this->userManager->get($recipientId);
-            if (!in_array($recipient, $accessList)) {
+            $isAvailable = in_array($recipient, $accessList);
+
+            if (!$isAvailable
+            && $file->getFileInfo()->getMountPoint() instanceof \OCA\Files_External\Config\ExternalMountPoint) {
+
+                $recipientFolder = $this->root->getUserFolder($recipientId);
+                $recipientFile = $recipientFolder->getById($file->getId());
+
+                $isAvailable = !empty($recipientFile);
+            }
+
+            if (!$isAvailable) {
                 if (!$canShare) {
                     continue;
                 }

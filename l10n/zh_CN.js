@@ -111,6 +111,10 @@ OC.L10N.register(
     "Light": "光",
     "Classic Light": "经典浅色",
     "Dark": "黑暗的",
-    "This feature is unavailable due to encryption settings.": "由于加密设置，该功能不可用。"
+    "This feature is unavailable due to encryption settings.": "由于加密设置，该功能不可用。",
+    "Enable plugins": "启用插件",
+    "Enable document protection for": "为以下用户启用文档保护",
+    "All users": "所有用户",
+    "Owner only": "仅限所有者"
 },
 "nplurals=1; plural=0;");

@@ -112,6 +112,10 @@ OC.L10N.register(
     "Light": "Clair",
     "Classic Light": "Classique clair",
     "Dark": "Sombre",
-    "This feature is unavailable due to encryption settings.": "Cette fonctionnalité n'est pas disponible en raison des paramètres de chiffrement."
+    "This feature is unavailable due to encryption settings.": "Cette fonctionnalité n'est pas disponible en raison des paramètres de chiffrement.",
+    "Enable plugins": "Activer les plugins",
+    "Enable document protection for": "Activer la protection des documents par mot de passe pour",
+    "All users": "Tous les utilisateurs",
+    "Owner only": "Propriétaire uniquement"
 },
 "nplurals=2; plural=(n > 1);");

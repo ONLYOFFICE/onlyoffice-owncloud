@@ -112,6 +112,10 @@ OC.L10N.register(
     "Light": "Hell",
     "Classic Light": "Klassisch Hell",
     "Dark": "Dunkel",
-    "This feature is unavailable due to encryption settings.": "Diese Funktion ist wegen der Verschlüsselungseinstellungen nicht verfügbar"
+    "This feature is unavailable due to encryption settings.": "Diese Funktion ist wegen der Verschlüsselungseinstellungen nicht verfügbar",
+    "Enable plugins": "Arbeit mit Plugins aktivieren",
+    "Enable document protection for": "Hinzufügen von Passwörtern in Dokumenten aktivieren für",
+    "All users": "Alle Benutzer",
+    "Owner only": "Nur Besitzer"
 },
 "nplurals=2; plural=(n != 1);");

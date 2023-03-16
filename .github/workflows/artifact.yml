@@ -22,8 +22,8 @@ jobs:
           cwd=$(pwd)
           git submodule update --init --recursive
           mkdir -p ./onlyoffice
-          rsync -av --exclude='onlyoffice' ./ ./onlyoffice
-          cd ./onlyoffice
+          rsync -av --exclude='onlyoffice' . onlyoffice
+          cd onlyoffice
           rm -rf ./.github/
           rm -rf ./.git/
           rm ./.gitmodules
@@ -31,7 +31,7 @@ jobs:
           cd ./appinfo
           sed -i 's|<licence>apl2|<licence>agpl|' info.xml 
           cd $cwd
-          tar -czvf onlyoffice.tar.gz ./onlyoffice
+          tar -czvf onlyoffice.tar.gz onlyoffice
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:

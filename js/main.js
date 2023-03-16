@@ -113,14 +113,18 @@
             location.href = url;
         } else {
             var $iframe = $("<iframe id=\"onlyofficeFrame\" nonce=\"" + btoa(OC.requestToken) + "\" scrolling=\"no\" allowfullscreen src=\"" + url + "&inframe=true\" />");
+            var scrollTop = 0;
             if ($("#app-content").length) {
                 $("#app-content").append($iframe);
 
-                var scrollTop = $("#app-content").scrollTop();
-                $("#onlyofficeFrame").css("top", scrollTop);
+                scrollTop = $("#app-content").scrollTop();
             } else {
                 $("#preview").append($iframe);
+
+                scrollTop = $("#content-wrapper").scrollTop();
             }
+
+            $("#onlyofficeFrame").css("top", scrollTop);
 
             $("body").addClass("onlyoffice-inline");
             OC.Apps.hideAppSidebar();

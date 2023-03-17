@@ -477,7 +477,7 @@
     };
 
     OCA.Onlyoffice.GetFileExtension = function (fileName) {
-        var extension = OCA.Onlyoffice.getFileExtension(fileName);
+        var extension = fileName.substr(fileName.lastIndexOf(".") + 1).toLowerCase();
         return extension;
     };
 

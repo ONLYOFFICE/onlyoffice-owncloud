@@ -2,13 +2,12 @@
 
 ## Added
 - disable plugins setting
-- jwt leeway setting
 - document protection setting
+- jwt leeway setting
+- Danish translation
 
 ## Changed
 - fix notification length
-
-## Changed
 - additional check availability for external files when mention
 
 ## 7.6.7

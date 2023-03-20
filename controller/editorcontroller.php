@@ -1,7 +1,7 @@
 <?php
 /**
  *
- * (c) Copyright Ascensio System SIA 2022
+ * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -457,6 +457,19 @@ class EditorController extends Controller {
             return ["error" => $this->trans->t("Failed to send notification")];
         }
 
+        foreach ($emails as $email) {
+            $substrToDelete = "+" . $email . " ";
+            $comment = str_replace($substrToDelete, "", $comment);
+        }
+
+        //Length from ownCloud:
+        //https://github.com/owncloud/core/blob/master/lib/private/Notification/Notification.php#L181
+        $maxLen = 64;
+        if (strlen($comment) > $maxLen) {
+            $ending = "...";
+            $comment = substr($comment, 0, ($maxLen - strlen($ending))) . $ending;
+        }
+
         $notificationManager = \OC::$server->getNotificationManager();
         $notification = $notificationManager->createNotification();
         $notification->setApp($this->appName)
@@ -481,7 +494,18 @@ class EditorController extends Controller {
 
         foreach ($recipientIds as $recipientId) {
             $recipient = $this->userManager->get($recipientId);
-            if (!in_array($recipient, $accessList)) {
+            $isAvailable = in_array($recipient, $accessList);
+
+            if (!$isAvailable
+            && $file->getFileInfo()->getMountPoint() instanceof \OCA\Files_External\Config\ExternalMountPoint) {
+
+                $recipientFolder = $this->root->getUserFolder($recipientId);
+                $recipientFile = $recipientFolder->getById($file->getId());
+
+                $isAvailable = !empty($recipientFile);
+            }
+
+            if (!$isAvailable) {
                 if (!$canShare) {
                     continue;
                 }

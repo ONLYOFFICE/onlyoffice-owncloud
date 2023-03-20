@@ -1,5 +1,16 @@
 # Change Log
 
+## 7.8.1
+## Added
+- disable plugins setting
+- document protection setting
+- jwt leeway setting
+- Danish translation
+
+## Changed
+- fix notification length
+- additional check availability for external files when mention
+
 ## 7.6.7
 ## Added
 - Dutch translation

@@ -109,6 +109,10 @@ OC.L10N.register(
     "Security": "Segurança",
     "Light": "Claro",
     "Classic Light": "Clássico claro",
-    "Dark": "Escuro"
+    "Dark": "Escuro",
+    "Enable plugins": "Ativar plug-ins",
+    "Enable document protection for": "Ativar proteção de documento para",
+    "All users": "Todos os usuários",
+    "Owner only": "Somente proprietário"
 },
 "nplurals=2; plural=(n > 1);");

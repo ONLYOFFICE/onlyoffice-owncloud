@@ -1,6 +1,6 @@
 /**
  *
- * (c) Copyright Ascensio System SIA 2022
+ * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,18 +109,22 @@
             winEditor.location.href = url;
         } else if (!OCA.Onlyoffice.setting.sameTab || OCA.Onlyoffice.mobile || OCA.Onlyoffice.Desktop) {
             winEditor = window.open(url, "_blank");
-        } else if ($("#isPublic").val() === "1" && !$("#filestable").length) {
+        } else if ($("#isPublic").val() === "1" && $("#mimetype").val() !== "httpd/unix-directory") {
             location.href = url;
         } else {
             var $iframe = $("<iframe id=\"onlyofficeFrame\" nonce=\"" + btoa(OC.requestToken) + "\" scrolling=\"no\" allowfullscreen src=\"" + url + "&inframe=true\" />");
+            var scrollTop = 0;
             if ($("#app-content").length) {
                 $("#app-content").append($iframe);
 
-                var scrollTop = $("#app-content").scrollTop();
-                $("#onlyofficeFrame").css("top", scrollTop);
+                scrollTop = $("#app-content").scrollTop();
             } else {
                 $("#preview").append($iframe);
+
+                scrollTop = $("#content-wrapper").scrollTop();
             }
+
+            $("#onlyofficeFrame").css("top", scrollTop);
 
             $("body").addClass("onlyoffice-inline");
             OC.Apps.hideAppSidebar();
@@ -493,7 +497,7 @@
     OCA.Onlyoffice.bindVersionClick = function () {
         OCA.Onlyoffice.unbindVersionClick();
         $(document).on("click.onlyoffice-version", "#versionsTabView .downloadVersion", function() {
-            var ext = $("#app-sidebar .fileName h3").text().split(".").pop();
+            var ext = OCA.Onlyoffice.GetFileExtension($("#app-sidebar .fileName h3").text());
             if (!OCA.Onlyoffice.setting.formats[ext]
                 || !OCA.Onlyoffice.setting.formats[ext].def) {
                 return true;
@@ -522,7 +526,7 @@
     }
 
     var initPage = function () {
-        if ($("#isPublic").val() === "1" && !$("#filestable").length) {
+        if ($("#isPublic").val() === "1" && $("#mimetype").val() !== "httpd/unix-directory") {
             var fileName = $("#filename").val();
             var extension = OCA.Onlyoffice.GetFileExtension(fileName);
 

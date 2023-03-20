@@ -112,6 +112,10 @@ OC.L10N.register(
     "Light": "明るい",
     "Classic Light": "ライト(クラシック)",
     "Dark": "ダーク",
-    "This feature is unavailable due to encryption settings.": "この機能は暗号化の設定により使用できません。"
+    "This feature is unavailable due to encryption settings.": "この機能は暗号化の設定により使用できません。",
+    "Enable plugins": "プラグインを有効にする",
+    "Enable document protection for": "次のユーザーに対して文書の保護機能を有効にする",
+    "All users": "すべてのユーザー",
+    "Owner only": "所有者のみ"
 },
 "nplurals=1; plural=0;");

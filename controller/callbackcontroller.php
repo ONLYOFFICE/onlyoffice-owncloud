@@ -206,7 +206,7 @@ class CallbackController extends Controller {
                 $header = substr($header, strlen("Bearer "));
 
                 try {
-                    $decodedHeader = \Firebase\JWT\JWT::decode($header, $this->config->GetDocumentServerSecret(), array("HS256"));
+                    $decodedHeader = \Firebase\JWT\JWT::decode($header, new \Firebase\JWT\Key($this->config->GetDocumentServerSecret(), "HS256"));
                 } catch (\UnexpectedValueException $e) {
                     $this->logger->logException($e, ["message" => "Download with invalid jwt", "app" => $this->appName]);
                     return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
@@ -343,7 +343,7 @@ class CallbackController extends Controller {
             $header = substr($header, strlen("Bearer "));
 
             try {
-                $decodedHeader = \Firebase\JWT\JWT::decode($header, $this->config->GetDocumentServerSecret(), array("HS256"));
+                $decodedHeader = \Firebase\JWT\JWT::decode($header, new \Firebase\JWT\Key($this->config->GetDocumentServerSecret(), "HS256"));
             } catch (\UnexpectedValueException $e) {
                 $this->logger->logException($e, ["message" => "Download empty with invalid jwt", "app" => $this->appName]);
                 return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
@@ -406,7 +406,7 @@ class CallbackController extends Controller {
         if (!empty($this->config->GetDocumentServerSecret())) {
             if (!empty($token)) {
                 try {
-                    $payload = \Firebase\JWT\JWT::decode($token, $this->config->GetDocumentServerSecret(), array("HS256"));
+                    $payload = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($this->config->GetDocumentServerSecret(), "HS256"));
                 } catch (\UnexpectedValueException $e) {
                     $this->logger->logException($e, ["message" => "Track with invalid jwt in body", "app" => $this->appName]);
                     return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
@@ -421,7 +421,7 @@ class CallbackController extends Controller {
                 $header = substr($header, strlen("Bearer "));
 
                 try {
-                    $decodedHeader = \Firebase\JWT\JWT::decode($header, $this->config->GetDocumentServerSecret(), array("HS256"));
+                    $decodedHeader = \Firebase\JWT\JWT::decode($header, new \Firebase\JWT\Key($this->config->GetDocumentServerSecret(), "HS256"));
 
                     $payload = $decodedHeader->payload;
                 } catch (\UnexpectedValueException $e) {

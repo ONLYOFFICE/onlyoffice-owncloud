@@ -1,5 +1,8 @@
 # Change Log
 
+## Added
+- Paste Special to add a link between files
+
 ## 7.8.1
 ## Added
 - disable plugins setting

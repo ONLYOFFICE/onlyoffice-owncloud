@@ -1,5 +1,8 @@
 # Change Log
 
+## Changed
+- fileType to history data
+
 ## 7.8.1
 ## Added
 - disable plugins setting

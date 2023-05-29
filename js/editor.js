@@ -146,6 +146,7 @@
                         config.events.onRequestCompareFile = OCA.Onlyoffice.onRequestCompareFile;
                         config.events.onRequestUsers = OCA.Onlyoffice.onRequestUsers;
                         config.events.onRequestSendNotify = OCA.Onlyoffice.onRequestSendNotify;
+                        config.events.onRequestReferenceData = OCA.Onlyoffice.onRequestReferenceData;
                         config.events.onMetaChange = OCA.Onlyoffice.onMetaChange;
 
                         if (!OCA.Onlyoffice.filePath) {
@@ -205,7 +206,7 @@
     };
 
     OCA.Onlyoffice.onRequestHistoryData = function (event) {
-        var version = event.data; 
+        var version = event.data;
 
         $.get(OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/version?fileId={fileId}&version={version}",
             {
@@ -476,7 +477,7 @@
     };
 
     OCA.Onlyoffice.onRequestUsers = function (event) {
-        $.get(OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/users?fileId={fileId}", 
+        $.get(OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/users?fileId={fileId}",
         {
             fileId: OCA.Onlyoffice.fileId || 0
         }),
@@ -485,6 +486,25 @@
                 "users": response
             });
         });
+    };
+
+    OCA.Onlyoffice.onRequestReferenceData = function (event) {
+        let referenceData = event.data.referenceData;
+        let path = event.data.path;
+
+        $.post(OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/reference"),
+            {
+                referenceData: referenceData,
+                path: path
+            },
+            function onSuccess(response) {
+                if (response.error) {
+                    OCA.Onlyoffice.showMessage(response.error, "error");
+                    return;
+                }
+
+                OCA.Onlyoffice.docEditor.setReferenceData(response);
+            });
     };
 
     OCA.Onlyoffice.onRequestSendNotify = function (event) {

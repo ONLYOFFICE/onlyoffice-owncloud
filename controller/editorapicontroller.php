@@ -301,6 +301,10 @@ class EditorApiController extends OCSController {
                 "permissions" => [],
                 "title" => $fileName,
                 "url" => $fileUrl,
+                "referenceData" => [
+                    "fileKey" => $file->getId(),
+                    "instanceId" => $this->config->GetSystemValue("instanceid", true),
+                ],
             ],
             "documentType" => $format["type"],
             "editorConfig" => [

@@ -1,6 +1,7 @@
 # Change Log
 
 ## Added
+- jwt header setting
 - Paste Special to add a link between files
 
 ## 7.8.1

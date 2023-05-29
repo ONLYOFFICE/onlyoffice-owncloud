@@ -1,5 +1,9 @@
 # Change Log
 
+## Added
+- jwt header setting
+- Paste Special to add a link between files
+
 ## Changed
 - fileType to history data
 

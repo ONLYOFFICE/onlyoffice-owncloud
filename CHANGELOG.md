@@ -4,6 +4,9 @@
 - jwt header setting
 - Paste Special to add a link between files
 
+## Changed
+- fileType to history data
+
 ## 7.8.1
 ## Added
 - disable plugins setting

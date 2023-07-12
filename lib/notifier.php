@@ -95,28 +95,47 @@ class Notifier implements INotifier {
         }
 
         $parameters = $notification->getSubjectParameters();
-
-        $notifierId = $parameters["notifierId"];
-        $fileId = $parameters["fileId"];
-        $fileName = $parameters["fileName"];
-        $anchor = $parameters["anchor"];
-
-        $this->logger->info("Notify prepare: from $notifierId about $fileId ", ["app" => $this->appName]);
-
-        $notifier = $this->userManager->get($notifierId);
-        $notifierName = $notifier->getDisplayName();
         $trans = $this->l10nFactory->get($this->appName, $languageCode);
 
-        $notification->setIcon($this->urlGenerator->getAbsoluteURL($this->urlGenerator->imagePath($this->appName, "app-dark.svg")));
-        $notification->setParsedSubject($trans->t("%1\$s mentioned in the %2\$s: \"%3\$s\".", [$notifierName, $fileName, $notification->getObjectId()]));
+        switch ($notification->getObjectType()) {
+            case "editorsCheck":
+                $message = $trans->t("Please check the settings to resolve the problem.");
+                $appSettingsLink = $this->urlGenerator->getAbsoluteURL("/settings/admin?sectionid=additional");
+                $action = $notification->createAction();
+                $action->setLabel('accept')
+                    ->setParsedLabel($trans->t('View settings'))
+                    ->setLink($appSettingsLink, "GET")
+                    ->setPrimary(true);
+                $notification->addParsedAction($action);
+                $notification->setParsedSubject($notification->getObjectId())
+                    ->setIcon($this->urlGenerator->getAbsoluteURL($this->urlGenerator->imagePath($this->appName, 'app-dark.svg')));
+                $notification->setParsedMessage($message);
+                break;
+            case "mention":
+                $notifierId = $parameters["notifierId"];
+                $fileId = $parameters["fileId"];
+                $fileName = $parameters["fileName"];
+                $anchor = $parameters["anchor"];
 
-        $editorLink = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.index", [
-            "fileId" => $fileId,
-            "anchor" => $anchor
-        ]);
+                $this->logger->info("Notify prepare: from $notifierId about $fileId ", ["app" => $this->appName]);
 
-        $notification->setLink($editorLink);
+                $notifier = $this->userManager->get($notifierId);
+                $notifierName = $notifier->getDisplayName();
+                $trans = $this->l10nFactory->get($this->appName, $languageCode);
 
+                $notification->setIcon($this->urlGenerator->getAbsoluteURL($this->urlGenerator->imagePath($this->appName, "app-dark.svg")));
+                $notification->setParsedSubject($trans->t("%1\$s mentioned in the %2\$s: \"%3\$s\".", [$notifierName, $fileName, $notification->getObjectId()]));
+
+                $editorLink = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.index", [
+                    "fileId" => $fileId,
+                    "anchor" => $anchor
+                ]);
+
+                $notification->setLink($editorLink);
+                break;
+            default:
+                $this->logger->info("Unsupported notification object: ".$notification->getObjectType(), ["app" => $this->appName]);
+        }
         return $notification;
     }
 }

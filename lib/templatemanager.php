@@ -205,6 +205,7 @@ class TemplateManager {
         "pt_BR" => "pt-BR",
         "pt_PT" => "pt-PT",
         "ru" => "ru-RU",
+        "si" => "si-LK",
         "sk_SK" => "sk-SK",
         "sv" => "sv-SE",
         "tr" => "tr-TR",

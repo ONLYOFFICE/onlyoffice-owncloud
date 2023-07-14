@@ -3,6 +3,7 @@
 ## Added
 - jwt header setting
 - Paste Special to add a link between files
+- si-LK (Sinhala) language in local path mapping
 
 ## Changed
 - anonymous without configuring file protection, chat and without the possibility of mentioning

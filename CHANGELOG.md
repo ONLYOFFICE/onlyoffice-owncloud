@@ -4,6 +4,7 @@
 - jwt header setting
 - Paste Special to add a link between files
 - si-LK (Sinhala) language in local path mapping
+- Link to docs cloud
 
 ## Changed
 - anonymous without configuring file protection, chat and without the possibility of mentioning

@@ -133,6 +133,7 @@
         if ($(event.target).length && $("#onlyofficeFrame").length
             && ($(event.target)[0].id === "viewer" || $(event.target)[0].id === $("#onlyofficeFrame")[0].id)) {
             OCA.Onlyoffice.changeFavicon($("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.faviconBase);
+            window.document.title = $(OCA.Onlyoffice.frameSelector)[0].contentWindow.OCA.Onlyoffice.titleBase;
         }
     });
 

@@ -1,5 +1,16 @@
 # Change Log
 
+## Added
+- jwt header setting
+- Paste Special to add a link between files
+- si-LK (Sinhala) language in local path mapping
+- Link to docs cloud
+
+## Changed
+- anonymous without configuring file protection, chat and without the possibility of mentioning
+- fileType to history data
+- change page title when editing a file
+
 ## 7.8.1
 ## Added
 - disable plugins setting

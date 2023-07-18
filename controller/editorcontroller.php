@@ -264,7 +264,7 @@ class EditorController extends Controller {
             $targetName = $targetFile->getName();
             $targetExt = strtolower(pathinfo($targetName, PATHINFO_EXTENSION));
             $targetKey = $this->fileUtility->getKey($targetFile);
-            
+
             $fileUrl = $this->getUrl($targetFile, $user, $shareToken);
 
             $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
@@ -311,7 +311,7 @@ class EditorController extends Controller {
      * @param string $name - file name
      * @param string $dir - folder path
      * @param string $templateId - file identifier
-     * 
+     *
      * @return TemplateResponse|RedirectResponse
      *
      * @NoAdminRequired
@@ -438,7 +438,7 @@ class EditorController extends Controller {
         foreach ($emails as $email) {
             $recipients = $this->userManager->getByEmail($email);
             foreach ($recipients as $recipient) {
-                $recipientId = $recipient->getUID(); 
+                $recipientId = $recipient->getUID();
                 if (!in_array($recipientId, $recipientIds)) {
                     array_push($recipientIds, $recipientId);
                 }
@@ -535,6 +535,75 @@ class EditorController extends Controller {
         }
 
         return ["message" => $this->trans->t("Notification sent successfully")];
+    }
+
+    /**
+     * Reference data
+     *
+     * @param array $referenceData - reference data
+     * @param string $path - file path
+     *
+     * @return array
+     *
+     * @NoAdminRequired
+     * @PublicPage
+     */
+    public function reference($referenceData, $path = null) {
+        $this->logger->debug("reference: " . json_encode($referenceData) . " $path", ["app" => $this->appName]);
+
+        if (!$this->config->isUserAllowedToUse()) {
+            return ["error" => $this->trans->t("Not permitted")];
+        }
+
+        $user = $this->userSession->getUser();
+        if (empty($user)) {
+            return ["error" => $this->trans->t("Not permitted")];
+        }
+
+        $userId = $user->getUID();
+
+        $file = null;
+        $fileId = (integer)($referenceData["fileKey"] ?? 0);
+        if (!empty($fileId)
+            && $referenceData["instanceId"] === $this->config->GetSystemValue("instanceid", true)) {
+            list ($file, $error, $share) = $this->getFile($userId, $fileId);
+        }
+
+        $userFolder = $this->root->getUserFolder($userId);
+        if ($file === null
+            && $path !== null
+            && $userFolder->nodeExists($path)) {
+            $node = $userFolder->get($path);
+            if ($node instanceof File
+                && $node->isReadable()) {
+                $file = $node;
+            }
+        }
+
+        if ($file === null) {
+            $this->logger->error("Reference not found: $fileId $path", ["app" => $this->appName]);
+            return ["error" => $this->trans->t("File not found")];
+        }
+
+        $fileName = $file->getName();
+        $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+        $response = [
+            "fileType" => $ext,
+            "path" => $userFolder->getRelativePath($file->getPath()),
+            "referenceData" => [
+                "fileKey" => $file->getId(),
+                "instanceId" => $this->config->GetSystemValue("instanceid", true),
+            ],
+            "url" => $this->getUrl($file, $user),
+        ];
+
+        if (!empty($this->config->GetDocumentServerSecret())) {
+            $token = \Firebase\JWT\JWT::encode($response, $this->config->GetDocumentServerSecret());
+            $response["token"] = $token;
+        }
+
+        return $response;
     }
 
     /**
@@ -890,8 +959,11 @@ class EditorController extends Controller {
             $fileUrl = $this->getUrl($file, $user, null, $version);
         }
         $key = DocumentService::GenerateRevisionId($key);
+        $fileName = $file->getName();
+        $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
         $result = [
+            "fileType" => $ext,
             "url" => $fileUrl,
             "version" => $version,
             "key" => $key
@@ -911,6 +983,7 @@ class EditorController extends Controller {
             $prevVersionUrl = $this->getUrl($file, $user, null, $version - 1);
 
             $result["previous"] = [
+                "fileType" => $ext,
                 "key" => $prevVersionKey,
                 "url" => $prevVersionUrl
             ];

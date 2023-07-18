@@ -89,7 +89,10 @@ class Application extends App {
         require_once __DIR__ . "/../3rdparty/jwt/BeforeValidException.php";
         require_once __DIR__ . "/../3rdparty/jwt/ExpiredException.php";
         require_once __DIR__ . "/../3rdparty/jwt/SignatureInvalidException.php";
+        require_once __DIR__ . "/../3rdparty/jwt/CachedKeySet.php";
         require_once __DIR__ . "/../3rdparty/jwt/JWT.php";
+        require_once __DIR__ . "/../3rdparty/jwt/JWK.php";
+        require_once __DIR__ . "/../3rdparty/jwt/Key.php";
 
         // Set the leeway for the JWT library in case the system clock is a second off
         \Firebase\JWT\JWT::$leeway = $this->appConfig->GetJwtLeeway();

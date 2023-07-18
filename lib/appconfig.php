@@ -1177,6 +1177,17 @@ class AppConfig {
         return "";
     }
 
+    private $linkToDocs = "https://www.onlyoffice.com/docs-registration.aspx?referer=owncloud";
+
+    /**
+     * Get link to Docs Cloud
+     *
+     * @return string
+     */
+    public function GetLinkToDocs() {
+        return $this->linkToDocs;
+    }
+
     /**
      * Additional data about formats
      *

@@ -1061,7 +1061,7 @@ class AppConfig {
 
     /**
      * Get the jwt header setting
-     * 
+     *
      * @param bool $origin - take origin
      *
      * @return string
@@ -1235,7 +1235,7 @@ class AppConfig {
         "txt" => [ "mime" => "text/plain", "type" => "word", "edit" => true, "editable" => true, "saveas" => ["docx", "odt", "pdf", "rtf"] ],
         "xls" => [ "mime" => "application/vnd.ms-excel", "type" => "cell", "conv" => true, "saveas" => ["csv", "ods", "pdf", "xlsx"] ],
         "xlsm" => [ "mime" => "application/vnd.ms-excel.sheet.macroEnabled.12", "type" => "cell", "conv" => true, "saveas" => ["csv", "ods", "pdf", "xlsx"] ],
-        "xlsx" => [ "mime" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "type" => "cell", "edit" => true, "def" => true, "comment" => true, "modifyFilter" => true, "saveas" => ["csv", "ods", "pdf", "xlsx"] ],
+        "xlsx" => [ "mime" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "type" => "cell", "edit" => true, "def" => true, "comment" => true, "modifyFilter" => true, "saveas" => ["csv", "ods", "pdf"] ],
         "xlt" => [ "type" => "cell", "conv" => true, "saveas" => ["csv", "ods", "pdf", "xlsx"] ],
         "xltm" => [ "mime" => "application/vnd.ms-excel.template.macroEnabled.12", "type" => "cell", "conv" => true, "saveas" => ["csv", "ods", "pdf", "xlsx"] ],
         "xltx" => [ "mime" => "application/vnd.openxmlformats-officedocument.spreadsheetml.template", "type" => "cell", "conv" => true, "saveas" => ["csv", "ods", "pdf", "xlsx"] ]
@@ -1250,4 +1250,15 @@ class AppConfig {
         "SECRET" => "sn2puSUF7muF5Jas",
         "TRIAL" => 30
     ];
+
+    private $linkToDocs = "https://www.onlyoffice.com/docs-registration.aspx?referer=owncloud";
+
+    /**
+     * Get link to Docs Cloud
+     *
+     * @return string
+     */
+    public function GetLinkToDocs() {
+        return $this->linkToDocs;
+    }
 }

@@ -131,7 +131,8 @@ class SettingsController extends Controller {
             "macros" => $this->config->GetCustomizationMacros(),
             "reviewDisplay" => $this->config->GetCustomizationReviewDisplay(),
             "theme" => $this->config->GetCustomizationTheme(),
-            "templates" => $this->GetGlobalTemplates()
+            "templates" => $this->GetGlobalTemplates(),
+            "linkToDocs" => $this->config->GetLinkToDocs()
         ];
         return new TemplateResponse($this->appName, "settings", $data, "blank");
     }

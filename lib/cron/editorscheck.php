@@ -127,18 +127,21 @@ class EditorsCheck extends TimedJob {
             $this->logger->debug("Settings are not correct", ["app" => $this->appName]);
             return;
         }
+        $hashUrl = $this->crypt->GetHash(["action" => "empty"]);
+        $fileUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".callback.emptyfile", ["doc" => $hashUrl]);
+        if (!empty($this->config->GetStorageUrl())) {
+            $fileUrl = str_replace($this->urlGenerator->getAbsoluteURL("/"), $this->config->GetStorageUrl(), $fileUrl);
+        }
+        if (parse_url($fileUrl)["host"] === "localhost") {
+            $this->logger->debug("Localhost is not alowed for cron editors availability check.", ["app" => $this->appName]);
+            return; 
+        }
 
         $this->logger->debug("ONLYOFFICE check started by cron", ["app" => $this->appName]);
 
         $documentService = new DocumentService($this->trans, $this->config);
         list ($error, $version) = $documentService->checkDocServiceUrl($this->urlGenerator, $this->crypt);
         if (!empty($error)) {
-            $hashUrl = $this->crypt->GetHash(["action" => "empty"]);
-            $fileUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".callback.emptyfile", ["doc" => $hashUrl]);
-            if (parse_url($fileUrl)["host"] === "localhost") {
-                $this->logger->debug("Localhost is not alowed for cron editors availability check. Please check server config or use 'AJAX' - job execution.", ["app" => $this->appName]);
-                return; 
-            }
             $this->logger->info("ONLYOFFICE server is not available", ["app" => $this->appName]);
             $this->config->SetSettingsError($error);
             $this->notifyAdmins();

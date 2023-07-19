@@ -101,12 +101,7 @@ class Notifier implements INotifier {
             case "editorsCheck":
                 $message = $trans->t("Please check the settings to resolve the problem.");
                 $appSettingsLink = $this->urlGenerator->getAbsoluteURL("/settings/admin?sectionid=additional");
-                $action = $notification->createAction();
-                $action->setLabel('accept')
-                    ->setParsedLabel($trans->t('View settings'))
-                    ->setLink($appSettingsLink, "GET")
-                    ->setPrimary(true);
-                $notification->addParsedAction($action);
+                $notification->setLink($appSettingsLink);
                 $notification->setParsedSubject($notification->getObjectId())
                     ->setIcon($this->urlGenerator->getAbsoluteURL($this->urlGenerator->imagePath($this->appName, 'app-dark.svg')));
                 $notification->setParsedMessage($message);

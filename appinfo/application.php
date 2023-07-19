@@ -84,7 +84,6 @@ class Application extends App {
                 }
             });
 
-        Util::addScript("onlyoffice", "notification");
         Util::connectHook("OCP\Share", "share_link_access", Hookhandler::class, "PublicPage");
 
         require_once __DIR__ . "/../3rdparty/jwt/BeforeValidException.php";

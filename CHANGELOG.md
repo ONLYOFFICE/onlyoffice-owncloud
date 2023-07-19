@@ -11,7 +11,7 @@
 - fileType to history data
 - change page title when editing a file
 - jwt library update
-- fileType parameter used in callback instead of extension from url
+- fileType parameter used in callback instead of extension from url (DocumentServer 7.0 required)
 
 ## 7.8.1
 ## Added

@@ -434,6 +434,7 @@ class CallbackController extends Controller {
             $key = $payload->key;
             $status = $payload->status;
             $url = isset($payload->url) ? $payload->url : null;
+            $fileType = isset($payload->filetype) ? $payload->filetype : null;
         }
 
         $result = 1;
@@ -514,7 +515,7 @@ class CallbackController extends Controller {
                     $prevVersion = $file->getFileInfo()->getMtime();
                     $fileName = $file->getName();
                     $curExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-                    $downloadExt = strtolower(pathinfo($url, PATHINFO_EXTENSION));
+                    $downloadExt = $fileType;
 
                     $documentService = new DocumentService($this->trans, $this->config);
                     if ($downloadExt !== $curExt) {

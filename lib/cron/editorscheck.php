@@ -127,8 +127,7 @@ class EditorsCheck extends TimedJob {
             $this->logger->debug("Settings are not correct", ["app" => $this->appName]);
             return;
         }
-        $hashUrl = $this->crypt->GetHash(["action" => "empty"]);
-        $fileUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".callback.emptyfile", ["doc" => $hashUrl]);
+        $fileUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".callback.emptyfile");
         if (!empty($this->config->GetStorageUrl())) {
             $fileUrl = str_replace($this->urlGenerator->getAbsoluteURL("/"), $this->config->GetStorageUrl(), $fileUrl);
         }

@@ -106,6 +106,8 @@
                             type: response.error ? "error" : null,
                             timeout: 3
                         });
+                    } else {
+                        $(".section-onlyoffice-2").addClass("onlyoffice-hide")
                     }
                 }
             });

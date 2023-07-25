@@ -94,7 +94,7 @@
                         $("#onlyofficeSecret").val(response.secret);
                         $("#onlyofficeJwtHeader").val(response.jwtHeader);
 
-                        $(".section-onlyoffice-2").toggleClass("onlyoffice-hide", (!response.documentserver.length && !demo) || !!response.error.length);
+                        $(".section-onlyoffice-2").toggleClass("onlyoffice-hide", (response.documentserver == null && !demo) || !!response.error.length);
 
                         var message =
                             response.error

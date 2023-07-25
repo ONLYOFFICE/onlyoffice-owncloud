@@ -20,6 +20,7 @@
 namespace OCA\Onlyoffice\AppInfo;
 
 use OCP\AppFramework\App;
+use OCP\BackgroundJob\IJobList;
 use OCP\Files\IMimeTypeDetector;
 use OCP\Util;
 use OCP\IPreview;
@@ -29,6 +30,7 @@ use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Controller\CallbackController;
 use OCA\Onlyoffice\Controller\EditorApiController;
 use OCA\Onlyoffice\Controller\EditorController;
+use OCA\Onlyoffice\Controller\JobListController;
 use OCA\Onlyoffice\Controller\SettingsApiController;
 use OCA\Onlyoffice\Controller\SettingsController;
 use OCA\Onlyoffice\Controller\TemplateController;
@@ -240,6 +242,14 @@ class Application extends App {
             );
         });
 
+        $checkBackgroundJobs = new JobListController(
+            $container->query("AppName"),
+            $container->query("Request"),
+            $container->query("Logger"),
+            $this->appConfig,
+            $container->query(IJobList::class)
+        );
+        $checkBackgroundJobs->checkAllJobs();
 
         Hooks::connectHooks();
     }

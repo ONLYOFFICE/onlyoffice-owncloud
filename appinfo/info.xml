@@ -31,4 +31,7 @@
     <commands>
         <command>OCA\Onlyoffice\Command\DocumentServer</command>
     </commands>
+    <background-jobs>
+        <job>OCA\Onlyoffice\Cron\EditorsCheck</job>
+    </background-jobs>
 </info>

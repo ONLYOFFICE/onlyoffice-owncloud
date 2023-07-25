@@ -299,6 +299,13 @@ class AppConfig {
     public $_customizationPlugins = "customization_plugins";
 
     /**
+     * The config key for the interval of editors availability check by cron
+     *
+     * @var string
+     */
+    private $_editors_check_interval = "editors_check_interval";
+
+    /**
      * @param string $AppName - application name
      */
     public function __construct($AppName) {
@@ -1175,6 +1182,20 @@ class AppConfig {
             return "v1";
         }
         return "";
+    }
+
+    /**
+     * Get the editors check interval
+     *
+     * @return int
+     */
+    public function GetEditorsCheckInterval() {
+        $interval = $this->GetSystemValue($this->_editors_check_interval);
+
+        if (empty($interval)) {
+            $interval = 60*60*24;
+        }
+        return (integer)$interval;
     }
 
     /**

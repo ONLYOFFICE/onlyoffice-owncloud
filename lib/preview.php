@@ -321,7 +321,7 @@ class Preview implements IProvider2 {
 
         $fileUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".callback.download", ["doc" => $hashUrl]);
 
-        if (!empty($this->config->GetStorageUrl())) {
+        if (!$this->config->UseDemo() && !empty($this->config->GetStorageUrl())) {
             $fileUrl = str_replace($this->urlGenerator->getAbsoluteURL("/"), $this->config->GetStorageUrl(), $fileUrl);
         }
 

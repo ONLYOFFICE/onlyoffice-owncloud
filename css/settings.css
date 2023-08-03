@@ -81,6 +81,7 @@
     border-radius: 3px;
     display: flex;
     flex-direction: row;
+    margin-top: 10px;
 }
 
 #onlyofficeDocsCloudBannerPicWrapper {

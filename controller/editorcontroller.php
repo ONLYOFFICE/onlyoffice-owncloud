@@ -599,7 +599,7 @@ class EditorController extends Controller {
         ];
 
         if (!empty($this->config->GetDocumentServerSecret())) {
-            $token = \Firebase\JWT\JWT::encode($response, $this->config->GetDocumentServerSecret());
+            $token = \Firebase\JWT\JWT::encode($response, $this->config->GetDocumentServerSecret(), "HS256");
             $response["token"] = $token;
         }
 
@@ -990,7 +990,7 @@ class EditorController extends Controller {
         }
 
         if (!empty($this->config->GetDocumentServerSecret())) {
-            $token = \Firebase\JWT\JWT::encode($result, $this->config->GetDocumentServerSecret());
+            $token = \Firebase\JWT\JWT::encode($result, $this->config->GetDocumentServerSecret(), "HS256");
             $result["token"] = $token;
         }
 
@@ -1092,7 +1092,7 @@ class EditorController extends Controller {
         ];
 
         if (!empty($this->config->GetDocumentServerSecret())) {
-            $token = \Firebase\JWT\JWT::encode($result, $this->config->GetDocumentServerSecret());
+            $token = \Firebase\JWT\JWT::encode($result, $this->config->GetDocumentServerSecret(), "HS256");
             $result["token"] = $token;
         }
 

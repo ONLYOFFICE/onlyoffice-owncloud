@@ -83,9 +83,9 @@
     window.addEventListener("message", function (event) {
         if ($("#onlyofficeFrame")[0]) {
             if ($("#onlyofficeFrame")[0].contentWindow !== event.source
-            || !event.data["method"]) {
-            return;
-        }
+                || !event.data["method"]) {
+                return;
+            }
         }
         switch (event.data.method) {
             case "editorRequestClose":

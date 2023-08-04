@@ -81,9 +81,11 @@
     }
 
     window.addEventListener("message", function (event) {
-        if ($("#onlyofficeFrame")[0].contentWindow !== event.source
-            || !event.data["method"]) {
-            return;
+        if ($("#onlyofficeFrame")[0]) {
+            if ($("#onlyofficeFrame")[0].contentWindow !== event.source
+                || !event.data["method"]) {
+                return;
+            }
         }
         switch (event.data.method) {
             case "editorRequestClose":
@@ -133,7 +135,7 @@
         if ($(event.target).length && $("#onlyofficeFrame").length
             && ($(event.target)[0].id === "viewer" || $(event.target)[0].id === $("#onlyofficeFrame")[0].id)) {
             OCA.Onlyoffice.changeFavicon($("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.faviconBase);
-            window.document.title = $(OCA.Onlyoffice.frameSelector)[0].contentWindow.OCA.Onlyoffice.titleBase;
+            window.document.title = $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.titleBase;
         }
     });
 

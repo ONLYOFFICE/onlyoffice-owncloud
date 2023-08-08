@@ -107,6 +107,7 @@ OC.L10N.register(
     "Create new Form template": "创建新的表单模板",
     "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "请将ONLYOFFICE Docs更新到7.0版本，以便在线编辑可填写的表单",
     "Security": "安全",
+    "Run document macros": "运行文档宏",
     "Default editor theme": "编辑器默认的主题",
     "Light": "光",
     "Classic Light": "经典浅色",
@@ -116,6 +117,12 @@ OC.L10N.register(
     "Enable document protection for": "为以下用户启用文档保护",
     "All users": "所有用户",
     "Owner only": "仅限所有者",
-    "Authorization header (leave blank to use default header)" : "授权标头 (留空以使用默认的标头)"
+    "Authorization header (leave blank to use default header)": "授权标头 (留空以使用默认的标头)",
+    "ONLYOFFICE server is not available": "ONLYOFFICE 服务器不可用",
+    "Please check the settings to resolve the problem.": "请检查设置以解决问题。",
+    "View settings": "查看设置",
+    "ONLYOFFICE Docs Cloud": "ONLYOFFICE 文档云",
+    "Easily launch the editors in the cloud without downloading and installation": "无需下载和安装即可轻松启动云端编辑器",
+    "Get Now": "立即获取"
 },
 "nplurals=1; plural=0;");

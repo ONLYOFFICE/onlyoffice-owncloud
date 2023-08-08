@@ -107,13 +107,22 @@ OC.L10N.register(
     "Create new Form template": "Criar novo modelo de Formulário",
     "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Atualize o ONLYOFFICE Docs para a versão 7.0 para trabalhar em formulários preenchíveis online",
     "Security": "Segurança",
+    "Run document macros": "Executar macros de documento",
+    "Default editor theme": "Tema do editor padrão",
     "Light": "Claro",
     "Classic Light": "Clássico claro",
     "Dark": "Escuro",
+    "This feature is unavailable due to encryption settings.": "Este recurso não está disponível devido às configurações de criptografia.",
     "Enable plugins": "Ativar plug-ins",
     "Enable document protection for": "Ativar proteção de documento para",
     "All users": "Todos os usuários",
     "Owner only": "Somente proprietário",
-    "Authorization header (leave blank to use default header)" : "Cabeçalho de autorização (deixe em branco para usar o cabeçalho padrão)"
+    "Authorization header (leave blank to use default header)": "Cabeçalho de autorização (deixe em branco para usar o cabeçalho padrão)",
+    "ONLYOFFICE server is not available": "O servidor ONLYOFFICE não está disponível",
+    "Please check the settings to resolve the problem.": "Verifique as configurações para resolver o problema.",
+    "View settings": "Configurações de exibição",
+    "ONLYOFFICE Docs Cloud": "ONLYOFFICE Docs Cloud",
+    "Easily launch the editors in the cloud without downloading and installation": "Inicie facilmente os editores na nuvem sem download e instalação",
+    "Get Now": "Obter agora"
 },
 "nplurals=2; plural=(n > 1);");

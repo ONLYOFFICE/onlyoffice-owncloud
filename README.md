@@ -197,7 +197,7 @@ The instruction on enabling _master key_ based encryption is available in the of
  
     If any issue is detected, the ONLYOFFICE integration connector (consequently, the ability to create and open files) will be disabled. As an ownCloud admin, you will get the corresponding notification. 
 
-    This internal option lets avoid issues when the server settings become incorrect and require changes.
+    This option allows you to avoid issues when the server settings become incorrect and require changes.
 
     By default, this background task runs once a day. If necessary, you can change the frequency. To do so, open the ownCloud config file (_/owncloud/config/config.php_). Insert the following section and enter the required value in minutes:
 

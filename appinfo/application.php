@@ -20,6 +20,7 @@
 namespace OCA\Onlyoffice\AppInfo;
 
 use OCP\AppFramework\App;
+use OCP\BackgroundJob\IJobList;
 use OCP\Files\IMimeTypeDetector;
 use OCP\Util;
 use OCP\IPreview;
@@ -29,6 +30,7 @@ use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Controller\CallbackController;
 use OCA\Onlyoffice\Controller\EditorApiController;
 use OCA\Onlyoffice\Controller\EditorController;
+use OCA\Onlyoffice\Controller\JobListController;
 use OCA\Onlyoffice\Controller\SettingsApiController;
 use OCA\Onlyoffice\Controller\SettingsController;
 use OCA\Onlyoffice\Controller\TemplateController;
@@ -89,7 +91,10 @@ class Application extends App {
         require_once __DIR__ . "/../3rdparty/jwt/BeforeValidException.php";
         require_once __DIR__ . "/../3rdparty/jwt/ExpiredException.php";
         require_once __DIR__ . "/../3rdparty/jwt/SignatureInvalidException.php";
+        require_once __DIR__ . "/../3rdparty/jwt/CachedKeySet.php";
         require_once __DIR__ . "/../3rdparty/jwt/JWT.php";
+        require_once __DIR__ . "/../3rdparty/jwt/JWK.php";
+        require_once __DIR__ . "/../3rdparty/jwt/Key.php";
 
         // Set the leeway for the JWT library in case the system clock is a second off
         \Firebase\JWT\JWT::$leeway = $this->appConfig->GetJwtLeeway();
@@ -237,6 +242,14 @@ class Application extends App {
             );
         });
 
+        $checkBackgroundJobs = new JobListController(
+            $container->query("AppName"),
+            $container->query("Request"),
+            $container->query("Logger"),
+            $this->appConfig,
+            $container->query(IJobList::class)
+        );
+        $checkBackgroundJobs->checkAllJobs();
 
         Hooks::connectHooks();
     }

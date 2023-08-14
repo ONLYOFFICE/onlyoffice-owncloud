@@ -299,6 +299,13 @@ class AppConfig {
     public $_customizationPlugins = "customization_plugins";
 
     /**
+     * The config key for the interval of editors availability check by cron
+     *
+     * @var string
+     */
+    private $_editors_check_interval = "editors_check_interval";
+
+    /**
      * @param string $AppName - application name
      */
     public function __construct($AppName) {
@@ -1055,18 +1062,39 @@ class AppConfig {
     /**
      * Get the jwt header setting
      *
+     * @param bool $origin - take origin
+     *
      * @return string
      */
-    public function JwtHeader() {
-        if ($this->UseDemo()) {
+    public function JwtHeader($origin = false) {
+        if (!$origin && $this->UseDemo()) {
             return $this->DEMO_PARAM["HEADER"];
         }
 
-        $header = $this->GetSystemValue($this->_jwtHeader);
+        $header = $this->config->getAppValue($this->appName, $this->_jwtHeader, "");
         if (empty($header)) {
+            $header = $this->GetSystemValue($this->_jwtHeader);
+        }
+        if (!$origin && empty($header)) {
             $header = "Authorization";
         }
         return $header;
+    }
+
+    /**
+     * Save the jwtHeader setting
+     *
+     * @param string $value - jwtHeader
+     */
+    public function SetJwtHeader($value) {
+        $value = trim($value);
+        if (empty($value)) {
+            $this->logger->info("Clear header key", ["app" => $this->appName]);
+        } else {
+            $this->logger->info("Set header key " . $value, ["app" => $this->appName]);
+        }
+
+        $this->config->setAppValue($this->appName, $this->_jwtHeader, $value);
     }
 
     /**
@@ -1157,6 +1185,20 @@ class AppConfig {
     }
 
     /**
+     * Get the editors check interval
+     *
+     * @return int
+     */
+    public function GetEditorsCheckInterval() {
+        $interval = $this->GetSystemValue($this->_editors_check_interval);
+
+        if (empty($interval)) {
+            $interval = 60*60*24;
+        }
+        return (integer)$interval;
+    }
+
+    /**
      * Additional data about formats
      *
      * @var array
@@ -1193,7 +1235,7 @@ class AppConfig {
         "txt" => [ "mime" => "text/plain", "type" => "word", "edit" => true, "editable" => true, "saveas" => ["docx", "odt", "pdf", "rtf"] ],
         "xls" => [ "mime" => "application/vnd.ms-excel", "type" => "cell", "conv" => true, "saveas" => ["csv", "ods", "pdf", "xlsx"] ],
         "xlsm" => [ "mime" => "application/vnd.ms-excel.sheet.macroEnabled.12", "type" => "cell", "conv" => true, "saveas" => ["csv", "ods", "pdf", "xlsx"] ],
-        "xlsx" => [ "mime" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "type" => "cell", "edit" => true, "def" => true, "comment" => true, "modifyFilter" => true, "saveas" => ["csv", "ods", "pdf", "xlsx"] ],
+        "xlsx" => [ "mime" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "type" => "cell", "edit" => true, "def" => true, "comment" => true, "modifyFilter" => true, "saveas" => ["csv", "ods", "pdf"] ],
         "xlt" => [ "type" => "cell", "conv" => true, "saveas" => ["csv", "ods", "pdf", "xlsx"] ],
         "xltm" => [ "mime" => "application/vnd.ms-excel.template.macroEnabled.12", "type" => "cell", "conv" => true, "saveas" => ["csv", "ods", "pdf", "xlsx"] ],
         "xltx" => [ "mime" => "application/vnd.openxmlformats-officedocument.spreadsheetml.template", "type" => "cell", "conv" => true, "saveas" => ["csv", "ods", "pdf", "xlsx"] ]
@@ -1208,4 +1250,15 @@ class AppConfig {
         "SECRET" => "sn2puSUF7muF5Jas",
         "TRIAL" => 30
     ];
+
+    private $linkToDocs = "https://www.onlyoffice.com/docs-registration.aspx?referer=owncloud";
+
+    /**
+     * Get link to Docs Cloud
+     *
+     * @return string
+     */
+    public function GetLinkToDocs() {
+        return $this->linkToDocs;
+    }
 }

@@ -63,13 +63,14 @@
             var onlyofficeUrl = $("#onlyofficeUrl").val().trim();
 
             if (!onlyofficeUrl.length) {
-                $("#onlyofficeInternalUrl, #onlyofficeStorageUrl, #onlyofficeSecret").val("");
+                $("#onlyofficeInternalUrl, #onlyofficeStorageUrl, #onlyofficeSecret, #onlyofficeJwtHeader").val("");
             }
 
             var onlyofficeInternalUrl = ($("#onlyofficeInternalUrl:visible").val() || "").trim();
             var onlyofficeStorageUrl = ($("#onlyofficeStorageUrl:visible").val() || "").trim();
             var onlyofficeVerifyPeerOff = $("#onlyofficeVerifyPeerOff").prop("checked");
             var onlyofficeSecret = ($("#onlyofficeSecret:visible").val() || "").trim();
+            var jwtHeader = ($("#onlyofficeJwtHeader:visible").val() || "").trim();
             var demo = $("#onlyofficeDemo").prop("checked");
 
             $.ajax({
@@ -81,6 +82,7 @@
                     storageUrl: onlyofficeStorageUrl,
                     verifyPeerOff: onlyofficeVerifyPeerOff,
                     secret: onlyofficeSecret,
+                    jwtHeader: jwtHeader,
                     demo: demo
                 },
                 success: function onSuccess(response) {
@@ -90,8 +92,9 @@
                         $("#onlyofficeInternalUrl").val(response.documentserverInternal);
                         $("#onlyofficeStorageUrl").val(response.storageUrl);
                         $("#onlyofficeSecret").val(response.secret);
+                        $("#onlyofficeJwtHeader").val(response.jwtHeader);
 
-                        $(".section-onlyoffice-2").toggleClass("onlyoffice-hide", (!response.documentserver.length && !demo) || !!response.error.length);
+                        $(".section-onlyoffice-2").toggleClass("onlyoffice-hide", (response.documentserver == null && !demo) || !!response.error.length);
 
                         var message =
                             response.error
@@ -104,6 +107,8 @@
                             type: response.error ? "error" : null,
                             timeout: 3
                         });
+                    } else {
+                        $(".section-onlyoffice-2").addClass("onlyoffice-hide")
                     }
                 }
             });

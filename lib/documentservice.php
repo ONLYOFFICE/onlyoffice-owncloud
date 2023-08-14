@@ -161,10 +161,10 @@ class DocumentService {
             $params = [
                 "payload" => $data
             ];
-            $token = \Firebase\JWT\JWT::encode($params, $this->config->GetDocumentServerSecret());
+            $token = \Firebase\JWT\JWT::encode($params, $this->config->GetDocumentServerSecret(), "HS256");
             $opts["headers"][$this->config->JwtHeader()] = "Bearer " . $token;
 
-            $token = \Firebase\JWT\JWT::encode($data, $this->config->GetDocumentServerSecret());
+            $token = \Firebase\JWT\JWT::encode($data, $this->config->GetDocumentServerSecret(), "HS256");
             $data["token"] = $token;
             $opts["body"] = json_encode($data);
         }
@@ -288,10 +288,10 @@ class DocumentService {
             $params = [
                 "payload" => $data
             ];
-            $token = \Firebase\JWT\JWT::encode($params, $this->config->GetDocumentServerSecret());
+            $token = \Firebase\JWT\JWT::encode($params, $this->config->GetDocumentServerSecret(), "HS256");
             $opts["headers"][$this->config->JwtHeader()] = "Bearer " . $token;
 
-            $token = \Firebase\JWT\JWT::encode($data, $this->config->GetDocumentServerSecret());
+            $token = \Firebase\JWT\JWT::encode($data, $this->config->GetDocumentServerSecret(), "HS256");
             $data["token"] = $token;
             $opts["body"] = json_encode($data);
         }
@@ -430,7 +430,7 @@ class DocumentService {
 
             $hashUrl = $crypt->GetHash(["action" => "empty"]);
             $fileUrl = $urlGenerator->linkToRouteAbsolute(self::$appName . ".callback.emptyfile", ["doc" => $hashUrl]);
-            if (!empty($this->config->GetStorageUrl())) {
+            if (!$this->config->UseDemo() && !empty($this->config->GetStorageUrl())) {
                 $fileUrl = str_replace($urlGenerator->getAbsoluteURL("/"), $this->config->GetStorageUrl(), $fileUrl);
             }
 

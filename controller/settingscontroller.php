@@ -110,6 +110,7 @@ class SettingsController extends Controller {
             "storageUrl" => $this->config->GetStorageUrl(),
             "verifyPeerOff" => $this->config->GetVerifyPeerOff(),
             "secret" => $this->config->GetDocumentServerSecret(true),
+            "jwtHeader" => $this->config->JwtHeader(true),
             "demo" => $this->config->GetDemoData(),
             "currentServer" => $this->urlGenerator->getAbsoluteURL("/"),
             "formats" => $this->config->FormatsSetting(),
@@ -130,7 +131,8 @@ class SettingsController extends Controller {
             "macros" => $this->config->GetCustomizationMacros(),
             "reviewDisplay" => $this->config->GetCustomizationReviewDisplay(),
             "theme" => $this->config->GetCustomizationTheme(),
-            "templates" => $this->GetGlobalTemplates()
+            "templates" => $this->GetGlobalTemplates(),
+            "linkToDocs" => $this->config->GetLinkToDocs()
         ];
         return new TemplateResponse($this->appName, "settings", $data, "blank");
     }
@@ -138,6 +140,7 @@ class SettingsController extends Controller {
     /**
      * Save address settings
      *
+     * @param string $jwtHeader - jwt header
      * @param string $documentserver - document service address
      * @param string $documentserverInternal - document service address available from ownCloud
      * @param string $storageUrl - ownCloud address available from document server
@@ -152,6 +155,7 @@ class SettingsController extends Controller {
                                     $storageUrl,
                                     $verifyPeerOff,
                                     $secret,
+                                    $jwtHeader,
                                     $demo
                                     ) {
         $error = null;
@@ -163,6 +167,7 @@ class SettingsController extends Controller {
             $this->config->SetVerifyPeerOff($verifyPeerOff);
             $this->config->SetDocumentServerInternalUrl($documentserverInternal);
             $this->config->SetDocumentServerSecret($secret);
+            $this->config->SetJwtHeader($jwtHeader);
         }
         $this->config->SetStorageUrl($storageUrl);
 
@@ -186,6 +191,7 @@ class SettingsController extends Controller {
             "documentserverInternal" => $this->config->GetDocumentServerInternalUrl(true),
             "storageUrl" => $this->config->GetStorageUrl(),
             "secret" => $this->config->GetDocumentServerSecret(true),
+            "jwtHeader" => $this->config->JwtHeader(true),
             "error" => $error,
             "version" => $version,
             ];

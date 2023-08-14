@@ -1,5 +1,20 @@
 # Change Log
 
+## 8.2.1
+## Added
+- jwt header setting
+- Paste Special to add a link between files
+- si-LK (Sinhala) language in local path mapping
+- Link to docs cloud
+- background job for checking editors availability
+
+## Changed
+- editing by shared link without configuring file protection, chat and without the possibility of mentioning
+- fileType to history data
+- change page title when editing a file
+- jwt library update
+- fileType parameter used in callback instead of extension from url (DocumentServer 7.0 required)
+
 ## 7.8.1
 ## Added
 - disable plugins setting

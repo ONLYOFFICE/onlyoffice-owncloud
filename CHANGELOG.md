@@ -3,6 +3,9 @@
 ## Added
 - Ukrainian translation
 
+## Changed
+- fix disabling background job
+
 ## 8.2.1
 ## Added
 - jwt header setting

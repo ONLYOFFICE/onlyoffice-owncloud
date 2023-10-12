@@ -1,5 +1,6 @@
 # Change Log
 
+## 8.2.3
 ## Added
 - Ukrainian translation
 

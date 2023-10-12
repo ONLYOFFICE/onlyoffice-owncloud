@@ -1,5 +1,8 @@
 # Change Log
 
+### Changed
+- compatible with ownCloud Web 7.0
+
 ## 8.2.3
 ## Added
 - Ukrainian translation

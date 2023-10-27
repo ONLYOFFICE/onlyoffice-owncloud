@@ -100,7 +100,7 @@
         </div>
         <div id="onlyofficeDocsCloudBannerContent">
             <div id="onlyofficeDocsCloudBannerContentText">
-                <p><h2>ONLYOFFICE Docs Cloud</h2></p>
+                <p><h2><?php p($l->t("ONLYOFFICE Docs Cloud")) ?></h2></p>
                 <p><?php p($l->t("Easily launch the editors in the cloud without downloading and installation")) ?></p>
             </div>
             <div id="onlyofficeDocsCloudBannerContentButtonWrapper">

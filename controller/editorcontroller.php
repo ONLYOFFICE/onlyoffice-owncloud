@@ -1078,7 +1078,7 @@ class EditorController extends Controller {
             return ["error" => $this->trans->t("File not found")];
         }
         if (!$file->isReadable()) {
-            $this->logger->error("Folder for saving file without permission: $dir", ["app" => $this->appName]);
+            $this->logger->error("File without permission: $dir", ["app" => $this->appName]);
             return ["error" => $this->trans->t("You do not have enough permissions to view the file")];
         }
 

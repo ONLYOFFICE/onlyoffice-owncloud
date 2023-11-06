@@ -82,7 +82,7 @@
         );
     };
 
-    OCA.Onlyoffice.OpenEditor = function (fileId, fileDir, fileName, version, winEditor) {
+    OCA.Onlyoffice.OpenEditor = function (fileId, fileDir, fileName, version, winEditor, redirect) {
         var filePath = "";
         if (fileName) {
             filePath = fileDir.replace(new RegExp("\/$"), "") + "/" + fileName;
@@ -107,7 +107,7 @@
 
         if (winEditor && winEditor.location) {
             winEditor.location.href = url;
-        } else if (!OCA.Onlyoffice.setting.sameTab || OCA.Onlyoffice.mobile || OCA.Onlyoffice.Desktop) {
+        } else if ((!OCA.Onlyoffice.setting.sameTab || OCA.Onlyoffice.mobile || OCA.Onlyoffice.Desktop) && !redirect) {
             winEditor = window.open(url, "_blank");
         } else if ($("#isPublic").val() === "1" && $("#mimetype").val() !== "httpd/unix-directory") {
             location.href = url;
@@ -541,25 +541,29 @@
                     return;
                 }
 
-                var editorUrl = OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/s/" + encodeURIComponent($("#sharingToken").val()));
+                var redirect = true;
+                var flag = /\?redirect=([\w-]{1})/.exec(location.search);
+                if (flag && flag.length > 0 && flag[1] === "0") {
+                    redirect = false;
+                }
 
-                if (oc_appswebroots.richdocuments
-                    || oc_appswebroots.files_pdfviewer && extension === "pdf"
-                    || oc_appswebroots.files_texteditor && extension === "txt") {
+                var isThirdPartyApps = oc_appswebroots.richdocuments 
+                                        || oc_appswebroots.files_pdfviewer && extension === "pdf"
+                                        || oc_appswebroots.files_texteditor && extension === "txt";
 
-                    var button = document.createElement("a");
-                    button.href = editorUrl;
+                if (!redirect || isThirdPartyApps) {
+                    var button = document.createElement("button");
                     button.className = "onlyoffice-public-open button";
-                    button.innerText = t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE")
-
-                    if (!OCA.Onlyoffice.setting.sameTab) {
-                        button.target = "_blank";
-                    }
+                    button.innerText = t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE");
 
                     $("#preview").prepend(button);
-                } else {
-                    var $iframe = $("<iframe id=\"onlyofficeFrame\" nonce=\"" + btoa(OC.requestToken) + "\" scrolling=\"no\" allowfullscreen src=\"" + editorUrl + "?inframe=true\" />");
-                    $("#preview").append($iframe);
+                    button.addEventListener("click", function(event) {
+                        OCA.Onlyoffice.OpenEditor();
+                    });
+                }
+
+                if (redirect && !isThirdPartyApps) {
+                    OCA.Onlyoffice.OpenEditor(0, "", "", 0, null, redirect);
                 }
             };
 

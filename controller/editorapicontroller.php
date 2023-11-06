@@ -433,20 +433,24 @@ class EditorApiController extends OCSController {
         }
 
         $folderLink = null;
+        $publicPageLink = null;
 
         if (!empty($shareToken)) {
             $node = $share->getNode();
+            $linkAttr = [
+                "token" => $shareToken
+            ];
             if ($node instanceof Folder) {
                 $sharedFolder = $node;
                 $folderPath = $sharedFolder->getRelativePath($file->getParent()->getPath());
                 if (!empty($folderPath)) {
-                    $linkAttr = [
-                        "path" => $folderPath,
-                        "scrollto" => $file->getName(),
-                        "token" => $shareToken
-                    ];
+                    $linkAttr["scrollto"] = $file->getName();
+                    $linkAttr["path"] = $folderPath;
                     $folderLink = $this->urlGenerator->linkToRouteAbsolute("files_sharing.sharecontroller.showShare", $linkAttr);
                 }
+            } else if ($node instanceof File) {
+                $linkAttr["redirect"] = false;
+                $publicPageLink = $this->urlGenerator->linkToRouteAbsolute("files_sharing.sharecontroller.showShare", $linkAttr);
             }
         } else if (!empty($userId)) {
             $userFolder = $this->root->getUserFolder($userId);
@@ -510,10 +514,10 @@ class EditorApiController extends OCSController {
             $params["_file_path"] = $userFolder->getRelativePath($file->getPath());
         }
 
-        if ($folderLink !== null
+        if (($folderLink !== null || $publicPageLink !== null)
             && $this->config->GetSystemValue($this->config->_customization_goback) !== false) {
             $params["editorConfig"]["customization"]["goback"] = [
-                "url"  => $folderLink
+                "url"  => $folderLink !== null ? $folderLink : $publicPageLink
             ];
 
             if (!$desktop) {

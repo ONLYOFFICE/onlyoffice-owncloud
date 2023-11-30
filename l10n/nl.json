@@ -109,6 +109,18 @@
     "Default editor theme": "Standaard editor thema",
     "Light": "Licht",
     "Classic Light": "Klassiek Licht",
-    "Dark": "Donker"
+    "Dark": "Donker",
+    "This feature is unavailable due to encryption settings.": "Deze functie is niet beschikbaar vanwege versleutelingsinstellingen.",
+    "Enable plugins": "Plug-ins inschakelen",
+    "Enable document protection for": "Documentbeveiliging inschakelen voor",
+    "All users": "Alle gebruikers",
+    "Owner only": "Alleen eigenaar",
+    "Authorization header (leave blank to use default header)": "Autorisatieheader (laat leeg om de standaard header te gebruiken)",
+    "ONLYOFFICE server is not available": "ONLYOFFICE server is niet beschikbaar",
+    "Please check the settings to resolve the problem.": "Controleer de instellingen om het probleem op te lossen.",
+    "View settings": "Bekijk instellingen",
+    "ONLYOFFICE Docs Cloud": "ONLYOFFICE Docs Cloud",
+    "Easily launch the editors in the cloud without downloading and installation": "Start de editors gemakkelijk in de cloud zonder te hoeven downloaden en te installeren",
+    "Get Now": "Download Nu"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

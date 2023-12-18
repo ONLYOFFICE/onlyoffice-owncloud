@@ -1175,7 +1175,7 @@ class AppConfig {
     public function ShareAttributesVersion() {
         if (\version_compare(\implode(".", \OCP\Util::getVersion()), "10.3.0", ">=")) {
             return "v2";
-        } else if (\version_compare(\implode(".", \OCP\Util::getVersion()), "10.2.0", ">=")) {
+        } elseif (\version_compare(\implode(".", \OCP\Util::getVersion()), "10.2.0", ">=")) {
             return "v1";
         }
         return "";

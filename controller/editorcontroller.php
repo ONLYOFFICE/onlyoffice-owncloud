@@ -875,7 +875,7 @@ class EditorController extends Controller {
                 "id" => $this->buildUserId($author["id"]),
                 "name" => $author["name"]
             ];
-        } else if ($owner !== null) {
+        } elseif ($owner !== null) {
             $historyItem["user"] = [
                 "id" => $this->buildUserId($ownerId),
                 "name" => $owner->getDisplayName()
@@ -1398,7 +1398,7 @@ class EditorController extends Controller {
             if ($share->getShareType() === Share::SHARE_TYPE_GROUP) {
                 $group = $this->groupManager->get($shareWith);
                 $accessList = $group->getUsers();
-            } else if ($share->getShareType() === Share::SHARE_TYPE_USER) {
+            } elseif ($share->getShareType() === Share::SHARE_TYPE_USER) {
                 array_push($accessList, $this->userManager->get($shareWith));
             }
 

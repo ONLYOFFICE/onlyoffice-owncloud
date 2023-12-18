@@ -496,7 +496,7 @@ class CallbackController extends Controller {
 
                     if ($this->config->checkEncryptionModule() === "master") {
                         \OC_User::setIncognitoMode(true);
-                    } else if (!empty($userId)) {
+                    } elseif (!empty($userId)) {
                         \OC_Util::setupFS($userId);
                     }
 

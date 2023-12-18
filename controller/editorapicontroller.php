@@ -443,7 +443,7 @@ class EditorApiController extends OCSController {
                     $folderLink = $this->urlGenerator->linkToRouteAbsolute("files_sharing.sharecontroller.showShare", $linkAttr);
                 }
             }
-        } else if (!empty($userId)) {
+        } elseif (!empty($userId)) {
             $userFolder = $this->root->getUserFolder($userId);
             $folderPath = $userFolder->getRelativePath($file->getParent()->getPath());
             if (!empty($folderPath)) {

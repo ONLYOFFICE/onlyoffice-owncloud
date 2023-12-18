@@ -85,7 +85,7 @@ class DocumentService {
      *
      * @return string
      */
-    function GetConvertedUri($document_uri, $from_extension, $to_extension, $document_revision_id) {
+    public function GetConvertedUri($document_uri, $from_extension, $to_extension, $document_revision_id) {
         $responceFromConvertService = $this->SendRequestToConvertService($document_uri, $from_extension, $to_extension, $document_revision_id, false);
 
         $errorElement = $responceFromConvertService->Error;
@@ -113,7 +113,7 @@ class DocumentService {
      *
      * @return array
      */
-    function SendRequestToConvertService($document_uri, $from_extension, $to_extension, $document_revision_id, $is_async) {
+    public function SendRequestToConvertService($document_uri, $from_extension, $to_extension, $document_revision_id, $is_async) {
         $documentServerUrl = $this->config->GetDocumentServerInternalUrl();
 
         if (empty($documentServerUrl)) {
@@ -193,7 +193,7 @@ class DocumentService {
      *
      * @return null
      */
-    function ProcessConvServResponceError($errorCode) {
+    public function ProcessConvServResponceError($errorCode) {
         $errorMessageTemplate = $this->trans->t("Error occurred in the document service");
         $errorMessage = "";
 
@@ -240,7 +240,7 @@ class DocumentService {
      *
      * @return bool
      */
-    function HealthcheckRequest() {
+    public function HealthcheckRequest() {
         $documentServerUrl = $this->config->GetDocumentServerInternalUrl();
 
         if (empty($documentServerUrl)) {
@@ -261,7 +261,7 @@ class DocumentService {
      *
      * @return array
      */
-    function CommandRequest($method) {
+    public function CommandRequest($method) {
         $documentServerUrl = $this->config->GetDocumentServerInternalUrl();
 
         if (empty($documentServerUrl)) {
@@ -309,7 +309,7 @@ class DocumentService {
      *
      * @return null
      */
-    function ProcessCommandServResponceError($errorCode) {
+    public function ProcessCommandServResponceError($errorCode) {
         $errorMessageTemplate = $this->trans->t("Error occurred in the document service");
         $errorMessage = "";
 

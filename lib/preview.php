@@ -231,7 +231,7 @@ class Preview implements IProvider2 {
         if ($this->config->GetPreview() !== true) {
             return false;
         }
-        if (!$fileInfo 
+        if (!$fileInfo
             || $fileInfo->getSize() === 0
             || $fileInfo->getSize() > $this->config->GetLimitThumbSize()) {
             return false;

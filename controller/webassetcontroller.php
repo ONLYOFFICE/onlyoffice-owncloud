@@ -60,7 +60,7 @@ class WebAssetController extends Controller {
      */
     public function get(): Response {
         $basePath = \dirname(__DIR__, 1);
-        $filePath = \realpath( $basePath . '/js/web/onlyoffice.js');
+        $filePath = \realpath($basePath . '/js/web/onlyoffice.js');
         try {
             return new DataDisplayResponse(\file_get_contents($filePath), Http::STATUS_OK, [
                 'Content-Type' => "text/javascript",

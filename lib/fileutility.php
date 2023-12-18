@@ -231,7 +231,7 @@ class FileUtility {
 
         $key = KeyManager::get($fileId);
 
-        if (empty($key) ) {
+        if (empty($key)) {
             $instanceId = $this->config->GetSystemValue("instanceid", true);
 
             $key = $instanceId . "_" . $this->GUID();

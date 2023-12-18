@@ -68,7 +68,7 @@ class DocumentService {
      */
     public static function GenerateRevisionId($expected_key) {
         if (strlen($expected_key) > 20) {
-            $expected_key = crc32( $expected_key);
+            $expected_key = crc32($expected_key);
         }
         $key = preg_replace("[^0-9-.a-zA-Z_=]", "_", $expected_key);
         $key = substr($key, 0, min(array(strlen($key), 20)));

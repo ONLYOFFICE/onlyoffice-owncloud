@@ -145,7 +145,7 @@ class FileVersions {
             return null;
         }
 
-        list ($view, $path) = self::getView($ownerId, $fileId);
+        list($view, $path) = self::getView($ownerId, $fileId);
         if ($view === null) {
             return null;
         }
@@ -195,7 +195,7 @@ class FileVersions {
             return false;
         }
 
-        list ($view, $path) = self::getView($ownerId, $fileId);
+        list($view, $path) = self::getView($ownerId, $fileId);
         if ($view === null) {
             return false;
         }
@@ -218,7 +218,7 @@ class FileVersions {
             return null;
         }
 
-        list ($view, $path) = self::getView($ownerId, $fileId);
+        list($view, $path) = self::getView($ownerId, $fileId);
         if ($view === null) {
             return null;
         }
@@ -268,7 +268,7 @@ class FileVersions {
         $fileId = $fileInfo->getId();
         $versionId = $fileInfo->getMtime();
 
-        list ($view, $path) = self::getView($ownerId, $fileId, true);
+        list($view, $path) = self::getView($ownerId, $fileId, true);
 
         try {
             $changesPath = $path . "/" . $versionId . self::$changesExt;
@@ -301,7 +301,7 @@ class FileVersions {
             return;
         }
 
-        list ($view, $path) = self::getView($ownerId, $fileId);
+        list($view, $path) = self::getView($ownerId, $fileId);
         if ($view === null) {
             return;
         }
@@ -328,7 +328,7 @@ class FileVersions {
             return;
         }
 
-        list ($view, $path) = self::getView($ownerId, $fileId);
+        list($view, $path) = self::getView($ownerId, $fileId);
         if ($view === null) {
             return null;
         }
@@ -394,7 +394,7 @@ class FileVersions {
         $fileId = $fileInfo->getId();
         $versionId = $fileInfo->getMtime();
 
-        list ($view, $path) = self::getView($ownerId, $fileId, true);
+        list($view, $path) = self::getView($ownerId, $fileId, true);
 
         try {
             $authorPath = $path . "/" . $versionId . self::$authorExt;
@@ -426,7 +426,7 @@ class FileVersions {
             return null;
         }
 
-        list ($view, $path) = self::getView($ownerId, $fileId);
+        list($view, $path) = self::getView($ownerId, $fileId);
         if ($view === null) {
             return null;
         }
@@ -463,7 +463,7 @@ class FileVersions {
             return;
         }
 
-        list ($view, $path) = self::getView($ownerId, $fileId);
+        list($view, $path) = self::getView($ownerId, $fileId);
         if ($view === null) {
             return null;
         }

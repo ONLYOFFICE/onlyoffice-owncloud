@@ -180,7 +180,7 @@ class DocumentService {
             foreach (libxml_get_errors() as $error) {
                 $exc = $exc . "\t" . $error->message;
             }
-            throw new \Exception ($exc);
+            throw new \Exception($exc);
         }
 
         return $response_data;

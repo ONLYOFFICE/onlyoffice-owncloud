@@ -131,7 +131,7 @@ class Hooks {
         }
 
         try {
-            list ($filePath, $versionId) = FileVersions::splitPathVersion($pathVersion);
+            list($filePath, $versionId) = FileVersions::splitPathVersion($pathVersion);
             if (empty($filePath)) {
                 return;
             }

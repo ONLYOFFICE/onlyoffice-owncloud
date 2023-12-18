@@ -177,7 +177,7 @@ class CallbackController extends Controller {
      * @CORS
      */
     public function download($doc) {
-        list ($hashData, $error) = $this->crypt->ReadHash($doc);
+        list($hashData, $error) = $this->crypt->ReadHash($doc);
         if ($hashData === null) {
             $this->logger->error("Download with empty or not correct hash: $error", ["app" => $this->appName]);
             return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
@@ -241,7 +241,7 @@ class CallbackController extends Controller {
         }
 
         $shareToken = isset($hashData->shareToken) ? $hashData->shareToken : null;
-        list ($file, $error) = empty($shareToken) ? $this->getFile($userId, $fileId, null, $changes ? null : $version, $template) : $this->getFileByToken($fileId, $shareToken, $changes ? null : $version);
+        list($file, $error) = empty($shareToken) ? $this->getFile($userId, $fileId, null, $changes ? null : $version, $template) : $this->getFileByToken($fileId, $shareToken, $changes ? null : $version);
 
         if (isset($error)) {
             return $error;
@@ -322,7 +322,7 @@ class CallbackController extends Controller {
     public function emptyfile($doc) {
         $this->logger->debug("Download empty", ["app" => $this->appName]);
 
-        list ($hashData, $error) = $this->crypt->ReadHash($doc);
+        list($hashData, $error) = $this->crypt->ReadHash($doc);
         if ($hashData === null) {
             $this->logger->error("Download empty with empty or not correct hash: $error", ["app" => $this->appName]);
             return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
@@ -389,7 +389,7 @@ class CallbackController extends Controller {
      * @CORS
      */
     public function track($doc, $users, $key, $status, $url, $token, $history, $changesurl, $forcesavetype, $actions, $filetype) {
-        list ($hashData, $error) = $this->crypt->ReadHash($doc);
+        list($hashData, $error) = $this->crypt->ReadHash($doc);
         if ($hashData === null) {
             $this->logger->error("Track with empty or not correct hash: $error", ["app" => $this->appName]);
             return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
@@ -501,7 +501,7 @@ class CallbackController extends Controller {
                         \OC_Util::setupFS($userId);
                     }
 
-                    list ($file, $error) = empty($shareToken) ? $this->getFile($userId, $fileId, $filePath) : $this->getFileByToken($fileId, $shareToken);
+                    list($file, $error) = empty($shareToken) ? $this->getFile($userId, $fileId, $filePath) : $this->getFileByToken($fileId, $shareToken);
 
                     if (isset($error)) {
                         $this->logger->error("track error: $fileId " . json_encode($error->getData()), ["app" => $this->appName]);
@@ -645,7 +645,7 @@ class CallbackController extends Controller {
 
             if ($owner !== null) {
                 if ($owner->getUID() !== $userId) {
-                    list ($file, $error) = $this->getFile($owner->getUID(), $file->getId());
+                    list($file, $error) = $this->getFile($owner->getUID(), $file->getId());
 
                     if (isset($error)) {
                         return [null, $error];
@@ -674,7 +674,7 @@ class CallbackController extends Controller {
      * @return array
      */
     private function getFileByToken($fileId, $shareToken, $version = 0) {
-        list ($share, $error) = $this->getShare($shareToken);
+        list($share, $error) = $this->getShare($shareToken);
 
         if (isset($error)) {
             return [null, $error];

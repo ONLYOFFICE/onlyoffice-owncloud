@@ -114,7 +114,7 @@ class DocumentServer extends Command {
         if ($check) {
             $documentService = new DocumentService($this->trans, $this->config);
 
-            list ($error, $version) = $documentService->checkDocServiceUrl($this->urlGenerator, $this->crypt);
+            list($error, $version) = $documentService->checkDocServiceUrl($this->urlGenerator, $this->crypt);
             $this->config->SetSettingsError($error);
 
             if (!empty($error)) {

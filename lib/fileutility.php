@@ -114,7 +114,7 @@ class FileUtility {
      * @return array
      */
     public function getFileByToken($fileId, $shareToken, $path = null) {
-        list ($node, $error, $share) = $this->getNodeByToken($shareToken);
+        list($node, $error, $share) = $this->getNodeByToken($shareToken);
 
         if (isset($error)) {
             return [null, $error, null];
@@ -157,7 +157,7 @@ class FileUtility {
      * @return array
      */
     public function getNodeByToken($shareToken) {
-        list ($share, $error) = $this->getShare($shareToken);
+        list($share, $error) = $this->getShare($shareToken);
 
         if (isset($error)) {
             return [null, $error, null];

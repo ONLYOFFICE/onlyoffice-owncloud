@@ -188,7 +188,7 @@ class EditorApiController extends OCSController {
 
         $userId = $this->userSession->getUser()->getUID();
 
-        list ($file, $error, $share) = $this->getFile($userId, $fileId);
+        list($file, $error, $share) = $this->getFile($userId, $fileId);
         if (isset($error)) {
             $this->logger->error("Fill empty: $fileId $error", ["app" => $this->appName]);
             return new JSONResponse(["error" => $error]);
@@ -249,7 +249,7 @@ class EditorApiController extends OCSController {
             $accountId = $user->getAccountId();
         }
 
-        list ($file, $error, $share) = empty($shareToken) ? $this->getFile($userId, $fileId, $filePath, $template) : $this->fileUtility->getFileByToken($fileId, $shareToken);
+        list($file, $error, $share) = empty($shareToken) ? $this->getFile($userId, $fileId, $filePath, $template) : $this->fileUtility->getFileByToken($fileId, $shareToken);
 
         if (isset($error)) {
             $this->logger->error("Config: $fileId $error", ["app" => $this->appName]);

@@ -260,7 +260,7 @@ class Preview implements IProvider2 {
 
         $this->logger->debug("getThumbnail " . $file->getPath() . " $maxX $maxY", ["app" => $this->appName]);
 
-        list ($fileUrl, $extension, $key) = $this->getFileParam($file);
+        list($fileUrl, $extension, $key) = $this->getFileParam($file);
         if ($fileUrl === null || $extension === null || $key === null) {
             return false;
         }

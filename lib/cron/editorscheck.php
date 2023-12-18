@@ -141,7 +141,7 @@ class EditorsCheck extends TimedJob {
         $this->logger->debug("ONLYOFFICE check started by cron", ["app" => $this->appName]);
 
         $documentService = new DocumentService($this->trans, $this->config);
-        list ($error, $version) = $documentService->checkDocServiceUrl($this->urlGenerator, $this->crypt);
+        list($error, $version) = $documentService->checkDocServiceUrl($this->urlGenerator, $this->crypt);
         if (!empty($error)) {
             $this->logger->info("ONLYOFFICE server is not available", ["app" => $this->appName]);
             $this->config->SetSettingsError($error);

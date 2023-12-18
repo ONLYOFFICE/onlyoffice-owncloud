@@ -96,7 +96,7 @@ class FederationController extends OCSController {
      * @PublicPage
      */
     public function key($shareToken, $path) {
-        list ($file, $error, $share) = $this->fileUtility->getFileByToken(null, $shareToken, $path);
+        list($file, $error, $share) = $this->fileUtility->getFileByToken(null, $shareToken, $path);
 
         if (isset($error)) {
             $this->logger->error("Federated getFileByToken: $error", ["app" => $this->appName]);
@@ -127,7 +127,7 @@ class FederationController extends OCSController {
      * @PublicPage
      */
     public function keylock($shareToken, $path, $lock, $fs) {
-        list ($file, $error, $share) = $this->fileUtility->getFileByToken(null, $shareToken, $path);
+        list($file, $error, $share) = $this->fileUtility->getFileByToken(null, $shareToken, $path);
 
         if (isset($error)) {
             $this->logger->error("Federated getFileByToken: $error", ["app" => $this->appName]);

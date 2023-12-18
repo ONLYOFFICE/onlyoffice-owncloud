@@ -219,7 +219,7 @@ class EditorController extends Controller {
             $userId = $user->getUID();
             $userFolder = $this->root->getUserFolder($userId);
         } else {
-            list ($userFolder, $error, $share) = $this->fileUtility->getNodeByToken($shareToken);
+            list($userFolder, $error, $share) = $this->fileUtility->getNodeByToken($shareToken);
 
             if (isset($error)) {
                 $this->logger->error("Create: $error", ["app" => $this->appName]);
@@ -359,7 +359,7 @@ class EditorController extends Controller {
         $currentUser = $this->userSession->getUser();
         $currentUserId = $currentUser->getUID();
 
-        list ($file, $error, $share) = $this->getFile($currentUserId, $fileId);
+        list($file, $error, $share) = $this->getFile($currentUserId, $fileId);
         if (isset($error)) {
             $this->logger->error("Users: $fileId $error", ["app" => $this->appName]);
             return $result;
@@ -451,7 +451,7 @@ class EditorController extends Controller {
             $userId = $user->getUID();
         }
 
-        list ($file, $error, $share) = $this->getFile($userId, $fileId);
+        list($file, $error, $share) = $this->getFile($userId, $fileId);
         if (isset($error)) {
             $this->logger->error("Mention: $fileId $error", ["app" => $this->appName]);
             return ["error" => $this->trans->t("Failed to send notification")];
@@ -565,7 +565,7 @@ class EditorController extends Controller {
         $fileId = (integer)($referenceData["fileKey"] ?? 0);
         if (!empty($fileId)
             && $referenceData["instanceId"] === $this->config->GetSystemValue("instanceid", true)) {
-            list ($file, $error, $share) = $this->getFile($userId, $fileId);
+            list($file, $error, $share) = $this->getFile($userId, $fileId);
         }
 
         $userFolder = $this->root->getUserFolder($userId);
@@ -629,7 +629,7 @@ class EditorController extends Controller {
             $userId = $user->getUID();
         }
 
-        list ($file, $error, $share) = empty($shareToken) ? $this->getFile($userId, $fileId) : $this->fileUtility->getFileByToken($fileId, $shareToken);
+        list($file, $error, $share) = empty($shareToken) ? $this->getFile($userId, $fileId) : $this->fileUtility->getFileByToken($fileId, $shareToken);
 
         if (isset($error)) {
             $this->logger->error("Convertion: $fileId $error", ["app" => $this->appName]);
@@ -800,7 +800,7 @@ class EditorController extends Controller {
             $userId = $user->getUID();
         }
 
-        list ($file, $error, $share) = $this->getFile($userId, $fileId);
+        list($file, $error, $share) = $this->getFile($userId, $fileId);
 
         if (isset($error)) {
             $this->logger->error("History: $fileId $error", ["app" => $this->appName]);
@@ -919,7 +919,7 @@ class EditorController extends Controller {
             $userId = $user->getUID();
         }
 
-        list ($file, $error, $share) = $this->getFile($userId, $fileId);
+        list($file, $error, $share) = $this->getFile($userId, $fileId);
 
         if (isset($error)) {
             $this->logger->error("History: $fileId $error", ["app" => $this->appName]);
@@ -1021,7 +1021,7 @@ class EditorController extends Controller {
             $userId = $user->getUID();
         }
 
-        list ($file, $error, $share) = $this->getFile($userId, $fileId);
+        list($file, $error, $share) = $this->getFile($userId, $fileId);
 
         if (isset($error)) {
             $this->logger->error("Restore: $fileId $error", ["app" => $this->appName]);
@@ -1132,7 +1132,7 @@ class EditorController extends Controller {
                 $userId = $user->getUID();
             }
 
-            list ($file, $error, $share) = $this->getFile($userId, $fileId);
+            list($file, $error, $share) = $this->getFile($userId, $fileId);
 
             if (isset($error)) {
                 $this->logger->error("Download: $fileId $error", ["app" => $this->appName]);
@@ -1209,7 +1209,7 @@ class EditorController extends Controller {
 
         $shareBy = null;
         if (!empty($shareToken) && !$this->userSession->isLoggedIn()) {
-            list ($share, $error) = $this->fileUtility->getShare($shareToken);
+            list($share, $error) = $this->fileUtility->getShare($shareToken);
             if (!empty($share)) {
                 $shareBy = $share->getSharedBy();
             }

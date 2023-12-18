@@ -27,49 +27,49 @@ use OCA\Onlyoffice\AppConfig;
  * @package OCA\Onlyoffice
  */
 class Crypt {
-    /**
-     * Application configuration
-     *
-     * @var AppConfig
-     */
-    private $config;
+	/**
+	 * Application configuration
+	 *
+	 * @var AppConfig
+	 */
+	private $config;
 
-    /**
-     * @param AppConfig $config - application configutarion
-     */
-    public function __construct(AppConfig $appConfig) {
-        $this->config = $appConfig;
-    }
+	/**
+	 * @param AppConfig $config - application configutarion
+	 */
+	public function __construct(AppConfig $appConfig) {
+		$this->config = $appConfig;
+	}
 
-    /**
-     * Generate token for the object
-     *
-     * @param array $object - object to signature
-     *
-     * @return string
-     */
-    public function GetHash($object) {
-        return \Firebase\JWT\JWT::encode($object, $this->config->GetSKey(), "HS256");
-    }
+	/**
+	 * Generate token for the object
+	 *
+	 * @param array $object - object to signature
+	 *
+	 * @return string
+	 */
+	public function GetHash($object) {
+		return \Firebase\JWT\JWT::encode($object, $this->config->GetSKey(), "HS256");
+	}
 
-    /**
-     * Create an object from the token
-     *
-     * @param string $token - token
-     *
-     * @return array
-     */
-    public function ReadHash($token) {
-        $result = null;
-        $error = null;
-        if ($token === null) {
-            return [$result, "token is empty"];
-        }
-        try {
-            $result = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($this->config->GetSKey(), "HS256"));
-        } catch (\UnexpectedValueException $e) {
-            $error = $e->getMessage();
-        }
-        return [$result, $error];
-    }
+	/**
+	 * Create an object from the token
+	 *
+	 * @param string $token - token
+	 *
+	 * @return array
+	 */
+	public function ReadHash($token) {
+		$result = null;
+		$error = null;
+		if ($token === null) {
+			return [$result, "token is empty"];
+		}
+		try {
+			$result = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($this->config->GetSKey(), "HS256"));
+		} catch (\UnexpectedValueException $e) {
+			$error = $e->getMessage();
+		}
+		return [$result, $error];
+	}
 }

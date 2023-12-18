@@ -25,125 +25,125 @@ namespace OCA\Onlyoffice;
  * @package OCA\Onlyoffice
  */
 class KeyManager {
-    /**
-     * Table name
-     */
-    private const TableName_Key = "onlyoffice_filekey";
+	/**
+	 * Table name
+	 */
+	private const TableName_Key = "onlyoffice_filekey";
 
-    /**
-     * Get document identifier
-     *
-     * @param integer $fileId - file identifier
-     *
-     * @return string
-     */
-    public static function get($fileId) {
-        $connection = \OC::$server->getDatabaseConnection();
-        $select = $connection->prepare("
+	/**
+	 * Get document identifier
+	 *
+	 * @param integer $fileId - file identifier
+	 *
+	 * @return string
+	 */
+	public static function get($fileId) {
+		$connection = \OC::$server->getDatabaseConnection();
+		$select = $connection->prepare("
             SELECT `key`
             FROM  `*PREFIX*" . self::TableName_Key . "`
             WHERE `file_id` = ?
         ");
-        $result = $select->execute([$fileId]);
+		$result = $select->execute([$fileId]);
 
-        $keys = $result ? $select->fetch() : [];
-        $key = \is_array($keys) && isset($keys["key"]) ? $keys["key"] : "";
+		$keys = $result ? $select->fetch() : [];
+		$key = \is_array($keys) && isset($keys["key"]) ? $keys["key"] : "";
 
-        return $key;
-    }
+		return $key;
+	}
 
-    /**
-     * Store document identifier
-     *
-     * @param integer $fileId - file identifier
-     * @param integer $key - file key
-     *
-     * @return bool
-     */
-    public static function set($fileId, $key) {
-        $connection = \OC::$server->getDatabaseConnection();
-        $insert = $connection->prepare("
+	/**
+	 * Store document identifier
+	 *
+	 * @param integer $fileId - file identifier
+	 * @param integer $key - file key
+	 *
+	 * @return bool
+	 */
+	public static function set($fileId, $key) {
+		$connection = \OC::$server->getDatabaseConnection();
+		$insert = $connection->prepare("
             INSERT INTO `*PREFIX*" . self::TableName_Key . "`
                 (`file_id`, `key`)
             VALUES (?, ?)
         ");
-        return (bool)$insert->execute([$fileId, $key]);
-    }
+		return (bool)$insert->execute([$fileId, $key]);
+	}
 
-    /**
-     * Delete document identifier
-     *
-     * @param integer $fileId - file identifier
-     * @param bool $unlock - delete even with lock label
-     *
-     * @return bool
-     */
-    public static function delete($fileId, $unlock = false) {
-        $connection = \OC::$server->getDatabaseConnection();
-        $delete = $connection->prepare(
-            "
+	/**
+	 * Delete document identifier
+	 *
+	 * @param integer $fileId - file identifier
+	 * @param bool $unlock - delete even with lock label
+	 *
+	 * @return bool
+	 */
+	public static function delete($fileId, $unlock = false) {
+		$connection = \OC::$server->getDatabaseConnection();
+		$delete = $connection->prepare(
+			"
             DELETE FROM `*PREFIX*" . self::TableName_Key . "`
             WHERE `file_id` = ?
             " . ($unlock === false ? "AND `lock` != 1" : "")
-        );
-        return (bool)$delete->execute([$fileId]);
-    }
+		);
+		return (bool)$delete->execute([$fileId]);
+	}
 
-    /**
-     * Change lock status
-     *
-     * @param integer $fileId - file identifier
-     * @param bool $lock - status
-     *
-     * @return bool
-     */
-    public static function lock($fileId, $lock = true) {
-        $connection = \OC::$server->getDatabaseConnection();
-        $update = $connection->prepare("
+	/**
+	 * Change lock status
+	 *
+	 * @param integer $fileId - file identifier
+	 * @param bool $lock - status
+	 *
+	 * @return bool
+	 */
+	public static function lock($fileId, $lock = true) {
+		$connection = \OC::$server->getDatabaseConnection();
+		$update = $connection->prepare("
             UPDATE `*PREFIX*" . self::TableName_Key . "`
             SET `lock` = ?
             WHERE `file_id` = ?
         ");
-        return (bool)$update->execute([$lock === true ? 1 : 0, $fileId]);
-    }
+		return (bool)$update->execute([$lock === true ? 1 : 0, $fileId]);
+	}
 
-    /**
-     * Change forcesave status
-     *
-     * @param integer $fileId - file identifier
-     * @param bool $fs - status
-     *
-     * @return bool
-     */
-    public static function setForcesave($fileId, $fs = true) {
-        $connection = \OC::$server->getDatabaseConnection();
-        $update = $connection->prepare("
+	/**
+	 * Change forcesave status
+	 *
+	 * @param integer $fileId - file identifier
+	 * @param bool $fs - status
+	 *
+	 * @return bool
+	 */
+	public static function setForcesave($fileId, $fs = true) {
+		$connection = \OC::$server->getDatabaseConnection();
+		$update = $connection->prepare("
             UPDATE `*PREFIX*" . self::TableName_Key . "`
             SET `fs` = ?
             WHERE `file_id` = ?
         ");
-        return (bool)$update->execute([$fs === true ? 1 : 0, $fileId]);
-    }
+		return (bool)$update->execute([$fs === true ? 1 : 0, $fileId]);
+	}
 
-    /**
-     * Get forcesave status
-     *
-     * @param integer $fileId - file identifier
-     *
-     * @return bool
-     */
-    public static function wasForcesave($fileId) {
-        $connection = \OC::$server->getDatabaseConnection();
-        $select = $connection->prepare("
+	/**
+	 * Get forcesave status
+	 *
+	 * @param integer $fileId - file identifier
+	 *
+	 * @return bool
+	 */
+	public static function wasForcesave($fileId) {
+		$connection = \OC::$server->getDatabaseConnection();
+		$select = $connection->prepare("
             SELECT `fs`
             FROM  `*PREFIX*" . self::TableName_Key . "`
             WHERE `file_id` = ?
         ");
-        $result = $select->execute([$fileId]);
+		$result = $select->execute([$fileId]);
 
-        $rows = $result ? $select->fetch() : [];
-        $fs = \is_array($rows) && isset($rows["fs"]) ? $rows["fs"] : "";
+		$rows = $result ? $select->fetch() : [];
+		$fs = \is_array($rows) && isset($rows["fs"]) ? $rows["fs"] : "";
 
-        return $fs === "1";
-    }
+		return $fs === "1";
+	}
 }

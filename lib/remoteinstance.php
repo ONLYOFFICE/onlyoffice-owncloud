@@ -29,254 +29,254 @@ use OCA\Files_Sharing\External\Storage as SharingExternalStorage;
  * @package OCA\Onlyoffice
  */
 class RemoteInstance {
-    /**
-     * App name
-     */
-    private const App_Name = "onlyoffice";
+	/**
+	 * App name
+	 */
+	private const App_Name = "onlyoffice";
 
-    /**
-     * Table name
-     */
-    private const TableName_Key = "onlyoffice_instance";
+	/**
+	 * Table name
+	 */
+	private const TableName_Key = "onlyoffice_instance";
 
-    /**
-     * Time to live of remote instance (12 hours)
-     */
-    private static $ttl = 60 * 60 * 12;
+	/**
+	 * Time to live of remote instance (12 hours)
+	 */
+	private static $ttl = 60 * 60 * 12;
 
-    /**
-     * Health remote list
-     */
-    private static $healthRemote = [];
+	/**
+	 * Health remote list
+	 */
+	private static $healthRemote = [];
 
-    /**
-     * Get remote instance
-     *
-     * @param string $remote - remote instance
-     *
-     * @return array
-     */
-    private static function get($remote) {
-        $connection = \OC::$server->getDatabaseConnection();
-        $select = $connection->prepare("
+	/**
+	 * Get remote instance
+	 *
+	 * @param string $remote - remote instance
+	 *
+	 * @return array
+	 */
+	private static function get($remote) {
+		$connection = \OC::$server->getDatabaseConnection();
+		$select = $connection->prepare("
             SELECT remote, expire, status
             FROM  `*PREFIX*" . self::TableName_Key . "`
             WHERE `remote` = ?
         ");
-        $result = $select->execute([$remote]);
+		$result = $select->execute([$remote]);
 
-        $dbremote = $result ? $select->fetch() : [];
+		$dbremote = $result ? $select->fetch() : [];
 
-        return $dbremote;
-    }
+		return $dbremote;
+	}
 
-    /**
-     * Store remote instance
-     *
-     * @param string $remote - remote instance
-     * @param bool $status - remote status
-     *
-     * @return bool
-     */
-    private static function set($remote, $status) {
-        $connection = \OC::$server->getDatabaseConnection();
-        $insert = $connection->prepare("
+	/**
+	 * Store remote instance
+	 *
+	 * @param string $remote - remote instance
+	 * @param bool $status - remote status
+	 *
+	 * @return bool
+	 */
+	private static function set($remote, $status) {
+		$connection = \OC::$server->getDatabaseConnection();
+		$insert = $connection->prepare("
             INSERT INTO `*PREFIX*" . self::TableName_Key . "`
                 (`remote`, `status`, `expire`)
             VALUES (?, ?, ?)
         ");
-        return (bool)$insert->execute([$remote, $status === true ? 1 : 0, time()]);
-    }
+		return (bool)$insert->execute([$remote, $status === true ? 1 : 0, time()]);
+	}
 
-    /**
-     * Update remote instance
-     *
-     * @param string $remote - remote instance
-     * @param bool $status - remote status
-     *
-     * @return bool
-     */
-    private static function update($remote, $status) {
-        $connection = \OC::$server->getDatabaseConnection();
-        $update = $connection->prepare("
+	/**
+	 * Update remote instance
+	 *
+	 * @param string $remote - remote instance
+	 * @param bool $status - remote status
+	 *
+	 * @return bool
+	 */
+	private static function update($remote, $status) {
+		$connection = \OC::$server->getDatabaseConnection();
+		$update = $connection->prepare("
             UPDATE `*PREFIX*" . self::TableName_Key . "`
             SET status = ?, expire = ?
             WHERE remote = ?
         ");
-        return (bool)$update->execute([$status === true ? 1 : 0, time(), $remote]);
-    }
+		return (bool)$update->execute([$status === true ? 1 : 0, time(), $remote]);
+	}
 
-    /**
-     * Health check remote instance
-     *
-     * @param string $remote - remote instance
-     *
-     * @return bool
-     */
-    public static function healthCheck($remote) {
-        $logger = \OC::$server->getLogger();
-        $remote = rtrim($remote, "/") . "/";
+	/**
+	 * Health check remote instance
+	 *
+	 * @param string $remote - remote instance
+	 *
+	 * @return bool
+	 */
+	public static function healthCheck($remote) {
+		$logger = \OC::$server->getLogger();
+		$remote = rtrim($remote, "/") . "/";
 
-        if (\in_array($remote, self::$healthRemote)) {
-            $logger->debug("Remote instance " . $remote . " from local cache status " . $dbremote["status"], ["app" => self::App_Name]);
-            return true;
-        }
+		if (\in_array($remote, self::$healthRemote)) {
+			$logger->debug("Remote instance " . $remote . " from local cache status " . $dbremote["status"], ["app" => self::App_Name]);
+			return true;
+		}
 
-        $dbremote = self::get($remote);
-        if (!empty($dbremote) && $dbremote["expire"] + self::$ttl > time()) {
-            $logger->debug("Remote instance " . $remote . " from database status " . $dbremote["status"], ["app" => self::App_Name]);
-            self::$healthRemote[$remote] = $dbremote["status"];
-            return self::$healthRemote[$remote];
-        }
+		$dbremote = self::get($remote);
+		if (!empty($dbremote) && $dbremote["expire"] + self::$ttl > time()) {
+			$logger->debug("Remote instance " . $remote . " from database status " . $dbremote["status"], ["app" => self::App_Name]);
+			self::$healthRemote[$remote] = $dbremote["status"];
+			return self::$healthRemote[$remote];
+		}
 
-        $httpClientService = \OC::$server->getHTTPClientService();
-        $client = $httpClientService->newClient();
+		$httpClientService = \OC::$server->getHTTPClientService();
+		$client = $httpClientService->newClient();
 
-        $status = false;
-        try {
-            $response = $client->get($remote . "ocs/v2.php/apps/" . self::App_Name . "/api/v1/healthcheck?format=json");
-            $body = json_decode($response->getBody(), true);
+		$status = false;
+		try {
+			$response = $client->get($remote . "ocs/v2.php/apps/" . self::App_Name . "/api/v1/healthcheck?format=json");
+			$body = json_decode($response->getBody(), true);
 
-            $data = $body["ocs"]["data"];
-            if (isset($data["alive"])) {
-                $status = $data["alive"] === true;
-            }
-        } catch (\Exception $e) {
-            $logger->logException($e, ["message" => "Failed to request federated health check for" . $remote, "app" => self::App_Name]);
-        }
+			$data = $body["ocs"]["data"];
+			if (isset($data["alive"])) {
+				$status = $data["alive"] === true;
+			}
+		} catch (\Exception $e) {
+			$logger->logException($e, ["message" => "Failed to request federated health check for" . $remote, "app" => self::App_Name]);
+		}
 
-        if (empty($dbremote)) {
-            self::set($remote, $status);
-        } else {
-            self::update($remote, $status);
-        }
+		if (empty($dbremote)) {
+			self::set($remote, $status);
+		} else {
+			self::update($remote, $status);
+		}
 
-        $logger->debug("Remote instance " . $remote . " was stored to database status " . $dbremote["status"], ["app" => self::App_Name]);
+		$logger->debug("Remote instance " . $remote . " was stored to database status " . $dbremote["status"], ["app" => self::App_Name]);
 
-        self::$healthRemote[$remote] = $status;
+		self::$healthRemote[$remote] = $status;
 
-        return self::$healthRemote[$remote];
-    }
+		return self::$healthRemote[$remote];
+	}
 
-    /**
-     * Generate unique document identifier in federated share
-     *
-     * @param File $file - file
-     *
-     * @return string
-     */
-    public function getRemoteKey($file) {
-        $logger = \OC::$server->getLogger();
+	/**
+	 * Generate unique document identifier in federated share
+	 *
+	 * @param File $file - file
+	 *
+	 * @return string
+	 */
+	public function getRemoteKey($file) {
+		$logger = \OC::$server->getLogger();
 
-        $remote = $file->getStorage()->getRemote();
-        $shareToken = $file->getStorage()->getToken();
-        $internalPath = $file->getInternalPath();
+		$remote = $file->getStorage()->getRemote();
+		$shareToken = $file->getStorage()->getToken();
+		$internalPath = $file->getInternalPath();
 
-        $httpClientService = \OC::$server->getHTTPClientService();
-        $client = $httpClientService->newClient();
+		$httpClientService = \OC::$server->getHTTPClientService();
+		$client = $httpClientService->newClient();
 
-        try {
-            $response = $client->post($remote . "/ocs/v2.php/apps/" . self::App_Name . "/api/v1/key?format=json", [
-                "timeout" => 5,
-                "json" => [
-                    "shareToken" => $shareToken,
-                    "path" => $internalPath
-                ]
-            ]);
+		try {
+			$response = $client->post($remote . "/ocs/v2.php/apps/" . self::App_Name . "/api/v1/key?format=json", [
+				"timeout" => 5,
+				"json" => [
+					"shareToken" => $shareToken,
+					"path" => $internalPath
+				]
+			]);
 
-            $body = \json_decode($response->getBody(), true);
+			$body = \json_decode($response->getBody(), true);
 
-            $data = $body["ocs"]["data"];
-            if (!empty($data["error"])) {
-                $logger->error("Error federated key " . $data["error"], ["app" => self::App_Name]);
-                return null;
-            }
+			$data = $body["ocs"]["data"];
+			if (!empty($data["error"])) {
+				$logger->error("Error federated key " . $data["error"], ["app" => self::App_Name]);
+				return null;
+			}
 
-            $key = $data["key"];
-            $logger->debug("Federated key: $key", ["app" => self::App_Name]);
+			$key = $data["key"];
+			$logger->debug("Federated key: $key", ["app" => self::App_Name]);
 
-            return $key;
-        } catch (\Exception $e) {
-            $logger->logException($e, ["message" => "Failed to request federated key " . $file->getId(), "app" => self::App_Name]);
+			return $key;
+		} catch (\Exception $e) {
+			$logger->logException($e, ["message" => "Failed to request federated key " . $file->getId(), "app" => self::App_Name]);
 
-            if ($e->getResponse()->getStatusCode() === 404) {
-                self::update($remote, false);
-                $logger->debug("Changed status for remote instance $remote to false", ["app" => self::App_Name]);
-            }
+			if ($e->getResponse()->getStatusCode() === 404) {
+				self::update($remote, false);
+				$logger->debug("Changed status for remote instance $remote to false", ["app" => self::App_Name]);
+			}
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 
-    /**
-     * Change lock status in the federated share
-     *
-     * @param File $file - file
-     * @param bool $lock - status
-     * @param bool $fs - status
-     *
-     * @return bool
-     */
-    public static function lockRemoteKey($file, $lock, $fs) {
-        $logger = \OC::$server->getLogger();
-        $action = $lock ? "lock" : "unlock";
+	/**
+	 * Change lock status in the federated share
+	 *
+	 * @param File $file - file
+	 * @param bool $lock - status
+	 * @param bool $fs - status
+	 *
+	 * @return bool
+	 */
+	public static function lockRemoteKey($file, $lock, $fs) {
+		$logger = \OC::$server->getLogger();
+		$action = $lock ? "lock" : "unlock";
 
-        $remote = $file->getStorage()->getRemote();
-        $shareToken = $file->getStorage()->getToken();
-        $internalPath = $file->getInternalPath();
+		$remote = $file->getStorage()->getRemote();
+		$shareToken = $file->getStorage()->getToken();
+		$internalPath = $file->getInternalPath();
 
-        $httpClientService = \OC::$server->getHTTPClientService();
-        $client = $httpClientService->newClient();
-        $data = [
-            "timeout" => 5,
-            "json" => [
-                "shareToken" => $shareToken,
-                "path" => $internalPath,
-                "lock" => $lock
-            ]
-        ];
-        if (!empty($fs)) {
-            $data["json"]["fs"] = $fs;
-        }
+		$httpClientService = \OC::$server->getHTTPClientService();
+		$client = $httpClientService->newClient();
+		$data = [
+			"timeout" => 5,
+			"json" => [
+				"shareToken" => $shareToken,
+				"path" => $internalPath,
+				"lock" => $lock
+			]
+		];
+		if (!empty($fs)) {
+			$data["json"]["fs"] = $fs;
+		}
 
-        try {
-            $response = $client->post($remote . "/ocs/v2.php/apps/" . self::App_Name . "/api/v1/keylock?format=json", $data);
-            $body = \json_decode($response->getBody(), true);
+		try {
+			$response = $client->post($remote . "/ocs/v2.php/apps/" . self::App_Name . "/api/v1/keylock?format=json", $data);
+			$body = \json_decode($response->getBody(), true);
 
-            $data = $body["ocs"]["data"];
+			$data = $body["ocs"]["data"];
 
-            if (empty($data)) {
-                $logger->debug("Federated request" . $action . "for " . $file->getFileInfo()->getId() . " is successful", ["app" => self::App_Name]);
-                return true;
-            }
+			if (empty($data)) {
+				$logger->debug("Federated request" . $action . "for " . $file->getFileInfo()->getId() . " is successful", ["app" => self::App_Name]);
+				return true;
+			}
 
-            if (!empty($data["error"])) {
-                $logger->error("Error" . $action . "federated key for " . $file->getFileInfo()->getId() . ": " . $data["error"], ["app" => self::App_Name]);
-                return false;
-            }
-        } catch(\Exception $e) {
-            $logger->logException($e, ["message" => "Failed to request federated " . $action . " for " . $file->getFileInfo()->getId(), "app" => self::App_Name]);
-            return false;
-        }
-    }
+			if (!empty($data["error"])) {
+				$logger->error("Error" . $action . "federated key for " . $file->getFileInfo()->getId() . ": " . $data["error"], ["app" => self::App_Name]);
+				return false;
+			}
+		} catch(\Exception $e) {
+			$logger->logException($e, ["message" => "Failed to request federated " . $action . " for " . $file->getFileInfo()->getId(), "app" => self::App_Name]);
+			return false;
+		}
+	}
 
-    /**
-     * Check of federated capable
-     *
-     * @param File $file - file
-     *
-     * @return bool
-     */
-    public static function isRemoteFile($file) {
-        $storage = $file->getStorage();
+	/**
+	 * Check of federated capable
+	 *
+	 * @param File $file - file
+	 *
+	 * @return bool
+	 */
+	public static function isRemoteFile($file) {
+		$storage = $file->getStorage();
 
-        $alive = false;
-        $isFederated = $storage->instanceOfStorage(SharingExternalStorage::class);
-        if (!$isFederated) {
-            return false;
-        }
+		$alive = false;
+		$isFederated = $storage->instanceOfStorage(SharingExternalStorage::class);
+		if (!$isFederated) {
+			return false;
+		}
 
-        $alive = RemoteInstance::healthCheck($storage->getRemote());
-        return $alive;
-    }
+		$alive = RemoteInstance::healthCheck($storage->getRemote());
+		return $alive;
+	}
 }

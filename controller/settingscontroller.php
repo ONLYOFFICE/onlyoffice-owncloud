@@ -36,292 +36,292 @@ use OCA\Onlyoffice\TemplateManager;
  * Settings controller for the administration page
  */
 class SettingsController extends Controller {
-    /**
-     * l10n service
-     *
-     * @var IL10N
-     */
-    private $trans;
+	/**
+	 * l10n service
+	 *
+	 * @var IL10N
+	 */
+	private $trans;
 
-    /**
-     * Logger
-     *
-     * @var ILogger
-     */
-    private $logger;
+	/**
+	 * Logger
+	 *
+	 * @var ILogger
+	 */
+	private $logger;
 
-    /**
-     * Application configuration
-     *
-     * @var AppConfig
-     */
-    private $config;
+	/**
+	 * Application configuration
+	 *
+	 * @var AppConfig
+	 */
+	private $config;
 
-    /**
-     * Url generator service
-     *
-     * @var IURLGenerator
-     */
-    private $urlGenerator;
+	/**
+	 * Url generator service
+	 *
+	 * @var IURLGenerator
+	 */
+	private $urlGenerator;
 
-    /**
-     * Hash generator
-     *
-     * @var Crypt
-     */
-    private $crypt;
+	/**
+	 * Hash generator
+	 *
+	 * @var Crypt
+	 */
+	private $crypt;
 
-    /**
-     * @param string $AppName - application name
-     * @param IRequest $request - request object
-     * @param IURLGenerator $urlGenerator - url generator service
-     * @param IL10N $trans - l10n service
-     * @param ILogger $logger - logger
-     * @param AppConfig $config - application configuration
-     * @param Crypt $crypt - hash generator
-     */
-    public function __construct(
-        $AppName,
-        IRequest $request,
-        IURLGenerator $urlGenerator,
-        IL10N $trans,
-        ILogger $logger,
-        AppConfig $config,
-        Crypt $crypt
-    ) {
-        parent::__construct($AppName, $request);
+	/**
+	 * @param string $AppName - application name
+	 * @param IRequest $request - request object
+	 * @param IURLGenerator $urlGenerator - url generator service
+	 * @param IL10N $trans - l10n service
+	 * @param ILogger $logger - logger
+	 * @param AppConfig $config - application configuration
+	 * @param Crypt $crypt - hash generator
+	 */
+	public function __construct(
+		$AppName,
+		IRequest $request,
+		IURLGenerator $urlGenerator,
+		IL10N $trans,
+		ILogger $logger,
+		AppConfig $config,
+		Crypt $crypt
+	) {
+		parent::__construct($AppName, $request);
 
-        $this->urlGenerator = $urlGenerator;
-        $this->trans = $trans;
-        $this->logger = $logger;
-        $this->config = $config;
-        $this->crypt = $crypt;
-    }
+		$this->urlGenerator = $urlGenerator;
+		$this->trans = $trans;
+		$this->logger = $logger;
+		$this->config = $config;
+		$this->crypt = $crypt;
+	}
 
-    /**
-     * Print config section
-     *
-     * @return TemplateResponse
-     */
-    public function index() {
-        $data = [
-            "documentserver" => $this->config->GetDocumentServerUrl(true),
-            "documentserverInternal" => $this->config->GetDocumentServerInternalUrl(true),
-            "storageUrl" => $this->config->GetStorageUrl(),
-            "verifyPeerOff" => $this->config->GetVerifyPeerOff(),
-            "secret" => $this->config->GetDocumentServerSecret(true),
-            "jwtHeader" => $this->config->JwtHeader(true),
-            "demo" => $this->config->GetDemoData(),
-            "currentServer" => $this->urlGenerator->getAbsoluteURL("/"),
-            "formats" => $this->config->FormatsSetting(),
-            "sameTab" => $this->config->GetSameTab(),
-            "preview" => $this->config->GetPreview(),
-            "versionHistory" => $this->config->GetVersionHistory(),
-            "protection" => $this->config->GetProtection(),
-            "encryption" => $this->config->checkEncryptionModule(),
-            "limitGroups" => $this->config->GetLimitGroups(),
-            "chat" => $this->config->GetCustomizationChat(),
-            "compactHeader" => $this->config->GetCustomizationCompactHeader(),
-            "feedback" => $this->config->GetCustomizationFeedback(),
-            "forcesave" => $this->config->GetCustomizationForcesave(),
-            "help" => $this->config->GetCustomizationHelp(),
-            "toolbarNoTabs" => $this->config->GetCustomizationToolbarNoTabs(),
-            "successful" => $this->config->SettingsAreSuccessful(),
-            "plugins" => $this->config->GetCustomizationPlugins(),
-            "macros" => $this->config->GetCustomizationMacros(),
-            "reviewDisplay" => $this->config->GetCustomizationReviewDisplay(),
-            "theme" => $this->config->GetCustomizationTheme(),
-            "templates" => $this->GetGlobalTemplates(),
-            "linkToDocs" => $this->config->GetLinkToDocs()
-        ];
-        return new TemplateResponse($this->appName, "settings", $data, "blank");
-    }
+	/**
+	 * Print config section
+	 *
+	 * @return TemplateResponse
+	 */
+	public function index() {
+		$data = [
+			"documentserver" => $this->config->GetDocumentServerUrl(true),
+			"documentserverInternal" => $this->config->GetDocumentServerInternalUrl(true),
+			"storageUrl" => $this->config->GetStorageUrl(),
+			"verifyPeerOff" => $this->config->GetVerifyPeerOff(),
+			"secret" => $this->config->GetDocumentServerSecret(true),
+			"jwtHeader" => $this->config->JwtHeader(true),
+			"demo" => $this->config->GetDemoData(),
+			"currentServer" => $this->urlGenerator->getAbsoluteURL("/"),
+			"formats" => $this->config->FormatsSetting(),
+			"sameTab" => $this->config->GetSameTab(),
+			"preview" => $this->config->GetPreview(),
+			"versionHistory" => $this->config->GetVersionHistory(),
+			"protection" => $this->config->GetProtection(),
+			"encryption" => $this->config->checkEncryptionModule(),
+			"limitGroups" => $this->config->GetLimitGroups(),
+			"chat" => $this->config->GetCustomizationChat(),
+			"compactHeader" => $this->config->GetCustomizationCompactHeader(),
+			"feedback" => $this->config->GetCustomizationFeedback(),
+			"forcesave" => $this->config->GetCustomizationForcesave(),
+			"help" => $this->config->GetCustomizationHelp(),
+			"toolbarNoTabs" => $this->config->GetCustomizationToolbarNoTabs(),
+			"successful" => $this->config->SettingsAreSuccessful(),
+			"plugins" => $this->config->GetCustomizationPlugins(),
+			"macros" => $this->config->GetCustomizationMacros(),
+			"reviewDisplay" => $this->config->GetCustomizationReviewDisplay(),
+			"theme" => $this->config->GetCustomizationTheme(),
+			"templates" => $this->GetGlobalTemplates(),
+			"linkToDocs" => $this->config->GetLinkToDocs()
+		];
+		return new TemplateResponse($this->appName, "settings", $data, "blank");
+	}
 
-    /**
-     * Save address settings
-     *
-     * @param string $jwtHeader - jwt header
-     * @param string $documentserver - document service address
-     * @param string $documentserverInternal - document service address available from ownCloud
-     * @param string $storageUrl - ownCloud address available from document server
-     * @param bool $verifyPeerOff - parameter verification setting
-     * @param string $secret - secret key for signature
-     * @param bool $demo - use demo server
-     *
-     * @return array
-     */
-    public function SaveAddress(
-        $documentserver,
-        $documentserverInternal,
-        $storageUrl,
-        $verifyPeerOff,
-        $secret,
-        $jwtHeader,
-        $demo
-    ) {
-        $error = null;
-        if (!$this->config->SelectDemo($demo === true)) {
-            $error = $this->trans->t("The 30-day test period is over, you can no longer connect to demo ONLYOFFICE Docs server.");
-        }
-        if ($demo !== true) {
-            $this->config->SetDocumentServerUrl($documentserver);
-            $this->config->SetVerifyPeerOff($verifyPeerOff);
-            $this->config->SetDocumentServerInternalUrl($documentserverInternal);
-            $this->config->SetDocumentServerSecret($secret);
-            $this->config->SetJwtHeader($jwtHeader);
-        }
-        $this->config->SetStorageUrl($storageUrl);
+	/**
+	 * Save address settings
+	 *
+	 * @param string $jwtHeader - jwt header
+	 * @param string $documentserver - document service address
+	 * @param string $documentserverInternal - document service address available from ownCloud
+	 * @param string $storageUrl - ownCloud address available from document server
+	 * @param bool $verifyPeerOff - parameter verification setting
+	 * @param string $secret - secret key for signature
+	 * @param bool $demo - use demo server
+	 *
+	 * @return array
+	 */
+	public function SaveAddress(
+		$documentserver,
+		$documentserverInternal,
+		$storageUrl,
+		$verifyPeerOff,
+		$secret,
+		$jwtHeader,
+		$demo
+	) {
+		$error = null;
+		if (!$this->config->SelectDemo($demo === true)) {
+			$error = $this->trans->t("The 30-day test period is over, you can no longer connect to demo ONLYOFFICE Docs server.");
+		}
+		if ($demo !== true) {
+			$this->config->SetDocumentServerUrl($documentserver);
+			$this->config->SetVerifyPeerOff($verifyPeerOff);
+			$this->config->SetDocumentServerInternalUrl($documentserverInternal);
+			$this->config->SetDocumentServerSecret($secret);
+			$this->config->SetJwtHeader($jwtHeader);
+		}
+		$this->config->SetStorageUrl($storageUrl);
 
-        $version = null;
-        if (empty($error)) {
-            $documentserver = $this->config->GetDocumentServerUrl();
-            if (!empty($documentserver)) {
-                $documentService = new DocumentService($this->trans, $this->config);
-                list($error, $version) = $documentService->checkDocServiceUrl($this->urlGenerator, $this->crypt);
-                $this->config->SetSettingsError($error);
-            }
+		$version = null;
+		if (empty($error)) {
+			$documentserver = $this->config->GetDocumentServerUrl();
+			if (!empty($documentserver)) {
+				$documentService = new DocumentService($this->trans, $this->config);
+				list($error, $version) = $documentService->checkDocServiceUrl($this->urlGenerator, $this->crypt);
+				$this->config->SetSettingsError($error);
+			}
 
-            if ($this->config->checkEncryptionModule() === true) {
-                $this->logger->info("SaveSettings when encryption is enabled", ["app" => $this->appName]);
-            }
-        }
+			if ($this->config->checkEncryptionModule() === true) {
+				$this->logger->info("SaveSettings when encryption is enabled", ["app" => $this->appName]);
+			}
+		}
 
-        return [
-            "documentserver" => $this->config->GetDocumentServerUrl(true),
-            "verifyPeerOff" => $this->config->GetVerifyPeerOff(),
-            "documentserverInternal" => $this->config->GetDocumentServerInternalUrl(true),
-            "storageUrl" => $this->config->GetStorageUrl(),
-            "secret" => $this->config->GetDocumentServerSecret(true),
-            "jwtHeader" => $this->config->JwtHeader(true),
-            "error" => $error,
-            "version" => $version,
-            ];
-    }
+		return [
+			"documentserver" => $this->config->GetDocumentServerUrl(true),
+			"verifyPeerOff" => $this->config->GetVerifyPeerOff(),
+			"documentserverInternal" => $this->config->GetDocumentServerInternalUrl(true),
+			"storageUrl" => $this->config->GetStorageUrl(),
+			"secret" => $this->config->GetDocumentServerSecret(true),
+			"jwtHeader" => $this->config->JwtHeader(true),
+			"error" => $error,
+			"version" => $version,
+			];
+	}
 
-    /**
-     * Save common settings
-     *
-     * @param array $defFormats - formats array with default action
-     * @param array $editFormats - editable formats array
-     * @param bool $sameTab - open in the same tab
-     * @param bool $preview - generate preview files
-     * @param bool $versionHistory - keep version history
-     * @param array $limitGroups - list of groups
-     * @param bool $chat - display chat
-     * @param bool $compactHeader - display compact header
-     * @param bool $feedback - display feedback
-     * @param bool $forcesave - forcesave
-     * @param bool $help - display help
-     * @param bool $toolbarNoTabs - display toolbar tab
-     * @param string $reviewDisplay - review viewing mode
-     * @param string $theme - default theme mode
-     *
-     * @return array
-     */
-    public function SaveCommon(
-        $defFormats,
-        $editFormats,
-        $sameTab,
-        $preview,
-        $versionHistory,
-        $limitGroups,
-        $chat,
-        $compactHeader,
-        $feedback,
-        $forcesave,
-        $help,
-        $toolbarNoTabs,
-        $reviewDisplay,
-        $theme
-    ) {
-        $this->config->SetDefaultFormats($defFormats);
-        $this->config->SetEditableFormats($editFormats);
-        $this->config->SetSameTab($sameTab);
-        $this->config->SetPreview($preview);
-        $this->config->SetVersionHistory($versionHistory);
-        $this->config->SetLimitGroups($limitGroups);
-        $this->config->SetCustomizationChat($chat);
-        $this->config->SetCustomizationCompactHeader($compactHeader);
-        $this->config->SetCustomizationFeedback($feedback);
-        $this->config->SetCustomizationForcesave($forcesave);
-        $this->config->SetCustomizationHelp($help);
-        $this->config->SetCustomizationToolbarNoTabs($toolbarNoTabs);
-        $this->config->SetCustomizationReviewDisplay($reviewDisplay);
-        $this->config->SetCustomizationTheme($theme);
+	/**
+	 * Save common settings
+	 *
+	 * @param array $defFormats - formats array with default action
+	 * @param array $editFormats - editable formats array
+	 * @param bool $sameTab - open in the same tab
+	 * @param bool $preview - generate preview files
+	 * @param bool $versionHistory - keep version history
+	 * @param array $limitGroups - list of groups
+	 * @param bool $chat - display chat
+	 * @param bool $compactHeader - display compact header
+	 * @param bool $feedback - display feedback
+	 * @param bool $forcesave - forcesave
+	 * @param bool $help - display help
+	 * @param bool $toolbarNoTabs - display toolbar tab
+	 * @param string $reviewDisplay - review viewing mode
+	 * @param string $theme - default theme mode
+	 *
+	 * @return array
+	 */
+	public function SaveCommon(
+		$defFormats,
+		$editFormats,
+		$sameTab,
+		$preview,
+		$versionHistory,
+		$limitGroups,
+		$chat,
+		$compactHeader,
+		$feedback,
+		$forcesave,
+		$help,
+		$toolbarNoTabs,
+		$reviewDisplay,
+		$theme
+	) {
+		$this->config->SetDefaultFormats($defFormats);
+		$this->config->SetEditableFormats($editFormats);
+		$this->config->SetSameTab($sameTab);
+		$this->config->SetPreview($preview);
+		$this->config->SetVersionHistory($versionHistory);
+		$this->config->SetLimitGroups($limitGroups);
+		$this->config->SetCustomizationChat($chat);
+		$this->config->SetCustomizationCompactHeader($compactHeader);
+		$this->config->SetCustomizationFeedback($feedback);
+		$this->config->SetCustomizationForcesave($forcesave);
+		$this->config->SetCustomizationHelp($help);
+		$this->config->SetCustomizationToolbarNoTabs($toolbarNoTabs);
+		$this->config->SetCustomizationReviewDisplay($reviewDisplay);
+		$this->config->SetCustomizationTheme($theme);
 
-        return [
-            ];
-    }
+		return [
+			];
+	}
 
-    /**
-     * Save security settings
-     *
-     * @param bool $plugins - enable plugins
-     * @param bool $macros - run document macros
-     * @param string $protection - protection
-     *
-     * @return array
-     */
-    public function SaveSecurity(
-        $plugins,
-        $macros,
-        $protection
-    ) {
-        $this->config->SetCustomizationPlugins($plugins);
-        $this->config->SetCustomizationMacros($macros);
-        $this->config->SetProtection($protection);
+	/**
+	 * Save security settings
+	 *
+	 * @param bool $plugins - enable plugins
+	 * @param bool $macros - run document macros
+	 * @param string $protection - protection
+	 *
+	 * @return array
+	 */
+	public function SaveSecurity(
+		$plugins,
+		$macros,
+		$protection
+	) {
+		$this->config->SetCustomizationPlugins($plugins);
+		$this->config->SetCustomizationMacros($macros);
+		$this->config->SetProtection($protection);
 
-        return [
-            ];
-    }
+		return [
+			];
+	}
 
-    /**
-     * Clear all version history
-     *
-     * @return array
-     */
-    public function ClearHistory() {
-        FileVersions::clearHistory();
+	/**
+	 * Clear all version history
+	 *
+	 * @return array
+	 */
+	public function ClearHistory() {
+		FileVersions::clearHistory();
 
-        return [
-            ];
-    }
+		return [
+			];
+	}
 
-    /**
-     * Get app settings
-     *
-     * @return array
-     *
-     * @NoAdminRequired
-     * @PublicPage
-     */
-    public function GetSettings() {
-        $result = [
-            "formats" => $this->config->FormatsSetting(),
-            "sameTab" => $this->config->GetSameTab(),
-            "shareAttributesVersion" => $this->config->ShareAttributesVersion()
-        ];
-        return $result;
-    }
+	/**
+	 * Get app settings
+	 *
+	 * @return array
+	 *
+	 * @NoAdminRequired
+	 * @PublicPage
+	 */
+	public function GetSettings() {
+		$result = [
+			"formats" => $this->config->FormatsSetting(),
+			"sameTab" => $this->config->GetSameTab(),
+			"shareAttributesVersion" => $this->config->ShareAttributesVersion()
+		];
+		return $result;
+	}
 
-    /**
-     * Get global templates
-     *
-     * @return array
-     */
-    private function GetGlobalTemplates() {
-        $templates = [];
-        $templatesList = TemplateManager::GetGlobalTemplates();
+	/**
+	 * Get global templates
+	 *
+	 * @return array
+	 */
+	private function GetGlobalTemplates() {
+		$templates = [];
+		$templatesList = TemplateManager::GetGlobalTemplates();
 
-        foreach ($templatesList as $templateItem) {
-            $template = [
-                "id" => $templateItem->getId(),
-                "name" => $templateItem->getName(),
-                "type" => TemplateManager::GetTypeTemplate($templateItem->getMimeType())
-            ];
-            array_push($templates, $template);
-        }
+		foreach ($templatesList as $templateItem) {
+			$template = [
+				"id" => $templateItem->getId(),
+				"name" => $templateItem->getName(),
+				"type" => TemplateManager::GetTypeTemplate($templateItem->getMimeType())
+			];
+			array_push($templates, $template);
+		}
 
-        return $templates;
-    }
+		return $templates;
+	}
 }

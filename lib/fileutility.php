@@ -38,260 +38,260 @@ use OCA\Onlyoffice\RemoteInstance;
  * @package OCA\Onlyoffice
  */
 class FileUtility {
-    /**
-     * Application name
-     *
-     * @var string
-     */
-    private $appName;
+	/**
+	 * Application name
+	 *
+	 * @var string
+	 */
+	private $appName;
 
-    /**
-     * l10n service
-     *
-     * @var IL10N
-     */
-    private $trans;
+	/**
+	 * l10n service
+	 *
+	 * @var IL10N
+	 */
+	private $trans;
 
-    /**
-     * Logger
-     *
-     * @var ILogger
-     */
-    private $logger;
+	/**
+	 * Logger
+	 *
+	 * @var ILogger
+	 */
+	private $logger;
 
-    /**
-     * Share manager
-     *
-     * @var IManager
-     */
-    private $shareManager;
+	/**
+	 * Share manager
+	 *
+	 * @var IManager
+	 */
+	private $shareManager;
 
-    /**
-     * Session
-     *
-     * @var ISession
-     */
-    private $session;
+	/**
+	 * Session
+	 *
+	 * @var ISession
+	 */
+	private $session;
 
-    /**
-     * Application configuration
-     *
-     * @var AppConfig
-     */
-    private $config;
+	/**
+	 * Application configuration
+	 *
+	 * @var AppConfig
+	 */
+	private $config;
 
-    /**
-     * @param string $AppName - application name
-     * @param IL10N $trans - l10n service
-     * @param ILogger $logger - logger
-     * @param AppConfig $config - application configuration
-     * @param IManager $shareManager - Share manager
-     * @param IManager $ISession - Session
-     */
-    public function __construct(
-        $AppName,
-        IL10N $trans,
-        ILogger $logger,
-        AppConfig $config,
-        IManager $shareManager,
-        ISession $session
-    ) {
-        $this->appName = $AppName;
-        $this->trans = $trans;
-        $this->logger = $logger;
-        $this->config = $config;
-        $this->shareManager = $shareManager;
-        $this->session = $session;
-    }
+	/**
+	 * @param string $AppName - application name
+	 * @param IL10N $trans - l10n service
+	 * @param ILogger $logger - logger
+	 * @param AppConfig $config - application configuration
+	 * @param IManager $shareManager - Share manager
+	 * @param IManager $ISession - Session
+	 */
+	public function __construct(
+		$AppName,
+		IL10N $trans,
+		ILogger $logger,
+		AppConfig $config,
+		IManager $shareManager,
+		ISession $session
+	) {
+		$this->appName = $AppName;
+		$this->trans = $trans;
+		$this->logger = $logger;
+		$this->config = $config;
+		$this->shareManager = $shareManager;
+		$this->session = $session;
+	}
 
-    /**
-     * Getting file by token
-     *
-     * @param integer $fileId - file identifier
-     * @param string $shareToken - access token
-     * @param string $path - file path
-     *
-     * @return array
-     */
-    public function getFileByToken($fileId, $shareToken, $path = null) {
-        list($node, $error, $share) = $this->getNodeByToken($shareToken);
+	/**
+	 * Getting file by token
+	 *
+	 * @param integer $fileId - file identifier
+	 * @param string $shareToken - access token
+	 * @param string $path - file path
+	 *
+	 * @return array
+	 */
+	public function getFileByToken($fileId, $shareToken, $path = null) {
+		list($node, $error, $share) = $this->getNodeByToken($shareToken);
 
-        if (isset($error)) {
-            return [null, $error, null];
-        }
+		if (isset($error)) {
+			return [null, $error, null];
+		}
 
-        if ($node instanceof Folder) {
-            if ($fileId !== null && $fileId !== 0) {
-                try {
-                    $files = $node->getById($fileId);
-                } catch (\Exception $e) {
-                    $this->logger->logException($e, ["message" => "getFileByToken: $fileId", "app" => $this->appName]);
-                    return [null, $this->trans->t("Invalid request"), null];
-                }
+		if ($node instanceof Folder) {
+			if ($fileId !== null && $fileId !== 0) {
+				try {
+					$files = $node->getById($fileId);
+				} catch (\Exception $e) {
+					$this->logger->logException($e, ["message" => "getFileByToken: $fileId", "app" => $this->appName]);
+					return [null, $this->trans->t("Invalid request"), null];
+				}
 
-                if (empty($files)) {
-                    $this->logger->info("Files not found: $fileId", ["app" => $this->appName]);
-                    return [null, $this->trans->t("File not found"), null];
-                }
-                $file = $files[0];
-            } else {
-                try {
-                    $file = $node->get($path);
-                } catch (\Exception $e) {
-                    $this->logger->logException($e, ["message" => "getFileByToken for path: $path", "app" => $this->appName]);
-                    return [null, $this->trans->t("Invalid request"), null];
-                }
-            }
-        } else {
-            $file = $node;
-        }
+				if (empty($files)) {
+					$this->logger->info("Files not found: $fileId", ["app" => $this->appName]);
+					return [null, $this->trans->t("File not found"), null];
+				}
+				$file = $files[0];
+			} else {
+				try {
+					$file = $node->get($path);
+				} catch (\Exception $e) {
+					$this->logger->logException($e, ["message" => "getFileByToken for path: $path", "app" => $this->appName]);
+					return [null, $this->trans->t("Invalid request"), null];
+				}
+			}
+		} else {
+			$file = $node;
+		}
 
-        return [$file, null, $share];
-    }
+		return [$file, null, $share];
+	}
 
-    /**
-     * Getting file by token
-     *
-     * @param string $shareToken - access token
-     *
-     * @return array
-     */
-    public function getNodeByToken($shareToken) {
-        list($share, $error) = $this->getShare($shareToken);
+	/**
+	 * Getting file by token
+	 *
+	 * @param string $shareToken - access token
+	 *
+	 * @return array
+	 */
+	public function getNodeByToken($shareToken) {
+		list($share, $error) = $this->getShare($shareToken);
 
-        if (isset($error)) {
-            return [null, $error, null];
-        }
+		if (isset($error)) {
+			return [null, $error, null];
+		}
 
-        if (($share->getPermissions() & Constants::PERMISSION_READ) === 0) {
-            return [null, $this->trans->t("You do not have enough permissions to view the file"), null];
-        }
+		if (($share->getPermissions() & Constants::PERMISSION_READ) === 0) {
+			return [null, $this->trans->t("You do not have enough permissions to view the file"), null];
+		}
 
-        try {
-            $node = $share->getNode();
-        } catch (NotFoundException $e) {
-            $this->logger->logException($e, ["message" => "getNodeByToken error", "app" => $this->appName]);
-            return [null, $this->trans->t("File not found"), null];
-        }
+		try {
+			$node = $share->getNode();
+		} catch (NotFoundException $e) {
+			$this->logger->logException($e, ["message" => "getNodeByToken error", "app" => $this->appName]);
+			return [null, $this->trans->t("File not found"), null];
+		}
 
-        return [$node, null, $share];
-    }
+		return [$node, null, $share];
+	}
 
-    /**
-     * Getting share by token
-     *
-     * @param string $shareToken - access token
-     *
-     * @return array
-     */
-    public function getShare($shareToken) {
-        if (empty($shareToken)) {
-            return [null, $this->trans->t("FileId is empty")];
-        }
+	/**
+	 * Getting share by token
+	 *
+	 * @param string $shareToken - access token
+	 *
+	 * @return array
+	 */
+	public function getShare($shareToken) {
+		if (empty($shareToken)) {
+			return [null, $this->trans->t("FileId is empty")];
+		}
 
-        $share = null;
-        try {
-            $share = $this->shareManager->getShareByToken($shareToken);
-        } catch (ShareNotFound $e) {
-            $this->logger->logException($e, ["message" => "getShare error", "app" => $this->appName]);
-            $share = null;
-        }
+		$share = null;
+		try {
+			$share = $this->shareManager->getShareByToken($shareToken);
+		} catch (ShareNotFound $e) {
+			$this->logger->logException($e, ["message" => "getShare error", "app" => $this->appName]);
+			$share = null;
+		}
 
-        if ($share === null || $share === false) {
-            return [null, $this->trans->t("You do not have enough permissions to view the file")];
-        }
+		if ($share === null || $share === false) {
+			return [null, $this->trans->t("You do not have enough permissions to view the file")];
+		}
 
-        if ($share->getPassword()
-            && (!$this->session->exists("public_link_authenticated")
-                || $this->session->get("public_link_authenticated") !== (string) $share->getId())) {
-            return [null, $this->trans->t("You do not have enough permissions to view the file")];
-        }
+		if ($share->getPassword()
+			&& (!$this->session->exists("public_link_authenticated")
+				|| $this->session->get("public_link_authenticated") !== (string) $share->getId())) {
+			return [null, $this->trans->t("You do not have enough permissions to view the file")];
+		}
 
-        return [$share, null];
-    }
+		return [$share, null];
+	}
 
-    /**
-     * Generate unique document identifier
-     *
-     * @param File $file - file
-     * @param bool $origin - request from federated store
-     *
-     * @return string
-     */
-    public function getKey($file, $origin = false) {
-        $fileId = $file->getId();
+	/**
+	 * Generate unique document identifier
+	 *
+	 * @param File $file - file
+	 * @param bool $origin - request from federated store
+	 *
+	 * @return string
+	 */
+	public function getKey($file, $origin = false) {
+		$fileId = $file->getId();
 
-        if ($origin
-            && RemoteInstance::isRemoteFile($file)) {
-            $key = RemoteInstance::getRemoteKey($file);
-            if (!empty($key)) {
-                return $key;
-            }
-        }
+		if ($origin
+			&& RemoteInstance::isRemoteFile($file)) {
+			$key = RemoteInstance::getRemoteKey($file);
+			if (!empty($key)) {
+				return $key;
+			}
+		}
 
-        $key = KeyManager::get($fileId);
+		$key = KeyManager::get($fileId);
 
-        if (empty($key)) {
-            $instanceId = $this->config->GetSystemValue("instanceid", true);
+		if (empty($key)) {
+			$instanceId = $this->config->GetSystemValue("instanceid", true);
 
-            $key = $instanceId . "_" . $this->GUID();
+			$key = $instanceId . "_" . $this->GUID();
 
-            KeyManager::set($fileId, $key);
-        }
+			KeyManager::set($fileId, $key);
+		}
 
-        return $key;
-    }
+		return $key;
+	}
 
-    /**
-     * Detected attribute permission for shared file
-     *
-     * @param File $file - file
-     * @param string $attribute - request from federated store
-     *
-     * @return bool
-     */
-    public function hasPermissionAttribute($file, $attribute = "download") {
-        $fileStorage = $file->getStorage();
-        if ($fileStorage->instanceOfStorage("\OCA\Files_Sharing\SharedStorage")) {
-            $storageShare = $fileStorage->getShare();
-            if (method_exists($storageShare, "getAttributes")) {
-                $attributes = $storageShare->getAttributes();
+	/**
+	 * Detected attribute permission for shared file
+	 *
+	 * @param File $file - file
+	 * @param string $attribute - request from federated store
+	 *
+	 * @return bool
+	 */
+	public function hasPermissionAttribute($file, $attribute = "download") {
+		$fileStorage = $file->getStorage();
+		if ($fileStorage->instanceOfStorage("\OCA\Files_Sharing\SharedStorage")) {
+			$storageShare = $fileStorage->getShare();
+			if (method_exists($storageShare, "getAttributes")) {
+				$attributes = $storageShare->getAttributes();
 
-                $permissionsDownload = $attributes->getAttribute("permissions", "download");
-                if ($permissionsDownload !== null && $permissionsDownload !== true) {
-                    return false;
-                }
-            }
-        }
+				$permissionsDownload = $attributes->getAttribute("permissions", "download");
+				if ($permissionsDownload !== null && $permissionsDownload !== true) {
+					return false;
+				}
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    /**
-     * Generate unique identifier
-     *
-     * @return string
-     */
-    private function GUID() {
-        if (\function_exists("com_create_guid") === true) {
-            return trim(com_create_guid(), "{}");
-        }
+	/**
+	 * Generate unique identifier
+	 *
+	 * @return string
+	 */
+	private function GUID() {
+		if (\function_exists("com_create_guid") === true) {
+			return trim(com_create_guid(), "{}");
+		}
 
-        return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
-    }
+		return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
+	}
 
-    /**
-     * Generate unique file version key
-     *
-     * @param Version $version - file version
-     *
-     * @return string
-     */
-    public function getVersionKey($version) {
-        $instanceId = $this->config->GetSystemValue("instanceid", true);
+	/**
+	 * Generate unique file version key
+	 *
+	 * @param Version $version - file version
+	 *
+	 * @return string
+	 */
+	public function getVersionKey($version) {
+		$instanceId = $this->config->GetSystemValue("instanceid", true);
 
-        $key = $instanceId . "_" . $version->getSourceFile()->getEtag() . "_" . $version->getRevisionId();
+		$key = $instanceId . "_" . $version->getSourceFile()->getEtag() . "_" . $version->getRevisionId();
 
-        return $key;
-    }
+		return $key;
+	}
 }

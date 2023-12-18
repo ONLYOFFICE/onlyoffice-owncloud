@@ -30,54 +30,54 @@ use OCA\Onlyoffice\AppConfig;
  * Settings controller for the administration page
  */
 class SettingsApiController extends OCSController {
-    /**
-     * Url generator service
-     *
-     * @var IURLGenerator
-     */
-    private $urlGenerator;
+	/**
+	 * Url generator service
+	 *
+	 * @var IURLGenerator
+	 */
+	private $urlGenerator;
 
-    /**
-     * Application configuration
-     *
-     * @var AppConfig
-     */
-    private $config;
+	/**
+	 * Application configuration
+	 *
+	 * @var AppConfig
+	 */
+	private $config;
 
-    /**
-     * @param string $AppName - application name
-     * @param IRequest $request - request object
-     * @param IURLGenerator $urlGenerator - url generator service
-     * @param AppConfig $config - application configuration
-     */
-    public function __construct(
-        $AppName,
-        IRequest $request,
-        IURLGenerator $urlGenerator,
-        AppConfig $config
-    ) {
-        parent::__construct($AppName, $request);
+	/**
+	 * @param string $AppName - application name
+	 * @param IRequest $request - request object
+	 * @param IURLGenerator $urlGenerator - url generator service
+	 * @param AppConfig $config - application configuration
+	 */
+	public function __construct(
+		$AppName,
+		IRequest $request,
+		IURLGenerator $urlGenerator,
+		AppConfig $config
+	) {
+		parent::__construct($AppName, $request);
 
-        $this->urlGenerator = $urlGenerator;
-        $this->config = $config;
-    }
+		$this->urlGenerator = $urlGenerator;
+		$this->config = $config;
+	}
 
-    /**
-     * Get document server url
-     *
-     * @return JSONResponse
-     *
-     * @NoAdminRequired
-     * @CORS
-     */
-    public function GetDocServerUrl() {
-        $url = $this->config->GetDocumentServerUrl();
-        if (!$this->config->SettingsAreSuccessful()) {
-            $url = "";
-        } elseif (!preg_match("/^https?:\/\//i", $url)) {
-            $url = $this->urlGenerator->getAbsoluteURL($url);
-        }
+	/**
+	 * Get document server url
+	 *
+	 * @return JSONResponse
+	 *
+	 * @NoAdminRequired
+	 * @CORS
+	 */
+	public function GetDocServerUrl() {
+		$url = $this->config->GetDocumentServerUrl();
+		if (!$this->config->SettingsAreSuccessful()) {
+			$url = "";
+		} elseif (!preg_match("/^https?:\/\//i", $url)) {
+			$url = $this->urlGenerator->getAbsoluteURL($url);
+		}
 
-        return new JSONResponse(["documentServerUrl" => $url]);
-    }
+		return new JSONResponse(["documentServerUrl" => $url]);
+	}
 }

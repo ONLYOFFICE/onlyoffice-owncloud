@@ -38,132 +38,132 @@ use OCA\Onlyoffice\RemoteInstance;
  * OCS handler
  */
 class FederationController extends OCSController {
-    /**
-     * Logger
-     *
-     * @var ILogger
-     */
-    private $logger;
+	/**
+	 * Logger
+	 *
+	 * @var ILogger
+	 */
+	private $logger;
 
-    /**
-     * Application configuration
-     *
-     * @var AppConfig
-     */
-    public $config;
+	/**
+	 * Application configuration
+	 *
+	 * @var AppConfig
+	 */
+	public $config;
 
-    /**
-     * File utility
-     *
-     * @var FileUtility
-     */
-    private $fileUtility;
+	/**
+	 * File utility
+	 *
+	 * @var FileUtility
+	 */
+	private $fileUtility;
 
-    /**
-     * @param string $AppName - application name
-     * @param IRequest $request - request object
-     * @param IL10N $trans - l10n service
-     * @param ILogger $logger - logger
-     * @param IManager $shareManager - Share manager
-     * @param IManager $ISession - Session
-     */
-    public function __construct(
-        $AppName,
-        IRequest $request,
-        IL10N $trans,
-        ILogger $logger,
-        IManager $shareManager,
-        ISession $session
-    ) {
-        parent::__construct($AppName, $request);
+	/**
+	 * @param string $AppName - application name
+	 * @param IRequest $request - request object
+	 * @param IL10N $trans - l10n service
+	 * @param ILogger $logger - logger
+	 * @param IManager $shareManager - Share manager
+	 * @param IManager $ISession - Session
+	 */
+	public function __construct(
+		$AppName,
+		IRequest $request,
+		IL10N $trans,
+		ILogger $logger,
+		IManager $shareManager,
+		ISession $session
+	) {
+		parent::__construct($AppName, $request);
 
-        $this->logger = $logger;
+		$this->logger = $logger;
 
-        $this->config = new AppConfig($this->appName);
-        $this->fileUtility = new FileUtility($AppName, $trans, $logger, $this->config, $shareManager, $session);
-    }
+		$this->config = new AppConfig($this->appName);
+		$this->fileUtility = new FileUtility($AppName, $trans, $logger, $this->config, $shareManager, $session);
+	}
 
-    /**
-     * Returns the origin document key for editor
-     *
-     * @param string $shareToken - access token
-     * @param string $path - file path
-     *
-     * @return Result
-     *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     * @PublicPage
-     */
-    public function key($shareToken, $path) {
-        list($file, $error, $share) = $this->fileUtility->getFileByToken(null, $shareToken, $path);
+	/**
+	 * Returns the origin document key for editor
+	 *
+	 * @param string $shareToken - access token
+	 * @param string $path - file path
+	 *
+	 * @return Result
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 */
+	public function key($shareToken, $path) {
+		list($file, $error, $share) = $this->fileUtility->getFileByToken(null, $shareToken, $path);
 
-        if (isset($error)) {
-            $this->logger->error("Federated getFileByToken: $error", ["app" => $this->appName]);
-            return new Result(["error" => $error]);
-        }
+		if (isset($error)) {
+			$this->logger->error("Federated getFileByToken: $error", ["app" => $this->appName]);
+			return new Result(["error" => $error]);
+		}
 
-        $key = $this->fileUtility->getKey($file, true);
+		$key = $this->fileUtility->getKey($file, true);
 
-        $key = DocumentService::GenerateRevisionId($key);
+		$key = DocumentService::GenerateRevisionId($key);
 
-        $this->logger->debug("Federated request get for " . $file->getId() . " key $key", ["app" => $this->appName]);
+		$this->logger->debug("Federated request get for " . $file->getId() . " key $key", ["app" => $this->appName]);
 
-        return new Result(["key" => $key]);
-    }
+		return new Result(["key" => $key]);
+	}
 
-    /**
-     * Lock the origin document key for editor
-     *
-     * @param string $shareToken - access token
-     * @param string $path - file path
-     * @param bool $lock - status
-     * @param bool $fs - status
-     *
-     * @return Result
-     *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     * @PublicPage
-     */
-    public function keylock($shareToken, $path, $lock, $fs) {
-        list($file, $error, $share) = $this->fileUtility->getFileByToken(null, $shareToken, $path);
+	/**
+	 * Lock the origin document key for editor
+	 *
+	 * @param string $shareToken - access token
+	 * @param string $path - file path
+	 * @param bool $lock - status
+	 * @param bool $fs - status
+	 *
+	 * @return Result
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 */
+	public function keylock($shareToken, $path, $lock, $fs) {
+		list($file, $error, $share) = $this->fileUtility->getFileByToken(null, $shareToken, $path);
 
-        if (isset($error)) {
-            $this->logger->error("Federated getFileByToken: $error", ["app" => $this->appName]);
-            return new Result(["error" => $error]);
-        }
+		if (isset($error)) {
+			$this->logger->error("Federated getFileByToken: $error", ["app" => $this->appName]);
+			return new Result(["error" => $error]);
+		}
 
-        $fileId = $file->getId();
+		$fileId = $file->getId();
 
-        if (RemoteInstance::isRemoteFile($file)) {
-            $isLock = RemoteInstance::lockRemoteKey($file, $lock, $fs);
-            if (!$isLock) {
-                return new Result(["error" => "Failed request"]);
-            }
-        } else {
-            KeyManager::lock($fileId, $lock);
-            if (!empty($fs)) {
-                KeyManager::setForcesave($fileId, $fs);
-            }
-        }
+		if (RemoteInstance::isRemoteFile($file)) {
+			$isLock = RemoteInstance::lockRemoteKey($file, $lock, $fs);
+			if (!$isLock) {
+				return new Result(["error" => "Failed request"]);
+			}
+		} else {
+			KeyManager::lock($fileId, $lock);
+			if (!empty($fs)) {
+				KeyManager::setForcesave($fileId, $fs);
+			}
+		}
 
-        $this->logger->debug("Federated request lock for " . $fileId, ["app" => $this->appName]);
-        return new Result();
-    }
+		$this->logger->debug("Federated request lock for " . $fileId, ["app" => $this->appName]);
+		return new Result();
+	}
 
-    /**
-     * Health check instance
-     *
-     * @return Result
-     *
-     * @NoAdminRequired
-     * @NoCSRFRequired
-     * @PublicPage
-     */
-    public function healthcheck() {
-        $this->logger->debug("Federated healthcheck", ["app" => $this->appName]);
+	/**
+	 * Health check instance
+	 *
+	 * @return Result
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 */
+	public function healthcheck() {
+		$this->logger->debug("Federated healthcheck", ["app" => $this->appName]);
 
-        return new Result(["alive" => true]);
-    }
+		return new Result(["alive" => true]);
+	}
 }

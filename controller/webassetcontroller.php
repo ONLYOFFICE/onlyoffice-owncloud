@@ -33,46 +33,46 @@ use OCP\IRequest;
  * @package OCA\Onlyoffice\Controller
  */
 class WebAssetController extends Controller {
-    /**
-     * @var ILogger
-     */
-    private $logger;
+	/**
+	 * @var ILogger
+	 */
+	private $logger;
 
-    /**
-     * WebAssetController constructor.
-     *
-     * @param string $AppName - application name
-     * @param IRequest $request - request object
-     * @param ILogger $logger
-     */
-    public function __construct($AppName, IRequest $request, ILogger $logger) {
-        parent::__construct($AppName, $request);
-        $this->logger = $logger;
-    }
+	/**
+	 * WebAssetController constructor.
+	 *
+	 * @param string $AppName - application name
+	 * @param IRequest $request - request object
+	 * @param ILogger $logger
+	 */
+	public function __construct($AppName, IRequest $request, ILogger $logger) {
+		parent::__construct($AppName, $request);
+		$this->logger = $logger;
+	}
 
-    /**
-     * Loads the onlyoffice.js file for integration into ownCloud Web
-     *
-     * @PublicPage
-     * @NoCSRFRequired
-     *
-     * @return Response
-     */
-    public function get(): Response {
-        $basePath = \dirname(__DIR__, 1);
-        $filePath = \realpath($basePath . '/js/web/onlyoffice.js');
-        try {
-            return new DataDisplayResponse(\file_get_contents($filePath), Http::STATUS_OK, [
-                'Content-Type' => "text/javascript",
-                'Content-Length' => \filesize($filePath),
-                'Cache-Control' => 'max-age=0, no-cache, no-store, must-revalidate',
-                'Pragma' => 'no-cache',
-                'Expires' => 'Tue, 24 Sep 1985 22:15:00 GMT',
-                'X-Frame-Options' => 'DENY'
-            ]);
-        } catch(\Exception $e) {
-            $this->logger->logException($e, ['app' => $this->appName]);
-            return new DataResponse(["message" => $e->getMessage()], Http::STATUS_NOT_FOUND);
-        }
-    }
+	/**
+	 * Loads the onlyoffice.js file for integration into ownCloud Web
+	 *
+	 * @PublicPage
+	 * @NoCSRFRequired
+	 *
+	 * @return Response
+	 */
+	public function get(): Response {
+		$basePath = \dirname(__DIR__, 1);
+		$filePath = \realpath($basePath . '/js/web/onlyoffice.js');
+		try {
+			return new DataDisplayResponse(\file_get_contents($filePath), Http::STATUS_OK, [
+				'Content-Type' => "text/javascript",
+				'Content-Length' => \filesize($filePath),
+				'Cache-Control' => 'max-age=0, no-cache, no-store, must-revalidate',
+				'Pragma' => 'no-cache',
+				'Expires' => 'Tue, 24 Sep 1985 22:15:00 GMT',
+				'X-Frame-Options' => 'DENY'
+			]);
+		} catch(\Exception $e) {
+			$this->logger->logException($e, ['app' => $this->appName]);
+			return new DataResponse(["message" => $e->getMessage()], Http::STATUS_NOT_FOUND);
+		}
+	}
 }

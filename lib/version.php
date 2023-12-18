@@ -27,84 +27,84 @@ use OCP\Files\FileInfo;
  * @package OCA\Onlyoffice
  */
 class Version {
-    /**
-     * Time of creation
-     *
-     * @var int
-     * */
-    private $timestamp;
+	/**
+	 * Time of creation
+	 *
+	 * @var int
+	 * */
+	private $timestamp;
 
-    /**
-     * Version file
-     *
-     * @var int|string
-     * */
-    private $revisionId;
+	/**
+	 * Version file
+	 *
+	 * @var int|string
+	 * */
+	private $revisionId;
 
-    /**
-     * File path
-     *
-     * @var string
-     * */
-    private $path;
+	/**
+	 * File path
+	 *
+	 * @var string
+	 * */
+	private $path;
 
-    /**
-     * Source file properties
-     *
-     * @var FileInfo
-     * */
-    private $sourceFileInfo;
+	/**
+	 * Source file properties
+	 *
+	 * @var FileInfo
+	 * */
+	private $sourceFileInfo;
 
-    /**
-     * @param int $timestamp - file time stamp
-     * @param int $revisionId - revision id
-     * @param FileInfo $sourceFileInfo - source file info
-     */
-    public function __construct(
-        int $timestamp,
-        int $revisionId,
-        string $path,
-        FileInfo $sourceFileInfo
-    ) {
-        $this->timestamp = $timestamp;
-        $this->revisionId = $revisionId;
-        $this->path = $path;
-        $this->sourceFileInfo = $sourceFileInfo;
-    }
+	/**
+	 * @param int $timestamp - file time stamp
+	 * @param int $revisionId - revision id
+	 * @param FileInfo $sourceFileInfo - source file info
+	 */
+	public function __construct(
+		int $timestamp,
+		int $revisionId,
+		string $path,
+		FileInfo $sourceFileInfo
+	) {
+		$this->timestamp = $timestamp;
+		$this->revisionId = $revisionId;
+		$this->path = $path;
+		$this->sourceFileInfo = $sourceFileInfo;
+	}
 
-    /**
-     * Get source file
-     *
-     * @return FileInfo
-     */
-    public function getSourceFile() {
-        return $this->sourceFileInfo;
-    }
+	/**
+	 * Get source file
+	 *
+	 * @return FileInfo
+	 */
+	public function getSourceFile() {
+		return $this->sourceFileInfo;
+	}
 
-    /**
-     * Get version file
-     *
-     * @return int|string
-     */
-    public function getRevisionId() {
-        return $this->revisionId;
-    }
+	/**
+	 * Get version file
+	 *
+	 * @return int|string
+	 */
+	public function getRevisionId() {
+		return $this->revisionId;
+	}
 
-    /**
-     * Get timestamp file
-     *
-     * @return int
-     */
-    public function getTimestamp() {
-        return $this->timestamp;
-    }
+	/**
+	 * Get timestamp file
+	 *
+	 * @return int
+	 */
+	public function getTimestamp() {
+		return $this->timestamp;
+	}
 
-    /**
-     * Get file path
-     *
-     * @return string
-     */
-    public function getPath() {
-        return $this->path;
-    }
+	/**
+	 * Get file path
+	 *
+	 * @return string
+	 */
+	public function getPath() {
+		return $this->path;
+	}
 }

@@ -31,20 +31,20 @@ use OCA\Onlyoffice\AppConfig;
  * @package OCA\Onlyoffice
  */
 class HookHandler {
-    public static function PublicPage() {
-        $appName = "onlyoffice";
+	public static function PublicPage() {
+		$appName = "onlyoffice";
 
-        $appConfig = new AppConfig($appName);
+		$appConfig = new AppConfig($appName);
 
-        if (!empty($appConfig->GetDocumentServerUrl()) && $appConfig->SettingsAreSuccessful()) {
-            Util::addScript("onlyoffice", "main");
-            Util::addScript("onlyoffice", "share");
+		if (!empty($appConfig->GetDocumentServerUrl()) && $appConfig->SettingsAreSuccessful()) {
+			Util::addScript("onlyoffice", "main");
+			Util::addScript("onlyoffice", "share");
 
-            if ($appConfig->GetSameTab()) {
-                Util::addScript("onlyoffice", "listener");
-            }
+			if ($appConfig->GetSameTab()) {
+				Util::addScript("onlyoffice", "listener");
+			}
 
-            Util::addStyle("onlyoffice", "main");
-        }
-    }
+			Util::addStyle("onlyoffice", "main");
+		}
+	}
 }

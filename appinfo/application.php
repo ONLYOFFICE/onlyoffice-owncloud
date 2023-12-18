@@ -110,7 +110,7 @@ class Application extends App {
 
         $previewManager = $container->query(IPreview::class);
         if ($this->appConfig->GetPreview()) {
-            $previewManager->registerProvider(Preview::getMimeTypeRegex(), function() use ($container) {
+            $previewManager->registerProvider(Preview::getMimeTypeRegex(), function () use ($container) {
                 return $container->query(Preview::class);
             });
         }

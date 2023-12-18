@@ -92,7 +92,7 @@ class TemplateController extends Controller {
     public function AddTemplate() {
         $file = $this->request->getUploadedFile("file");
 
-        if (null !== $file) {
+        if ($file !== null) {
             if (is_uploaded_file($file["tmp_name"]) && $file["error"] === 0) {
                 if (!TemplateManager::IsTemplateType($file["name"])) {
                     return [

@@ -346,7 +346,7 @@ class DocumentService {
         $httpClientService = \OC::$server->getHTTPClientService();
         $client = $httpClientService->newClient();
 
-        if (null === $opts) {
+        if ($opts === null) {
             $opts = [];
         }
         if (substr($url, 0, \strlen("https")) === "https" && $this->config->GetVerifyPeerOff()) {

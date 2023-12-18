@@ -980,7 +980,7 @@ class AppConfig {
     public function isUserAllowedToUse($userId = null) {
         // no user -> no
         $userSession = \OC::$server->getUserSession();
-        if (null === $userId && ($userSession === null || !$userSession->isLoggedIn())) {
+        if ($userId === null && ($userSession === null || !$userSession->isLoggedIn())) {
             return false;
         }
 
@@ -990,7 +990,7 @@ class AppConfig {
             return true;
         }
 
-        if (null === $userId) {
+        if ($userId === null) {
             $user = $userSession->getUser();
         } else {
             $user = \OC::$server->getUserManager()->get($userId);

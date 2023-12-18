@@ -50,11 +50,12 @@ class SettingsApiController extends OCSController {
      * @param IURLGenerator $urlGenerator - url generator service
      * @param AppConfig $config - application configuration
      */
-    public function __construct($AppName,
-                                    IRequest $request,
-                                    IURLGenerator $urlGenerator,
-                                    AppConfig $config
-                                    ) {
+    public function __construct(
+        $AppName,
+        IRequest $request,
+        IURLGenerator $urlGenerator,
+        AppConfig $config
+    ) {
         parent::__construct($AppName, $request);
 
         $this->urlGenerator = $urlGenerator;

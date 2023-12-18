@@ -67,13 +67,14 @@ class FederationController extends OCSController {
      * @param IManager $shareManager - Share manager
      * @param IManager $ISession - Session
      */
-    public function __construct($AppName,
-                                    IRequest $request,
-                                    IL10N $trans,
-                                    ILogger $logger,
-                                    IManager $shareManager,
-                                    ISession $session
-                                    ) {
+    public function __construct(
+        $AppName,
+        IRequest $request,
+        IL10N $trans,
+        ILogger $logger,
+        IManager $shareManager,
+        ISession $session
+    ) {
         parent::__construct($AppName, $request);
 
         $this->logger = $logger;

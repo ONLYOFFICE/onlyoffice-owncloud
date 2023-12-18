@@ -170,17 +170,18 @@ class Preview implements IProvider2 {
      * @param ISession $session - session
      * @param IUserManager $userManager - user manager
      */
-    public function __construct(string $appName,
-                                    IRootFolder $root,
-                                    ILogger $logger,
-                                    IL10N $trans,
-                                    AppConfig $config,
-                                    IURLGenerator $urlGenerator,
-                                    Crypt $crypt,
-                                    IManager $shareManager,
-                                    ISession $session,
-                                    IUserManager $userManager
-                                    ) {
+    public function __construct(
+        string $appName,
+        IRootFolder $root,
+        ILogger $logger,
+        IL10N $trans,
+        AppConfig $config,
+        IURLGenerator $urlGenerator,
+        Crypt $crypt,
+        IManager $shareManager,
+        ISession $session,
+        IUserManager $userManager
+    ) {
         $this->appName = $appName;
         $this->root = $root;
         $this->logger = $logger;

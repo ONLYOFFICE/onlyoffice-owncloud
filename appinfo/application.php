@@ -66,7 +66,8 @@ class Application extends App {
 
         // Default script and style if configured
         $eventDispatcher = \OC::$server->getEventDispatcher();
-        $eventDispatcher->addListener("OCA\Files::loadAdditionalScripts",
+        $eventDispatcher->addListener(
+            "OCA\Files::loadAdditionalScripts",
             function () {
                 if (!empty($this->appConfig->GetDocumentServerUrl())
                     && $this->appConfig->SettingsAreSuccessful()
@@ -83,7 +84,8 @@ class Application extends App {
                     Util::addStyle("onlyoffice", "template");
                     Util::addStyle("onlyoffice", "main");
                 }
-            });
+            }
+        );
 
         Util::connectHook("OCP\Share", "share_link_access", Hookhandler::class, "PublicPage");
 

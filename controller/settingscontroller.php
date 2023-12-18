@@ -80,14 +80,15 @@ class SettingsController extends Controller {
      * @param AppConfig $config - application configuration
      * @param Crypt $crypt - hash generator
      */
-    public function __construct($AppName,
-                                    IRequest $request,
-                                    IURLGenerator $urlGenerator,
-                                    IL10N $trans,
-                                    ILogger $logger,
-                                    AppConfig $config,
-                                    Crypt $crypt
-                                    ) {
+    public function __construct(
+        $AppName,
+        IRequest $request,
+        IURLGenerator $urlGenerator,
+        IL10N $trans,
+        ILogger $logger,
+        AppConfig $config,
+        Crypt $crypt
+    ) {
         parent::__construct($AppName, $request);
 
         $this->urlGenerator = $urlGenerator;
@@ -149,14 +150,15 @@ class SettingsController extends Controller {
      *
      * @return array
      */
-    public function SaveAddress($documentserver,
-                                    $documentserverInternal,
-                                    $storageUrl,
-                                    $verifyPeerOff,
-                                    $secret,
-                                    $jwtHeader,
-                                    $demo
-                                    ) {
+    public function SaveAddress(
+        $documentserver,
+        $documentserverInternal,
+        $storageUrl,
+        $verifyPeerOff,
+        $secret,
+        $jwtHeader,
+        $demo
+    ) {
         $error = null;
         if (!$this->config->SelectDemo($demo === true)) {
             $error = $this->trans->t("The 30-day test period is over, you can no longer connect to demo ONLYOFFICE Docs server.");
@@ -216,21 +218,22 @@ class SettingsController extends Controller {
      *
      * @return array
      */
-    public function SaveCommon($defFormats,
-                                    $editFormats,
-                                    $sameTab,
-                                    $preview,
-                                    $versionHistory,
-                                    $limitGroups,
-                                    $chat,
-                                    $compactHeader,
-                                    $feedback,
-                                    $forcesave,
-                                    $help,
-                                    $toolbarNoTabs,
-                                    $reviewDisplay,
-                                    $theme
-                                    ) {
+    public function SaveCommon(
+        $defFormats,
+        $editFormats,
+        $sameTab,
+        $preview,
+        $versionHistory,
+        $limitGroups,
+        $chat,
+        $compactHeader,
+        $feedback,
+        $forcesave,
+        $help,
+        $toolbarNoTabs,
+        $reviewDisplay,
+        $theme
+    ) {
         $this->config->SetDefaultFormats($defFormats);
         $this->config->SetEditableFormats($editFormats);
         $this->config->SetSameTab($sameTab);
@@ -259,10 +262,11 @@ class SettingsController extends Controller {
      *
      * @return array
      */
-    public function SaveSecurity($plugins,
-                                $macros,
-                                $protection
-                                ) {
+    public function SaveSecurity(
+        $plugins,
+        $macros,
+        $protection
+    ) {
         $this->config->SetCustomizationPlugins($plugins);
         $this->config->SetCustomizationMacros($macros);
         $this->config->SetProtection($protection);

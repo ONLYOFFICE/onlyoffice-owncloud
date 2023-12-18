@@ -138,19 +138,20 @@ class EditorApiController extends OCSController {
      * @param ISession $ISession - Session
      * @param ITagManager $tagManager - Tag manager
      */
-    public function __construct($AppName,
-                                    IRequest $request,
-                                    IRootFolder $root,
-                                    IUserSession $userSession,
-                                    IURLGenerator $urlGenerator,
-                                    IL10N $trans,
-                                    ILogger $logger,
-                                    AppConfig $config,
-                                    Crypt $crypt,
-                                    IManager $shareManager,
-                                    ISession $session,
-                                    ITagManager $tagManager
-                                    ) {
+    public function __construct(
+        $AppName,
+        IRequest $request,
+        IRootFolder $root,
+        IUserSession $userSession,
+        IURLGenerator $urlGenerator,
+        IL10N $trans,
+        ILogger $logger,
+        AppConfig $config,
+        Crypt $crypt,
+        IManager $shareManager,
+        ISession $session,
+        ITagManager $tagManager
+    ) {
         parent::__construct($AppName, $request);
 
         $this->userSession = $userSession;

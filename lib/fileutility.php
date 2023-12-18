@@ -88,12 +88,14 @@ class FileUtility {
      * @param IManager $shareManager - Share manager
      * @param IManager $ISession - Session
      */
-    public function __construct($AppName,
-                                IL10N $trans,
-                                ILogger $logger,
-                                AppConfig $config,
-                                IManager $shareManager,
-                                ISession $session) {
+    public function __construct(
+        $AppName,
+        IL10N $trans,
+        ILogger $logger,
+        AppConfig $config,
+        IManager $shareManager,
+        ISession $session
+    ) {
         $this->appName = $AppName;
         $this->trans = $trans;
         $this->logger = $logger;

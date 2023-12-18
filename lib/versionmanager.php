@@ -150,10 +150,12 @@ class VersionManager {
         $propsVersions = $this->storage->getVersions($ownerId, $sourceFilePath);
 
         foreach ($propsVersions as $propVersion) {
-            $version = new Version($propVersion["timestamp"],
+            $version = new Version(
+                $propVersion["timestamp"],
                 $propVersion["version"],
                 $propVersion["path"],
-                $file);
+                $file
+            );
 
             array_push($versions, $version);
         }

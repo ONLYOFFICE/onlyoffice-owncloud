@@ -49,11 +49,12 @@ class TemplateController extends Controller {
      * @param IRequest $request - request object
      * @param IL10N $trans - l10n service
      */
-    public function __construct($AppName,
-                                    IRequest $request,
-                                    IL10N $trans,
-                                    ILogger $logger
-                                    ) {
+    public function __construct(
+        $AppName,
+        IRequest $request,
+        IL10N $trans,
+        ILogger $logger
+    ) {
         parent::__construct($AppName, $request);
 
         $this->trans = $trans;

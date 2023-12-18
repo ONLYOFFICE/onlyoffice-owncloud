@@ -137,17 +137,18 @@ class CallbackController extends Controller {
      * @param Crypt $crypt - hash generator
      * @param IManager $shareManager - Share manager
      */
-    public function __construct($AppName,
-                                    IRequest $request,
-                                    IRootFolder $root,
-                                    IUserSession $userSession,
-                                    IUserManager $userManager,
-                                    IL10N $trans,
-                                    ILogger $logger,
-                                    AppConfig $config,
-                                    Crypt $crypt,
-                                    IManager $shareManager
-                                    ) {
+    public function __construct(
+        $AppName,
+        IRequest $request,
+        IRootFolder $root,
+        IUserSession $userSession,
+        IUserManager $userManager,
+        IL10N $trans,
+        ILogger $logger,
+        AppConfig $config,
+        Crypt $crypt,
+        IManager $shareManager
+    ) {
         parent::__construct($AppName, $request);
 
         $this->root = $root;
@@ -503,7 +504,7 @@ class CallbackController extends Controller {
                     list ($file, $error) = empty($shareToken) ? $this->getFile($userId, $fileId, $filePath) : $this->getFileByToken($fileId, $shareToken);
 
                     if (isset($error)) {
-                        $this->logger->error("track error: $fileId " . json_encode($error->getData()),  ["app" => $this->appName]);
+                        $this->logger->error("track error: $fileId " . json_encode($error->getData()), ["app" => $this->appName]);
                         return $error;
                     }
 

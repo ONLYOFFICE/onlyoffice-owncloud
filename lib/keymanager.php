@@ -80,7 +80,8 @@ class KeyManager {
      */
     public static function delete($fileId, $unlock = false) {
         $connection = \OC::$server->getDatabaseConnection();
-        $delete = $connection->prepare("
+        $delete = $connection->prepare(
+            "
             DELETE FROM `*PREFIX*" . self::TableName_Key . "`
             WHERE `file_id` = ?
             " . ($unlock === false ? "AND `lock` != 1" : "")

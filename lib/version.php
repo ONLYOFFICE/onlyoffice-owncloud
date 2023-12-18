@@ -61,11 +61,12 @@ class Version {
      * @param int $revisionId - revision id
      * @param FileInfo $sourceFileInfo - source file info
      */
-    public function __construct(int $timestamp,
-                                int $revisionId,
-                                string $path,
-                                FileInfo $sourceFileInfo
-                                ) {
+    public function __construct(
+        int $timestamp,
+        int $revisionId,
+        string $path,
+        FileInfo $sourceFileInfo
+    ) {
         $this->timestamp = $timestamp;
         $this->revisionId = $revisionId;
         $this->path = $path;

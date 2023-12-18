@@ -66,10 +66,12 @@ class DocumentServer extends Command {
      * @param IURLGenerator $urlGenerator - url generator service
      * @param Crypt $crypt - hash generator
      */
-    public function __construct(AppConfig $config,
-                                IL10N $trans,
-                                IURLGenerator $urlGenerator,
-                                Crypt $crypt) {
+    public function __construct(
+        AppConfig $config,
+        IL10N $trans,
+        IURLGenerator $urlGenerator,
+        Crypt $crypt
+    ) {
         parent::__construct();
         $this->config = $config;
         $this->trans = $trans;
@@ -84,10 +86,12 @@ class DocumentServer extends Command {
         $this
             ->setName("onlyoffice:documentserver")
             ->setDescription("Manage document server")
-            ->addOption("check",
+            ->addOption(
+                "check",
                 null,
                 InputOption::VALUE_NONE,
-                "Check connection document server");
+                "Check connection document server"
+            );
     }
 
     /**

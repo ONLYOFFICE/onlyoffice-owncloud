@@ -94,13 +94,15 @@ class EditorsCheck extends TimedJob {
      * @param IL10N $trans - l10n service
      * @param Crypt $crypt - crypt service
      */
-    public function __construct(string $AppName,
-                                IURLGenerator $urlGenerator,
-                                ITimeFactory $time,
-                                AppConfig $config,
-                                IL10N $trans,
-                                Crypt $crypt,
-                                IGroupManager $groupManager) {
+    public function __construct(
+        string $AppName,
+        IURLGenerator $urlGenerator,
+        ITimeFactory $time,
+        AppConfig $config,
+        IL10N $trans,
+        Crypt $crypt,
+        IGroupManager $groupManager
+    ) {
         $this->appName = $AppName;
         $this->urlGenerator = $urlGenerator;
 

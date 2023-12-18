@@ -71,7 +71,7 @@ class DocumentService {
             $expected_key = crc32($expected_key);
         }
         $key = preg_replace("[^0-9-.a-zA-Z_=]", "_", $expected_key);
-        $key = substr($key, 0, min(array(\strlen($key), 20)));
+        $key = substr($key, 0, min([\strlen($key), 20]));
         return $key;
     }
 
@@ -347,7 +347,7 @@ class DocumentService {
         $client = $httpClientService->newClient();
 
         if (null === $opts) {
-            $opts = array();
+            $opts = [];
         }
         if (substr($url, 0, \strlen("https")) === "https" && $this->config->GetVerifyPeerOff()) {
             $opts["verify"] = false;

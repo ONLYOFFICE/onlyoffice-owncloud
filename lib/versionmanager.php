@@ -126,7 +126,7 @@ class VersionManager {
      * @return array
      */
     public function getVersionsForFile($user, $file) {
-        $versions = array();
+        $versions = [];
 
         $fileId = $file->getId();
 

@@ -608,7 +608,7 @@ class AppConfig {
     private function GetDefaultFormats() {
         $value = $this->config->getAppValue($this->appName, $this->_defFormats, "");
         if (empty($value)) {
-            return array();
+            return [];
         }
         return json_decode($value, true);
     }
@@ -633,7 +633,7 @@ class AppConfig {
     private function GetEditableFormats() {
         $value = $this->config->getAppValue($this->appName, $this->_editFormats, "");
         if (empty($value)) {
-            return array();
+            return [];
         }
         return json_decode($value, true);
     }
@@ -850,7 +850,7 @@ class AppConfig {
      * @param string $value - review mode
      */
     public function SetCustomizationReviewDisplay($value) {
-        $this->logger->info("Set review mode: " . $value, array("app" => $this->appName));
+        $this->logger->info("Set review mode: " . $value, ["app" => $this->appName]);
 
         $this->config->setAppValue($this->appName, $this->_customizationReviewDisplay, $value);
     }
@@ -877,7 +877,7 @@ class AppConfig {
      * @param string $value - theme
      */
     public function SetCustomizationTheme($value) {
-        $this->logger->info("Set theme: " . $value, array("app" => $this->appName));
+        $this->logger->info("Set theme: " . $value, ["app" => $this->appName]);
 
         $this->config->setAppValue($this->appName, $this->_customizationTheme, $value);
     }
@@ -945,7 +945,7 @@ class AppConfig {
      */
     public function SetLimitGroups($groups) {
         if (!\is_array($groups)) {
-            $groups = array();
+            $groups = [];
         }
         $value = json_encode($groups);
         $this->logger->info("Set groups: $value", ["app" => $this->appName]);
@@ -961,11 +961,11 @@ class AppConfig {
     public function GetLimitGroups() {
         $value = $this->config->getAppValue($this->appName, $this->_groups, "");
         if (empty($value)) {
-            return array();
+            return [];
         }
         $groups = json_decode($value, true);
         if (!\is_array($groups)) {
-            $groups = array();
+            $groups = [];
         }
         return $groups;
     }

@@ -163,7 +163,6 @@ class CallbackController extends Controller {
         $this->versionManager = new VersionManager($AppName, $root);
     }
 
-
     /**
      * Downloading file by the document service
      *
@@ -592,7 +591,6 @@ class CallbackController extends Controller {
 
         return new JSONResponse(["error" => $result], Http::STATUS_OK);
     }
-
 
     /**
      * Getting file by identifier

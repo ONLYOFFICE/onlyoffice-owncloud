@@ -153,7 +153,6 @@ class Application extends App {
             return $c->query("ServerContainer")->getURLGenerator();
         });
 
-
         // Controllers
         $container->registerService("SettingsController", function ($c) {
             return new SettingsController(

@@ -602,7 +602,7 @@ class CallbackController extends Controller {
      * @param string $filePath - file path
      * @param integer $version - file version
      * @param bool $template - file is template
-     * 
+     *
      * @return array
      */
     private function getFile($userId, $fileId, $filePath = null, $version = 0, $template = false) {

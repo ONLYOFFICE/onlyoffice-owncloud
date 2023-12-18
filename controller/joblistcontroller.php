@@ -41,14 +41,14 @@ use OCA\Onlyoffice\AppConfig;
 class JobListController extends Controller {
     /**
      * Logger
-     * 
+     *
      * @var ILogger
      */
     private $logger;
 
     /**
      * Job list
-     * 
+     *
      * @var IJobList
      */
     private $jobList;
@@ -78,7 +78,7 @@ class JobListController extends Controller {
 
     /**
      * Add a job to list
-     * 
+     *
      * @param IJob|string $job
      */
     private function addJob($job) {
@@ -90,7 +90,7 @@ class JobListController extends Controller {
 
     /**
      * Remove a job from list
-     * 
+     *
      * @param IJob|string $job
      */
     private function removeJob($job) {
@@ -102,7 +102,7 @@ class JobListController extends Controller {
 
     /**
      * Add or remove EditorsCheck job depending on the value of _editors_check_interval
-     * 
+     *
      */
     private function checkEditorsCheckJob() {
         if ($this->config->GetEditorsCheckInterval() > 0) {
@@ -114,7 +114,7 @@ class JobListController extends Controller {
 
     /**
      * Method for sequentially calling checks of all jobs
-     * 
+     *
      */
     public function checkAllJobs() {
         $this->checkEditorsCheckJob();

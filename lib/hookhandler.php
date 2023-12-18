@@ -25,7 +25,7 @@ use OCA\Onlyoffice\AppConfig;
 
 /**
  * Class HookHandler
- * 
+ *
  * handles hooks
  *
  * @package OCA\Onlyoffice

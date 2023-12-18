@@ -28,31 +28,31 @@ use OCP\Files\FileInfo;
  * @package OCA\Onlyoffice
  */
 class Version {
-    /** 
+    /**
      * Time of creation
-     * 
-     * @var int 
+     *
+     * @var int
      * */
     private $timestamp;
 
-    /** 
+    /**
      * Version file
-     * 
-     * @var int|string 
+     *
+     * @var int|string
      * */
     private $revisionId;
 
-    /** 
+    /**
      * File path
      *
-     * @var string 
+     * @var string
      * */
     private $path;
 
-    /** 
+    /**
      * Source file properties
-     * 
-     * @var FileInfo 
+     *
+     * @var FileInfo
      * */
     private $sourceFileInfo;
 

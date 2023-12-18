@@ -370,7 +370,7 @@ class DocumentService {
      *
      * @param OCP\IURLGenerator $urlGenerator - url generator
      * @param OCA\Onlyoffice\Crypt $crypt -crypt
-     * 
+     *
      * @return array
      */
     public function checkDocServiceUrl($urlGenerator, $crypt) {

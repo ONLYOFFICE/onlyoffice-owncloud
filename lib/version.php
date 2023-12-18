@@ -21,7 +21,6 @@ namespace OCA\Onlyoffice;
 
 use OCP\Files\FileInfo;
 
-
 /**
  * Version file
  *

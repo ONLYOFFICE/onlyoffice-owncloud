@@ -73,7 +73,7 @@ class TemplateManager {
 
         $templatesList = $templateDir->getDirectoryListing();
         if (!empty($mimetype)
-            && is_array($templatesList) && count($templatesList) > 0) {
+            && \is_array($templatesList) && \count($templatesList) > 0) {
             $templatesList = $templateDir->searchByMime($mimetype);
         }
 
@@ -171,11 +171,11 @@ class TemplateManager {
      * @return string
      */
     public static function GetEmptyTemplatePath($lang, $ext) {
-        if (!array_key_exists($lang, self::$localPath)) {
+        if (!\array_key_exists($lang, self::$localPath)) {
             $lang = "en";
         }
 
-        return dirname(__DIR__) . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . self::$localPath[$lang] . DIRECTORY_SEPARATOR . "new" . $ext;
+        return \dirname(__DIR__) . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . self::$localPath[$lang] . DIRECTORY_SEPARATOR . "new" . $ext;
     }
 
     /**

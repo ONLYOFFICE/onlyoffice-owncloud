@@ -327,7 +327,7 @@ class AppConfig {
             return $this->config->getSystemValue($key);
         }
         if (!empty($this->config->getSystemValue($this->appName))
-            && array_key_exists($key, $this->config->getSystemValue($this->appName))) {
+            && \array_key_exists($key, $this->config->getSystemValue($this->appName))) {
             return $this->config->getSystemValue($this->appName)[$key];
         }
         return null;
@@ -404,7 +404,7 @@ class AppConfig {
      */
     public function SetDocumentServerUrl($documentServer) {
         $documentServer = trim($documentServer);
-        if (strlen($documentServer) > 0) {
+        if (\strlen($documentServer) > 0) {
             $documentServer = rtrim($documentServer, "/") . "/";
             if (!preg_match("/(^https?:\/\/)|^\//i", $documentServer)) {
                 $documentServer = "http://" . $documentServer;
@@ -434,7 +434,7 @@ class AppConfig {
         }
         if ($url !== "/") {
             $url = rtrim($url, "/");
-            if (strlen($url) > 0) {
+            if (\strlen($url) > 0) {
                 $url = $url . "/";
             }
         }
@@ -448,7 +448,7 @@ class AppConfig {
      */
     public function SetDocumentServerInternalUrl($documentServerInternal) {
         $documentServerInternal = rtrim(trim($documentServerInternal), "/");
-        if (strlen($documentServerInternal) > 0) {
+        if (\strlen($documentServerInternal) > 0) {
             $documentServerInternal = $documentServerInternal . "/";
             if (!preg_match("/^https?:\/\//i", $documentServerInternal)) {
                 $documentServerInternal = "http://" . $documentServerInternal;
@@ -496,7 +496,7 @@ class AppConfig {
 
             if (!preg_match("/^https?:\/\//i", $from)) {
                 $parsedUrl = parse_url($url);
-                $from = $parsedUrl["scheme"] . "://" . $parsedUrl["host"] . (array_key_exists("port", $parsedUrl) ? (":" . $parsedUrl["port"]) : "") . $from;
+                $from = $parsedUrl["scheme"] . "://" . $parsedUrl["host"] . (\array_key_exists("port", $parsedUrl) ? (":" . $parsedUrl["port"]) : "") . $from;
             }
 
             if ($from !== $documentServerUrl) {
@@ -515,7 +515,7 @@ class AppConfig {
      */
     public function SetStorageUrl($storageUrl) {
         $storageUrl = rtrim(trim($storageUrl), "/");
-        if (strlen($storageUrl) > 0) {
+        if (\strlen($storageUrl) > 0) {
             $storageUrl = $storageUrl . "/";
             if (!preg_match("/^https?:\/\//i", $storageUrl)) {
                 $storageUrl = "http://" . $storageUrl;
@@ -944,7 +944,7 @@ class AppConfig {
      * @param array $groups - the list of groups
      */
     public function SetLimitGroups($groups) {
-        if (!is_array($groups)) {
+        if (!\is_array($groups)) {
             $groups = array();
         }
         $value = json_encode($groups);
@@ -964,7 +964,7 @@ class AppConfig {
             return array();
         }
         $groups = json_decode($value, true);
-        if (!is_array($groups)) {
+        if (!\is_array($groups)) {
             $groups = array();
         }
         return $groups;
@@ -980,17 +980,17 @@ class AppConfig {
     public function isUserAllowedToUse($userId = null) {
         // no user -> no
         $userSession = \OC::$server->getUserSession();
-        if (is_null($userId) && ($userSession === null || !$userSession->isLoggedIn())) {
+        if (\is_null($userId) && ($userSession === null || !$userSession->isLoggedIn())) {
             return false;
         }
 
         $groups = $this->GetLimitGroups();
         // no group set -> all users are allowed
-        if (count($groups) === 0) {
+        if (\count($groups) === 0) {
             return true;
         }
 
-        if (is_null($userId)) {
+        if (\is_null($userId)) {
             $user = $userSession->getUser();
         } else {
             $user = \OC::$server->getUserManager()->get($userId);
@@ -1157,14 +1157,14 @@ class AppConfig {
 
         $defFormats = $this->GetDefaultFormats();
         foreach ($defFormats as $format => $setting) {
-            if (array_key_exists($format, $result)) {
+            if (\array_key_exists($format, $result)) {
                 $result[$format]["def"] = ($setting === true || $setting === "true");
             }
         }
 
         $editFormats = $this->GetEditableFormats();
         foreach ($editFormats as $format => $setting) {
-            if (array_key_exists($format, $result)) {
+            if (\array_key_exists($format, $result)) {
                 $result[$format]["edit"] = ($setting === true || $setting === "true");
             }
         }

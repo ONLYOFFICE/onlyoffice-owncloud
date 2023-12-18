@@ -273,7 +273,7 @@ class FileUtility {
      * @return string
      */
     private function GUID() {
-        if (function_exists("com_create_guid") === true) {
+        if (\function_exists("com_create_guid") === true) {
             return trim(com_create_guid(), "{}");
         }
 

@@ -202,7 +202,7 @@ class CallbackController extends Controller {
                     return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
                 }
 
-                $header = substr($header, strlen("Bearer "));
+                $header = substr($header, \strlen("Bearer "));
 
                 try {
                     $decodedHeader = \Firebase\JWT\JWT::decode($header, new \Firebase\JWT\Key($this->config->GetDocumentServerSecret(), "HS256"));
@@ -275,7 +275,7 @@ class CallbackController extends Controller {
             $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
 
             $versionId = null;
-            if ($version > count($versions)) {
+            if ($version > \count($versions)) {
                 $versionId = $file->getFileInfo()->getMtime();
             } else {
                 $fileVersion = array_values($versions)[$version - 1];
@@ -339,7 +339,7 @@ class CallbackController extends Controller {
                 return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
             }
 
-            $header = substr($header, strlen("Bearer "));
+            $header = substr($header, \strlen("Bearer "));
 
             try {
                 $decodedHeader = \Firebase\JWT\JWT::decode($header, new \Firebase\JWT\Key($this->config->GetDocumentServerSecret(), "HS256"));
@@ -417,7 +417,7 @@ class CallbackController extends Controller {
                     return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
                 }
 
-                $header = substr($header, strlen("Bearer "));
+                $header = substr($header, \strlen("Bearer "));
 
                 try {
                     $decodedHeader = \Firebase\JWT\JWT::decode($header, new \Firebase\JWT\Key($this->config->GetDocumentServerSecret(), "HS256"));
@@ -625,7 +625,7 @@ class CallbackController extends Controller {
 
         $file = $files[0];
 
-        if (count($files) > 1 && !empty($filePath)) {
+        if (\count($files) > 1 && !empty($filePath)) {
             $filePath = "/" . $userId . "/files" . $filePath;
             foreach ($files as $curFile) {
                 if ($curFile->getPath() === $filePath) {
@@ -654,7 +654,7 @@ class CallbackController extends Controller {
 
                 $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
 
-                if ($version <= count($versions)) {
+                if ($version <= \count($versions)) {
                     $fileVersion = array_values($versions)[$version - 1];
                     $file = $this->versionManager->getVersionFile($owner, $file->getFileInfo(), $fileVersion->getRevisionId());
                 }
@@ -709,7 +709,7 @@ class CallbackController extends Controller {
             if ($owner !== null) {
                 $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
 
-                if ($version <= count($versions)) {
+                if ($version <= \count($versions)) {
                     $fileVersion = array_values($versions)[$version - 1];
                     $file = $this->versionManager->getVersionFile($owner, $file->getFileInfo(), $fileVersion->getRevisionId());
                 }
@@ -757,8 +757,8 @@ class CallbackController extends Controller {
         $instanceId = $this->config->GetSystemValue("instanceid", true);
         $instanceId = $instanceId . "_";
 
-        if (substr($userId, 0, strlen($instanceId)) === $instanceId) {
-            return substr($userId, strlen($instanceId));
+        if (substr($userId, 0, \strlen($instanceId)) === $instanceId) {
+            return substr($userId, \strlen($instanceId));
         }
 
         return $userId;

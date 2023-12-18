@@ -67,11 +67,11 @@ class DocumentService {
      * @return string
      */
     public static function GenerateRevisionId($expected_key) {
-        if (strlen($expected_key) > 20) {
+        if (\strlen($expected_key) > 20) {
             $expected_key = crc32($expected_key);
         }
         $key = preg_replace("[^0-9-.a-zA-Z_=]", "_", $expected_key);
-        $key = substr($key, 0, min(array(strlen($key), 20)));
+        $key = substr($key, 0, min(array(\strlen($key), 20)));
         return $key;
     }
 
@@ -171,7 +171,7 @@ class DocumentService {
         $response_xml_data = $this->Request($urlToConverter, "post", $opts);
 
         libxml_use_internal_errors(true);
-        if (!function_exists("simplexml_load_file")) {
+        if (!\function_exists("simplexml_load_file")) {
             throw new \Exception($this->trans->t("Server can't read xml"));
         }
         $response_data = simplexml_load_string($response_xml_data);
@@ -349,10 +349,10 @@ class DocumentService {
         if (null === $opts) {
             $opts = array();
         }
-        if (substr($url, 0, strlen("https")) === "https" && $this->config->GetVerifyPeerOff()) {
+        if (substr($url, 0, \strlen("https")) === "https" && $this->config->GetVerifyPeerOff()) {
             $opts["verify"] = false;
         }
-        if (!array_key_exists("timeout", $opts)) {
+        if (!\array_key_exists("timeout", $opts)) {
             $opts["timeout"] = 60;
         }
 
@@ -407,7 +407,7 @@ class DocumentService {
             }
 
             $version = $commandResponse->version;
-            $versionF = floatval($version);
+            $versionF = \floatval($version);
             if ($versionF > 0.0 && $versionF <= 6.0) {
                 throw new \Exception($this->trans->t("Not supported version"));
             }

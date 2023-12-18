@@ -119,7 +119,7 @@ script("onlyoffice", "template");
 
         <p>
             <input type="checkbox" class="checkbox" id="onlyofficeGroups"
-                <?php if (count($_["limitGroups"]) > 0) { ?>checked="checked"<?php } ?> />
+                <?php if (\count($_["limitGroups"]) > 0) { ?>checked="checked"<?php } ?> />
             <label for="onlyofficeGroups"><?php p($l->t("Restrict access to editors to following groups")) ?></label>
             <br />
             <input type="hidden" id="onlyofficeLimitGroups" value="<?php p(implode("|", $_["limitGroups"])) ?>"
@@ -148,12 +148,12 @@ script("onlyoffice", "template");
         <p class="onlyoffice-header"><?php p($l->t("The default application for opening the format")) ?></p>
         <div class="onlyoffice-exts">
             <?php foreach ($_["formats"] as $format => $setting) { ?>
-                <?php if (array_key_exists("mime", $setting)) { ?>
+                <?php if (\array_key_exists("mime", $setting)) { ?>
                 <div>
                     <input type="checkbox" class="checkbox"
                         id="onlyofficeDefFormat<?php p($format) ?>"
                         name="<?php p($format) ?>"
-                        <?php if (array_key_exists("def", $setting) && $setting["def"]) { ?>checked="checked"<?php } ?> />
+                        <?php if (\array_key_exists("def", $setting) && $setting["def"]) { ?>checked="checked"<?php } ?> />
                     <label for="onlyofficeDefFormat<?php p($format) ?>"><?php p($format) ?></label>
                 </div>
                 <?php } ?>
@@ -166,12 +166,12 @@ script("onlyoffice", "template");
         </p>
         <div class="onlyoffice-exts">
             <?php foreach ($_["formats"] as $format => $setting) { ?>
-                <?php if (array_key_exists("editable", $setting)) { ?>
+                <?php if (\array_key_exists("editable", $setting)) { ?>
                 <div>
                     <input type="checkbox" class="checkbox"
                         id="onlyofficeEditFormat<?php p($format) ?>"
                         name="<?php p($format) ?>"
-                        <?php if (array_key_exists("edit", $setting) && $setting["edit"]) { ?>checked="checked"<?php } ?> />
+                        <?php if (\array_key_exists("edit", $setting) && $setting["edit"]) { ?>checked="checked"<?php } ?> />
                     <label for="onlyofficeEditFormat<?php p($format) ?>"><?php p($format) ?></label>
                 </div>
                 <?php } ?>

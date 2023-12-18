@@ -236,7 +236,7 @@ class Preview implements IProvider2 {
             || $fileInfo->getSize() > $this->config->GetLimitThumbSize()) {
             return false;
         }
-        if (!in_array($fileInfo->getMimetype(), self::$capabilities, true)) {
+        if (!\in_array($fileInfo->getMimetype(), self::$capabilities, true)) {
             return false;
         }
         return true;

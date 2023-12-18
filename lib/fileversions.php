@@ -75,7 +75,7 @@ class FileVersions {
             return false;
         }
         $filePath = substr($pathVersion, 0, $pos);
-        $versionId = substr($pathVersion, 2 + $pos - strlen($pathVersion));
+        $versionId = substr($pathVersion, 2 + $pos - \strlen($pathVersion));
         return [$filePath, $versionId];
     }
 

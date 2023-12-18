@@ -266,7 +266,7 @@ class EditorApiController extends OCSController {
 
         $fileName = $file->getName();
         $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-        $format = !empty($ext) && array_key_exists($ext, $this->config->FormatsSetting()) ? $this->config->FormatsSetting()[$ext] : null;
+        $format = !empty($ext) && \array_key_exists($ext, $this->config->FormatsSetting()) ? $this->config->FormatsSetting()[$ext] : null;
         if (!isset($format)) {
             $this->logger->info("Format is not supported for editing: $fileName", ["app" => $this->appName]);
             return new JSONResponse(["error" => $this->trans->t("Format is not supported")]);
@@ -281,7 +281,7 @@ class EditorApiController extends OCSController {
             if ($owner !== null) {
                 $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
 
-                if ($version <= count($versions)) {
+                if ($version <= \count($versions)) {
                     $fileVersion = array_values($versions)[$version - 1];
 
                     $key = $this->fileUtility->getVersionKey($fileVersion);
@@ -361,7 +361,7 @@ class EditorApiController extends OCSController {
             && (\OC::$server->getConfig()->getAppValue("files", "enable_lock_file_action", "no") === "yes")
             && $fileStorage->instanceOfStorage(IPersistentLockingStorage::class)) {
             $locks = $fileStorage->getLocks($file->getFileInfo()->getInternalPath(), false);
-            if (count($locks) > 0) {
+            if (\count($locks) > 0) {
                 $activeLock = $locks[0];
 
                 if ($accountId !== $activeLock->getOwnerAccountId()) {
@@ -582,7 +582,7 @@ class EditorApiController extends OCSController {
 
         $file = $files[0];
 
-        if (count($files) > 1 && !empty($filePath)) {
+        if (\count($files) > 1 && !empty($filePath)) {
             $filePath = "/" . $userId . "/files" . $filePath;
             foreach ($files as $curFile) {
                 if ($curFile->getPath() === $filePath) {
@@ -763,7 +763,7 @@ class EditorApiController extends OCSController {
     private function isFavorite($fileId) {
         $currentTags = $this->tagManager->load("files")->getTagsForObjects([$fileId]);
         if ($currentTags) {
-            return in_array(Tags::TAG_FAVORITE, $currentTags[$fileId]);
+            return \in_array(Tags::TAG_FAVORITE, $currentTags[$fileId]);
         }
 
         return false;

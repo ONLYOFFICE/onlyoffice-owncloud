@@ -377,7 +377,7 @@ class EditorController extends Controller {
                 foreach ($currentUserGroups as $currentUserGroup) {
                     $group = $this->groupManager->get($currentUserGroup);
                     foreach ($group->getUsers() as $user) {
-                        if (!in_array($user, $users)) {
+                        if (!\in_array($user, $users)) {
                             array_push($users, $user);
                         }
                     }
@@ -391,7 +391,7 @@ class EditorController extends Controller {
         if (!$all) {
             $accessList = $this->getAccessList($file);
             foreach ($accessList as $accessUser) {
-                if (!in_array($accessUser, $users)) {
+                if (!\in_array($accessUser, $users)) {
                     array_push($users, $accessUser);
                 }
             }
@@ -439,7 +439,7 @@ class EditorController extends Controller {
             $recipients = $this->userManager->getByEmail($email);
             foreach ($recipients as $recipient) {
                 $recipientId = $recipient->getUID();
-                if (!in_array($recipientId, $recipientIds)) {
+                if (!\in_array($recipientId, $recipientIds)) {
                     array_push($recipientIds, $recipientId);
                 }
             }
@@ -465,9 +465,9 @@ class EditorController extends Controller {
         //Length from ownCloud:
         //https://github.com/owncloud/core/blob/master/lib/private/Notification/Notification.php#L181
         $maxLen = 64;
-        if (strlen($comment) > $maxLen) {
+        if (\strlen($comment) > $maxLen) {
             $ending = "...";
-            $comment = substr($comment, 0, ($maxLen - strlen($ending))) . $ending;
+            $comment = substr($comment, 0, ($maxLen - \strlen($ending))) . $ending;
         }
 
         $notificationManager = \OC::$server->getNotificationManager();
@@ -494,7 +494,7 @@ class EditorController extends Controller {
 
         foreach ($recipientIds as $recipientId) {
             $recipient = $this->userManager->get($recipientId);
-            $isAvailable = in_array($recipient, $accessList);
+            $isAvailable = \in_array($recipient, $accessList);
 
             if (!$isAvailable
             && $file->getFileInfo()->getMountPoint() instanceof \OCA\Files_External\Config\ExternalMountPoint) {
@@ -692,7 +692,7 @@ class EditorController extends Controller {
             return ["error" => $this->trans->t("Failed to download converted file")];
         }
 
-        $fileNameWithoutExt = substr($fileName, 0, strlen($fileName) - strlen($ext) - 1);
+        $fileNameWithoutExt = substr($fileName, 0, \strlen($fileName) - \strlen($ext) - 1);
         $newFileName = $folder->getNonExistingName($fileNameWithoutExt . "." . $internalExtension);
 
         try {
@@ -944,7 +944,7 @@ class EditorController extends Controller {
         $key = null;
         $fileUrl = null;
         $versionId = null;
-        if ($version > count($versions)) {
+        if ($version > \count($versions)) {
             $key = $this->fileUtility->getKey($file, true);
             $versionId = $file->getFileInfo()->getMtime();
 
@@ -969,7 +969,7 @@ class EditorController extends Controller {
         ];
 
         if ($version > 1
-            && count($versions) >= $version - 1
+            && \count($versions) >= $version - 1
             && FileVersions::hasChanges($ownerId, $fileId, $versionId)) {
             $changesUrl = $this->getUrl($file, $user, null, $version, true);
             $result["changesUrl"] = $changesUrl;
@@ -1040,7 +1040,7 @@ class EditorController extends Controller {
                 $versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
             }
 
-            if (count($versions) >= $version) {
+            if (\count($versions) >= $version) {
                 $fileVersion = array_values($versions)[$version - 1];
                 $this->versionManager->rollback($fileVersion);
             }
@@ -1173,7 +1173,7 @@ class EditorController extends Controller {
             return $this->renderError($this->trans->t("Failed to download converted file"));
         }
 
-        $fileNameWithoutExt = substr($fileName, 0, strlen($fileName) - strlen($ext) - 1);
+        $fileNameWithoutExt = substr($fileName, 0, \strlen($fileName) - \strlen($ext) - 1);
         $newFileName = $fileNameWithoutExt . "." . $toExtension;
 
         $formats = $this->config->FormatsSetting();
@@ -1306,7 +1306,7 @@ class EditorController extends Controller {
 
         $file = $files[0];
 
-        if (count($files) > 1 && !empty($filePath)) {
+        if (\count($files) > 1 && !empty($filePath)) {
             $filePath = "/" . $userId . "/files" . $filePath;
             foreach ($files as $curFile) {
                 if ($curFile->getPath() === $filePath) {
@@ -1404,13 +1404,13 @@ class EditorController extends Controller {
             }
 
             foreach ($accessList as $accessUser) {
-                if (!in_array($accessUser, $result)) {
+                if (!\in_array($accessUser, $result)) {
                     array_push($result, $accessUser);
                 }
             }
         }
 
-        if (!in_array($file->getOwner(), $result)) {
+        if (!\in_array($file->getOwner(), $result)) {
             array_push($result, $file->getOwner());
         }
 

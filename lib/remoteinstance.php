@@ -117,7 +117,7 @@ class RemoteInstance {
         $logger = \OC::$server->getLogger();
         $remote = rtrim($remote, "/") . "/";
 
-        if (in_array($remote, self::$healthRemote)) {
+        if (\in_array($remote, self::$healthRemote)) {
             $logger->debug("Remote instance " . $remote . " from local cache status " . $dbremote["status"], ["app" => self::App_Name]);
             return true;
         }

@@ -25,7 +25,6 @@ namespace OCA\Onlyoffice;
  * @package OCA\Onlyoffice
  */
 class KeyManager {
-
     /**
      * Table name
      */

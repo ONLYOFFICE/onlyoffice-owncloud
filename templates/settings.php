@@ -17,10 +17,10 @@
  *
  */
 
-    style("onlyoffice", "settings");
-    style("onlyoffice", "template");
-    script("onlyoffice", "settings");
-    script("onlyoffice", "template");
+style("onlyoffice", "settings");
+style("onlyoffice", "template");
+script("onlyoffice", "settings");
+script("onlyoffice", "template");
 ?>
 <div class="section section-onlyoffice">
     <h2 id="onlyoffice">

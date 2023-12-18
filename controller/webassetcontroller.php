@@ -33,7 +33,6 @@ use OCP\IRequest;
  * @package OCA\Onlyoffice\Controller
  */
 class WebAssetController extends Controller {
-
     /**
      * @var ILogger
      */

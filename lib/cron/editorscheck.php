@@ -37,7 +37,6 @@ use OCA\Onlyoffice\DocumentService;
  *
  */
 class EditorsCheck extends TimedJob {
-
     /**
      * Application name
      *
@@ -134,7 +133,7 @@ class EditorsCheck extends TimedJob {
         $host = parse_url($fileUrl)["host"];
         if ($host === "localhost" || $host === "127.0.0.1") {
             $this->logger->debug("Localhost is not alowed for cron editors availability check. Please provide server address for internal requests from ONLYOFFICE Docs", ["app" => $this->appName]);
-            return; 
+            return;
         }
 
         $this->logger->debug("ONLYOFFICE check started by cron", ["app" => $this->appName]);
@@ -188,5 +187,4 @@ class EditorsCheck extends TimedJob {
             $notificationManager->notify($notification);
         }
     }
-
 }

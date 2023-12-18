@@ -27,7 +27,6 @@ use OCA\Onlyoffice\AppConfig;
  * @package OCA\Onlyoffice
  */
 class Crypt {
-
     /**
      * Application configuration
      *

@@ -39,7 +39,6 @@ use OCA\Onlyoffice\AppConfig;
  * @package OCA\Onlyoffice\Controller
  */
 class JobListController extends Controller {
-
     /**
      * Logger
      * 

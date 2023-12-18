@@ -30,7 +30,6 @@ use OCA\Onlyoffice\AppConfig;
  * Settings controller for the administration page
  */
 class SettingsApiController extends OCSController {
-
     /**
      * Url generator service
      *

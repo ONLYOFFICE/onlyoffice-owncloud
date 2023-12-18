@@ -45,7 +45,6 @@ use OCA\Onlyoffice\VersionManager;
  * @package OCA\Onlyoffice
  */
 class Preview implements IProvider2 {
-
     /**
      * Application name
      *
@@ -302,7 +301,6 @@ class Preview implements IProvider2 {
      * @return string
      */
     private function getUrl($file, $user = null, $version = 0) {
-
         $data = [
             "action" => "download",
             "fileId" => $file->getId()

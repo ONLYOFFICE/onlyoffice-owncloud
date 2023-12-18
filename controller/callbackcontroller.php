@@ -52,7 +52,6 @@ use OCA\Onlyoffice\TemplateManager;
  * Save the file without authentication.
  */
 class CallbackController extends Controller {
-
     /**
      * Root folder
      *
@@ -177,7 +176,6 @@ class CallbackController extends Controller {
      * @CORS
      */
     public function download($doc) {
-
         list ($hashData, $error) = $this->crypt->ReadHash($doc);
         if ($hashData === null) {
             $this->logger->error("Download with empty or not correct hash: $error", ["app" => $this->appName]);
@@ -390,7 +388,6 @@ class CallbackController extends Controller {
      * @CORS
      */
     public function track($doc, $users, $key, $status, $url, $token, $history, $changesurl, $forcesavetype, $actions, $filetype) {
-
         list ($hashData, $error) = $this->crypt->ReadHash($doc);
         if ($hashData === null) {
             $this->logger->error("Track with empty or not correct hash: $error", ["app" => $this->appName]);

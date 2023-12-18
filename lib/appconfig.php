@@ -31,7 +31,6 @@ use OCP\ILogger;
  * @package OCA\Onlyoffice
  */
 class AppConfig {
-
     /**
      * Application name
      *
@@ -309,7 +308,6 @@ class AppConfig {
      * @param string $AppName - application name
      */
     public function __construct($AppName) {
-
         $this->appName = $AppName;
 
         $this->config = \OC::$server->getConfig();
@@ -501,8 +499,7 @@ class AppConfig {
                 $from = $parsedUrl["scheme"] . "://" . $parsedUrl["host"] . (array_key_exists("port", $parsedUrl) ? (":" . $parsedUrl["port"]) : "") . $from;
             }
 
-            if ($from !== $documentServerUrl)
-            {
+            if ($from !== $documentServerUrl) {
                 $this->logger->debug("Replace url from $from to $documentServerUrl", ["app" => $this->appName]);
                 $url = str_replace($from, $documentServerUrl, $url);
             }

@@ -49,7 +49,6 @@ use OCA\Onlyoffice\TemplateManager;
  * Controller with the main functions
  */
 class EditorApiController extends OCSController {
-
     /**
      * Current user session
      *
@@ -241,7 +240,6 @@ class EditorApiController extends OCSController {
      * @CORS
      */
     public function config($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $desktop = false, $template = false, $anchor = null) {
-
         $user = $this->userSession->getUser();
         $userId = null;
         $accountId = null;
@@ -316,8 +314,7 @@ class EditorApiController extends OCSController {
         $fileStorage = $file->getStorage();
         if (empty($shareToken) && $fileStorage->instanceOfStorage("\OCA\Files_Sharing\SharedStorage")) {
             $storageShare = $fileStorage->getShare();
-            if (method_exists($storageShare, "getAttributes"))
-            {
+            if (method_exists($storageShare, "getAttributes")) {
                 $attributes = $storageShare->getAttributes();
 
                 $permissionsDownload = $attributes->getAttribute("permissions", "download");
@@ -362,7 +359,6 @@ class EditorApiController extends OCSController {
         if ($version < 1
             && (\OC::$server->getConfig()->getAppValue("files", "enable_lock_file_action", "no") === "yes")
             && $fileStorage->instanceOfStorage(IPersistentLockingStorage::class)) {
-
             $locks = $fileStorage->getLocks($file->getFileInfo()->getInternalPath(), false);
             if (count($locks) > 0) {
                 $activeLock = $locks[0];
@@ -421,7 +417,6 @@ class EditorApiController extends OCSController {
             && $file->isUpdateable()
             && !$isPersistentLock
             && (empty($shareToken) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE)) {
-
             $params["document"]["permissions"]["changeHistory"] = true;
         }
 
@@ -490,7 +485,7 @@ class EditorApiController extends OCSController {
             $templatesList = TemplateManager::GetGlobalTemplates($file->getMimeType());
             if (!empty($templatesList)) {
                 $templates = [];
-                foreach($templatesList as $templateItem) {
+                foreach ($templatesList as $templateItem) {
                     $createParam["templateId"] = $templateItem->getId();
                     $createParam["name"] = $templateItem->getName();
 
@@ -616,7 +611,6 @@ class EditorApiController extends OCSController {
      * @return string
      */
     private function getUrl($file, $user = null, $shareToken = null, $version = 0, $changes = false, $template = false) {
-
         $data = [
             "action" => "download",
             "fileId" => $file->getId()
@@ -714,12 +708,12 @@ class EditorApiController extends OCSController {
         }
 
         //default is true
-        if($this->config->GetCustomizationMacros() === false) {
+        if ($this->config->GetCustomizationMacros() === false) {
             $params["editorConfig"]["customization"]["macros"] = false;
         }
 
         //default is true
-        if($this->config->GetCustomizationPlugins() === false) {
+        if ($this->config->GetCustomizationPlugins() === false) {
             $params["editorConfig"]["customization"]["plugins"] = false;
         }
 

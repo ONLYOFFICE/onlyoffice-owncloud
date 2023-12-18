@@ -28,7 +28,6 @@ use OCP\Files\NotFoundException;
  * @package OCA\Onlyoffice
  */
 class TemplateManager {
-
     /**
      * Application name
      *

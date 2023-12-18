@@ -30,7 +30,6 @@ use OCA\Onlyoffice\TemplateManager;
  * Template controller for template manage
  */
 class TemplateController extends Controller {
-
     /**
      * l10n service
      *
@@ -90,7 +89,6 @@ class TemplateController extends Controller {
      * @return array
      */
     public function AddTemplate() {
-
         $file = $this->request->getUploadedFile("file");
 
         if (!is_null($file)) {

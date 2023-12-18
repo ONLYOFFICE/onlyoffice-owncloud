@@ -38,7 +38,6 @@ use OCA\Onlyoffice\RemoteInstance;
  * @package OCA\Onlyoffice
  */
 class FileUtility {
-
     /**
      * Application name
      *
@@ -222,7 +221,6 @@ class FileUtility {
 
         if ($origin
             && RemoteInstance::isRemoteFile($file)) {
-
             $key = RemoteInstance::getRemoteKey($file);
             if (!empty($key)) {
                 return $key;
@@ -272,10 +270,8 @@ class FileUtility {
      *
      * @return string
      */
-    private function GUID()
-    {
-        if (function_exists("com_create_guid") === true)
-        {
+    private function GUID() {
+        if (function_exists("com_create_guid") === true) {
             return trim(com_create_guid(), "{}");
         }
 

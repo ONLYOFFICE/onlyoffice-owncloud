@@ -34,7 +34,6 @@ use OCA\Files_Sharing\External\Storage as SharingExternalStorage;
  * @package OCA\Onlyoffice
  */
 class FileVersions {
-
     /**
      * Application name
      *

@@ -55,7 +55,6 @@ use OCA\Onlyoffice\TemplateManager;
  * Controller with the main functions
  */
 class EditorController extends Controller {
-
     /**
      * Current user session
      *
@@ -498,7 +497,6 @@ class EditorController extends Controller {
 
             if (!$isAvailable
             && $file->getFileInfo()->getMountPoint() instanceof \OCA\Files_External\Config\ExternalMountPoint) {
-
                 $recipientFolder = $this->root->getUserFolder($recipientId);
                 $recipientFile = $recipientFolder->getById($file->getId());
 
@@ -972,7 +970,6 @@ class EditorController extends Controller {
         if ($version > 1
             && count($versions) >= $version - 1
             && FileVersions::hasChanges($ownerId, $fileId, $versionId)) {
-
             $changesUrl = $this->getUrl($file, $user, null, $version, true);
             $result["changesUrl"] = $changesUrl;
 
@@ -1338,7 +1335,6 @@ class EditorController extends Controller {
      * @return string
      */
     private function getUrl($file, $user = null, $shareToken = null, $version = 0, $changes = false, $template = false) {
-
         $data = [
             "action" => "download",
             "fileId" => $file->getId()

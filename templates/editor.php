@@ -17,9 +17,9 @@
  *
  */
 
-    style("onlyoffice", "editor");
-    script("onlyoffice", "desktop");
-    script("onlyoffice", "editor");
+style("onlyoffice", "editor");
+script("onlyoffice", "desktop");
+script("onlyoffice", "editor");
 ?>
 
 <div id="app">

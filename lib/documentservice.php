@@ -29,7 +29,6 @@ use OCA\Onlyoffice\AppConfig;
  * @package OCA\Onlyoffice
  */
 class DocumentService {
-
     /**
      * Application name
      *
@@ -173,12 +172,12 @@ class DocumentService {
 
         libxml_use_internal_errors(true);
         if (!function_exists("simplexml_load_file")) {
-             throw new \Exception($this->trans->t("Server can't read xml"));
+            throw new \Exception($this->trans->t("Server can't read xml"));
         }
         $response_data = simplexml_load_string($response_xml_data);
         if (!$response_data) {
             $exc = $this->trans->t("Bad Response. Errors: ");
-            foreach(libxml_get_errors() as $error) {
+            foreach (libxml_get_errors() as $error) {
                 $exc = $exc . "\t" . $error->message;
             }
             throw new \Exception ($exc);
@@ -242,7 +241,6 @@ class DocumentService {
      * @return bool
      */
     function HealthcheckRequest() {
-
         $documentServerUrl = $this->config->GetDocumentServerInternalUrl();
 
         if (empty($documentServerUrl)) {
@@ -264,7 +262,6 @@ class DocumentService {
      * @return array
      */
     function CommandRequest($method) {
-
         $documentServerUrl = $this->config->GetDocumentServerInternalUrl();
 
         if (empty($documentServerUrl)) {
@@ -381,31 +378,26 @@ class DocumentService {
         $version = null;
 
         try {
-
             if (preg_match("/^https:\/\//i", $urlGenerator->getAbsoluteURL("/"))
                 && preg_match("/^http:\/\//i", $this->config->GetDocumentServerUrl())) {
                 throw new \Exception($this->trans->t("Mixed Active Content is not allowed. HTTPS address for ONLYOFFICE Docs is required."));
             }
-
         } catch (\Exception $e) {
             $logger->logException($e, ["message" => "Protocol on check error", "app" => self::$appName]);
             return [$e->getMessage(), $version];
         }
 
         try {
-
             $healthcheckResponse = $this->HealthcheckRequest();
             if (!$healthcheckResponse) {
                 throw new \Exception($this->trans->t("Bad healthcheck status"));
             }
-
         } catch (\Exception $e) {
             $logger->logException($e, ["message" => "HealthcheckRequest on check error", "app" => self::$appName]);
             return [$e->getMessage(), $version];
         }
 
         try {
-
             $commandResponse = $this->CommandRequest("version");
 
             $logger->debug("CommandRequest on check: " . json_encode($commandResponse), ["app" => self::$appName]);
@@ -419,7 +411,6 @@ class DocumentService {
             if ($versionF > 0.0 && $versionF <= 6.0) {
                 throw new \Exception($this->trans->t("Not supported version"));
             }
-
         } catch (\Exception $e) {
             $logger->logException($e, ["message" => "CommandRequest on check error", "app" => self::$appName]);
             return [$e->getMessage(), $version];
@@ -427,7 +418,6 @@ class DocumentService {
 
         $convertedFileUri = null;
         try {
-
             $hashUrl = $crypt->GetHash(["action" => "empty"]);
             $fileUrl = $urlGenerator->linkToRouteAbsolute(self::$appName . ".callback.emptyfile", ["doc" => $hashUrl]);
             if (!$this->config->UseDemo() && !empty($this->config->GetStorageUrl())) {
@@ -435,7 +425,6 @@ class DocumentService {
             }
 
             $convertedFileUri = $this->GetConvertedUri($fileUrl, "docx", "docx", "check_" . rand());
-
         } catch (\Exception $e) {
             $logger->logException($e, ["message" => "GetConvertedUri on check error", "app" => self::$appName]);
             return [$e->getMessage(), $version];

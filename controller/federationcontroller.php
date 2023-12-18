@@ -38,7 +38,6 @@ use OCA\Onlyoffice\RemoteInstance;
  * OCS handler
  */
 class FederationController extends OCSController {
-
     /**
      * Logger
      *

@@ -32,7 +32,6 @@ use OCA\Onlyoffice\DocumentService;
 use OCA\Onlyoffice\Crypt;
 
 class DocumentServer extends Command {
-
     /**
      * Application configuration
      *
@@ -86,9 +85,9 @@ class DocumentServer extends Command {
             ->setName("onlyoffice:documentserver")
             ->setDescription("Manage document server")
             ->addOption("check",
-                         null,
-                         InputOption::VALUE_NONE,
-                         "Check connection document server");
+                null,
+                InputOption::VALUE_NONE,
+                "Check connection document server");
     }
 
     /**
@@ -103,18 +102,18 @@ class DocumentServer extends Command {
         $check = $input->getOption("check");
 
         $documentserver = $this->config->GetDocumentServerUrl(true);
-        if(empty($documentserver)) {
+        if (empty($documentserver)) {
             $output->writeln("<info>Document server is not configured</info>");
             return 1;
         }
 
-        if($check) {
+        if ($check) {
             $documentService = new DocumentService($this->trans, $this->config);
 
             list ($error, $version) = $documentService->checkDocServiceUrl($this->urlGenerator, $this->crypt);
             $this->config->SetSettingsError($error);
 
-            if(!empty($error)) {
+            if (!empty($error)) {
                 $output->writeln("<error>Error connection: $error</error>");
                 return 1;
             } else {

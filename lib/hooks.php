@@ -32,7 +32,6 @@ use OCA\Onlyoffice\KeyManager;
  * @package OCA\Onlyoffice
  */
 class Hooks {
-
     /**
      * Application name
      *

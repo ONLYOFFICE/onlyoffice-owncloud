@@ -42,7 +42,6 @@ use OCA\Onlyoffice\Notifier;
 use OCA\Onlyoffice\Preview;
 
 class Application extends App {
-
     /**
      * Application configuration
      *

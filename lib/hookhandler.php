@@ -31,7 +31,6 @@ use OCA\Onlyoffice\AppConfig;
  * @package OCA\Onlyoffice
  */
 class HookHandler {
-
     public static function PublicPage() {
         $appName = "onlyoffice";
 

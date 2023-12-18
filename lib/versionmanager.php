@@ -36,7 +36,6 @@ use OCA\Onlyoffice\Version;
  * @package OCA\Onlyoffice
  */
 class VersionManager {
-
     /**
      * Application name
      *
@@ -131,7 +130,7 @@ class VersionManager {
 
         $fileId = $file->getId();
 
-        try{
+        try {
             $userFolder = $this->rootFolder->getUserFolder($user->getUID());
             $nodes = $userFolder->getById($fileId);
             $sourceFile = $nodes[0];
@@ -150,11 +149,11 @@ class VersionManager {
         $sourceFilePath = $userFolder->getRelativePath($sourceFile->getPath());
         $propsVersions = $this->storage->getVersions($ownerId, $sourceFilePath);
 
-        foreach($propsVersions as $propVersion) {
+        foreach ($propsVersions as $propVersion) {
             $version = new Version($propVersion["timestamp"],
-                                    $propVersion["version"],
-                                    $propVersion["path"],
-                                    $file);
+                $propVersion["version"],
+                $propVersion["path"],
+                $file);
 
             array_push($versions, $version);
         }
@@ -169,21 +168,21 @@ class VersionManager {
      *
      */
     public function rollback($version) {
-       $sourceFile = $version->getSourceFile();
+        $sourceFile = $version->getSourceFile();
 
-       $ownerId = null;
-       $owner = $sourceFile->getOwner();
-       if (!empty($owner)) {
-           $ownerId = $owner->getUID();
-       }
+        $ownerId = null;
+        $owner = $sourceFile->getOwner();
+        if (!empty($owner)) {
+            $ownerId = $owner->getUID();
+        }
 
-       $path = $version->getPath();
-       $revision = $version->getTimestamp();
+        $path = $version->getPath();
+        $revision = $version->getTimestamp();
 
-       $versionFile = $this->getVersionFile($owner, $sourceFile, $revision);
-       $versionFileInfo = $versionFile->getFileInfo();
-       $versionPath = $versionFileInfo->getInternalPath();
+        $versionFile = $this->getVersionFile($owner, $sourceFile, $revision);
+        $versionFileInfo = $versionFile->getFileInfo();
+        $versionPath = $versionFileInfo->getInternalPath();
 
-       $this->storage->restoreVersion($ownerId, $path, $versionPath, $revision);
+        $this->storage->restoreVersion($ownerId, $path, $versionPath, $revision);
     }
 }

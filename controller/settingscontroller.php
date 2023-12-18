@@ -36,7 +36,6 @@ use OCA\Onlyoffice\TemplateManager;
  * Settings controller for the administration page
  */
 class SettingsController extends Controller {
-
     /**
      * l10n service
      *
@@ -232,7 +231,6 @@ class SettingsController extends Controller {
                                     $reviewDisplay,
                                     $theme
                                     ) {
-
         $this->config->SetDefaultFormats($defFormats);
         $this->config->SetEditableFormats($editFormats);
         $this->config->SetSameTab($sameTab);
@@ -265,7 +263,6 @@ class SettingsController extends Controller {
                                 $macros,
                                 $protection
                                 ) {
-
         $this->config->SetCustomizationPlugins($plugins);
         $this->config->SetCustomizationMacros($macros);
         $this->config->SetProtection($protection);
@@ -280,7 +277,6 @@ class SettingsController extends Controller {
      * @return array
      */
     public function ClearHistory() {
-
         FileVersions::clearHistory();
 
         return [

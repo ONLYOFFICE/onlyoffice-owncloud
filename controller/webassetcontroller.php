@@ -63,14 +63,16 @@ class WebAssetController extends Controller {
 		$basePath = \dirname(__DIR__, 1);
 		$filePath = \realpath($basePath . '/js/web/onlyoffice.js');
 		try {
-			return new DataDisplayResponse(\file_get_contents($filePath), Http::STATUS_OK, [
+			return new DataDisplayResponse(
+				\file_get_contents($filePath), Http::STATUS_OK, [
 				'Content-Type' => "text/javascript",
 				'Content-Length' => \filesize($filePath),
 				'Cache-Control' => 'max-age=0, no-cache, no-store, must-revalidate',
 				'Pragma' => 'no-cache',
 				'Expires' => 'Tue, 24 Sep 1985 22:15:00 GMT',
 				'X-Frame-Options' => 'DENY'
-			]);
+				]
+			);
 		} catch(\Exception $e) {
 			$this->logger->logException($e, ['app' => $this->appName]);
 			return new DataResponse(["message" => $e->getMessage()], Http::STATUS_NOT_FOUND);

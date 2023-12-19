@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
- * 
+ *
  * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -74,7 +74,8 @@ class TemplateManager {
 
 		$templatesList = $templateDir->getDirectoryListing();
 		if (!empty($mimetype)
-			&& \is_array($templatesList) && \count($templatesList) > 0) {
+			&& \is_array($templatesList) && \count($templatesList) > 0
+		) {
 			$templatesList = $templateDir->searchByMime($mimetype);
 		}
 

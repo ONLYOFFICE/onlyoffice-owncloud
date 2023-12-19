@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
- * 
+ *
  * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -176,6 +176,7 @@ class EditorsCheck extends TimedJob {
 
 	/**
 	 * Send notification to admins
+	 *
 	 * @return void
 	 */
 	private function notifyAdmins() {

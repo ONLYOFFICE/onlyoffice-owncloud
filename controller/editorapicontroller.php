@@ -110,14 +110,14 @@ class EditorApiController extends OCSController {
 	 * File version manager
 	 *
 	 * @var VersionManager
-	*/
+	 */
 	private $versionManager;
 
 	/**
 	 * Tag manager
 	 *
 	 * @var ITagManager
-	*/
+	 */
 	private $tagManager;
 
 	/**
@@ -220,8 +220,7 @@ class EditorApiController extends OCSController {
 			return new JSONResponse(["error" => $this->trans->t("Can't create file")]);
 		}
 
-		return new JSONResponse([
-			]);
+		return new JSONResponse([]);
 	}
 
 	/**
@@ -277,7 +276,8 @@ class EditorApiController extends OCSController {
 
 		$key = null;
 		if ($version > 0
-			&& $this->versionManager->available) {
+			&& $this->versionManager->available
+		) {
 			$owner = $file->getFileInfo()->getOwner();
 			if ($owner !== null) {
 				$versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
@@ -360,7 +360,8 @@ class EditorApiController extends OCSController {
 		$isPersistentLock = false;
 		if ($version < 1
 			&& (\OC::$server->getConfig()->getAppValue("files", "enable_lock_file_action", "no") === "yes")
-			&& $fileStorage->instanceOfStorage(IPersistentLockingStorage::class)) {
+			&& $fileStorage->instanceOfStorage(IPersistentLockingStorage::class)
+		) {
 			$locks = $fileStorage->getLocks($file->getFileInfo()->getInternalPath(), false);
 			if (\count($locks) > 0) {
 				$activeLock = $locks[0];
@@ -418,7 +419,8 @@ class EditorApiController extends OCSController {
 		if (!$template
 			&& $file->isUpdateable()
 			&& !$isPersistentLock
-			&& (empty($shareToken) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE)) {
+			&& (empty($shareToken) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE)
+		) {
 			$params["document"]["permissions"]["changeHistory"] = true;
 		}
 
@@ -491,11 +493,13 @@ class EditorApiController extends OCSController {
 					$createParam["templateId"] = $templateItem->getId();
 					$createParam["name"] = $templateItem->getName();
 
-					array_push($templates, [
+					array_push(
+						$templates, [
 						"image" => "",
 						"title" => $templateItem->getName(),
 						"url" => urldecode($this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.create_new", $createParam))
-					]);
+						]
+					);
 				}
 
 				$params["editorConfig"]["templates"] = $templates;
@@ -508,7 +512,8 @@ class EditorApiController extends OCSController {
 		}
 
 		if ($folderLink !== null
-			&& $this->config->GetSystemValue($this->config->_customization_goback) !== false) {
+			&& $this->config->GetSystemValue($this->config->_customization_goback) !== false
+		) {
 			$params["editorConfig"]["customization"]["goback"] = [
 				"url"  => $folderLink
 			];

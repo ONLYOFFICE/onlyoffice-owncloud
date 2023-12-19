@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
- * 
+ *
  * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -204,7 +204,8 @@ class FileUtility {
 
 		if ($share->getPassword()
 			&& (!$this->session->exists("public_link_authenticated")
-				|| $this->session->get("public_link_authenticated") !== (string) $share->getId())) {
+			|| $this->session->get("public_link_authenticated") !== (string) $share->getId())
+		) {
 			return [null, $this->trans->t("You do not have enough permissions to view the file")];
 		}
 
@@ -223,7 +224,8 @@ class FileUtility {
 		$fileId = $file->getId();
 
 		if ($origin
-			&& RemoteInstance::isRemoteFile($file)) {
+			&& RemoteInstance::isRemoteFile($file)
+		) {
 			$key = RemoteInstance::getRemoteKey($file);
 			if (!empty($key)) {
 				return $key;

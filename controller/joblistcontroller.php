@@ -85,7 +85,7 @@ class JobListController extends Controller {
 	private function addJob($job) {
 		if (!$this->jobList->has($job, null)) {
 			$this->jobList->add($job);
-			$this->logger->debug("Job '".$job."' added to JobList.", ["app" => $this->appName]);
+			$this->logger->debug("Job '" . $job . "' added to JobList.", ["app" => $this->appName]);
 		}
 	}
 
@@ -97,7 +97,7 @@ class JobListController extends Controller {
 	private function removeJob($job) {
 		if ($this->jobList->has($job, null)) {
 			$this->jobList->remove($job);
-			$this->logger->debug("Job '".$job."' removed from JobList.", ["app" => $this->appName]);
+			$this->logger->debug("Job '" . $job . "' removed from JobList.", ["app" => $this->appName]);
 		}
 	}
 

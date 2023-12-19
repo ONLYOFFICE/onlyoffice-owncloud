@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
- * 
+ *
  * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -122,15 +122,18 @@ class Notifier implements INotifier {
 				$notification->setIcon($this->urlGenerator->getAbsoluteURL($this->urlGenerator->imagePath($this->appName, "app-dark.svg")));
 				$notification->setParsedSubject($trans->t("%1\$s mentioned in the %2\$s: \"%3\$s\".", [$notifierName, $fileName, $notification->getObjectId()]));
 
-				$editorLink = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.index", [
+				$editorLink = $this->urlGenerator->linkToRouteAbsolute(
+					$this->appName . ".editor.index",
+					[
 					"fileId" => $fileId,
 					"anchor" => $anchor
-				]);
+					]
+				);
 
 				$notification->setLink($editorLink);
 				break;
 			default:
-				$this->logger->info("Unsupported notification object: ".$notification->getObjectType(), ["app" => $this->appName]);
+				$this->logger->info("Unsupported notification object: " . $notification->getObjectType(), ["app" => $this->appName]);
 		}
 		return $notification;
 	}

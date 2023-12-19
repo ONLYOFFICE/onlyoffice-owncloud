@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
- * 
+ *
  * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -59,11 +59,13 @@ class RemoteInstance {
 	 */
 	private static function get($remote) {
 		$connection = \OC::$server->getDatabaseConnection();
-		$select = $connection->prepare("
+		$select = $connection->prepare(
+			"
             SELECT remote, expire, status
             FROM  `*PREFIX*" . self::TableName_Key . "`
             WHERE `remote` = ?
-        ");
+        "
+		);
 		$result = $select->execute([$remote]);
 
 		$dbremote = $result ? $select->fetch() : [];
@@ -81,11 +83,13 @@ class RemoteInstance {
 	 */
 	private static function set($remote, $status) {
 		$connection = \OC::$server->getDatabaseConnection();
-		$insert = $connection->prepare("
+		$insert = $connection->prepare(
+			"
             INSERT INTO `*PREFIX*" . self::TableName_Key . "`
                 (`remote`, `status`, `expire`)
             VALUES (?, ?, ?)
-        ");
+        "
+		);
 		return (bool)$insert->execute([$remote, $status === true ? 1 : 0, time()]);
 	}
 
@@ -99,11 +103,13 @@ class RemoteInstance {
 	 */
 	private static function update($remote, $status) {
 		$connection = \OC::$server->getDatabaseConnection();
-		$update = $connection->prepare("
+		$update = $connection->prepare(
+			"
             UPDATE `*PREFIX*" . self::TableName_Key . "`
             SET status = ?, expire = ?
             WHERE remote = ?
-        ");
+        "
+		);
 		return (bool)$update->execute([$status === true ? 1 : 0, time(), $remote]);
 	}
 
@@ -177,13 +183,16 @@ class RemoteInstance {
 		$client = $httpClientService->newClient();
 
 		try {
-			$response = $client->post($remote . "/ocs/v2.php/apps/" . self::App_Name . "/api/v1/key?format=json", [
+			$response = $client->post(
+				$remote . "/ocs/v2.php/apps/" . self::App_Name . "/api/v1/key?format=json",
+				[
 				"timeout" => 5,
 				"json" => [
 					"shareToken" => $shareToken,
 					"path" => $internalPath
 				]
-			]);
+				]
+			);
 
 			$body = \json_decode($response->getBody(), true);
 

@@ -123,7 +123,7 @@ class EditorController extends Controller {
 	 * File version manager
 	 *
 	 * @var VersionManager
-	*/
+	 */
 	private $versionManager;
 
 	/**
@@ -401,10 +401,12 @@ class EditorController extends Controller {
 		foreach ($users as $user) {
 			$email = $user->getEMailAddress();
 			if ($user->getUID() != $currentUserId && !empty($email)) {
-				array_push($result, [
+				array_push(
+					$result, [
 					"email" => $email,
 					"name" => $user->getDisplayName()
-				]);
+					]
+				);
 			}
 		}
 
@@ -476,12 +478,14 @@ class EditorController extends Controller {
 		$notification->setApp($this->appName)
 			->setDateTime(new \DateTime())
 			->setObject("mention", $comment)
-			->setSubject("mention_info", [
+			->setSubject(
+				"mention_info", [
 				"notifierId" => $userId,
 				"fileId" => $file->getId(),
 				"fileName" => $file->getName(),
 				"anchor" => $anchor
-			]);
+				]
+			);
 
 		$shareMemberGroups = $this->shareManager->shareWithGroupMembersOnly();
 		$canShare = ($file->getPermissions() & Constants::PERMISSION_SHARE) === Constants::PERMISSION_SHARE;
@@ -498,7 +502,8 @@ class EditorController extends Controller {
 			$isAvailable = \in_array($recipient, $accessList);
 
 			if (!$isAvailable
-			&& $file->getFileInfo()->getMountPoint() instanceof \OCA\Files_External\Config\ExternalMountPoint) {
+				&& $file->getFileInfo()->getMountPoint() instanceof \OCA\Files_External\Config\ExternalMountPoint
+			) {
 				$recipientFolder = $this->root->getUserFolder($recipientId);
 				$recipientFile = $recipientFolder->getById($file->getId());
 
@@ -565,17 +570,20 @@ class EditorController extends Controller {
 		$file = null;
 		$fileId = (integer)($referenceData["fileKey"] ?? 0);
 		if (!empty($fileId)
-			&& $referenceData["instanceId"] === $this->config->GetSystemValue("instanceid", true)) {
+			&& $referenceData["instanceId"] === $this->config->GetSystemValue("instanceid", true)
+		) {
 			list($file, $error, $share) = $this->getFile($userId, $fileId);
 		}
 
 		$userFolder = $this->root->getUserFolder($userId);
 		if ($file === null
 			&& $path !== null
-			&& $userFolder->nodeExists($path)) {
+			&& $userFolder->nodeExists($path)
+		) {
 			$node = $userFolder->get($path);
 			if ($node instanceof File
-				&& $node->isReadable()) {
+				&& $node->isReadable()
+			) {
 				$file = $node;
 			}
 		}
@@ -820,7 +828,8 @@ class EditorController extends Controller {
 
 		$versions = [];
 		if ($this->versionManager->available
-			&& $owner !== null) {
+			&& $owner !== null
+		) {
 			$versions = array_reverse($this->versionManager->getVersionsForFile($owner, $file->getFileInfo()));
 		}
 
@@ -971,7 +980,8 @@ class EditorController extends Controller {
 
 		if ($version > 1
 			&& \count($versions) >= $version - 1
-			&& FileVersions::hasChanges($ownerId, $fileId, $versionId)) {
+			&& FileVersions::hasChanges($ownerId, $fileId, $versionId)
+		) {
 			$changesUrl = $this->getUrl($file, $user, null, $version, true);
 			$result["changesUrl"] = $changesUrl;
 
@@ -1152,7 +1162,8 @@ class EditorController extends Controller {
 
 		if ($toExtension === null
 			|| $ext === $toExtension
-			|| $template) {
+			|| $template
+		) {
 			return new DataDownloadResponse($file->getContent(), $fileName, $file->getMimeType());
 		}
 
@@ -1202,9 +1213,11 @@ class EditorController extends Controller {
 		$this->logger->debug("Open: $fileId ($version) $filePath", ["app" => $this->appName]);
 
 		if (empty($shareToken) && !$this->userSession->isLoggedIn()) {
-			$redirectUrl = $this->urlGenerator->linkToRoute("core.login.showLoginForm", [
+			$redirectUrl = $this->urlGenerator->linkToRoute(
+				"core.login.showLoginForm", [
 				"redirect_url" => $this->request->getRequestUri()
-			]);
+				]
+			);
 			return new RedirectResponse($redirectUrl);
 		}
 
@@ -1449,13 +1462,15 @@ class EditorController extends Controller {
 	 * @return TemplateResponse
 	 */
 	private function renderError($error, $hint = "") {
-		return new TemplateResponse("", "error", [
+		return new TemplateResponse(
+			"", "error", [
 				"errors" => [
 					[
 						"error" => $error,
 						"hint" => $hint
 					]
 				]
-			], "error");
+			], "error"
+		);
 	}
 }

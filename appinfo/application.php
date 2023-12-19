@@ -72,7 +72,8 @@ class Application extends App {
 			function () {
 				if (!empty($this->appConfig->GetDocumentServerUrl())
 					&& $this->appConfig->SettingsAreSuccessful()
-					&& $this->appConfig->isUserAllowedToUse()) {
+					&& $this->appConfig->isUserAllowedToUse()
+				) {
 					Util::addScript("onlyoffice", "desktop");
 					Util::addScript("onlyoffice", "main");
 					Util::addScript("onlyoffice", "share");
@@ -90,13 +91,13 @@ class Application extends App {
 
 		Util::connectHook("OCP\Share", "share_link_access", Hookhandler::class, "PublicPage");
 
-		require_once __DIR__ . "/../3rdparty/jwt/BeforeValidException.php";
-		require_once __DIR__ . "/../3rdparty/jwt/ExpiredException.php";
-		require_once __DIR__ . "/../3rdparty/jwt/SignatureInvalidException.php";
-		require_once __DIR__ . "/../3rdparty/jwt/CachedKeySet.php";
-		require_once __DIR__ . "/../3rdparty/jwt/JWT.php";
-		require_once __DIR__ . "/../3rdparty/jwt/JWK.php";
-		require_once __DIR__ . "/../3rdparty/jwt/Key.php";
+		include_once __DIR__ . "/../3rdparty/jwt/BeforeValidException.php";
+		include_once __DIR__ . "/../3rdparty/jwt/ExpiredException.php";
+		include_once __DIR__ . "/../3rdparty/jwt/SignatureInvalidException.php";
+		include_once __DIR__ . "/../3rdparty/jwt/CachedKeySet.php";
+		include_once __DIR__ . "/../3rdparty/jwt/JWT.php";
+		include_once __DIR__ . "/../3rdparty/jwt/JWK.php";
+		include_once __DIR__ . "/../3rdparty/jwt/Key.php";
 
 		// Set the leeway for the JWT library in case the system clock is a second off
 		\Firebase\JWT\JWT::$leeway = $this->appConfig->GetJwtLeeway();
@@ -113,135 +114,163 @@ class Application extends App {
 
 		$previewManager = $container->query(IPreview::class);
 		if ($this->appConfig->GetPreview()) {
-			$previewManager->registerProvider(Preview::getMimeTypeRegex(), function () use ($container) {
-				return $container->query(Preview::class);
-			});
+			$previewManager->registerProvider(
+				Preview::getMimeTypeRegex(), function () use ($container) {
+					return $container->query(Preview::class);
+				}
+			);
 		}
 
 		$notificationManager = \OC::$server->getNotificationManager();
-		$notificationManager->registerNotifier(function () use ($appName) {
-			return new Notifier(
-				$appName,
-				\OC::$server->getL10NFactory(),
-				\OC::$server->getURLGenerator(),
-				\OC::$server->getLogger(),
-				\OC::$server->getUserManager()
-			);
-		}, function () use ($appName) {
-			return [
+		$notificationManager->registerNotifier(
+			function () use ($appName) {
+				return new Notifier(
+					$appName,
+					\OC::$server->getL10NFactory(),
+					\OC::$server->getURLGenerator(),
+					\OC::$server->getLogger(),
+					\OC::$server->getUserManager()
+				);
+			}, function () use ($appName) {
+				return [
 				"id" => $appName,
 				"name" => $appName,
-			];
-		});
+				];
+			}
+		);
 
-		$container->registerService("L10N", function ($c) {
-			return $c->query("ServerContainer")->getL10N($c->query("AppName"));
-		});
+		$container->registerService(
+			"L10N", function ($c) {
+				return $c->query("ServerContainer")->getL10N($c->query("AppName"));
+			}
+		);
 
-		$container->registerService("RootStorage", function ($c) {
-			return $c->query("ServerContainer")->getRootFolder();
-		});
+		$container->registerService(
+			"RootStorage", function ($c) {
+				return $c->query("ServerContainer")->getRootFolder();
+			}
+		);
 
-		$container->registerService("UserSession", function ($c) {
-			return $c->query("ServerContainer")->getUserSession();
-		});
+		$container->registerService(
+			"UserSession", function ($c) {
+				return $c->query("ServerContainer")->getUserSession();
+			}
+		);
 
-		$container->registerService("Logger", function ($c) {
-			return $c->query("ServerContainer")->getLogger();
-		});
+		$container->registerService(
+			"Logger", function ($c) {
+				return $c->query("ServerContainer")->getLogger();
+			}
+		);
 
-		$container->registerService("URLGenerator", function ($c) {
-			return $c->query("ServerContainer")->getURLGenerator();
-		});
+		$container->registerService(
+			"URLGenerator", function ($c) {
+				return $c->query("ServerContainer")->getURLGenerator();
+			}
+		);
 
 		// Controllers
-		$container->registerService("SettingsController", function ($c) {
-			return new SettingsController(
-				$c->query("AppName"),
-				$c->query("Request"),
-				$c->query("URLGenerator"),
-				$c->query("L10N"),
-				$c->query("Logger"),
-				$this->appConfig,
-				$this->crypt
-			);
-		});
+		$container->registerService(
+			"SettingsController", function ($c) {
+				return new SettingsController(
+					$c->query("AppName"),
+					$c->query("Request"),
+					$c->query("URLGenerator"),
+					$c->query("L10N"),
+					$c->query("Logger"),
+					$this->appConfig,
+					$this->crypt
+				);
+			}
+		);
 
-		$container->registerService("SettingsApiController", function ($c) {
-			return new SettingsApiController(
-				$c->query("AppName"),
-				$c->query("Request"),
-				$c->query("URLGenerator"),
-				$this->appConfig
-			);
-		});
+		$container->registerService(
+			"SettingsApiController", function ($c) {
+				return new SettingsApiController(
+					$c->query("AppName"),
+					$c->query("Request"),
+					$c->query("URLGenerator"),
+					$this->appConfig
+				);
+			}
+		);
 
-		$container->registerService("EditorController", function ($c) {
-			return new EditorController(
-				$c->query("AppName"),
-				$c->query("Request"),
-				$c->query("RootStorage"),
-				$c->query("UserSession"),
-				$c->query("ServerContainer")->getUserManager(),
-				$c->query("URLGenerator"),
-				$c->query("L10N"),
-				$c->query("Logger"),
-				$this->appConfig,
-				$this->crypt,
-				$c->query("IManager"),
-				$c->query("Session"),
-				$c->query("ServerContainer")->getGroupManager()
-			);
-		});
+		$container->registerService(
+			"EditorController", function ($c) {
+				return new EditorController(
+					$c->query("AppName"),
+					$c->query("Request"),
+					$c->query("RootStorage"),
+					$c->query("UserSession"),
+					$c->query("ServerContainer")->getUserManager(),
+					$c->query("URLGenerator"),
+					$c->query("L10N"),
+					$c->query("Logger"),
+					$this->appConfig,
+					$this->crypt,
+					$c->query("IManager"),
+					$c->query("Session"),
+					$c->query("ServerContainer")->getGroupManager()
+				);
+			}
+		);
 
-		$container->registerService("EditorApiController", function ($c) {
-			return new EditorApiController(
-				$c->query("AppName"),
-				$c->query("Request"),
-				$c->query("RootStorage"),
-				$c->query("UserSession"),
-				$c->query("URLGenerator"),
-				$c->query("L10N"),
-				$c->query("Logger"),
-				$this->appConfig,
-				$this->crypt,
-				$c->query("IManager"),
-				$c->query("Session"),
-				$c->get(ITagManager::class)
-			);
-		});
+		$container->registerService(
+			"EditorApiController", function ($c) {
+				return new EditorApiController(
+					$c->query("AppName"),
+					$c->query("Request"),
+					$c->query("RootStorage"),
+					$c->query("UserSession"),
+					$c->query("URLGenerator"),
+					$c->query("L10N"),
+					$c->query("Logger"),
+					$this->appConfig,
+					$this->crypt,
+					$c->query("IManager"),
+					$c->query("Session"),
+					$c->get(ITagManager::class)
+				);
+			}
+		);
 
-		$container->registerService("CallbackController", function ($c) {
-			return new CallbackController(
-				$c->query("AppName"),
-				$c->query("Request"),
-				$c->query("RootStorage"),
-				$c->query("UserSession"),
-				$c->query("ServerContainer")->getUserManager(),
-				$c->query("L10N"),
-				$c->query("Logger"),
-				$this->appConfig,
-				$this->crypt,
-				$c->query("IManager")
-			);
-		});
+		$container->registerService(
+			"CallbackController", function ($c) {
+				return new CallbackController(
+					$c->query("AppName"),
+					$c->query("Request"),
+					$c->query("RootStorage"),
+					$c->query("UserSession"),
+					$c->query("ServerContainer")->getUserManager(),
+					$c->query("L10N"),
+					$c->query("Logger"),
+					$this->appConfig,
+					$this->crypt,
+					$c->query("IManager")
+				);
+			}
+		);
 
-		$container->registerService("TemplateController", function ($c) {
-			return new TemplateController(
-				$c->query("AppName"),
-				$c->query("Request"),
-				$c->query("L10N"),
-				$c->query("Logger")
-			);
-		});
+		$container->registerService(
+			"TemplateController", function ($c) {
+				return new TemplateController(
+					$c->query("AppName"),
+					$c->query("Request"),
+					$c->query("L10N"),
+					$c->query("Logger")
+				);
+			}
+		);
 
-		$container->registerService("WebAssetController", function ($c) {
-			return new WebAssetController(
-				$c->query("AppName"),
-				$c->query("Request"),
-				$c->query("Logger")
-			);
-		});
+		$container->registerService(
+			"WebAssetController", function ($c) {
+				return new WebAssetController(
+					$c->query("AppName"),
+					$c->query("Request"),
+					$c->query("Logger")
+				);
+			}
+		);
 
 		$checkBackgroundJobs = new JobListController(
 			$container->query("AppName"),

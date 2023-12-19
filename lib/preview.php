@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
- * 
+ *
  * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -106,7 +106,7 @@ class Preview implements IProvider2 {
 	 * File version manager
 	 *
 	 * @var VersionManager
-	*/
+	 */
 	private $versionManager;
 
 	/**
@@ -234,7 +234,8 @@ class Preview implements IProvider2 {
 		}
 		if (!$fileInfo
 			|| $fileInfo->getSize() === 0
-			|| $fileInfo->getSize() > $this->config->GetLimitThumbSize()) {
+			|| $fileInfo->getSize() > $this->config->GetLimitThumbSize()
+		) {
 			return false;
 		}
 		if (!\in_array($fileInfo->getMimetype(), self::$capabilities, true)) {

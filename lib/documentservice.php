@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
- * 
+ *
  * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -380,7 +380,8 @@ class DocumentService {
 
 		try {
 			if (preg_match("/^https:\/\//i", $urlGenerator->getAbsoluteURL("/"))
-				&& preg_match("/^http:\/\//i", $this->config->GetDocumentServerUrl())) {
+				&& preg_match("/^http:\/\//i", $this->config->GetDocumentServerUrl())
+			) {
 				throw new \Exception($this->trans->t("Mixed Active Content is not allowed. HTTPS address for ONLYOFFICE Docs is required."));
 			}
 		} catch (\Exception $e) {

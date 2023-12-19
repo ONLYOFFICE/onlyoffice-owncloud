@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
- * 
+ *
  * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -328,7 +328,8 @@ class AppConfig {
 			return $this->config->getSystemValue($key);
 		}
 		if (!empty($this->config->getSystemValue($this->appName))
-			&& \array_key_exists($key, $this->config->getSystemValue($this->appName))) {
+			&& \array_key_exists($key, $this->config->getSystemValue($this->appName))
+		) {
 			return $this->config->getSystemValue($this->appName)[$key];
 		}
 		return null;
@@ -1054,7 +1055,7 @@ class AppConfig {
 			return $limitSize;
 		}
 
-		return 100*1024*1024;
+		return 100 * 1024 * 1024;
 	}
 
 	/**
@@ -1128,7 +1129,7 @@ class AppConfig {
 	 * Checking encryption enabled
 	 *
 	 * @return string|bool
-	*/
+	 */
 	public function checkEncryptionModule() {
 		if (!\OC::$server->getAppManager()->isInstalled("encryption")) {
 			return false;
@@ -1191,7 +1192,7 @@ class AppConfig {
 		$interval = $this->GetSystemValue($this->_editors_check_interval);
 
 		if (empty($interval) && $interval !== 0) {
-			$interval = 60*60*24;
+			$interval = 60 * 60 * 24;
 		}
 		return (integer)$interval;
 	}

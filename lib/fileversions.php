@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
- * 
+ *
  * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -316,7 +316,7 @@ class FileVersions {
 	 * @param string $ownerId - file owner id
 	 * @param string $fileId - file id
 	 * @param string $versionId - file version
-	*/
+	 */
 	public static function deleteVersion($ownerId, $fileId, $versionId) {
 		$logger = \OC::$server->getLogger();
 
@@ -451,7 +451,7 @@ class FileVersions {
 	 * @param string $ownerId - file owner id
 	 * @param string $fileId - file id
 	 * @param string $versionId - file version
-	*/
+	 */
 	public static function deleteAuthor($ownerId, $fileId, $versionId) {
 		$logger = \OC::$server->getLogger();
 

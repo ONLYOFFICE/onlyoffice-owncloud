@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
- * 
+ *
  * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,11 +40,13 @@ class KeyManager {
 	 */
 	public static function get($fileId) {
 		$connection = \OC::$server->getDatabaseConnection();
-		$select = $connection->prepare("
+		$select = $connection->prepare(
+			"
             SELECT `key`
             FROM  `*PREFIX*" . self::TableName_Key . "`
             WHERE `file_id` = ?
-        ");
+        "
+		);
 		$result = $select->execute([$fileId]);
 
 		$keys = $result ? $select->fetch() : [];
@@ -63,11 +65,13 @@ class KeyManager {
 	 */
 	public static function set($fileId, $key) {
 		$connection = \OC::$server->getDatabaseConnection();
-		$insert = $connection->prepare("
+		$insert = $connection->prepare(
+			"
             INSERT INTO `*PREFIX*" . self::TableName_Key . "`
                 (`file_id`, `key`)
             VALUES (?, ?)
-        ");
+        "
+		);
 		return (bool)$insert->execute([$fileId, $key]);
 	}
 
@@ -100,11 +104,13 @@ class KeyManager {
 	 */
 	public static function lock($fileId, $lock = true) {
 		$connection = \OC::$server->getDatabaseConnection();
-		$update = $connection->prepare("
+		$update = $connection->prepare(
+			"
             UPDATE `*PREFIX*" . self::TableName_Key . "`
             SET `lock` = ?
             WHERE `file_id` = ?
-        ");
+        "
+		);
 		return (bool)$update->execute([$lock === true ? 1 : 0, $fileId]);
 	}
 
@@ -118,11 +124,13 @@ class KeyManager {
 	 */
 	public static function setForcesave($fileId, $fs = true) {
 		$connection = \OC::$server->getDatabaseConnection();
-		$update = $connection->prepare("
+		$update = $connection->prepare(
+			"
             UPDATE `*PREFIX*" . self::TableName_Key . "`
             SET `fs` = ?
             WHERE `file_id` = ?
-        ");
+        "
+		);
 		return (bool)$update->execute([$fs === true ? 1 : 0, $fileId]);
 	}
 
@@ -135,11 +143,13 @@ class KeyManager {
 	 */
 	public static function wasForcesave($fileId) {
 		$connection = \OC::$server->getDatabaseConnection();
-		$select = $connection->prepare("
+		$select = $connection->prepare(
+			"
             SELECT `fs`
             FROM  `*PREFIX*" . self::TableName_Key . "`
             WHERE `file_id` = ?
-        ");
+        "
+		);
 		$result = $select->execute([$fileId]);
 
 		$rows = $result ? $select->fetch() : [];

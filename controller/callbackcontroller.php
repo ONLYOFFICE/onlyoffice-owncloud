@@ -194,7 +194,8 @@ class CallbackController extends Controller {
 		$this->logger->debug("Download: $fileId ($version)" . ($changes ? " changes" : ""), ["app" => $this->appName]);
 
 		if (!$this->userSession->isLoggedIn()
-			&& !$changes) {
+			&& !$changes
+		) {
 			if (!empty($this->config->GetDocumentServerSecret())) {
 				$header = \OC::$server->getRequest()->getHeader($this->config->JwtHeader());
 				if (empty($header)) {
@@ -253,7 +254,8 @@ class CallbackController extends Controller {
 		}
 
 		if (empty($user)
-			&& $this->config->checkEncryptionModule() !== "master") {
+			&& $this->config->checkEncryptionModule() !== "master"
+		) {
 			$owner = $file->getFileInfo()->getOwner();
 			if ($owner !== null) {
 				\OC_Util::setupFS($owner->getUID());
@@ -459,7 +461,8 @@ class CallbackController extends Controller {
 
 					if ($isForcesave
 						&& $forcesavetype === 1
-						&& !empty($actions)) {
+						&& !empty($actions)
+					) {
 						// the user who clicked Save
 						$userId = $this->parseUserId($actions[0]["userid"]);
 					}
@@ -542,9 +545,11 @@ class CallbackController extends Controller {
 					}
 
 					$this->logger->debug("Track put content " . $file->getPath(), ["app" => $this->appName]);
-					$this->retryOperation(function () use ($file, $newData) {
-						return $file->putContent($newData);
-					});
+					$this->retryOperation(
+						function () use ($file, $newData) {
+							return $file->putContent($newData);
+						}
+					);
 
 					if (RemoteInstance::isRemoteFile($file)) {
 						if ($isForcesave) {
@@ -558,7 +563,8 @@ class CallbackController extends Controller {
 					if (!$isForcesave
 						&& !$prevIsForcesave
 						&& $this->versionManager->available
-						&& $this->config->GetVersionHistory()) {
+						&& $this->config->GetVersionHistory()
+					) {
 						$changes = null;
 						if (!empty($changesurl)) {
 							$changesurl = $this->config->ReplaceDocumentServerUrlToInternal($changesurl);
@@ -572,7 +578,8 @@ class CallbackController extends Controller {
 					}
 
 					if ($this->config->checkEncryptionModule() === "master"
-						&& !$isForcesave) {
+						&& !$isForcesave
+					) {
 						KeyManager::delete($fileId);
 					}
 

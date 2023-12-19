@@ -24,19 +24,18 @@ script("onlyoffice", "editor");
 ?>
 
 <div id="app">
+	<div id="iframeEditor"
+	data-id="<?php p($_["fileId"]) ?>"
+	data-path="<?php p($_["filePath"]) ?>"
+	data-sharetoken="<?php p($_["shareToken"]) ?>"
+	data-version="<?php p($_["version"]) ?>"
+	data-template="<?php p($_["template"]) ?>"
+	data-anchor="<?php p($_["anchor"]) ?>"
+	data-inframe="<?php p($_["inframe"]) ?>"></div>
 
-    <div id="iframeEditor"
-        data-id="<?php p($_["fileId"]) ?>"
-        data-path="<?php p($_["filePath"]) ?>"
-        data-sharetoken="<?php p($_["shareToken"]) ?>"
-        data-version="<?php p($_["version"]) ?>"
-        data-template="<?php p($_["template"]) ?>"
-        data-anchor="<?php p($_["anchor"]) ?>"
-        data-inframe="<?php p($_["inframe"]) ?>"></div>
-
-    <?php if (!empty($_["documentServerUrl"])) { ?>
-        <script nonce="<?php p(base64_encode($_["requesttoken"])) ?>"
-            src="<?php p($_["documentServerUrl"]) ?>web-apps/apps/api/documents/api.js" type="text/javascript"></script>
-    <?php } ?>
+<?php if (!empty($_["documentServerUrl"])) { ?>
+	<script nonce="<?php p(base64_encode($_["requesttoken"])) ?>"
+	src="<?php p($_["documentServerUrl"]) ?>web-apps/apps/api/documents/api.js" type="text/javascript"></script>
+	<?php } ?>
 
 </div>

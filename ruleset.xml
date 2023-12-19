@@ -4,6 +4,8 @@
 	<arg name="colors" />
 	<arg value="sp" />
 
+	<exclude-pattern>*/templates/*</exclude-pattern>
+
 	<!-- make sure we use tabs for indent and not spaces -->
 	<arg name="tab-width" value="4" />
 	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent" />

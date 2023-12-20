@@ -113,7 +113,7 @@ class EditorsCheck extends TimedJob {
 		$this->trans = $trans;
 		$this->crypt = $crypt;
 		$this->groupManager = $groupManager;
-		$this->setInterval($this->config->GetEditorsCheckInterval());
+		$this->setInterval($this->config->getEditorsCheckInterval());
 	}
 
 	/**
@@ -124,17 +124,17 @@ class EditorsCheck extends TimedJob {
 	 * @return void
 	 */
 	protected function run($argument) {
-		if (empty($this->config->GetDocumentServerUrl())) {
+		if (empty($this->config->getDocumentServerUrl())) {
 			$this->logger->debug("Settings are empty", ["app" => $this->appName]);
 			return;
 		}
-		if (!$this->config->SettingsAreSuccessful()) {
+		if (!$this->config->settingsAreSuccessful()) {
 			$this->logger->debug("Settings are not correct", ["app" => $this->appName]);
 			return;
 		}
 		$fileUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".callback.emptyfile");
-		if (!$this->config->UseDemo() && !empty($this->config->GetStorageUrl())) {
-			$fileUrl = str_replace($this->urlGenerator->getAbsoluteURL("/"), $this->config->GetStorageUrl(), $fileUrl);
+		if (!$this->config->useDemo() && !empty($this->config->getStorageUrl())) {
+			$fileUrl = str_replace($this->urlGenerator->getAbsoluteURL("/"), $this->config->getStorageUrl(), $fileUrl);
 		}
 		$host = parse_url($fileUrl)["host"];
 		if ($host === "localhost" || $host === "127.0.0.1") {
@@ -148,7 +148,7 @@ class EditorsCheck extends TimedJob {
 		list($error, $version) = $documentService->checkDocServiceUrl($this->urlGenerator, $this->crypt);
 		if (!empty($error)) {
 			$this->logger->info("ONLYOFFICE server is not available", ["app" => $this->appName]);
-			$this->config->SetSettingsError($error);
+			$this->config->setSettingsError($error);
 			$this->notifyAdmins();
 		} else {
 			$this->logger->debug("ONLYOFFICE server availability check is finished successfully", ["app" => $this->appName]);

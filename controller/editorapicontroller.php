@@ -206,7 +206,7 @@ class EditorApiController extends OCSController {
 		}
 
 		$name = $file->getName();
-		$template = TemplateManager::GetEmptyTemplate($name);
+		$template = TemplateManager::getEmptyTemplate($name);
 
 		if (!$template) {
 			$this->logger->error("Template for file filling not found: $name ($fileId)", ["app" => $this->appName]);
@@ -267,7 +267,7 @@ class EditorApiController extends OCSController {
 
 		$fileName = $file->getName();
 		$ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-		$format = !empty($ext) && \array_key_exists($ext, $this->config->FormatsSetting()) ? $this->config->FormatsSetting()[$ext] : null;
+		$format = !empty($ext) && \array_key_exists($ext, $this->config->formatsSetting()) ? $this->config->formatsSetting()[$ext] : null;
 		if (!isset($format)) {
 			$this->logger->info("Format is not supported for editing: $fileName", ["app" => $this->appName]);
 			return new JSONResponse(["error" => $this->trans->t("Format is not supported")]);
@@ -293,7 +293,7 @@ class EditorApiController extends OCSController {
 		if ($key === null) {
 			$key = $this->fileUtility->getKey($file, true);
 		}
-		$key = DocumentService::GenerateRevisionId($key);
+		$key = DocumentService::generateRevisionId($key);
 
 		$params = [
 			"document" => [
@@ -304,7 +304,7 @@ class EditorApiController extends OCSController {
 				"url" => $fileUrl,
 				"referenceData" => [
 					"fileKey" => $file->getId(),
-					"instanceId" => $this->config->GetSystemValue("instanceid", true),
+					"instanceId" => $this->config->getSystemValue("instanceid", true),
 				],
 			],
 			"documentType" => $format["type"],
@@ -391,7 +391,7 @@ class EditorApiController extends OCSController {
 			}
 
 			$canProtect = true;
-			if ($this->config->GetProtection() === "owner") {
+			if ($this->config->getProtection() === "owner") {
 				$canProtect = $ownerId === $userId;
 			}
 			$params["document"]["permissions"]["protect"] = $canProtect;
@@ -401,11 +401,11 @@ class EditorApiController extends OCSController {
 				$params["document"]["permissions"]["protect"] = false;
 			}
 
-			$hashCallback = $this->crypt->GetHash(["userId" => $userId, "ownerId" => $ownerId, "fileId" => $file->getId(), "filePath" => $filePath, "shareToken" => $shareToken, "action" => "track"]);
+			$hashCallback = $this->crypt->getHash(["userId" => $userId, "ownerId" => $ownerId, "fileId" => $file->getId(), "filePath" => $filePath, "shareToken" => $shareToken, "action" => "track"]);
 			$callback = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".callback.track", ["doc" => $hashCallback]);
 
-			if (!$this->config->UseDemo() && !empty($this->config->GetStorageUrl())) {
-				$callback = str_replace($this->urlGenerator->getAbsoluteURL("/"), $this->config->GetStorageUrl(), $callback);
+			if (!$this->config->useDemo() && !empty($this->config->getStorageUrl())) {
+				$callback = str_replace($this->urlGenerator->getAbsoluteURL("/"), $this->config->getStorageUrl(), $callback);
 			}
 
 			$params["editorConfig"]["callbackUrl"] = $callback;
@@ -487,7 +487,7 @@ class EditorApiController extends OCSController {
 
 			$params["editorConfig"]["createUrl"] = urldecode($createUrl);
 
-			$templatesList = TemplateManager::GetGlobalTemplates($file->getMimeType());
+			$templatesList = TemplateManager::getGlobalTemplates($file->getMimeType());
 			if (!empty($templatesList)) {
 				$templates = [];
 				foreach ($templatesList as $templateItem) {
@@ -513,14 +513,14 @@ class EditorApiController extends OCSController {
 		}
 
 		if ($folderLink !== null
-			&& $this->config->GetSystemValue($this->config->_customization_goback) !== false
+			&& $this->config->getSystemValue($this->config->customization_goback) !== false
 		) {
 			$params["editorConfig"]["customization"]["goback"] = [
 				"url"  => $folderLink
 			];
 
 			if (!$desktop) {
-				if ($this->config->GetSameTab()) {
+				if ($this->config->getSameTab()) {
 					$params["editorConfig"]["customization"]["goback"]["blank"] = false;
 					if ($inframe === true) {
 						$params["editorConfig"]["customization"]["goback"]["requestClose"] = true;
@@ -535,8 +535,8 @@ class EditorApiController extends OCSController {
 
 		$params = $this->setCustomization($params);
 
-		if ($this->config->UseDemo()) {
-			$params["editorConfig"]["tenant"] = $this->config->GetSystemValue("instanceid", true);
+		if ($this->config->useDemo()) {
+			$params["editorConfig"]["tenant"] = $this->config->getSystemValue("instanceid", true);
 		}
 
 		if ($anchor !== null) {
@@ -549,8 +549,8 @@ class EditorApiController extends OCSController {
 			}
 		}
 
-		if (!empty($this->config->GetDocumentServerSecret())) {
-			$token = \Firebase\JWT\JWT::encode($params, $this->config->GetDocumentServerSecret(), "HS256");
+		if (!empty($this->config->getDocumentServerSecret())) {
+			$token = \Firebase\JWT\JWT::encode($params, $this->config->getDocumentServerSecret(), "HS256");
 			$params["token"] = $token;
 		}
 
@@ -575,7 +575,7 @@ class EditorApiController extends OCSController {
 		}
 
 		try {
-			$folder = !$template ? $this->root->getUserFolder($userId) : TemplateManager::GetGlobalTemplateDir();
+			$folder = !$template ? $this->root->getUserFolder($userId) : TemplateManager::getGlobalTemplateDir();
 			$files = $folder->getById($fileId);
 		} catch (\Exception $e) {
 			$this->logger->logException($e, ["message" => "getFile: $fileId", "app" => $this->appName]);
@@ -642,12 +642,12 @@ class EditorApiController extends OCSController {
 			$data["template"] = true;
 		}
 
-		$hashUrl = $this->crypt->GetHash($data);
+		$hashUrl = $this->crypt->getHash($data);
 
 		$fileUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".callback.download", ["doc" => $hashUrl]);
 
-		if (!$this->config->UseDemo() && !empty($this->config->GetStorageUrl())) {
-			$fileUrl = str_replace($this->urlGenerator->getAbsoluteURL("/"), $this->config->GetStorageUrl(), $fileUrl);
+		if (!$this->config->useDemo() && !empty($this->config->getStorageUrl())) {
+			$fileUrl = str_replace($this->urlGenerator->getAbsoluteURL("/"), $this->config->getStorageUrl(), $fileUrl);
 		}
 
 		return $fileUrl;
@@ -661,7 +661,7 @@ class EditorApiController extends OCSController {
 	 * @return string
 	 */
 	private function buildUserId($userId) {
-		$instanceId = $this->config->GetSystemValue("instanceid", true);
+		$instanceId = $this->config->getSystemValue("instanceid", true);
 		$userId = $instanceId . "_" . $userId;
 		return $userId;
 	}
@@ -675,84 +675,84 @@ class EditorApiController extends OCSController {
 	 */
 	private function setCustomization($params) {
 		//default is true
-		if ($this->config->GetCustomizationChat() === false) {
+		if ($this->config->getCustomizationChat() === false) {
 			$params["editorConfig"]["customization"]["chat"] = false;
 		}
 
 		//default is false
-		if ($this->config->GetCustomizationCompactHeader() === true) {
+		if ($this->config->getCustomizationCompactHeader() === true) {
 			$params["editorConfig"]["customization"]["compactHeader"] = true;
 		}
 
 		//default is false
-		if ($this->config->GetCustomizationFeedback() === true) {
+		if ($this->config->getCustomizationFeedback() === true) {
 			$params["editorConfig"]["customization"]["feedback"] = true;
 		}
 
 		//default is false
-		if ($this->config->GetCustomizationForcesave() === true) {
+		if ($this->config->getCustomizationForcesave() === true) {
 			$params["editorConfig"]["customization"]["forcesave"] = true;
 		}
 
 		//default is true
-		if ($this->config->GetCustomizationHelp() === false) {
+		if ($this->config->getCustomizationHelp() === false) {
 			$params["editorConfig"]["customization"]["help"] = false;
 		}
 
 		//default is original
-		$reviewDisplay = $this->config->GetCustomizationReviewDisplay();
+		$reviewDisplay = $this->config->getCustomizationReviewDisplay();
 		if ($reviewDisplay !== "original") {
 			$params["editorConfig"]["customization"]["reviewDisplay"] = $reviewDisplay;
 		}
 
-		$theme = $this->config->GetCustomizationTheme();
+		$theme = $this->config->getCustomizationTheme();
 		if (isset($theme)) {
 			$params["editorConfig"]["customization"]["uiTheme"] = $theme;
 		}
 
 		//default is false
-		if ($this->config->GetCustomizationToolbarNoTabs() === true) {
+		if ($this->config->getCustomizationToolbarNoTabs() === true) {
 			$params["editorConfig"]["customization"]["toolbarNoTabs"] = true;
 		}
 
 		//default is true
-		if ($this->config->GetCustomizationMacros() === false) {
+		if ($this->config->getCustomizationMacros() === false) {
 			$params["editorConfig"]["customization"]["macros"] = false;
 		}
 
 		//default is true
-		if ($this->config->GetCustomizationPlugins() === false) {
+		if ($this->config->getCustomizationPlugins() === false) {
 			$params["editorConfig"]["customization"]["plugins"] = false;
 		}
 
 		/* from system config */
 
-		$autosave = $this->config->GetSystemValue($this->config->_customization_autosave);
+		$autosave = $this->config->getSystemValue($this->config->customization_autosave);
 		if (isset($autosave)) {
 			$params["editorConfig"]["customization"]["autosave"] = $autosave;
 		}
 
-		$customer = $this->config->GetSystemValue($this->config->_customization_customer);
+		$customer = $this->config->getSystemValue($this->config->customization_customer);
 		if (isset($customer)) {
 			$params["editorConfig"]["customization"]["customer"] = $customer;
 		}
 
-		$loaderLogo = $this->config->GetSystemValue($this->config->_customization_loaderLogo);
+		$loaderLogo = $this->config->getSystemValue($this->config->customization_loaderLogo);
 		if (isset($loaderLogo)) {
 			$params["editorConfig"]["customization"]["loaderLogo"] = $loaderLogo;
 		}
 
-		$loaderName = $this->config->GetSystemValue($this->config->_customization_loaderName);
+		$loaderName = $this->config->getSystemValue($this->config->customization_loaderName);
 		if (isset($loaderName)) {
 			$params["editorConfig"]["customization"]["loaderName"] = $loaderName;
 		}
 
-		$logo = $this->config->GetSystemValue($this->config->_customization_logo);
+		$logo = $this->config->getSystemValue($this->config->customization_logo);
 		if (isset($logo)) {
 			$params["editorConfig"]["customization"]["logo"] = $logo;
 		}
 
-		$zoom = $this->config->GetSystemValue($this->config->_customization_zoom);
+		$zoom = $this->config->getSystemValue($this->config->customization_zoom);
 		if (isset($zoom)) {
 			$params["editorConfig"]["customization"]["zoom"] = $zoom;
 		}

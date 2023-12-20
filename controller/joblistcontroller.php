@@ -111,7 +111,7 @@ class JobListController extends Controller {
 	 * @return void
 	 */
 	private function checkEditorsCheckJob() {
-		if ($this->config->GetEditorsCheckInterval() > 0) {
+		if ($this->config->getEditorsCheckInterval() > 0) {
 			$this->addJob(EditorsCheck::class);
 		} else {
 			$this->removeJob(EditorsCheck::class);

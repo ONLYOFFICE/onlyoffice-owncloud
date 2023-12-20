@@ -106,34 +106,34 @@ class SettingsController extends Controller {
 	 */
 	public function index() {
 		$data = [
-			"documentserver" => $this->config->GetDocumentServerUrl(true),
-			"documentserverInternal" => $this->config->GetDocumentServerInternalUrl(true),
-			"storageUrl" => $this->config->GetStorageUrl(),
-			"verifyPeerOff" => $this->config->GetVerifyPeerOff(),
-			"secret" => $this->config->GetDocumentServerSecret(true),
-			"jwtHeader" => $this->config->JwtHeader(true),
-			"demo" => $this->config->GetDemoData(),
+			"documentserver" => $this->config->getDocumentServerUrl(true),
+			"documentserverInternal" => $this->config->getDocumentServerInternalUrl(true),
+			"storageUrl" => $this->config->getStorageUrl(),
+			"verifyPeerOff" => $this->config->getVerifyPeerOff(),
+			"secret" => $this->config->getDocumentServerSecret(true),
+			"jwtHeader" => $this->config->jwtHeader(true),
+			"demo" => $this->config->getDemoData(),
 			"currentServer" => $this->urlGenerator->getAbsoluteURL("/"),
-			"formats" => $this->config->FormatsSetting(),
-			"sameTab" => $this->config->GetSameTab(),
-			"preview" => $this->config->GetPreview(),
-			"versionHistory" => $this->config->GetVersionHistory(),
-			"protection" => $this->config->GetProtection(),
+			"formats" => $this->config->formatsSetting(),
+			"sameTab" => $this->config->getSameTab(),
+			"preview" => $this->config->getPreview(),
+			"versionHistory" => $this->config->getVersionHistory(),
+			"protection" => $this->config->getProtection(),
 			"encryption" => $this->config->checkEncryptionModule(),
-			"limitGroups" => $this->config->GetLimitGroups(),
-			"chat" => $this->config->GetCustomizationChat(),
-			"compactHeader" => $this->config->GetCustomizationCompactHeader(),
-			"feedback" => $this->config->GetCustomizationFeedback(),
-			"forcesave" => $this->config->GetCustomizationForcesave(),
-			"help" => $this->config->GetCustomizationHelp(),
-			"toolbarNoTabs" => $this->config->GetCustomizationToolbarNoTabs(),
-			"successful" => $this->config->SettingsAreSuccessful(),
-			"plugins" => $this->config->GetCustomizationPlugins(),
-			"macros" => $this->config->GetCustomizationMacros(),
-			"reviewDisplay" => $this->config->GetCustomizationReviewDisplay(),
-			"theme" => $this->config->GetCustomizationTheme(),
-			"templates" => $this->GetGlobalTemplates(),
-			"linkToDocs" => $this->config->GetLinkToDocs()
+			"limitGroups" => $this->config->getLimitGroups(),
+			"chat" => $this->config->getCustomizationChat(),
+			"compactHeader" => $this->config->getCustomizationCompactHeader(),
+			"feedback" => $this->config->getCustomizationFeedback(),
+			"forcesave" => $this->config->getCustomizationForcesave(),
+			"help" => $this->config->getCustomizationHelp(),
+			"toolbarNoTabs" => $this->config->getCustomizationToolbarNoTabs(),
+			"successful" => $this->config->settingsAreSuccessful(),
+			"plugins" => $this->config->getCustomizationPlugins(),
+			"macros" => $this->config->getCustomizationMacros(),
+			"reviewDisplay" => $this->config->getCustomizationReviewDisplay(),
+			"theme" => $this->config->getCustomizationTheme(),
+			"templates" => $this->getGlobalTemplates(),
+			"linkToDocs" => $this->config->getLinkToDocs()
 		];
 		return new TemplateResponse($this->appName, "settings", $data, "blank");
 	}
@@ -151,7 +151,7 @@ class SettingsController extends Controller {
 	 *
 	 * @return array
 	 */
-	public function SaveAddress(
+	public function saveAddress(
 		$documentserver,
 		$documentserverInternal,
 		$storageUrl,
@@ -161,25 +161,25 @@ class SettingsController extends Controller {
 		$demo
 	) {
 		$error = null;
-		if (!$this->config->SelectDemo($demo === true)) {
+		if (!$this->config->selectDemo($demo === true)) {
 			$error = $this->trans->t("The 30-day test period is over, you can no longer connect to demo ONLYOFFICE Docs server.");
 		}
 		if ($demo !== true) {
-			$this->config->SetDocumentServerUrl($documentserver);
-			$this->config->SetVerifyPeerOff($verifyPeerOff);
-			$this->config->SetDocumentServerInternalUrl($documentserverInternal);
-			$this->config->SetDocumentServerSecret($secret);
-			$this->config->SetJwtHeader($jwtHeader);
+			$this->config->setDocumentServerUrl($documentserver);
+			$this->config->setVerifyPeerOff($verifyPeerOff);
+			$this->config->setDocumentServerInternalUrl($documentserverInternal);
+			$this->config->setDocumentServerSecret($secret);
+			$this->config->setJwtHeader($jwtHeader);
 		}
-		$this->config->SetStorageUrl($storageUrl);
+		$this->config->setStorageUrl($storageUrl);
 
 		$version = null;
 		if (empty($error)) {
-			$documentserver = $this->config->GetDocumentServerUrl();
+			$documentserver = $this->config->getDocumentServerUrl();
 			if (!empty($documentserver)) {
 				$documentService = new DocumentService($this->trans, $this->config);
 				list($error, $version) = $documentService->checkDocServiceUrl($this->urlGenerator, $this->crypt);
-				$this->config->SetSettingsError($error);
+				$this->config->setSettingsError($error);
 			}
 
 			if ($this->config->checkEncryptionModule() === true) {
@@ -188,12 +188,12 @@ class SettingsController extends Controller {
 		}
 
 		return [
-			"documentserver" => $this->config->GetDocumentServerUrl(true),
-			"verifyPeerOff" => $this->config->GetVerifyPeerOff(),
-			"documentserverInternal" => $this->config->GetDocumentServerInternalUrl(true),
-			"storageUrl" => $this->config->GetStorageUrl(),
-			"secret" => $this->config->GetDocumentServerSecret(true),
-			"jwtHeader" => $this->config->JwtHeader(true),
+			"documentserver" => $this->config->getDocumentServerUrl(true),
+			"verifyPeerOff" => $this->config->getVerifyPeerOff(),
+			"documentserverInternal" => $this->config->getDocumentServerInternalUrl(true),
+			"storageUrl" => $this->config->getStorageUrl(),
+			"secret" => $this->config->getDocumentServerSecret(true),
+			"jwtHeader" => $this->config->jwtHeader(true),
 			"error" => $error,
 			"version" => $version,
 			];
@@ -219,7 +219,7 @@ class SettingsController extends Controller {
 	 *
 	 * @return array
 	 */
-	public function SaveCommon(
+	public function saveCommon(
 		$defFormats,
 		$editFormats,
 		$sameTab,
@@ -235,20 +235,20 @@ class SettingsController extends Controller {
 		$reviewDisplay,
 		$theme
 	) {
-		$this->config->SetDefaultFormats($defFormats);
-		$this->config->SetEditableFormats($editFormats);
-		$this->config->SetSameTab($sameTab);
-		$this->config->SetPreview($preview);
-		$this->config->SetVersionHistory($versionHistory);
-		$this->config->SetLimitGroups($limitGroups);
-		$this->config->SetCustomizationChat($chat);
-		$this->config->SetCustomizationCompactHeader($compactHeader);
-		$this->config->SetCustomizationFeedback($feedback);
-		$this->config->SetCustomizationForcesave($forcesave);
-		$this->config->SetCustomizationHelp($help);
-		$this->config->SetCustomizationToolbarNoTabs($toolbarNoTabs);
-		$this->config->SetCustomizationReviewDisplay($reviewDisplay);
-		$this->config->SetCustomizationTheme($theme);
+		$this->config->setDefaultFormats($defFormats);
+		$this->config->setEditableFormats($editFormats);
+		$this->config->setSameTab($sameTab);
+		$this->config->setPreview($preview);
+		$this->config->setVersionHistory($versionHistory);
+		$this->config->setLimitGroups($limitGroups);
+		$this->config->setCustomizationChat($chat);
+		$this->config->setCustomizationCompactHeader($compactHeader);
+		$this->config->setCustomizationFeedback($feedback);
+		$this->config->setCustomizationForcesave($forcesave);
+		$this->config->setCustomizationHelp($help);
+		$this->config->setCustomizationToolbarNoTabs($toolbarNoTabs);
+		$this->config->setCustomizationReviewDisplay($reviewDisplay);
+		$this->config->setCustomizationTheme($theme);
 
 		return [
 			];
@@ -263,14 +263,14 @@ class SettingsController extends Controller {
 	 *
 	 * @return array
 	 */
-	public function SaveSecurity(
+	public function saveSecurity(
 		$plugins,
 		$macros,
 		$protection
 	) {
-		$this->config->SetCustomizationPlugins($plugins);
-		$this->config->SetCustomizationMacros($macros);
-		$this->config->SetProtection($protection);
+		$this->config->setCustomizationPlugins($plugins);
+		$this->config->setCustomizationMacros($macros);
+		$this->config->setProtection($protection);
 
 		return [
 			];
@@ -281,7 +281,7 @@ class SettingsController extends Controller {
 	 *
 	 * @return array
 	 */
-	public function ClearHistory() {
+	public function clearHistory() {
 		FileVersions::clearHistory();
 
 		return [
@@ -296,11 +296,11 @@ class SettingsController extends Controller {
 	 * @NoAdminRequired
 	 * @PublicPage
 	 */
-	public function GetSettings() {
+	public function getSettings() {
 		$result = [
-			"formats" => $this->config->FormatsSetting(),
-			"sameTab" => $this->config->GetSameTab(),
-			"shareAttributesVersion" => $this->config->ShareAttributesVersion()
+			"formats" => $this->config->formatsSetting(),
+			"sameTab" => $this->config->getSameTab(),
+			"shareAttributesVersion" => $this->config->shareAttributesVersion()
 		];
 		return $result;
 	}
@@ -310,15 +310,15 @@ class SettingsController extends Controller {
 	 *
 	 * @return array
 	 */
-	private function GetGlobalTemplates() {
+	private function getGlobalTemplates() {
 		$templates = [];
-		$templatesList = TemplateManager::GetGlobalTemplates();
+		$templatesList = TemplateManager::getGlobalTemplates();
 
 		foreach ($templatesList as $templateItem) {
 			$template = [
 				"id" => $templateItem->getId(),
 				"name" => $templateItem->getName(),
-				"type" => TemplateManager::GetTypeTemplate($templateItem->getMimeType())
+				"type" => TemplateManager::getTypeTemplate($templateItem->getMimeType())
 			];
 			array_push($templates, $template);
 		}

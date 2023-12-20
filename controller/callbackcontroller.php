@@ -177,7 +177,7 @@ class CallbackController extends Controller {
 	 * @CORS
 	 */
 	public function download($doc) {
-		list($hashData, $error) = $this->crypt->ReadHash($doc);
+		list($hashData, $error) = $this->crypt->readHash($doc);
 		if ($hashData === null) {
 			$this->logger->error("Download with empty or not correct hash: $error", ["app" => $this->appName]);
 			return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
@@ -196,8 +196,8 @@ class CallbackController extends Controller {
 		if (!$this->userSession->isLoggedIn()
 			&& !$changes
 		) {
-			if (!empty($this->config->GetDocumentServerSecret())) {
-				$header = \OC::$server->getRequest()->getHeader($this->config->JwtHeader());
+			if (!empty($this->config->getDocumentServerSecret())) {
+				$header = \OC::$server->getRequest()->getHeader($this->config->jwtHeader());
 				if (empty($header)) {
 					$this->logger->error("Download without jwt", ["app" => $this->appName]);
 					return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
@@ -206,7 +206,7 @@ class CallbackController extends Controller {
 				$header = substr($header, \strlen("Bearer "));
 
 				try {
-					$decodedHeader = \Firebase\JWT\JWT::decode($header, new \Firebase\JWT\Key($this->config->GetDocumentServerSecret(), "HS256"));
+					$decodedHeader = \Firebase\JWT\JWT::decode($header, new \Firebase\JWT\Key($this->config->getDocumentServerSecret(), "HS256"));
 				} catch (\UnexpectedValueException $e) {
 					$this->logger->logException($e, ["message" => "Download with invalid jwt", "app" => $this->appName]);
 					return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
@@ -324,7 +324,7 @@ class CallbackController extends Controller {
 	public function emptyfile($doc) {
 		$this->logger->debug("Download empty", ["app" => $this->appName]);
 
-		list($hashData, $error) = $this->crypt->ReadHash($doc);
+		list($hashData, $error) = $this->crypt->readHash($doc);
 		if ($hashData === null) {
 			$this->logger->error("Download empty with empty or not correct hash: $error", ["app" => $this->appName]);
 			return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
@@ -334,8 +334,8 @@ class CallbackController extends Controller {
 			return new JSONResponse(["message" => $this->trans->t("Invalid request")], Http::STATUS_BAD_REQUEST);
 		}
 
-		if (!empty($this->config->GetDocumentServerSecret())) {
-			$header = \OC::$server->getRequest()->getHeader($this->config->JwtHeader());
+		if (!empty($this->config->getDocumentServerSecret())) {
+			$header = \OC::$server->getRequest()->getHeader($this->config->jwtHeader());
 			if (empty($header)) {
 				$this->logger->error("Download empty without jwt", ["app" => $this->appName]);
 				return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
@@ -344,14 +344,14 @@ class CallbackController extends Controller {
 			$header = substr($header, \strlen("Bearer "));
 
 			try {
-				$decodedHeader = \Firebase\JWT\JWT::decode($header, new \Firebase\JWT\Key($this->config->GetDocumentServerSecret(), "HS256"));
+				$decodedHeader = \Firebase\JWT\JWT::decode($header, new \Firebase\JWT\Key($this->config->getDocumentServerSecret(), "HS256"));
 			} catch (\UnexpectedValueException $e) {
 				$this->logger->logException($e, ["message" => "Download empty with invalid jwt", "app" => $this->appName]);
 				return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
 			}
 		}
 
-		$templatePath = TemplateManager::GetEmptyTemplatePath("en", ".docx");
+		$templatePath = TemplateManager::getEmptyTemplatePath("en", ".docx");
 
 		$template = file_get_contents($templatePath);
 		if (!$template) {
@@ -391,7 +391,7 @@ class CallbackController extends Controller {
 	 * @CORS
 	 */
 	public function track($doc, $users, $key, $status, $url, $token, $history, $changesurl, $forcesavetype, $actions, $filetype) {
-		list($hashData, $error) = $this->crypt->ReadHash($doc);
+		list($hashData, $error) = $this->crypt->readHash($doc);
 		if ($hashData === null) {
 			$this->logger->error("Track with empty or not correct hash: $error", ["app" => $this->appName]);
 			return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
@@ -404,16 +404,16 @@ class CallbackController extends Controller {
 		$fileId = $hashData->fileId;
 		$this->logger->debug("Track: $fileId status $status", ["app" => $this->appName]);
 
-		if (!empty($this->config->GetDocumentServerSecret())) {
+		if (!empty($this->config->getDocumentServerSecret())) {
 			if (!empty($token)) {
 				try {
-					$payload = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($this->config->GetDocumentServerSecret(), "HS256"));
+					$payload = \Firebase\JWT\JWT::decode($token, new \Firebase\JWT\Key($this->config->getDocumentServerSecret(), "HS256"));
 				} catch (\UnexpectedValueException $e) {
 					$this->logger->logException($e, ["message" => "Track with invalid jwt in body", "app" => $this->appName]);
 					return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
 				}
 			} else {
-				$header = \OC::$server->getRequest()->getHeader($this->config->JwtHeader());
+				$header = \OC::$server->getRequest()->getHeader($this->config->jwtHeader());
 				if (empty($header)) {
 					$this->logger->error("Track without jwt", ["app" => $this->appName]);
 					return new JSONResponse(["message" => $this->trans->t("Access denied")], Http::STATUS_FORBIDDEN);
@@ -422,7 +422,7 @@ class CallbackController extends Controller {
 				$header = substr($header, \strlen("Bearer "));
 
 				try {
-					$decodedHeader = \Firebase\JWT\JWT::decode($header, new \Firebase\JWT\Key($this->config->GetDocumentServerSecret(), "HS256"));
+					$decodedHeader = \Firebase\JWT\JWT::decode($header, new \Firebase\JWT\Key($this->config->getDocumentServerSecret(), "HS256"));
 
 					$payload = $decodedHeader->payload;
 				} catch (\UnexpectedValueException $e) {
@@ -511,7 +511,7 @@ class CallbackController extends Controller {
 						return $error;
 					}
 
-					$url = $this->config->ReplaceDocumentServerUrlToInternal($url);
+					$url = $this->config->replaceDocumentServerUrlToInternal($url);
 
 					$prevVersion = $file->getFileInfo()->getMtime();
 					$fileName = $file->getName();
@@ -520,18 +520,18 @@ class CallbackController extends Controller {
 
 					$documentService = new DocumentService($this->trans, $this->config);
 					if ($downloadExt !== $curExt) {
-						$key =  DocumentService::GenerateRevisionId($fileId . $url);
+						$key =  DocumentService::generateRevisionId($fileId . $url);
 
 						try {
 							$this->logger->debug("Converted from $downloadExt to $curExt", ["app" => $this->appName]);
-							$url = $documentService->GetConvertedUri($url, $downloadExt, $curExt, $key);
+							$url = $documentService->getConvertedUri($url, $downloadExt, $curExt, $key);
 						} catch (\Exception $e) {
 							$this->logger->logException($e, ["message" => "Converted on save error", "app" => $this->appName]);
 							return new JSONResponse(["message" => $e->getMessage()], Http::STATUS_INTERNAL_SERVER_ERROR);
 						}
 					}
 
-					$newData = $documentService->Request($url);
+					$newData = $documentService->request($url);
 
 					$prevIsForcesave = KeyManager::wasForcesave($fileId);
 
@@ -563,17 +563,17 @@ class CallbackController extends Controller {
 					if (!$isForcesave
 						&& !$prevIsForcesave
 						&& $this->versionManager->available
-						&& $this->config->GetVersionHistory()
+						&& $this->config->getVersionHistory()
 					) {
 						$changes = null;
 						if (!empty($changesurl)) {
-							$changesurl = $this->config->ReplaceDocumentServerUrlToInternal($changesurl);
-							$changes = $documentService->Request($changesurl);
+							$changesurl = $this->config->replaceDocumentServerUrlToInternal($changesurl);
+							$changes = $documentService->request($changesurl);
 						}
 						FileVersions::saveHistory($file->getFileInfo(), $history, $changes, $prevVersion);
 					}
 
-					if (!empty($user) && $this->config->GetVersionHistory()) {
+					if (!empty($user) && $this->config->getVersionHistory()) {
 						FileVersions::saveAuthor($file->getFileInfo(), $user);
 					}
 
@@ -617,7 +617,7 @@ class CallbackController extends Controller {
 		}
 
 		try {
-			$folder = !$template ? $this->root->getUserFolder($userId) : TemplateManager::GetGlobalTemplateDir();
+			$folder = !$template ? $this->root->getUserFolder($userId) : TemplateManager::getGlobalTemplateDir();
 			$files = $folder->getById($fileId);
 		} catch (\Exception $e) {
 			$this->logger->logException($e, ["message" => "getFile: $fileId", "app" => $this->appName]);
@@ -760,7 +760,7 @@ class CallbackController extends Controller {
 	 * @return string
 	 */
 	private function parseUserId($userId) {
-		$instanceId = $this->config->GetSystemValue("instanceid", true);
+		$instanceId = $this->config->getSystemValue("instanceid", true);
 		$instanceId = $instanceId . "_";
 
 		if (substr($userId, 0, \strlen($instanceId)) === $instanceId) {

@@ -71,9 +71,9 @@ class SettingsApiController extends OCSController {
 	 * @NoAdminRequired
 	 * @CORS
 	 */
-	public function GetDocServerUrl() {
-		$url = $this->config->GetDocumentServerUrl();
-		if (!$this->config->SettingsAreSuccessful()) {
+	public function getDocServerUrl() {
+		$url = $this->config->getDocumentServerUrl();
+		if (!$this->config->settingsAreSuccessful()) {
 			$url = "";
 		} elseif (!preg_match("/^https?:\/\//i", $url)) {
 			$url = $this->urlGenerator->getAbsoluteURL($url);

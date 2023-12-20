@@ -80,8 +80,8 @@ class Application extends App {
 		$eventDispatcher->addListener(
 			"OCA\Files::loadAdditionalScripts",
 			function () {
-				if (!empty($this->appConfig->GetDocumentServerUrl())
-					&& $this->appConfig->SettingsAreSuccessful()
+				if (!empty($this->appConfig->getDocumentServerUrl())
+					&& $this->appConfig->settingsAreSuccessful()
 					&& $this->appConfig->isUserAllowedToUse()
 				) {
 					Util::addScript("onlyoffice", "desktop");
@@ -89,7 +89,7 @@ class Application extends App {
 					Util::addScript("onlyoffice", "share");
 					Util::addScript("onlyoffice", "template");
 
-					if ($this->appConfig->GetSameTab()) {
+					if ($this->appConfig->getSameTab()) {
 						Util::addScript("onlyoffice", "listener");
 					}
 
@@ -110,7 +110,7 @@ class Application extends App {
 		include_once __DIR__ . "/../3rdparty/jwt/Key.php";
 
 		// Set the leeway for the JWT library in case the system clock is a second off
-		\Firebase\JWT\JWT::$leeway = $this->appConfig->GetJwtLeeway();
+		\Firebase\JWT\JWT::$leeway = $this->appConfig->getJwtLeeway();
 
 		$container = $this->getContainer();
 
@@ -123,7 +123,7 @@ class Application extends App {
 		$detector->registerType("oform", "application/vnd.openxmlformats-officedocument.wordprocessingml.document.oform");
 
 		$previewManager = $container->query(IPreview::class);
-		if ($this->appConfig->GetPreview()) {
+		if ($this->appConfig->getPreview()) {
 			$previewManager->registerProvider(
 				Preview::getMimeTypeRegex(), function () use ($container) {
 					return $container->query(Preview::class);

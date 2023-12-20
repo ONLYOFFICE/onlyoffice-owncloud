@@ -36,16 +36,16 @@ class HookHandler {
 	 * 
 	 * @return void
 	 */
-	public static function PublicPage() {
+	public static function publicPage() {
 		$appName = "onlyoffice";
 
 		$appConfig = new AppConfig($appName);
 
-		if (!empty($appConfig->GetDocumentServerUrl()) && $appConfig->SettingsAreSuccessful()) {
+		if (!empty($appConfig->getDocumentServerUrl()) && $appConfig->settingsAreSuccessful()) {
 			Util::addScript("onlyoffice", "main");
 			Util::addScript("onlyoffice", "share");
 
-			if ($appConfig->GetSameTab()) {
+			if ($appConfig->getSameTab()) {
 				Util::addScript("onlyoffice", "listener");
 			}
 

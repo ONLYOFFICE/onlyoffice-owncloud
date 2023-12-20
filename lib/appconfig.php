@@ -403,6 +403,8 @@ class AppConfig {
 	 * Save the document service address to the application configuration
 	 *
 	 * @param string $documentServer - document service address
+	 * 
+	 * @return void
 	 */
 	public function SetDocumentServerUrl($documentServer) {
 		$documentServer = trim($documentServer);
@@ -447,6 +449,8 @@ class AppConfig {
 	 * Save the document service address available from ownCloud to the application configuration
 	 *
 	 * @param string $documentServerInternal - document service address
+	 * 
+	 * @return void
 	 */
 	public function SetDocumentServerInternalUrl($documentServerInternal) {
 		$documentServerInternal = rtrim(trim($documentServerInternal), "/");
@@ -514,6 +518,8 @@ class AppConfig {
 	 * Save the ownCloud address available from document server to the application configuration
 	 *
 	 * @param string $documentServer - document service address
+	 * 
+	 * @return void
 	 */
 	public function SetStorageUrl($storageUrl) {
 		$storageUrl = rtrim(trim($storageUrl), "/");
@@ -546,6 +552,8 @@ class AppConfig {
 	 * Save the document service secret key to the application configuration
 	 *
 	 * @param string $secret - secret key
+	 * 
+	 * @return void
 	 */
 	public function SetDocumentServerSecret($secret) {
 		$secret = trim($secret);
@@ -594,6 +602,8 @@ class AppConfig {
 	 * Save an array of formats with default action
 	 *
 	 * @param array $formats - formats with status
+	 * 
+	 * @return void
 	 */
 	public function SetDefaultFormats($formats) {
 		$value = json_encode($formats);
@@ -619,6 +629,8 @@ class AppConfig {
 	 * Save an array of formats that is opened for editing
 	 *
 	 * @param array $formats - formats with status
+	 * 
+	 * @return void
 	 */
 	public function SetEditableFormats($formats) {
 		$value = json_encode($formats);
@@ -644,6 +656,8 @@ class AppConfig {
 	 * Save the opening setting in a same tab
 	 *
 	 * @param bool $value - same tab
+	 * 
+	 * @return void
 	 */
 	public function SetSameTab($value) {
 		$this->logger->info("Set opening in a same tab: " . json_encode($value), ["app" => $this->appName]);
@@ -664,6 +678,8 @@ class AppConfig {
 	 * Save generate preview setting
 	 *
 	 * @param bool $value - preview
+	 * 
+	 * @return bool
 	 */
 	public function SetPreview($value) {
 		$this->logger->info("Set generate preview: " . json_encode($value), ["app" => $this->appName]);
@@ -684,6 +700,8 @@ class AppConfig {
 	 * Save keep versions history
 	 *
 	 * @param bool $value - version history
+	 * 
+	 * @return void
 	 */
 	public function SetVersionHistory($value) {
 		$this->logger->info("Set keep versions history: " . json_encode($value), ["app" => $this->appName]);
@@ -704,6 +722,8 @@ class AppConfig {
 	 * Save protection
 	 *
 	 * @param bool $value - version history
+	 * 
+	 * @return void
 	 */
 	public function SetProtection($value) {
 		$this->logger->info("Set protection: " . $value, ["app" => $this->appName]);
@@ -714,7 +734,7 @@ class AppConfig {
 	/**
 	 * Get protection
 	 *
-	 * @return bool
+	 * @return string
 	 */
 	public function GetProtection() {
 		$value = $this->config->getAppValue($this->appName, $this->_protection, "owner");
@@ -728,6 +748,8 @@ class AppConfig {
 	 * Save chat display setting
 	 *
 	 * @param bool $value - display chat
+	 * 
+	 * @return void
 	 */
 	public function SetCustomizationChat($value) {
 		$this->logger->info("Set chat display: " . json_encode($value), ["app" => $this->appName]);
@@ -748,6 +770,8 @@ class AppConfig {
 	 * Save compact header setting
 	 *
 	 * @param bool $value - display compact header
+	 * 
+	 * @return void
 	 */
 	public function SetCustomizationCompactHeader($value) {
 		$this->logger->info("Set compact header display: " . json_encode($value), ["app" => $this->appName]);
@@ -768,6 +792,8 @@ class AppConfig {
 	 * Save feedback display setting
 	 *
 	 * @param bool $value - display feedback
+	 * 
+	 * @return void
 	 */
 	public function SetCustomizationFeedback($value) {
 		$this->logger->info("Set feedback display: " . json_encode($value), ["app" => $this->appName]);
@@ -788,6 +814,8 @@ class AppConfig {
 	 * Save forcesave setting
 	 *
 	 * @param bool $value - forcesave
+	 * 
+	 * @return void
 	 */
 	public function SetCustomizationForcesave($value) {
 		$this->logger->info("Set forcesave: " . json_encode($value), ["app" => $this->appName]);
@@ -810,6 +838,8 @@ class AppConfig {
 	 * Save help display setting
 	 *
 	 * @param bool $value - display help
+	 * 
+	 * @return void
 	 */
 	public function SetCustomizationHelp($value) {
 		$this->logger->info("Set help display: " . json_encode($value), ["app" => $this->appName]);
@@ -830,6 +860,8 @@ class AppConfig {
 	 * Save without tabs setting
 	 *
 	 * @param bool $value - without tabs
+	 * 
+	 * @return void
 	 */
 	public function SetCustomizationToolbarNoTabs($value) {
 		$this->logger->info("Set without tabs: " . json_encode($value), ["app" => $this->appName]);
@@ -850,6 +882,8 @@ class AppConfig {
 	 * Save review viewing mode setting
 	 *
 	 * @param string $value - review mode
+	 * 
+	 * @return void
 	 */
 	public function SetCustomizationReviewDisplay($value) {
 		$this->logger->info("Set review mode: " . $value, ["app" => $this->appName]);
@@ -877,6 +911,8 @@ class AppConfig {
 	 * Save theme setting
 	 *
 	 * @param string $value - theme
+	 * 
+	 * @return void
 	 */
 	public function SetCustomizationTheme($value) {
 		$this->logger->info("Set theme: " . $value, ["app" => $this->appName]);
@@ -904,6 +940,8 @@ class AppConfig {
 	 * Save macros setting
 	 *
 	 * @param bool $value - enable macros
+	 * 
+	 * @return void
 	 */
 	public function SetCustomizationMacros($value) {
 		$this->logger->info("Set macros enabled: " . json_encode($value), ["app" => $this->appName]);
@@ -924,6 +962,8 @@ class AppConfig {
 	 * Save plugins setting
 	 *
 	 * @param bool $value - enable macros
+	 * 
+	 * @return void
 	 */
 	public function SetCustomizationPlugins($value) {
 		$this->logger->info("Set plugins enabled: " . json_encode($value), ["app" => $this->appName]);
@@ -944,6 +984,8 @@ class AppConfig {
 	 * Save the list of groups
 	 *
 	 * @param array $groups - the list of groups
+	 * 
+	 * @return void
 	 */
 	public function SetLimitGroups($groups) {
 		if (!\is_array($groups)) {
@@ -1021,6 +1063,8 @@ class AppConfig {
 	 * Save the document service verification setting to the application configuration
 	 *
 	 * @param bool $verifyPeerOff - parameter verification setting
+	 * 
+	 * @return void
 	 */
 	public function SetVerifyPeerOff($verifyPeerOff) {
 		$this->logger->info("SetVerifyPeerOff " . json_encode($verifyPeerOff), ["app" => $this->appName]);
@@ -1084,6 +1128,8 @@ class AppConfig {
 	 * Save the jwtHeader setting
 	 *
 	 * @param string $value - jwtHeader
+	 * 
+	 * @return void
 	 */
 	public function SetJwtHeader($value) {
 		$value = trim($value);
@@ -1111,6 +1157,8 @@ class AppConfig {
 	 * Save the status settings
 	 *
 	 * @param string $value - error
+	 * 
+	 * @return void
 	 */
 	public function SetSettingsError($value) {
 		$this->config->setAppValue($this->appName, $this->_settingsError, $value);
@@ -1174,6 +1222,11 @@ class AppConfig {
 		return $result;
 	}
 
+	/**
+	 * Get version of share attributes
+	 *
+	 * @return string
+	 */
 	public function ShareAttributesVersion() {
 		if (\version_compare(\implode(".", \OCP\Util::getVersion()), "10.3.0", ">=")) {
 			return "v2";

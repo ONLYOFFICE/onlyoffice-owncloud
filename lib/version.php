@@ -59,6 +59,7 @@ class Version {
 	/**
 	 * @param int $timestamp - file time stamp
 	 * @param int $revisionId - revision id
+	 * @param string $path - file path
 	 * @param FileInfo $sourceFileInfo - source file info
 	 */
 	public function __construct(

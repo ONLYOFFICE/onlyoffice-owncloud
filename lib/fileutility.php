@@ -87,7 +87,7 @@ class FileUtility {
 	 * @param ILogger $logger - logger
 	 * @param AppConfig $config - application configuration
 	 * @param IManager $shareManager - Share manager
-	 * @param IManager $ISession - Session
+	 * @param ISession $session - Session
 	 */
 	public function __construct(
 		$AppName,

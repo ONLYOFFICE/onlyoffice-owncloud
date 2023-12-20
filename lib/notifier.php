@@ -27,6 +27,11 @@ use OCP\L10N\IFactory;
 use OCP\Notification\INotification;
 use OCP\Notification\INotifier;
 
+/**
+ * Class Notifier
+ *
+ * @package OCA\Onlyoffice
+ */
 class Notifier implements INotifier {
 	/**
 	 * Application name
@@ -64,8 +69,8 @@ class Notifier implements INotifier {
 	private $userManager;
 
 	/**
-	 * @param string $AppName - application name
-	 * @param IFactory $l10NFactory - l10n
+	 * @param string $appName - application name
+	 * @param IFactory $l10nFactory - l10n
 	 * @param IURLGenerator $urlGenerator - url generator service
 	 * @param ILogger $logger - logger
 	 * @param IUserManager $userManager - user manager

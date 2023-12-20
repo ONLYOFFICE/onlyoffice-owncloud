@@ -42,6 +42,11 @@ use OCA\Onlyoffice\Hooks;
 use OCA\Onlyoffice\Notifier;
 use OCA\Onlyoffice\Preview;
 
+/**
+ * Class Application
+ *
+ * @package OCA\Onlyoffice\AppInfo
+ */
 class Application extends App {
 	/**
 	 * Application configuration
@@ -57,6 +62,11 @@ class Application extends App {
 	 */
 	public $crypt;
 
+	/**
+	 * Application constructor.
+	 *
+	 * @param array $urlParams
+	 */
 	public function __construct(array $urlParams = []) {
 		$appName = "onlyoffice";
 

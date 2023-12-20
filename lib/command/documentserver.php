@@ -32,6 +32,11 @@ use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\DocumentService;
 use OCA\Onlyoffice\Crypt;
 
+/**
+ * Class Document Server
+ *
+ * @package OCA\Onlyoffice\Command
+ */
 class DocumentServer extends Command {
 	/**
 	 * Application configuration
@@ -82,6 +87,8 @@ class DocumentServer extends Command {
 
 	/**
 	 * Configures the current command.
+	 * 
+	 * @return void
 	 */
 	protected function configure() {
 		$this

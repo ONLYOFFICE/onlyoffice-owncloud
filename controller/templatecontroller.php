@@ -49,6 +49,7 @@ class TemplateController extends Controller {
 	 * @param string $AppName - application name
 	 * @param IRequest $request - request object
 	 * @param IL10N $trans - l10n service
+	 * @param ILogger $logger - logger
 	 */
 	public function __construct(
 		$AppName,
@@ -134,6 +135,8 @@ class TemplateController extends Controller {
 	 * Delete template
 	 *
 	 * @param string $templateId - file identifier
+	 * 
+	 * @return array
 	 */
 	public function DeleteTemplate($templateId) {
 		$templateDir = TemplateManager::GetGlobalTemplateDir();

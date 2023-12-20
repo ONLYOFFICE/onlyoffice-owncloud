@@ -777,6 +777,8 @@ class CallbackController extends Controller {
 	 * @param callable $operation
 	 *
 	 * @throws LockedException
+	 * 
+	 * @return void
 	 */
 	private function retryOperation(callable $operation) {
 		$i = 0;

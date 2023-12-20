@@ -53,7 +53,7 @@ class DocumentService {
 
 	/**
 	 * @param IL10N $trans - l10n service
-	 * @param AppConfig $config - application configutarion
+	 * @param AppConfig $appConfig - application configutarion
 	 */
 	public function __construct(IL10N $trans, AppConfig $appConfig) {
 		$this->trans = $trans;

@@ -66,7 +66,7 @@ class FederationController extends OCSController {
 	 * @param IL10N $trans - l10n service
 	 * @param ILogger $logger - logger
 	 * @param IManager $shareManager - Share manager
-	 * @param IManager $ISession - Session
+	 * @param IManager $session - Session
 	 */
 	public function __construct(
 		$AppName,

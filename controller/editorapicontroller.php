@@ -136,7 +136,7 @@ class EditorApiController extends OCSController {
 	 * @param AppConfig $config - application configuration
 	 * @param Crypt $crypt - hash generator
 	 * @param IManager $shareManager - Share manager
-	 * @param ISession $ISession - Session
+	 * @param ISession $session - Session
 	 * @param ITagManager $tagManager - Tag manager
 	 */
 	public function __construct(
@@ -233,6 +233,7 @@ class EditorApiController extends OCSController {
 	 * @param bool $inframe - open in frame
 	 * @param bool $desktop - desktop label
 	 * @param bool $template - file is template
+	 * @param string $anchor - anchor link
 	 *
 	 * @return JSONResponse
 	 *
@@ -668,7 +669,7 @@ class EditorApiController extends OCSController {
 	/**
 	 * Set customization parameters
 	 *
-	 * @param array params - file parameters
+	 * @param array $params - file parameters
 	 *
 	 * @return array
 	 */

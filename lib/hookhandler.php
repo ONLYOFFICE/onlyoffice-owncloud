@@ -27,11 +27,15 @@ use OCA\Onlyoffice\AppConfig;
 /**
  * Class HookHandler
  *
- * handles hooks
- *
  * @package OCA\Onlyoffice
  */
 class HookHandler {
+
+	/**
+	 * Adds scripts and styles
+	 * 
+	 * @return void
+	 */
 	public static function PublicPage() {
 		$appName = "onlyoffice";
 

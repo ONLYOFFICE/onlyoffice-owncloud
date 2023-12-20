@@ -199,6 +199,8 @@ class Preview implements IProvider2 {
 
 	/**
 	 * Return mime type
+	 * 
+	 * @return string
 	 */
 	public static function getMimeTypeRegex() {
 		$mimeTypeRegex = "";
@@ -215,6 +217,8 @@ class Preview implements IProvider2 {
 
 	/**
 	 * Return mime type
+	 * 
+	 * @return string
 	 */
 	public function getMimeType() {
 		$m = self::getMimeTypeRegex();

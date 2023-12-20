@@ -40,6 +40,11 @@ class Hooks {
 	 */
 	private static $appName = "onlyoffice";
 
+	/**
+	 * Connect hooks
+	 *
+	 * @return void
+	 */
 	public static function connectHooks() {
 		// Listen user deletion
 		Util::connectHook("OC_User", "pre_deleteUser", Hooks::class, "userDelete");
@@ -61,6 +66,8 @@ class Hooks {
 	 * Erase user file versions
 	 *
 	 * @param array $params - hook params
+	 * 
+	 * @return void
 	 */
 	public static function userDelete($params) {
 		$userId = $params["uid"];
@@ -72,6 +79,8 @@ class Hooks {
 	 * Listen of file change
 	 *
 	 * @param array $params - hook params
+	 * 
+	 * @return void
 	 */
 	public static function fileUpdate($params) {
 		$filePath = $params[Filesystem::signal_param_path];
@@ -95,6 +104,8 @@ class Hooks {
 	 * Erase versions of deleted file
 	 *
 	 * @param array $params - hook params
+	 * 
+	 * @return void
 	 */
 	public static function fileDelete($params) {
 		$filePath = $params[Filesystem::signal_param_path];
@@ -124,6 +135,8 @@ class Hooks {
 	 * Erase versions of deleted version of file
 	 *
 	 * @param array $params - hook param
+	 * 
+	 * @return void
 	 */
 	public static function fileVersionDelete($params) {
 		$pathVersion = $params["path"];
@@ -157,6 +170,8 @@ class Hooks {
 	 * Erase versions of restored version of file
 	 *
 	 * @param array $params - hook param
+	 * 
+	 * @return void
 	 */
 	public static function fileVersionRestore($params) {
 		$filePath = $params["path"];

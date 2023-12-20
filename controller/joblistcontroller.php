@@ -81,6 +81,8 @@ class JobListController extends Controller {
 	 * Add a job to list
 	 *
 	 * @param IJob|string $job
+	 * 
+	 * @return void
 	 */
 	private function addJob($job) {
 		if (!$this->jobList->has($job, null)) {
@@ -93,6 +95,8 @@ class JobListController extends Controller {
 	 * Remove a job from list
 	 *
 	 * @param IJob|string $job
+	 * 
+	 * @return void
 	 */
 	private function removeJob($job) {
 		if ($this->jobList->has($job, null)) {
@@ -104,6 +108,7 @@ class JobListController extends Controller {
 	/**
 	 * Add or remove EditorsCheck job depending on the value of _editors_check_interval
 	 *
+	 * @return void
 	 */
 	private function checkEditorsCheckJob() {
 		if ($this->config->GetEditorsCheckInterval() > 0) {
@@ -116,6 +121,7 @@ class JobListController extends Controller {
 	/**
 	 * Method for sequentially calling checks of all jobs
 	 *
+	 * @return void
 	 */
 	public function checkAllJobs() {
 		$this->checkEditorsCheckJob();

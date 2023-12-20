@@ -36,7 +36,7 @@ class Crypt {
 	private $config;
 
 	/**
-	 * @param AppConfig $config - application configutarion
+	 * @param AppConfig $appConfig - application configutarion
 	 */
 	public function __construct(AppConfig $appConfig) {
 		$this->config = $appConfig;

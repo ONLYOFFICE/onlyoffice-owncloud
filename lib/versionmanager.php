@@ -169,6 +169,7 @@ class VersionManager {
 	 *
 	 * @param Version $version - version for restore
 	 *
+	 * @return void
 	 */
 	public function rollback($version) {
 		$sourceFile = $version->getSourceFile();

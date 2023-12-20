@@ -94,6 +94,7 @@ class EditorsCheck extends TimedJob {
 	 * @param AppConfig $config - application configuration
 	 * @param IL10N $trans - l10n service
 	 * @param Crypt $crypt - crypt service
+	 * @param IGroupManager $groupManager - group manager
 	 */
 	public function __construct(
 		string $AppName,
@@ -119,6 +120,8 @@ class EditorsCheck extends TimedJob {
 	 * Makes the background check
 	 *
 	 * @param array $argument unused argument
+	 * 
+	 * @return void
 	 */
 	protected function run($argument) {
 		if (empty($this->config->GetDocumentServerUrl())) {

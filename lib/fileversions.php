@@ -242,8 +242,10 @@ class FileVersions {
 	 *
 	 * @param FileInfo $fileInfo - file info
 	 * @param array $history - file history
-	 * @param string $changesurl - file changes
+	 * @param string $changes - file changes
 	 * @param string $prevVersion - previous version for check
+	 * 
+	 * @return void
 	 */
 	public static function saveHistory($fileInfo, $history, $changes, $prevVersion) {
 		$logger = \OC::$server->getLogger();
@@ -292,6 +294,8 @@ class FileVersions {
 	 *
 	 * @param string $ownerId - file owner id
 	 * @param string $fileId - file id
+	 * 
+	 * @return void
 	 */
 	public static function deleteAllVersions($ownerId, $fileId = null) {
 		$logger = \OC::$server->getLogger();
@@ -316,6 +320,8 @@ class FileVersions {
 	 * @param string $ownerId - file owner id
 	 * @param string $fileId - file id
 	 * @param string $versionId - file version
+	 * 
+	 * @return void|null
 	 */
 	public static function deleteVersion($ownerId, $fileId, $versionId) {
 		$logger = \OC::$server->getLogger();
@@ -349,6 +355,8 @@ class FileVersions {
 
 	/**
 	 * Clear all version history
+	 * 
+	 * @return void
 	 */
 	public static function clearHistory() {
 		$logger = \OC::$server->getLogger();
@@ -374,6 +382,8 @@ class FileVersions {
 	 *
 	 * @param FileInfo $fileInfo - file info
 	 * @param IUser $author - version author
+	 * 
+	 * @return void
 	 */
 	public static function saveAuthor($fileInfo, $author) {
 		$logger = \OC::$server->getLogger();
@@ -451,6 +461,8 @@ class FileVersions {
 	 * @param string $ownerId - file owner id
 	 * @param string $fileId - file id
 	 * @param string $versionId - file version
+	 * 
+	 * @return void|null
 	 */
 	public static function deleteAuthor($ownerId, $fileId, $versionId) {
 		$logger = \OC::$server->getLogger();

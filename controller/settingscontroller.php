@@ -141,12 +141,12 @@ class SettingsController extends Controller {
 	/**
 	 * Save address settings
 	 *
-	 * @param string $jwtHeader - jwt header
 	 * @param string $documentserver - document service address
 	 * @param string $documentserverInternal - document service address available from ownCloud
 	 * @param string $storageUrl - ownCloud address available from document server
 	 * @param bool $verifyPeerOff - parameter verification setting
 	 * @param string $secret - secret key for signature
+	 * @param string $jwtHeader - jwt header
 	 * @param bool $demo - use demo server
 	 *
 	 * @return array

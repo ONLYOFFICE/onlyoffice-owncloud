@@ -33,12 +33,12 @@ class RemoteInstance {
 	/**
 	 * App name
 	 */
-	private const App_Name = "onlyoffice";
+	private const APP_NAME = "onlyoffice";
 
 	/**
 	 * Table name
 	 */
-	private const TableName_Key = "onlyoffice_instance";
+	private const TABLENAME_KEY = "onlyoffice_instance";
 
 	/**
 	 * Time to live of remote instance (12 hours)
@@ -62,7 +62,7 @@ class RemoteInstance {
 		$select = $connection->prepare(
 			"
             SELECT remote, expire, status
-            FROM  `*PREFIX*" . self::TableName_Key . "`
+            FROM  `*PREFIX*" . self::TABLENAME_KEY . "`
             WHERE `remote` = ?
         "
 		);
@@ -85,7 +85,7 @@ class RemoteInstance {
 		$connection = \OC::$server->getDatabaseConnection();
 		$insert = $connection->prepare(
 			"
-            INSERT INTO `*PREFIX*" . self::TableName_Key . "`
+            INSERT INTO `*PREFIX*" . self::TABLENAME_KEY . "`
                 (`remote`, `status`, `expire`)
             VALUES (?, ?, ?)
         "
@@ -105,7 +105,7 @@ class RemoteInstance {
 		$connection = \OC::$server->getDatabaseConnection();
 		$update = $connection->prepare(
 			"
-            UPDATE `*PREFIX*" . self::TableName_Key . "`
+            UPDATE `*PREFIX*" . self::TABLENAME_KEY . "`
             SET status = ?, expire = ?
             WHERE remote = ?
         "
@@ -125,13 +125,13 @@ class RemoteInstance {
 		$remote = rtrim($remote, "/") . "/";
 
 		if (\in_array($remote, self::$healthRemote)) {
-			$logger->debug("Remote instance " . $remote . " from local cache status " . $dbremote["status"], ["app" => self::App_Name]);
+			$logger->debug("Remote instance " . $remote . " from local cache status " . $dbremote["status"], ["app" => self::APP_NAME]);
 			return true;
 		}
 
 		$dbremote = self::get($remote);
 		if (!empty($dbremote) && $dbremote["expire"] + self::$ttl > time()) {
-			$logger->debug("Remote instance " . $remote . " from database status " . $dbremote["status"], ["app" => self::App_Name]);
+			$logger->debug("Remote instance " . $remote . " from database status " . $dbremote["status"], ["app" => self::APP_NAME]);
 			self::$healthRemote[$remote] = $dbremote["status"];
 			return self::$healthRemote[$remote];
 		}
@@ -141,7 +141,7 @@ class RemoteInstance {
 
 		$status = false;
 		try {
-			$response = $client->get($remote . "ocs/v2.php/apps/" . self::App_Name . "/api/v1/healthcheck?format=json");
+			$response = $client->get($remote . "ocs/v2.php/apps/" . self::APP_NAME . "/api/v1/healthcheck?format=json");
 			$body = json_decode($response->getBody(), true);
 
 			$data = $body["ocs"]["data"];
@@ -149,7 +149,7 @@ class RemoteInstance {
 				$status = $data["alive"] === true;
 			}
 		} catch (\Exception $e) {
-			$logger->logException($e, ["message" => "Failed to request federated health check for" . $remote, "app" => self::App_Name]);
+			$logger->logException($e, ["message" => "Failed to request federated health check for" . $remote, "app" => self::APP_NAME]);
 		}
 
 		if (empty($dbremote)) {
@@ -158,7 +158,7 @@ class RemoteInstance {
 			self::update($remote, $status);
 		}
 
-		$logger->debug("Remote instance " . $remote . " was stored to database status " . $dbremote["status"], ["app" => self::App_Name]);
+		$logger->debug("Remote instance " . $remote . " was stored to database status " . $dbremote["status"], ["app" => self::APP_NAME]);
 
 		self::$healthRemote[$remote] = $status;
 
@@ -184,7 +184,7 @@ class RemoteInstance {
 
 		try {
 			$response = $client->post(
-				$remote . "/ocs/v2.php/apps/" . self::App_Name . "/api/v1/key?format=json",
+				$remote . "/ocs/v2.php/apps/" . self::APP_NAME . "/api/v1/key?format=json",
 				[
 				"timeout" => 5,
 				"json" => [
@@ -198,20 +198,20 @@ class RemoteInstance {
 
 			$data = $body["ocs"]["data"];
 			if (!empty($data["error"])) {
-				$logger->error("Error federated key " . $data["error"], ["app" => self::App_Name]);
+				$logger->error("Error federated key " . $data["error"], ["app" => self::APP_NAME]);
 				return null;
 			}
 
 			$key = $data["key"];
-			$logger->debug("Federated key: $key", ["app" => self::App_Name]);
+			$logger->debug("Federated key: $key", ["app" => self::APP_NAME]);
 
 			return $key;
 		} catch (\Exception $e) {
-			$logger->logException($e, ["message" => "Failed to request federated key " . $file->getId(), "app" => self::App_Name]);
+			$logger->logException($e, ["message" => "Failed to request federated key " . $file->getId(), "app" => self::APP_NAME]);
 
 			if ($e->getResponse()->getStatusCode() === 404) {
 				self::update($remote, false);
-				$logger->debug("Changed status for remote instance $remote to false", ["app" => self::App_Name]);
+				$logger->debug("Changed status for remote instance $remote to false", ["app" => self::APP_NAME]);
 			}
 
 			return null;
@@ -250,22 +250,22 @@ class RemoteInstance {
 		}
 
 		try {
-			$response = $client->post($remote . "/ocs/v2.php/apps/" . self::App_Name . "/api/v1/keylock?format=json", $data);
+			$response = $client->post($remote . "/ocs/v2.php/apps/" . self::APP_NAME . "/api/v1/keylock?format=json", $data);
 			$body = \json_decode($response->getBody(), true);
 
 			$data = $body["ocs"]["data"];
 
 			if (empty($data)) {
-				$logger->debug("Federated request" . $action . "for " . $file->getFileInfo()->getId() . " is successful", ["app" => self::App_Name]);
+				$logger->debug("Federated request" . $action . "for " . $file->getFileInfo()->getId() . " is successful", ["app" => self::APP_NAME]);
 				return true;
 			}
 
 			if (!empty($data["error"])) {
-				$logger->error("Error" . $action . "federated key for " . $file->getFileInfo()->getId() . ": " . $data["error"], ["app" => self::App_Name]);
+				$logger->error("Error" . $action . "federated key for " . $file->getFileInfo()->getId() . ": " . $data["error"], ["app" => self::APP_NAME]);
 				return false;
 			}
 		} catch(\Exception $e) {
-			$logger->logException($e, ["message" => "Failed to request federated " . $action . " for " . $file->getFileInfo()->getId(), "app" => self::App_Name]);
+			$logger->logException($e, ["message" => "Failed to request federated " . $action . " for " . $file->getFileInfo()->getId(), "app" => self::APP_NAME]);
 			return false;
 		}
 	}

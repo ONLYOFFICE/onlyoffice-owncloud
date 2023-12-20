@@ -119,12 +119,12 @@ class CallbackController extends Controller {
 	/**
 	 * Status of the document
 	 */
-	private const TrackerStatus_Editing = 1;
-	private const TrackerStatus_MustSave = 2;
-	private const TrackerStatus_Corrupted = 3;
-	private const TrackerStatus_Closed = 4;
-	private const TrackerStatus_ForceSave = 6;
-	private const TrackerStatus_CorruptedForceSave = 7;
+	private const TRACKERSTATUS_EDITING = 1;
+	private const TRACKERSTATUS_MUSTSAVE = 2;
+	private const TRACKERSTATUS_CORRUPTED = 3;
+	private const TRACKERSTATUS_CLOSED = 4;
+	private const TRACKERSTATUS_FORCESAVE = 6;
+	private const TRACKERSTATUS_CORRUPTEDFORCESAVE = 7;
 
 	/**
 	 * @param string $AppName - application name
@@ -439,10 +439,10 @@ class CallbackController extends Controller {
 
 		$result = 1;
 		switch ($status) {
-			case self::TrackerStatus_MustSave:
-			case self::TrackerStatus_Corrupted:
-			case self::TrackerStatus_ForceSave:
-			case self::TrackerStatus_CorruptedForceSave:
+			case self::TRACKERSTATUS_MUSTSAVE:
+			case self::TRACKERSTATUS_CORRUPTED:
+			case self::TRACKERSTATUS_FORCESAVE:
+			case self::TRACKERSTATUS_CORRUPTEDFORCESAVE:
 				if (empty($url)) {
 					$this->logger->error("Track without url: $fileId status $status", ["app" => $this->appName]);
 					return new JSONResponse(["message" => "Url not found"], Http::STATUS_BAD_REQUEST);
@@ -454,7 +454,7 @@ class CallbackController extends Controller {
 
 					\OC_Util::tearDownFS();
 
-					$isForcesave = $status === self::TrackerStatus_ForceSave || $status === self::TrackerStatus_CorruptedForceSave;
+					$isForcesave = $status === self::TRACKERSTATUS_FORCESAVE || $status === self::TRACKERSTATUS_CORRUPTEDFORCESAVE;
 
 					// author of the latest changes
 					$userId = $this->parseUserId($users[0]);
@@ -589,8 +589,8 @@ class CallbackController extends Controller {
 				}
 				break;
 
-			case self::TrackerStatus_Editing:
-			case self::TrackerStatus_Closed:
+			case self::TRACKERSTATUS_EDITING:
+			case self::TRACKERSTATUS_CLOSED:
 				$result = 0;
 				break;
 		}

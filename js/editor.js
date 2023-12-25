@@ -182,7 +182,8 @@
 
                     OCA.Onlyoffice.docEditor = new DocsAPI.DocEditor("iframeEditor", config);
 
-                    if (config.type === "mobile" && $("#app > iframe").css("position") === "fixed") {
+                    if (config.type === "mobile" && $("#app > iframe").css("position") === "fixed"
+                        && !OCA.Onlyoffice.inframe) {
                         $("#app > iframe").css("height", "calc(100% - 45px)");
                     }
 

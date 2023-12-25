@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Ascensio System SIA <integration@onlyoffice.com>
  *
  * (c) Copyright Ascensio System SIA 2023
  *
@@ -25,27 +26,29 @@ use OCA\Onlyoffice\AppConfig;
 
 /**
  * Class HookHandler
- * 
- * handles hooks
  *
  * @package OCA\Onlyoffice
  */
 class HookHandler {
+	/**
+	 * Adds scripts and styles
+	 *
+	 * @return void
+	 */
+	public static function publicPage() {
+		$appName = "onlyoffice";
 
-    public static function PublicPage() {
-        $appName = "onlyoffice";
+		$appConfig = new AppConfig($appName);
 
-        $appConfig = new AppConfig($appName);
+		if (!empty($appConfig->getDocumentServerUrl()) && $appConfig->settingsAreSuccessful()) {
+			Util::addScript("onlyoffice", "main");
+			Util::addScript("onlyoffice", "share");
 
-        if (!empty($appConfig->GetDocumentServerUrl()) && $appConfig->SettingsAreSuccessful()) {
-            Util::addScript("onlyoffice", "main");
-            Util::addScript("onlyoffice", "share");
+			if ($appConfig->getSameTab()) {
+				Util::addScript("onlyoffice", "listener");
+			}
 
-            if ($appConfig->GetSameTab()) {
-                Util::addScript("onlyoffice", "listener");
-            }
-
-            Util::addStyle("onlyoffice", "main");
-        }
-    }
+			Util::addStyle("onlyoffice", "main");
+		}
+	}
 }

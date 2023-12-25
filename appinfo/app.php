@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Ascensio System SIA <integration@onlyoffice.com>
  *
  * (c) Copyright Ascensio System SIA 2023
  *

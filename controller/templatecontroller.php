@@ -1,5 +1,6 @@
 <?php
 /**
+ * @author Ascensio System SIA <integration@onlyoffice.com>
  *
  * (c) Copyright Ascensio System SIA 2023
  *
@@ -30,133 +31,135 @@ use OCA\Onlyoffice\TemplateManager;
  * Template controller for template manage
  */
 class TemplateController extends Controller {
+	/**
+	 * l10n service
+	 *
+	 * @var IL10N
+	 */
+	private $trans;
 
-    /**
-     * l10n service
-     *
-     * @var IL10N
-     */
-    private $trans;
+	/**
+	 * Logger
+	 *
+	 * @var ILogger
+	 */
+	private $logger;
 
-    /**
-     * Logger
-     *
-     * @var ILogger
-     */
-    private $logger;
+	/**
+	 * @param string $AppName - application name
+	 * @param IRequest $request - request object
+	 * @param IL10N $trans - l10n service
+	 * @param ILogger $logger - logger
+	 */
+	public function __construct(
+		$AppName,
+		IRequest $request,
+		IL10N $trans,
+		ILogger $logger
+	) {
+		parent::__construct($AppName, $request);
 
-    /**
-     * @param string $AppName - application name
-     * @param IRequest $request - request object
-     * @param IL10N $trans - l10n service
-     */
-    public function __construct($AppName,
-                                    IRequest $request,
-                                    IL10N $trans,
-                                    ILogger $logger
-                                    ) {
-        parent::__construct($AppName, $request);
+		$this->trans = $trans;
+		$this->logger = $logger;
+	}
 
-        $this->trans = $trans;
-        $this->logger = $logger;
-    }
+	/**
+	 * Get templates
+	 *
+	 * @return array
+	 *
+	 * @NoAdminRequired
+	 */
+	public function getTemplates() {
+		$templatesList = TemplateManager::getGlobalTemplates();
 
-    /**
-     * Get templates
-     *
-     * @return array
-     *
-     * @NoAdminRequired
-     */
-    public function GetTemplates() {
-        $templatesList = TemplateManager::GetGlobalTemplates();
+		$templates = [];
+		foreach ($templatesList as $templatesItem) {
+			$template = [
+				"id" => $templatesItem->getId(),
+				"name" => $templatesItem->getName(),
+				"type" => TemplateManager::getTypeTemplate($templatesItem->getMimeType())
+			];
+			array_push($templates, $template);
+		}
 
-        $templates = [];
-        foreach ($templatesList as $templatesItem) {
-            $template = [
-                "id" => $templatesItem->getId(),
-                "name" => $templatesItem->getName(),
-                "type" => TemplateManager::GetTypeTemplate($templatesItem->getMimeType())
-            ];
-            array_push($templates, $template);
-        }
+		return $templates;
+	}
 
-        return $templates;
-    }
+	/**
+	 * Add global template
+	 *
+	 * @return array
+	 */
+	public function addTemplate() {
+		$file = $this->request->getUploadedFile("file");
 
-    /**
-     * Add global template
-     *
-     * @return array
-     */
-    public function AddTemplate() {
+		if ($file !== null) {
+			if (is_uploaded_file($file["tmp_name"]) && $file["error"] === 0) {
+				if (!TemplateManager::isTemplateType($file["name"])) {
+					return [
+						"error" => $this->trans->t("Template must be in OOXML format")
+					];
+				}
 
-        $file = $this->request->getUploadedFile("file");
+				$templateDir = TemplateManager::getGlobalTemplateDir();
+				if ($templateDir->nodeExists($file["name"])) {
+					return [
+						"error" => $this->trans->t("Template already exists")
+					];
+				}
 
-        if (!is_null($file)) {
-            if (is_uploaded_file($file["tmp_name"]) && $file["error"] === 0) {
-                if (!TemplateManager::IsTemplateType($file["name"])) {
-                    return [
-                        "error" => $this->trans->t("Template must be in OOXML format")
-                    ];
-                }
+				$templateContent = file_get_contents($file["tmp_name"]);
+				$template = $templateDir->newFile($file["name"]);
+				$template->putContent($templateContent);
 
-                $templateDir = TemplateManager::GetGlobalTemplateDir();
-                if ($templateDir->nodeExists($file["name"])) {
-                    return [
-                        "error" => $this->trans->t("Template already exists")
-                    ];
-                }
+				$fileInfo = $template->getFileInfo();
+				$result = [
+					"id" => $fileInfo->getId(),
+					"name" => $fileInfo->getName(),
+					"type" => TemplateManager::getTypeTemplate($fileInfo->getMimeType())
+				];
 
-                $templateContent = file_get_contents($file["tmp_name"]);
-                $template = $templateDir->newFile($file["name"]);
-                $template->putContent($templateContent);
+				$this->logger->debug("Template: added " . $fileInfo->getName(), ["app" => $this->appName]);
 
-                $fileInfo = $template->getFileInfo();
-                $result = [
-                    "id" => $fileInfo->getId(),
-                    "name" => $fileInfo->getName(),
-                    "type" => TemplateManager::GetTypeTemplate($fileInfo->getMimeType())
-                ];
+				return $result;
+			}
+		}
 
-                $this->logger->debug("Template: added " . $fileInfo->getName(), ["app" => $this->appName]);
+		return [
+			"error" => $this->trans->t("Invalid file provided")
+		];
+	}
 
-                return $result;
-            }
-        }
+	/**
+	 * Delete template
+	 *
+	 * @param string $templateId - file identifier
+	 *
+	 * @return array
+	 */
+	public function deleteTemplate($templateId) {
+		$templateDir = TemplateManager::getGlobalTemplateDir();
 
-        return [
-            "error" => $this->trans->t("Invalid file provided")
-        ];
-    }
+		try {
+			$templates = $templateDir->getById($templateId);
+		} catch(\Exception $e) {
+			$this->logger->logException($e, ["message" => "deleteTemplate: $templateId", "app" => $this->AppName]);
+			return [
+				"error" => $this->trans->t("Failed to delete template")
+			];
+		}
 
-    /**
-     * Delete template
-     *
-     * @param string $templateId - file identifier
-     */
-    public function DeleteTemplate($templateId) {
-        $templateDir = TemplateManager::GetGlobalTemplateDir();
+		if (empty($templates)) {
+			$this->logger->info("Template not found: $templateId", ["app" => $this->AppName]);
+			return [
+				"error" => $this->trans->t("Failed to delete template")
+			];
+		}
 
-        try {
-            $templates = $templateDir->getById($templateId);
-        } catch(\Exception $e) {
-            $this->logger->logException($e, ["message" => "DeleteTemplate: $templateId", "app" => $this->AppName]);
-            return [
-                "error" => $this->trans->t("Failed to delete template")
-            ];
-        }
+		$templates[0]->delete();
 
-        if (empty($templates)) {
-            $this->logger->info("Template not found: $templateId", ["app" => $this->AppName]);
-            return [
-                "error" => $this->trans->t("Failed to delete template")
-            ];
-        }
-
-        $templates[0]->delete();
-
-        $this->logger->debug("Template: deleted " . $templates[0]->getName(), ["app" => $this->appName]);
-        return [];
-    }
+		$this->logger->debug("Template: deleted " . $templates[0]->getName(), ["app" => $this->appName]);
+		return [];
+	}
 }

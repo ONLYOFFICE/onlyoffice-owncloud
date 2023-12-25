@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
- * 
+ *
  * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -402,7 +402,8 @@ class EditorController extends Controller {
 			$email = $user->getEMailAddress();
 			if ($user->getUID() != $currentUserId && !empty($email)) {
 				array_push(
-					$result, [
+					$result,
+					[
 					"email" => $email,
 					"name" => $user->getDisplayName()
 					]
@@ -479,7 +480,8 @@ class EditorController extends Controller {
 			->setDateTime(new \DateTime())
 			->setObject("mention", $comment)
 			->setSubject(
-				"mention_info", [
+				"mention_info",
+				[
 				"notifierId" => $userId,
 				"fileId" => $file->getId(),
 				"fileName" => $file->getName(),
@@ -1214,7 +1216,8 @@ class EditorController extends Controller {
 
 		if (empty($shareToken) && !$this->userSession->isLoggedIn()) {
 			$redirectUrl = $this->urlGenerator->linkToRoute(
-				"core.login.showLoginForm", [
+				"core.login.showLoginForm",
+				[
 				"redirect_url" => $this->request->getRequestUri()
 				]
 			);
@@ -1463,14 +1466,17 @@ class EditorController extends Controller {
 	 */
 	private function renderError($error, $hint = "") {
 		return new TemplateResponse(
-			"", "error", [
+			"",
+			"error",
+			[
 				"errors" => [
 					[
 						"error" => $error,
 						"hint" => $hint
 					]
 				]
-			], "error"
+			],
+			"error"
 		);
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
- * 
+ *
  * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -777,7 +777,7 @@ class CallbackController extends Controller {
 	 * @param callable $operation
 	 *
 	 * @throws LockedException
-	 * 
+	 *
 	 * @return void
 	 */
 	private function retryOperation(callable $operation) {

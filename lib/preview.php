@@ -199,7 +199,7 @@ class Preview implements IProvider2 {
 
 	/**
 	 * Return mime type
-	 * 
+	 *
 	 * @return string
 	 */
 	public static function getMimeTypeRegex() {
@@ -217,7 +217,7 @@ class Preview implements IProvider2 {
 
 	/**
 	 * Return mime type
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getMimeType() {

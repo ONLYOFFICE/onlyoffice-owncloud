@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
- * 
+ *
  * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -125,7 +125,8 @@ class Application extends App {
 		$previewManager = $container->query(IPreview::class);
 		if ($this->appConfig->getPreview()) {
 			$previewManager->registerProvider(
-				Preview::getMimeTypeRegex(), function () use ($container) {
+				Preview::getMimeTypeRegex(),
+				function () use ($container) {
 					return $container->query(Preview::class);
 				}
 			);
@@ -141,7 +142,8 @@ class Application extends App {
 					\OC::$server->getLogger(),
 					\OC::$server->getUserManager()
 				);
-			}, function () use ($appName) {
+			},
+			function () use ($appName) {
 				return [
 				"id" => $appName,
 				"name" => $appName,
@@ -150,38 +152,44 @@ class Application extends App {
 		);
 
 		$container->registerService(
-			"L10N", function ($c) {
+			"L10N",
+			function ($c) {
 				return $c->query("ServerContainer")->getL10N($c->query("AppName"));
 			}
 		);
 
 		$container->registerService(
-			"RootStorage", function ($c) {
+			"RootStorage",
+			function ($c) {
 				return $c->query("ServerContainer")->getRootFolder();
 			}
 		);
 
 		$container->registerService(
-			"UserSession", function ($c) {
+			"UserSession",
+			function ($c) {
 				return $c->query("ServerContainer")->getUserSession();
 			}
 		);
 
 		$container->registerService(
-			"Logger", function ($c) {
+			"Logger",
+			function ($c) {
 				return $c->query("ServerContainer")->getLogger();
 			}
 		);
 
 		$container->registerService(
-			"URLGenerator", function ($c) {
+			"URLGenerator",
+			function ($c) {
 				return $c->query("ServerContainer")->getURLGenerator();
 			}
 		);
 
 		// Controllers
 		$container->registerService(
-			"SettingsController", function ($c) {
+			"SettingsController",
+			function ($c) {
 				return new SettingsController(
 					$c->query("AppName"),
 					$c->query("Request"),
@@ -195,7 +203,8 @@ class Application extends App {
 		);
 
 		$container->registerService(
-			"SettingsApiController", function ($c) {
+			"SettingsApiController",
+			function ($c) {
 				return new SettingsApiController(
 					$c->query("AppName"),
 					$c->query("Request"),
@@ -206,7 +215,8 @@ class Application extends App {
 		);
 
 		$container->registerService(
-			"EditorController", function ($c) {
+			"EditorController",
+			function ($c) {
 				return new EditorController(
 					$c->query("AppName"),
 					$c->query("Request"),
@@ -226,7 +236,8 @@ class Application extends App {
 		);
 
 		$container->registerService(
-			"EditorApiController", function ($c) {
+			"EditorApiController",
+			function ($c) {
 				return new EditorApiController(
 					$c->query("AppName"),
 					$c->query("Request"),
@@ -245,7 +256,8 @@ class Application extends App {
 		);
 
 		$container->registerService(
-			"CallbackController", function ($c) {
+			"CallbackController",
+			function ($c) {
 				return new CallbackController(
 					$c->query("AppName"),
 					$c->query("Request"),
@@ -262,7 +274,8 @@ class Application extends App {
 		);
 
 		$container->registerService(
-			"TemplateController", function ($c) {
+			"TemplateController",
+			function ($c) {
 				return new TemplateController(
 					$c->query("AppName"),
 					$c->query("Request"),
@@ -273,7 +286,8 @@ class Application extends App {
 		);
 
 		$container->registerService(
-			"WebAssetController", function ($c) {
+			"WebAssetController",
+			function ($c) {
 				return new WebAssetController(
 					$c->query("AppName"),
 					$c->query("Request"),

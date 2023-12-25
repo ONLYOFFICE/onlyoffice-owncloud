@@ -66,7 +66,7 @@ class Hooks {
 	 * Erase user file versions
 	 *
 	 * @param array $params - hook params
-	 * 
+	 *
 	 * @return void
 	 */
 	public static function userDelete($params) {
@@ -79,7 +79,7 @@ class Hooks {
 	 * Listen of file change
 	 *
 	 * @param array $params - hook params
-	 * 
+	 *
 	 * @return void
 	 */
 	public static function fileUpdate($params) {
@@ -104,7 +104,7 @@ class Hooks {
 	 * Erase versions of deleted file
 	 *
 	 * @param array $params - hook params
-	 * 
+	 *
 	 * @return void
 	 */
 	public static function fileDelete($params) {
@@ -135,7 +135,7 @@ class Hooks {
 	 * Erase versions of deleted version of file
 	 *
 	 * @param array $params - hook param
-	 * 
+	 *
 	 * @return void
 	 */
 	public static function fileVersionDelete($params) {
@@ -170,7 +170,7 @@ class Hooks {
 	 * Erase versions of restored version of file
 	 *
 	 * @param array $params - hook param
-	 * 
+	 *
 	 * @return void
 	 */
 	public static function fileVersionRestore($params) {

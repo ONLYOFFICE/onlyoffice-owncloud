@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
- * 
+ *
  * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -135,7 +135,7 @@ class TemplateController extends Controller {
 	 * Delete template
 	 *
 	 * @param string $templateId - file identifier
-	 * 
+	 *
 	 * @return array
 	 */
 	public function deleteTemplate($templateId) {

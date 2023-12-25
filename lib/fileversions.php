@@ -244,7 +244,7 @@ class FileVersions {
 	 * @param array $history - file history
 	 * @param string $changes - file changes
 	 * @param string $prevVersion - previous version for check
-	 * 
+	 *
 	 * @return void
 	 */
 	public static function saveHistory($fileInfo, $history, $changes, $prevVersion) {
@@ -294,7 +294,7 @@ class FileVersions {
 	 *
 	 * @param string $ownerId - file owner id
 	 * @param string $fileId - file id
-	 * 
+	 *
 	 * @return void
 	 */
 	public static function deleteAllVersions($ownerId, $fileId = null) {
@@ -320,7 +320,7 @@ class FileVersions {
 	 * @param string $ownerId - file owner id
 	 * @param string $fileId - file id
 	 * @param string $versionId - file version
-	 * 
+	 *
 	 * @return void|null
 	 */
 	public static function deleteVersion($ownerId, $fileId, $versionId) {
@@ -355,7 +355,7 @@ class FileVersions {
 
 	/**
 	 * Clear all version history
-	 * 
+	 *
 	 * @return void
 	 */
 	public static function clearHistory() {
@@ -382,7 +382,7 @@ class FileVersions {
 	 *
 	 * @param FileInfo $fileInfo - file info
 	 * @param IUser $author - version author
-	 * 
+	 *
 	 * @return void
 	 */
 	public static function saveAuthor($fileInfo, $author) {
@@ -461,7 +461,7 @@ class FileVersions {
 	 * @param string $ownerId - file owner id
 	 * @param string $fileId - file id
 	 * @param string $versionId - file version
-	 * 
+	 *
 	 * @return void|null
 	 */
 	public static function deleteAuthor($ownerId, $fileId, $versionId) {

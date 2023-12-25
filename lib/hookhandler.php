@@ -30,10 +30,9 @@ use OCA\Onlyoffice\AppConfig;
  * @package OCA\Onlyoffice
  */
 class HookHandler {
-
 	/**
 	 * Adds scripts and styles
-	 * 
+	 *
 	 * @return void
 	 */
 	public static function publicPage() {

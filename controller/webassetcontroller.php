@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
- * 
+ *
  * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -64,7 +64,9 @@ class WebAssetController extends Controller {
 		$filePath = \realpath($basePath . '/js/web/onlyoffice.js');
 		try {
 			return new DataDisplayResponse(
-				\file_get_contents($filePath), Http::STATUS_OK, [
+				\file_get_contents($filePath),
+				Http::STATUS_OK,
+				[
 				'Content-Type' => "text/javascript",
 				'Content-Length' => \filesize($filePath),
 				'Cache-Control' => 'max-age=0, no-cache, no-store, must-revalidate',

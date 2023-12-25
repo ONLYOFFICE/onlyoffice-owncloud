@@ -120,7 +120,7 @@ class EditorsCheck extends TimedJob {
 	 * Makes the background check
 	 *
 	 * @param array $argument unused argument
-	 * 
+	 *
 	 * @return void
 	 */
 	protected function run($argument) {

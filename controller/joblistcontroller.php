@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
- * 
+ *
  * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -81,7 +81,7 @@ class JobListController extends Controller {
 	 * Add a job to list
 	 *
 	 * @param IJob|string $job
-	 * 
+	 *
 	 * @return void
 	 */
 	private function addJob($job) {
@@ -95,7 +95,7 @@ class JobListController extends Controller {
 	 * Remove a job from list
 	 *
 	 * @param IJob|string $job
-	 * 
+	 *
 	 * @return void
 	 */
 	private function removeJob($job) {

@@ -1,7 +1,7 @@
 <?php
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
- * 
+ *
  * (c) Copyright Ascensio System SIA 2023
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -495,7 +495,8 @@ class EditorApiController extends OCSController {
 					$createParam["name"] = $templateItem->getName();
 
 					array_push(
-						$templates, [
+						$templates,
+						[
 						"image" => "",
 						"title" => $templateItem->getName(),
 						"url" => urldecode($this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.create_new", $createParam))

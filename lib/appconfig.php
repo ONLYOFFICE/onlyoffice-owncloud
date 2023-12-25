@@ -403,7 +403,7 @@ class AppConfig {
 	 * Save the document service address to the application configuration
 	 *
 	 * @param string $documentServer - document service address
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setDocumentServerUrl($documentServer) {
@@ -449,7 +449,7 @@ class AppConfig {
 	 * Save the document service address available from ownCloud to the application configuration
 	 *
 	 * @param string $documentServerInternal - document service address
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setDocumentServerInternalUrl($documentServerInternal) {
@@ -518,7 +518,7 @@ class AppConfig {
 	 * Save the ownCloud address available from document server to the application configuration
 	 *
 	 * @param string $storageUrl - storage url
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setStorageUrl($storageUrl) {
@@ -552,7 +552,7 @@ class AppConfig {
 	 * Save the document service secret key to the application configuration
 	 *
 	 * @param string $secret - secret key
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setDocumentServerSecret($secret) {
@@ -602,7 +602,7 @@ class AppConfig {
 	 * Save an array of formats with default action
 	 *
 	 * @param array $formats - formats with status
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setDefaultFormats($formats) {
@@ -629,7 +629,7 @@ class AppConfig {
 	 * Save an array of formats that is opened for editing
 	 *
 	 * @param array $formats - formats with status
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setEditableFormats($formats) {
@@ -656,7 +656,7 @@ class AppConfig {
 	 * Save the opening setting in a same tab
 	 *
 	 * @param bool $value - same tab
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setSameTab($value) {
@@ -678,7 +678,7 @@ class AppConfig {
 	 * Save generate preview setting
 	 *
 	 * @param bool $value - preview
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function setPreview($value) {
@@ -700,7 +700,7 @@ class AppConfig {
 	 * Save keep versions history
 	 *
 	 * @param bool $value - version history
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setVersionHistory($value) {
@@ -722,7 +722,7 @@ class AppConfig {
 	 * Save protection
 	 *
 	 * @param bool $value - version history
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setProtection($value) {
@@ -748,7 +748,7 @@ class AppConfig {
 	 * Save chat display setting
 	 *
 	 * @param bool $value - display chat
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setCustomizationChat($value) {
@@ -770,7 +770,7 @@ class AppConfig {
 	 * Save compact header setting
 	 *
 	 * @param bool $value - display compact header
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setCustomizationCompactHeader($value) {
@@ -792,7 +792,7 @@ class AppConfig {
 	 * Save feedback display setting
 	 *
 	 * @param bool $value - display feedback
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setCustomizationFeedback($value) {
@@ -814,7 +814,7 @@ class AppConfig {
 	 * Save forcesave setting
 	 *
 	 * @param bool $value - forcesave
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setCustomizationForcesave($value) {
@@ -838,7 +838,7 @@ class AppConfig {
 	 * Save help display setting
 	 *
 	 * @param bool $value - display help
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setCustomizationHelp($value) {
@@ -860,7 +860,7 @@ class AppConfig {
 	 * Save without tabs setting
 	 *
 	 * @param bool $value - without tabs
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setCustomizationToolbarNoTabs($value) {
@@ -882,7 +882,7 @@ class AppConfig {
 	 * Save review viewing mode setting
 	 *
 	 * @param string $value - review mode
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setCustomizationReviewDisplay($value) {
@@ -911,7 +911,7 @@ class AppConfig {
 	 * Save theme setting
 	 *
 	 * @param string $value - theme
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setCustomizationTheme($value) {
@@ -940,7 +940,7 @@ class AppConfig {
 	 * Save macros setting
 	 *
 	 * @param bool $value - enable macros
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setCustomizationMacros($value) {
@@ -962,7 +962,7 @@ class AppConfig {
 	 * Save plugins setting
 	 *
 	 * @param bool $value - enable macros
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setCustomizationPlugins($value) {
@@ -984,7 +984,7 @@ class AppConfig {
 	 * Save the list of groups
 	 *
 	 * @param array $groups - the list of groups
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setLimitGroups($groups) {
@@ -1063,7 +1063,7 @@ class AppConfig {
 	 * Save the document service verification setting to the application configuration
 	 *
 	 * @param bool $verifyPeerOff - parameter verification setting
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setVerifyPeerOff($verifyPeerOff) {
@@ -1128,7 +1128,7 @@ class AppConfig {
 	 * Save the jwtHeader setting
 	 *
 	 * @param string $value - jwtHeader
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setJwtHeader($value) {
@@ -1157,7 +1157,7 @@ class AppConfig {
 	 * Save the status settings
 	 *
 	 * @param string $value - error
-	 * 
+	 *
 	 * @return void
 	 */
 	public function setSettingsError($value) {

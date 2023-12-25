@@ -26,7 +26,6 @@ use OCP\Settings\ISettings;
  * Settings controller for the administration page
  */
 class AdminSettings implements ISettings {
-
 	/**
 	 * Constructor
 	 */

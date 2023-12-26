@@ -3,6 +3,9 @@
 ### Changed
 - compatible with ownCloud Web 7.0
 
+## Added
+- reference data from coediting
+
 ## 8.2.3
 ## Added
 - Ukrainian translation

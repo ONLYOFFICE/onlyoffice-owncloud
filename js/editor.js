@@ -146,7 +146,7 @@
                         config.events.onRequestSaveAs = OCA.Onlyoffice.onRequestSaveAs;
                         config.events.onRequestInsertImage = OCA.Onlyoffice.onRequestInsertImage;
                         config.events.onRequestMailMergeRecipients = OCA.Onlyoffice.onRequestMailMergeRecipients;
-                        config.events.onRequestCompareFile = OCA.Onlyoffice.onRequestCompareFile;
+                        config.events.onRequestSelectDocument = OCA.Onlyoffice.onRequestSelectDocument;
                         config.events.onRequestSendNotify = OCA.Onlyoffice.onRequestSendNotify;
                         config.events.onRequestReferenceData = OCA.Onlyoffice.onRequestReferenceData;
                         config.events.onMetaChange = OCA.Onlyoffice.onMetaChange;
@@ -417,27 +417,36 @@
         "*");
     };
 
-    OCA.Onlyoffice.onRequestCompareFile = function () {
+    OCA.Onlyoffice.onRequestSelectDocument = function (event) {
         var revisedMimes = [
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         ];
 
         if (OCA.Onlyoffice.inframe) {
             window.parent.postMessage({
-                method: "editorRequestCompareFile",
-                param: revisedMimes
+                method: "editorRequestSelectDocument",
+                param: revisedMimes,
+                documentSelectionType: event.data.c
             },
             "*");
         } else {
-            OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Select file to compare"),
-                OCA.Onlyoffice.editorSetRevised,
+            let title;
+            switch (event.data.c) {
+                case "combine":
+                    title = t(OCA.Onlyoffice.AppName, "Select file to combine");
+                    break;
+                default:
+                    title = t(OCA.Onlyoffice.AppName, "Select file to compare");
+            }
+            OC.dialogs.filepicker(title,
+                OCA.Onlyoffice.editorSetRequested.bind({documentSelectionType: event.data.c}),
                 false,
                 revisedMimes,
                 true);
         }
     };
 
-    OCA.Onlyoffice.editorSetRevised = function (filePath) {
+    OCA.Onlyoffice.editorSetRequested = function (filePath) {
         $.get(OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/url?filePath={filePath}",
             {
                 filePath: filePath

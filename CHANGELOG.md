@@ -5,6 +5,7 @@
 
 ## Added
 - reference data from coediting
+- Arabic and Serbian empty file templates
 
 ## 8.2.3
 ## Added

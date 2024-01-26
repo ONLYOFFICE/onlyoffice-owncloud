@@ -459,8 +459,9 @@
                     });
                     return;
                 }
+                response.c = documentSelectionType;
 
-                OCA.Onlyoffice.docEditor.setRevisedFile(response);
+                OCA.Onlyoffice.docEditor.setRequestedDocument(response);
             });
     };
 

@@ -5,6 +5,7 @@
 
 ## Added
 - reference data from coediting
+- selecting a document to combine from the storage
 
 ## 8.2.3
 ## Added

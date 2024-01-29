@@ -72,6 +72,14 @@
             true);
     };
 
+    OCA.Onlyoffice.onRequestReferenceSource = function (referenceSourceMimes) {
+        OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Select data source"),
+            $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.editorReferenceSource,
+            false,
+            referenceSourceMimes,
+            true);
+    }
+
     OCA.Onlyoffice.onDocumentReady = function (documentType) {
         if (documentType === "word") {
             OCA.Onlyoffice.bindVersionClick();
@@ -120,6 +128,9 @@
                 break;
             case "editorRequestSelectDocument":
                 OCA.Onlyoffice.onRequestSelectDocument(event.data.param, event.data.documentSelectionType);
+                break;
+            case "editorRequestReferenceSource":
+                OCA.Onlyoffice.onRequestReferenceSource(event.data.param);
                 break;
             case "onDocumentReady":
                 OCA.Onlyoffice.onDocumentReady(event.data.param);

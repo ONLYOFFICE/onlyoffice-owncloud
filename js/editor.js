@@ -150,6 +150,7 @@
                         config.events.onRequestSendNotify = OCA.Onlyoffice.onRequestSendNotify;
                         config.events.onRequestReferenceData = OCA.Onlyoffice.onRequestReferenceData;
                         config.events.onRequestOpen = OCA.Onlyoffice.onRequestOpen;
+                        config.events.onRequestReferenceSource = OCA.Onlyoffice.onRequestReferenceSource;
                         config.events.onMetaChange = OCA.Onlyoffice.onMetaChange;
 
                         if (OC.currentUser) {
@@ -402,6 +403,25 @@
             });
     };
 
+    OCA.Onlyoffice.editorReferenceSource = function (filePath) {
+        if (filePath === OCA.Onlyoffice.filePath) {
+            OCA.Onlyoffice.showMessage(t(OCA.Onlyoffice.AppName, "The data source must not be the current document"), "error");
+            return;
+        }
+
+        $.post(OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/reference"),
+        {
+            path: filePath
+        },
+        function onSuccess(response) {
+            if (response.error) {
+                OCA.Onlyoffice.showMessage(response.error, "error");
+                return;
+            }
+            OCA.Onlyoffice.docEditor.setReferenceSource(response);
+        });
+    }
+
     OCA.Onlyoffice.onRequestClose = function () {
         OCA.Onlyoffice.docEditor.destroyEditor();
 
@@ -560,6 +580,25 @@
         let windowName = event.data.windowName;
         let sourceUrl = OC.generateUrl(`apps/${OCA.Onlyoffice.AppName}/${fileId}?filePath=${OC.encodePath(filePath)}`);
         window.open(sourceUrl, windowName);
+    };
+
+    OCA.Onlyoffice.onRequestReferenceSource = function (event) {
+        let referenceSourceMimes = [
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ];
+        if (OCA.Onlyoffice.inframe) {
+            window.parent.postMessage({
+                method: "editorRequestReferenceSource",
+                param: referenceSourceMimes
+            },
+            "*");
+        } else {
+            OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Select data source"),
+                OCA.Onlyoffice.editorReferenceSource,
+                false,
+                referenceSourceMimes,
+                true);
+        }
     };
 
     OCA.Onlyoffice.onMetaChange = function (event) {

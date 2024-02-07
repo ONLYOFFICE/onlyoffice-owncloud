@@ -6,6 +6,7 @@
 ## Added
 - reference data from coediting
 - selecting a document to combine from the storage
+- Arabic and Serbian empty file templates
 - opening a reference data source
 
 ## 8.2.3

@@ -105,7 +105,6 @@ OC.L10N.register(
     "Create form": "Crear formulari",
     "Fill in form in ONLYOFFICE": "Omplir el formulari en ONLYOFFICE",
     "Create new Form template": "Crear nova plantilla de formulari",
-    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Si us plau, actualitzi ONLYOFFICE Docs a la versió 7.0 per a poder treballar amb formularis emplenables en línia",
     "Security": "Seguretat",
     "Light": "Llum",
     "Classic Light": "Llum clàssica",

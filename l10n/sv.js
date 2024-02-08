@@ -105,7 +105,6 @@ OC.L10N.register(
     "Create form": "Skapa formulär",
     "Fill in form in ONLYOFFICE": "Fylla i formulär i ONLYOFFICE",
     "Create new Form template": "Skapa ny formulärmall",
-    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Uppdatera ONLYOFFICE Docs till version 7.0 för att arbeta med ifyllbart onlineformulär",
     "Security": "Säkerhet",
     "Run document macros": "Kör dokumentmakron",
     "Light": "Ljus",

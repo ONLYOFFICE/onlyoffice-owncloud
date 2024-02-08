@@ -105,7 +105,6 @@ OC.L10N.register(
     "Create form": "Utwórz formularz",
     "Fill in form in ONLYOFFICE": "Wypełnić formularz w ONLYOFFICE",
     "Create new Form template": "Utwórz nowy szablon formularza",
-    "Please update ONLYOFFICE Docs to version 7.0 to work on fillable forms online": "Zaktualizuj ONLYOFFICE Docs do wersji 7.0, aby działały w formularzach do wypełniania online",
     "Security": "Bezpieczeństwo",
     "Run document macros": "Uruchom makra dokumentu",
     "Default editor theme": "Domyślny motyw edytora",

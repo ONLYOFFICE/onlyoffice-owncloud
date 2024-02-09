@@ -716,6 +716,8 @@ class AppConfig {
 	 * Save cron checker setting
 	 *
 	 * @param bool $value - cronChecker
+	 * 
+	 * @return void
 	 */
 	public function setCronChecker($value) {
 		$this->logger->info("Set cron checker: " . json_encode($value), ["app" => $this->appName]);

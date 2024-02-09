@@ -334,6 +334,7 @@ class EditorController extends Controller {
 	 * Get users
 	 *
 	 * @param $fileId - file identifier
+	 * @param $operationType - type of operation
 	 *
 	 * @return array
 	 *

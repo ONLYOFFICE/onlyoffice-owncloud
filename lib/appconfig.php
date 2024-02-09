@@ -117,6 +117,13 @@ class AppConfig {
 	private $_preview = "preview";
 
 	/**
+	 * The config key for the cronChecker
+	 *
+	 * @var string
+	 */
+	private $_cronChecker = "cronChecker";
+
+	/**
 	 * The config key for the keep versions history
 	 *
 	 * @var string
@@ -694,6 +701,26 @@ class AppConfig {
 	 */
 	public function getPreview() {
 		return $this->config->getAppValue($this->appName, $this->_preview, "true") === "true";
+	}
+
+	/**
+	 * Get cron checker setting
+	 *
+	 * @return bool
+	 */
+	public function getCronChecker() {
+		return $this->config->getAppValue($this->appName, $this->_cronChecker, "true") !== "false";
+	}
+
+	/**
+	 * Save cron checker setting
+	 *
+	 * @param bool $value - cronChecker
+	 */
+	public function setCronChecker($value) {
+		$this->logger->info("Set cron checker: " . json_encode($value), ["app" => $this->appName]);
+
+		$this->config->setAppValue($this->appName, $this->_cronChecker, json_encode($value));
 	}
 
 	/**

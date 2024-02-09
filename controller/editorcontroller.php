@@ -340,7 +340,7 @@ class EditorController extends Controller {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function users($fileId) {
+	public function users($fileId, $operationType = null) {
 		$this->logger->debug("Search users", ["app" => $this->appName]);
 		$result = [];
 
@@ -400,17 +400,17 @@ class EditorController extends Controller {
 
 		foreach ($users as $user) {
 			$email = $user->getEMailAddress();
-			if ($user->getUID() != $currentUserId && !empty($email)) {
-				array_push(
-					$result,
-					[
-					"email" => $email,
-					"name" => $user->getDisplayName()
-					]
-				);
+			if ($user->getUID() != $currentUserId && (!empty($email) || $operationType === "protect")) {
+				$userElement = [
+					"name" => $user->getDisplayName(),
+					"id" => $user->getUID()
+				];
+				if (!empty($email)) {
+					$userElement["email"] = $email;
+				}
+				array_push($result, $userElement);
 			}
 		}
-
 		return $result;
 	}
 

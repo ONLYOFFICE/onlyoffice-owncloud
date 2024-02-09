@@ -2,6 +2,7 @@
 
 ### Changed
 - compatible with ownCloud Web 7.0
+- offline viewer for share link
 
 ## Added
 - reference data from coediting

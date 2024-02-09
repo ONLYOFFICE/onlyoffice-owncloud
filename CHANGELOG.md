@@ -2,6 +2,7 @@
 
 ### Changed
 - compatible with ownCloud Web 7.0
+- list of users to protect ranges of cells
 - offline viewer for share link
 
 ## Added

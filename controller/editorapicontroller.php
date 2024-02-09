@@ -321,6 +321,7 @@ class EditorApiController extends OCSController {
 				"mode" => "strict",
 				"change" => false
 			];
+
 			$storageShare = $fileStorage->getShare();
 			if (method_exists($storageShare, "getAttributes")) {
 				$attributes = $storageShare->getAttributes();

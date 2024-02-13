@@ -11,6 +11,7 @@
 - Arabic and Serbian empty file templates
 - opening a reference data source
 - changing a reference data source
+- setting for disable editors cron check
 
 ## 8.2.3
 ## Added

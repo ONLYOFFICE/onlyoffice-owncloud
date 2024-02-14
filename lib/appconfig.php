@@ -329,7 +329,7 @@ class AppConfig {
 
 		$this->config = \OC::$server->getConfig();
 		$this->logger = \OC::$server->getLogger();
-		$cacheFactory = \OC::$server->get(ICacheFactory::class);
+		$cacheFactory = \OC::$server->getMemCacheFactory();
 		$this->cache = $cacheFactory->createLocal($this->appName);
 	}
 

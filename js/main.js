@@ -173,7 +173,7 @@
 
     OCA.Onlyoffice.FileClick = function (fileName, context) {
         var fileInfoModel = context.fileInfoModel || context.fileList.getModelForFile(fileName);
-        var fileId = context.$file[0].dataset.id || fileInfoModel.id;
+        var fileId = context.$file && context.$file[0].dataset.id || fileInfoModel.id;
         var winEditor = !fileInfoModel && !OCA.Onlyoffice.setting.sameTab ? document : null;
 
         OCA.Onlyoffice.OpenEditor(fileId, context.dir, fileName, 0, winEditor);
@@ -185,9 +185,10 @@
     OCA.Onlyoffice.FileConvertClick = function (fileName, context) {
         var fileInfoModel = context.fileInfoModel || context.fileList.getModelForFile(fileName);
         var fileList = context.fileList;
+        var fileId = context.$file ? context.$file[0].dataset.id : fileInfoModel.id;
 
         var convertData = {
-            fileId: context.$file[0].dataset.id || fileInfoModel.id
+            fileId: fileId
         };
 
         if ($("#isPublic").val()) {
@@ -284,7 +285,7 @@
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         ];
 
-        OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Create new Form template"),
+        OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Create new PDF form"),
             function (filePath) {
                 OCA.Onlyoffice.CreateFile(name, fileList, 0, filePath);
             },
@@ -329,7 +330,7 @@
                 if (!config.mime) {
                     return true;
                 }
-    
+
                 let mimeTypes = config.mime;
                 mimeTypes.forEach((mime) => {
                     OCA.Files.fileActions.registerAction({
@@ -340,11 +341,11 @@
                         iconClass: "icon-onlyoffice-open",
                         actionHandler: OCA.Onlyoffice.FileClick
                     });
-                    
+
                     if (config.def) {
                         OCA.Files.fileActions.setDefault(mime, "onlyofficeOpen");
                     }
-    
+
                     if (config.conv) {
                         OCA.Files.fileActions.registerAction({
                             name: "onlyofficeConvert",
@@ -355,7 +356,7 @@
                             actionHandler: OCA.Onlyoffice.FileConvertClick
                         });
                     }
-    
+
                     if (config.fillForms) {
                         OCA.Files.fileActions.registerAction({
                             name: "onlyofficeFill",
@@ -366,7 +367,7 @@
                             actionHandler: OCA.Onlyoffice.FileClick
                         });
                     }
-    
+
                     if (config.createForm) {
                         OCA.Files.fileActions.registerAction({
                             name: "onlyofficeCreateForm",
@@ -377,7 +378,7 @@
                             actionHandler: OCA.Onlyoffice.CreateFormClick
                         });
                     }
-    
+
                     if (config.saveas && !$("#isPublic").val()) {
                         OCA.Files.fileActions.registerAction({
                             name: "onlyofficeDownload",
@@ -450,8 +451,8 @@
 
             menu.addMenuEntry({
                 id: "onlyofficeDocxf",
-                displayName: t(OCA.Onlyoffice.AppName, "Form template"),
-                templateName: t(OCA.Onlyoffice.AppName, "Form template"),
+                displayName: t(OCA.Onlyoffice.AppName, "PDF form"),
+                templateName: t(OCA.Onlyoffice.AppName, "PDF form"),
                 iconClass: "icon-onlyoffice-new-docxf",
                 fileType: "docxf",
                 actionHandler: function (name) {
@@ -462,8 +463,8 @@
             if (!$("#isPublic").val()) {
                 menu.addMenuEntry({
                     id: "onlyofficeDocxfExist",
-                    displayName: t(OCA.Onlyoffice.AppName, "Form template from existing text file"),
-                    templateName: t(OCA.Onlyoffice.AppName, "Form template from existing text file"),
+                    displayName: t(OCA.Onlyoffice.AppName, "PDF form from existing text file"),
+                    templateName: t(OCA.Onlyoffice.AppName, "PDF form from existing text file"),
                     iconClass: "icon-onlyoffice-new-docxf",
                     fileType: "docxf",
                     actionHandler: function (name) {

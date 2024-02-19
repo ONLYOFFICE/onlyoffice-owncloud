@@ -1307,7 +1307,8 @@ class AppConfig {
 						&& $onlyOfficeFormat["mime"]
 						&& $onlyOfficeFormat["type"]
 						&& $onlyOfficeFormat["actions"]
-						&& $onlyOfficeFormat["convert"]) {
+						&& $onlyOfficeFormat["convert"]
+					) {
 						$result[$onlyOfficeFormat["name"]] = [
 							"mime" => $onlyOfficeFormat["mime"],
 							"type" => $onlyOfficeFormat["type"],

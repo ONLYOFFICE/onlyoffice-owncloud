@@ -5,6 +5,7 @@
 - list of users to protect ranges of cells
 - offline viewer for share link
 - updatable list of supported formats
+- filling pdf instead oform
 
 ## Added
 - reference data from coediting

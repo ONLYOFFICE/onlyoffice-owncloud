@@ -329,7 +329,7 @@
                 if (!config.mime) {
                     return true;
                 }
-    
+
                 let mimeTypes = config.mime;
                 mimeTypes.forEach((mime) => {
                     OCA.Files.fileActions.registerAction({
@@ -340,11 +340,11 @@
                         iconClass: "icon-onlyoffice-open",
                         actionHandler: OCA.Onlyoffice.FileClick
                     });
-                    
+
                     if (config.def) {
                         OCA.Files.fileActions.setDefault(mime, "onlyofficeOpen");
                     }
-    
+
                     if (config.conv) {
                         OCA.Files.fileActions.registerAction({
                             name: "onlyofficeConvert",
@@ -355,7 +355,7 @@
                             actionHandler: OCA.Onlyoffice.FileConvertClick
                         });
                     }
-    
+
                     if (config.fillForms) {
                         OCA.Files.fileActions.registerAction({
                             name: "onlyofficeFill",
@@ -366,7 +366,7 @@
                             actionHandler: OCA.Onlyoffice.FileClick
                         });
                     }
-    
+
                     if (config.createForm) {
                         OCA.Files.fileActions.registerAction({
                             name: "onlyofficeCreateForm",
@@ -377,7 +377,7 @@
                             actionHandler: OCA.Onlyoffice.CreateFormClick
                         });
                     }
-    
+
                     if (config.saveas && !$("#isPublic").val()) {
                         OCA.Files.fileActions.registerAction({
                             name: "onlyofficeDownload",

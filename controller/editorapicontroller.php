@@ -325,11 +325,8 @@ class EditorApiController extends OCSController {
 			$storageShare = $fileStorage->getShare();
 			if (method_exists($storageShare, "getAttributes")) {
 				$attributes = $storageShare->getAttributes();
-
-				$permissionsDownload = $attributes->getAttribute("permissions", "download");
-				if ($permissionsDownload !== null) {
-					$params["document"]["permissions"]["download"] = $params["document"]["permissions"]["print"] = $params["document"]["permissions"]["copy"] = $permissionsDownload === true;
-				}
+				$canDownload = FileUtility::canShareDownload($storageShare);
+				$params["document"]["permissions"]["download"] = $params["document"]["permissions"]["print"] = $params["document"]["permissions"]["copy"] = $canDownload === true;
 
 				if (isset($format["review"]) && $format["review"]) {
 					$permissionsReviewOnly = $attributes->getAttribute($this->appName, "review");

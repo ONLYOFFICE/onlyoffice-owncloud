@@ -6,6 +6,7 @@
 - offline viewer for share link
 - updatable list of supported formats
 - filling pdf instead oform
+- fixed guest redirect when limiting the app to groups
 
 ## Added
 - reference data from coediting

@@ -114,6 +114,13 @@ class EditorApiController extends OCSController {
 	private $versionManager;
 
 	/**
+	 * Avatar manager
+	 *
+	 * @var IAvatarManager
+	 */
+	private $avatarManager;
+
+	/**
 	 * Tag manager
 	 *
 	 * @var ITagManager
@@ -167,6 +174,7 @@ class EditorApiController extends OCSController {
 		$this->versionManager = new VersionManager($AppName, $root);
 
 		$this->fileUtility = new FileUtility($AppName, $trans, $logger, $config, $shareManager, $session);
+		$this->avatarManager = \OC::$server->getAvatarManager();
 	}
 
 	/**
@@ -436,6 +444,16 @@ class EditorApiController extends OCSController {
 				"id" => $this->buildUserId($userId),
 				"name" => $user->getDisplayName()
 			];
+			$avatar = $this->avatarManager->getAvatar($userId);
+			if ($avatar->exists()) {
+				$userAvatarUrl = $this->urlGenerator->getAbsoluteURL(
+					$this->urlGenerator->linkToRoute("core.avatar.getAvatar", [
+						"userId" => $userId,
+						"size" => 64,
+					])
+				);
+				$params["editorConfig"]["user"]["image"] = $userAvatarUrl;
+			}
 		}
 
 		$folderLink = null;

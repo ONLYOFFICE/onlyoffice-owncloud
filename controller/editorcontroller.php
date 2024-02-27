@@ -141,6 +141,13 @@ class EditorController extends Controller {
 	private $groupManager;
 
 	/**
+	 * Avatar manager
+	 *
+	 * @var IAvatarManager
+	 */
+	private $avatarManager;
+
+	/**
 	 * @param string $AppName - application name
 	 * @param IRequest $request - request object
 	 * @param IRootFolder $root - root folder
@@ -186,6 +193,7 @@ class EditorController extends Controller {
 		$this->versionManager = new VersionManager($AppName, $root);
 
 		$this->fileUtility = new FileUtility($AppName, $trans, $logger, $config, $shareManager, $session);
+		$this->avatarManager = \OC::$server->getAvatarManager();
 	}
 
 	/**
@@ -410,6 +418,46 @@ class EditorController extends Controller {
 					$userElement["email"] = $email;
 				}
 				array_push($result, $userElement);
+			}
+		}
+		return $result;
+	}
+
+	/**
+	 * Get user for Info
+	 *
+	 * @param string $userIds - users identifiers
+	 *
+	 * @return array
+	 *
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 */
+	public function userInfo($userIds) {
+		$result = [];
+		$userIds = json_decode($userIds, true);
+
+		if ($userIds !== null && is_array($userIds)) {
+			foreach ($userIds as $userId) {
+				$userData = [];
+				$user = $this->userManager->get($this->getUserId($userId));
+				if (!empty($user)) {
+					$userData = [
+						"name" => $user->getDisplayName(),
+						"id" => $userId
+					];
+					$avatar = $this->avatarManager->getAvatar($user->getUID());
+					if ($avatar->exists()) {
+						$userAvatarUrl = $this->urlGenerator->getAbsoluteURL(
+							$this->urlGenerator->linkToRoute("core.avatar.getAvatar", [
+								"userId" => $user->getUID(),
+								"size" => 64,
+							])
+						);
+						$userData["image"] = $userAvatarUrl;
+					}
+					array_push($result, $userData);
+				}
 			}
 		}
 		return $result;
@@ -1458,6 +1506,21 @@ class EditorController extends Controller {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Get Nextcloud userId from unique user identifier
+	 *
+	 * @param string $userId - current user identifier
+	 *
+	 * @return string
+	 */
+	private function getUserId($userId) {
+		if (str_contains($userId, "_")) {
+			$userIdExp = explode("_", $userId);
+			$userId = end($userIdExp);
+		}
+		return $userId;
 	}
 
 	/**

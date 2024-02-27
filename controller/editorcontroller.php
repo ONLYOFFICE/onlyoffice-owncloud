@@ -449,10 +449,13 @@ class EditorController extends Controller {
 					$avatar = $this->avatarManager->getAvatar($user->getUID());
 					if ($avatar->exists()) {
 						$userAvatarUrl = $this->urlGenerator->getAbsoluteURL(
-							$this->urlGenerator->linkToRoute("core.avatar.getAvatar", [
-								"userId" => $user->getUID(),
-								"size" => 64,
-							])
+							$this->urlGenerator->linkToRoute(
+								"core.avatar.getAvatar",
+								[
+									"userId" => $userId,
+									"size" => 64,
+								]
+							)
 						);
 						$userData["image"] = $userAvatarUrl;
 					}

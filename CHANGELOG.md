@@ -6,6 +6,7 @@
 - offline viewer for share link
 - updatable list of supported formats
 - filling pdf instead oform
+- fixed mobile editor size
 
 ## Added
 - reference data from coediting

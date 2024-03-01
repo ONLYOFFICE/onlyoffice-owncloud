@@ -49,7 +49,6 @@ OC.L10N.register(
     "review" : "преглед",
     "form filling" : "попълване на формуляр",
     "comment" : "коментар",
-    "custom filter" : "персонализиран филтър",
     "download" : "изтегли",
     "Server settings" : "Настройки на сървъра",
     "Common settings" : "Общи настройки",

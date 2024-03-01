@@ -49,7 +49,6 @@ OC.L10N.register(
     "review": "Anmeldelse",
     "form filling": "Formular udfyldning",
     "comment": "Kommentar",
-    "custom filter": "Brugerdefineret filter",
     "download": "Hent",
     "Server settings": "Serverindstillinger",
     "Common settings": "Fælles indstillinger",

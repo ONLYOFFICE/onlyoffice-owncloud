@@ -49,7 +49,6 @@ OC.L10N.register(
     "review" : "granska",
     "form filling" : "formulärfyllning",
     "comment" : "kommentar",
-    "custom filter" : "anpassat filter",
     "download" : "ladda ner",
     "Server settings" : "Serverinställningar",
     "Common settings" : "Allmänna inställningar",

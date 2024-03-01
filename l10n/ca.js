@@ -49,7 +49,6 @@ OC.L10N.register(
     "review" : "",
     "form filling" : "",
     "comment" : "",
-    "custom filter" : "",
     "download" : "",
     "Server settings" : "Ajustos de servidor",
     "Common settings" : "Ajustos comuns",

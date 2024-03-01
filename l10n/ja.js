@@ -45,7 +45,6 @@ OC.L10N.register(
     "View details" : "詳細表示",
     "Save" : "保存",
     "Mixed Active Content is not allowed. HTTPS address for ONLYOFFICE Docs is required." : "アクティブコンテンツの混在は許可されていません。ONLYOFFICE DocsにはHTTPSアドレスが必要です",
-    "Restrict access to editors to following groups": "エディターの利用を以下のグループに制限する",
     "review" : "レビュー",
     "form filling" : "フォーム入力",
     "comment" : "コメント",

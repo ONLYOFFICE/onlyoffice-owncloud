@@ -45,7 +45,7 @@ OC.L10N.register(
     "View details" : "Виж детайли",
     "Save" : "Запази",
     "Mixed Active Content is not allowed. HTTPS address for ONLYOFFICE Docs is required." : "Смесеното активно съдържание е недопустимо. За ONLYOFFICE Docs е необходимо използването на HTTPS-адрес.",
-    "Restrict access to editors to following groups" : "Разреши достъп до редакторите само за тези групи",
+    "Allow the following groups to access the editors" : "Разреши достъп до редакторите само за тези групи",
     "review" : "преглед",
     "form filling" : "попълване на формуляр",
     "comment" : "коментар",

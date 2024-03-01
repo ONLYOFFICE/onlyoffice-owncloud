@@ -43,7 +43,7 @@
     "View details" : "Details anzeigen",
     "Save" : "Speichern",
     "Mixed Active Content is not allowed. HTTPS address for ONLYOFFICE Docs is required." : "Mixed Active Content ist nicht möglich. HTTPS-Adresse für ONLYOFFICE Docs ist erforderlich.",
-    "Restrict access to editors to following groups" : "Den Zugriff auf Editoren auf folgende Gruppen gewähren",
+    "Allow the following groups to access the editors" : "Den Zugriff auf Editoren auf folgende Gruppen gewähren",
     "review" : "review",
     "form filling" : "ausfüllen von formularen",
     "comment" : "kommentarе",

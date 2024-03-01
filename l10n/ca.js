@@ -45,7 +45,6 @@ OC.L10N.register(
     "View details" : "Veure detalls",
     "Save" : "Guardar",
     "Mixed Active Content is not allowed. HTTPS address for ONLYOFFICE Docs is required." : "Contingut Mixt Actiu no està permès. Es requereix la direcció HTTPS per a ONLYOFFICE Docs.",
-    "Restrict access to editors to following groups" : "Restringir l'accés a editors a següents grups",
     "review" : "",
     "form filling" : "",
     "comment" : "",

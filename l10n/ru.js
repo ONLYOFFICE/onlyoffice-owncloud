@@ -49,7 +49,7 @@ OC.L10N.register(
     "review" : "рецензирование",
     "form filling" : "заполнение форм",
     "comment" : "комментирование",
-    "custom filter" : "пользовательский фильтр",
+    "global filter" : "глобальный фильтр",
     "download" : "скачивание",
     "Server settings" : "Настройки сервера",
     "Common settings" : "Общие настройки",

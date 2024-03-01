@@ -48,7 +48,6 @@ OC.L10N.register(
     "review": "рецензії",
     "form filling": "заповнення форм",
     "comment": "коментарі",
-    "custom filter": "користувацький фільтр",
     "download": "звантажити",
     "Server settings": "Налаштування сервера",
     "Common settings": "Загальні налаштування",

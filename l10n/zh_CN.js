@@ -49,7 +49,6 @@ OC.L10N.register(
     "review" : "审阅",
     "form filling" : "表单填报",
     "comment" : "评论",
-    "custom filter" : "自定义筛选器",
     "download" : "下载",
     "Server settings" : "服务器设置",
     "Common settings" : "常用设置",

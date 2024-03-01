@@ -48,7 +48,6 @@ OC.L10N.register(
     "review" : "revista",
     "form filling" : "relleno de formulario",
     "comment" : "comentarios",
-    "custom filter" : "filtro personalizado",
     "download" : "descargar",
     "Server settings" : "Ajustes de servidor",
     "Common settings" : "Ajustes comunes",

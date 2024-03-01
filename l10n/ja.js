@@ -48,7 +48,6 @@ OC.L10N.register(
     "review" : "レビュー",
     "form filling" : "フォーム入力",
     "comment" : "コメント",
-    "custom filter" : "ユーザー設定フィルター",
     "download" : "ダウンロード",
     "Server settings" : "サーバー設定",
     "Common settings" : "共通設定",

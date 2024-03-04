@@ -23,6 +23,9 @@
 #body-public #content {
     height: 100%;
 }
+#content-wrapper #content {
+    height: calc(100dvh - 45px);
+}
 
 .AscDesktopEditor #header {
     display: none;

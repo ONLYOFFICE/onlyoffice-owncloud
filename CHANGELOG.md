@@ -7,6 +7,7 @@
 - updatable list of supported formats
 - filling pdf instead oform
 - fixed guest redirect when limiting the app to groups
+- fixed mobile editor size
 
 ## Added
 - reference data from coediting

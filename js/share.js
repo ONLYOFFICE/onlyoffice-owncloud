@@ -341,7 +341,7 @@
                         } else if (attribute.key === "comment") {
                             label = t(OCA.Onlyoffice.AppName, "comment");
                         } else if (attribute.key === "modifyFilter") {
-                            label = t(OCA.Onlyoffice.AppName, "custom filter");
+                            label = t(OCA.Onlyoffice.AppName, "global filter");
                         } else {
                             continue;
                         }
@@ -603,7 +603,7 @@
                     "scope": OCA.Onlyoffice.AppName,
                     "key": "modifyFilter",
                     "default": true,
-                    "label": t(OCA.Onlyoffice.AppName, "custom filter"),
+                    "label": t(OCA.Onlyoffice.AppName, "global filter"),
                     "requiredPermissions": [OC.PERMISSION_UPDATE],
                     "incompatibleAttributes": [
                         {

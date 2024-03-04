@@ -40,7 +40,7 @@ class HookHandler {
 
 		$appConfig = new AppConfig($appName);
 
-		if (!empty($appConfig->getDocumentServerUrl()) && $appConfig->settingsAreSuccessful()) {
+		if (!empty($appConfig->getDocumentServerUrl()) && $appConfig->settingsAreSuccessful() && empty($appConfig->getLimitGroups())) {
 			Util::addScript("onlyoffice", "main");
 			Util::addScript("onlyoffice", "share");
 

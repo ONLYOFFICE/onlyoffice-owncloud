@@ -114,6 +114,13 @@ class EditorApiController extends OCSController {
 	private $versionManager;
 
 	/**
+	 * Avatar manager
+	 *
+	 * @var IAvatarManager
+	 */
+	private $avatarManager;
+
+	/**
 	 * Tag manager
 	 *
 	 * @var ITagManager
@@ -167,6 +174,7 @@ class EditorApiController extends OCSController {
 		$this->versionManager = new VersionManager($AppName, $root);
 
 		$this->fileUtility = new FileUtility($AppName, $trans, $logger, $config, $shareManager, $session);
+		$this->avatarManager = \OC::$server->getAvatarManager();
 	}
 
 	/**
@@ -325,11 +333,8 @@ class EditorApiController extends OCSController {
 			$storageShare = $fileStorage->getShare();
 			if (method_exists($storageShare, "getAttributes")) {
 				$attributes = $storageShare->getAttributes();
-
-				$permissionsDownload = $attributes->getAttribute("permissions", "download");
-				if ($permissionsDownload !== null) {
-					$params["document"]["permissions"]["download"] = $params["document"]["permissions"]["print"] = $params["document"]["permissions"]["copy"] = $permissionsDownload === true;
-				}
+				$canDownload = FileUtility::canShareDownload($storageShare);
+				$params["document"]["permissions"]["download"] = $params["document"]["permissions"]["print"] = $params["document"]["permissions"]["copy"] = $canDownload === true;
 
 				if (isset($format["review"]) && $format["review"]) {
 					$permissionsReviewOnly = $attributes->getAttribute($this->appName, "review");
@@ -436,6 +441,19 @@ class EditorApiController extends OCSController {
 				"id" => $this->buildUserId($userId),
 				"name" => $user->getDisplayName()
 			];
+			$avatar = $this->avatarManager->getAvatar($userId);
+			if ($avatar->exists()) {
+				$userAvatarUrl = $this->urlGenerator->getAbsoluteURL(
+					$this->urlGenerator->linkToRoute(
+						"core.avatar.getAvatar",
+						[
+							"userId" => $userId,
+							"size" => 64,
+						]
+					)
+				);
+				$params["editorConfig"]["user"]["image"] = $userAvatarUrl;
+			}
 		}
 
 		$folderLink = null;

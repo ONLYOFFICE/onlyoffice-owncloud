@@ -812,6 +812,18 @@ class EditorController extends Controller {
 			return ["error" => $this->trans->t("You don't have enough permission to create")];
 		}
 
+		$documentServerUrl = $this->config->getDocumentServerUrl();
+
+		if (empty($documentServerUrl)) {
+			$this->logger->error("documentServerUrl is empty", ["app" => $this->appName]);
+			return ["error" => $this->trans->t("ONLYOFFICE app is not configured. Please contact admin")];
+		}
+
+		if (parse_url($url, PHP_URL_HOST) !== parse_url($documentServerUrl, PHP_URL_HOST)) {
+			$this->logger->error("Incorrect domain in file url", ["app" => $this->appName]);
+			return ["error" => $this->trans->t("The domain in the file url does not match the domain of the Document server")];
+		}
+
 		$url = $this->config->replaceDocumentServerUrlToInternal($url);
 
 		try {

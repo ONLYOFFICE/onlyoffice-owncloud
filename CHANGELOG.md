@@ -15,6 +15,7 @@
 - opening a reference data source
 - changing a reference data source
 - setting for disable editors cron check
+- support of user avatar in editor
 
 ## 8.2.3
 ## Added

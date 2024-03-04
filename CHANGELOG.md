@@ -1,6 +1,6 @@
 # Change Log
 
-## 
+## 9.1.1
 ## Added
 - support of user avatar in editor
 - list of users to protect ranges of cells

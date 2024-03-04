@@ -452,7 +452,7 @@ class EditorController extends Controller {
 							$this->urlGenerator->linkToRoute(
 								"core.avatar.getAvatar",
 								[
-									"userId" => $userId,
+									"userId" => $user->getUID(),
 									"size" => 64,
 								]
 							)

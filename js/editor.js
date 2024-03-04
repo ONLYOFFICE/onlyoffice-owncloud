@@ -267,6 +267,8 @@
         if (OCA.Onlyoffice.version > 0) {
             OCA.Onlyoffice.onRequestHistory(OCA.Onlyoffice.version);
         }
+
+        OCA.Onlyoffice.setViewport();
     };
 
     OCA.Onlyoffice.onRequestSaveAs = function (event) {
@@ -660,6 +662,10 @@
         }
         OCA.Onlyoffice.docEditor.refreshHistory(data);
     }
+
+    OCA.Onlyoffice.setViewport = function() {
+        document.querySelector('meta[name="viewport"]').setAttribute("content","width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0");
+    };
 
     $(document).ready(OCA.Onlyoffice.InitEditor);
 

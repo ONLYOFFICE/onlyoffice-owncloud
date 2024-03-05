@@ -43,10 +43,11 @@
     "View details" : "查看详情",
     "Save" : "保存",
     "Mixed Active Content is not allowed. HTTPS address for ONLYOFFICE Docs is required." : "不允许混合活动内容，请使用HTTPS连接ONLYOFFICE Docs。",
-    "Allow the following groups to access the editors" : "仅授权的用户组可以使用该服务",
+    "Allow the following groups to access the editors" : "让以下用户组访问编辑器",
     "review" : "审阅",
     "form filling" : "表单填报",
     "comment" : "评论",
+    "global filter" : "全局过滤器",
     "download" : "下载",
     "Server settings" : "服务器设置",
     "Common settings" : "常用设置",
@@ -97,8 +98,11 @@
     "Notification sent successfully": "通知发送成功",
     "%1$s mentioned in the %2$s: \"%3$s\".": "%1$s 在 %2$s: \"%3$s\"中提到了您.",
     "Choose a format to convert {fileName}": "转换 {fileName} 为选中的格式",
+    "PDF form": "PDF 表单",
+    "PDF form from existing text file": "用文本文件生成 PDF 表单",
     "Create form": "创建表单",
     "Fill in form in ONLYOFFICE": "在ONLYOFFICE上填写表单",
+    "Create new PDF form": "创建新的 PDF 表单",
     "Security": "安全",
     "Run document macros": "运行文档宏",
     "Default editor theme": "编辑器默认的主题",
@@ -116,6 +120,11 @@
     "View settings": "查看设置",
     "ONLYOFFICE Docs Cloud": "ONLYOFFICE 文档云",
     "Easily launch the editors in the cloud without downloading and installation": "无需下载和安装即可轻松启动云端编辑器",
-    "Get Now": "立即获取"
+    "Get Now": "立即获取",
+    "Select file to combine" : "选择要合并的文件",
+    "Select data source": "选择数据源",
+    "The data source must not be the current document": "数据源不应该是当前文档",
+    "Enable background connection check to the editors": "启用编辑器后台连接检查",
+    "The domain in the file url does not match the domain of the Document server": "文件 URL 中的域与文档服务器的域不匹配"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

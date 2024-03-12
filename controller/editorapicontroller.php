@@ -422,6 +422,13 @@ class EditorApiController extends OCSController {
 			$params["editorConfig"]["callbackUrl"] = $callback;
 		} else {
 			$params["editorConfig"]["mode"] = "view";
+
+			if (isset($shareToken) && empty($userId)) {
+				$params["editorConfig"]["coEditing"] = [
+					"mode" => "strict",
+					"change" => false
+				];
+			}
 		}
 
 		if (\OC::$server->getRequest()->isUserAgent([$this::USER_AGENT_MOBILE])) {

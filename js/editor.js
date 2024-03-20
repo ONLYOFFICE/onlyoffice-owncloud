@@ -470,6 +470,7 @@
     };
 
     OCA.Onlyoffice.editorSetRequested = function (filePath) {
+        let documentSelectionType = this.documentSelectionType;
         $.get(OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/url?filePath={filePath}",
             {
                 filePath: filePath

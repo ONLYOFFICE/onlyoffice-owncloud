@@ -188,7 +188,8 @@
                         $("#app > iframe").css("height", "calc(100% - 45px)");
                     }
 
-                    var favicon = OC.filePath(OCA.Onlyoffice.AppName, "img", OCA.Onlyoffice.documentType + ".ico");
+                    let faviconName = OCA.Onlyoffice.getFaviconName(OCA.Onlyoffice.documentType, OCA.Onlyoffice.filePath);
+                    var favicon = OC.filePath(OCA.Onlyoffice.AppName, "img", faviconName + ".ico");
                     if (OCA.Onlyoffice.inframe) {
                         window.parent.postMessage({
                             method: "changeFavicon",
@@ -712,6 +713,29 @@
     OCA.Onlyoffice.setViewport = function() {
         document.querySelector('meta[name="viewport"]').setAttribute("content","width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0");
     };
+
+    OCA.Onlyoffice.getFileExtension = function (fileName) {
+        var extension = fileName.substr(fileName.lastIndexOf(".") + 1).toLowerCase();
+        return extension;
+    }
+
+    OCA.Onlyoffice.getFaviconName = function (documentType = "word", filePath = null) {
+        if (filePath === null) {
+            return documentType;
+        }
+
+        let faviconName = null;
+        let ext = OCA.Onlyoffice.getFileExtension(filePath);
+        
+        switch (ext) {
+            case "pdf":
+                faviconName = ext;
+            break;
+            default:
+                faviconName = documentType;
+        }
+        return faviconName;
+    }
 
     $(document).ready(OCA.Onlyoffice.InitEditor);
 

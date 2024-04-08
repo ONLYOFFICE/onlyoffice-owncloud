@@ -1,7 +1,8 @@
 <?php
 /**
+ * @author Ascensio System SIA <integration@onlyoffice.com>
  *
- * (c) Copyright Ascensio System SIA 2023
+ * (c) Copyright Ascensio System SIA 2024
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,85 +40,94 @@ use OCA\Onlyoffice\AppConfig;
  * @package OCA\Onlyoffice\Controller
  */
 class JobListController extends Controller {
+	/**
+	 * Logger
+	 *
+	 * @var ILogger
+	 */
+	private $logger;
 
-    /**
-     * Logger
-     * 
-     * @var ILogger
-     */
-    private $logger;
+	/**
+	 * Job list
+	 *
+	 * @var IJobList
+	 */
+	private $jobList;
 
-    /**
-     * Job list
-     * 
-     * @var IJobList
-     */
-    private $jobList;
+	/**
+	 * Application configuration
+	 *
+	 * @var AppConfig
+	 */
+	private $config;
 
-    /**
-     * Application configuration
-     *
-     * @var AppConfig
-     */
-    private $config;
+	/**
+	 * JobListController constructor.
+	 *
+	 * @param string $AppName - application name
+	 * @param IRequest $request - request object
+	 * @param ILogger $logger
+	 * @param AppConfig $config - application configuration
+	 * @param IJobList $jobList - job list
+	 */
+	public function __construct($AppName, IRequest $request, ILogger $logger, AppConfig $config, IJobList $jobList) {
+		parent::__construct($AppName, $request);
+		$this->logger = $logger;
+		$this->config = $config;
+		$this->jobList = $jobList;
+	}
 
-    /**
-     * JobListController constructor.
-     *
-     * @param string $AppName - application name
-     * @param IRequest $request - request object
-     * @param ILogger $logger
-     * @param AppConfig $config - application configuration
-     * @param IJobList $jobList - job list
-     */
-    public function __construct($AppName, IRequest $request, ILogger $logger, AppConfig $config, IJobList $jobList) {
-        parent::__construct($AppName, $request);
-        $this->logger = $logger;
-        $this->config = $config;
-        $this->jobList = $jobList;
-    }
+	/**
+	 * Add a job to list
+	 *
+	 * @param IJob|string $job
+	 *
+	 * @return void
+	 */
+	private function addJob($job) {
+		if (!$this->jobList->has($job, null)) {
+			$this->jobList->add($job);
+			$this->logger->debug("Job '" . $job . "' added to JobList.", ["app" => $this->appName]);
+		}
+	}
 
-    /**
-     * Add a job to list
-     * 
-     * @param IJob|string $job
-     */
-    private function addJob($job) {
-        if (!$this->jobList->has($job, null)) {
-            $this->jobList->add($job);
-            $this->logger->debug("Job '".$job."' added to JobList.", ["app" => $this->appName]);
-        }
-    }
+	/**
+	 * Remove a job from list
+	 *
+	 * @param IJob|string $job
+	 *
+	 * @return void
+	 */
+	private function removeJob($job) {
+		if ($this->jobList->has($job, null)) {
+			$this->jobList->remove($job);
+			$this->logger->debug("Job '" . $job . "' removed from JobList.", ["app" => $this->appName]);
+		}
+	}
 
-    /**
-     * Remove a job from list
-     * 
-     * @param IJob|string $job
-     */
-    private function removeJob($job) {
-        if ($this->jobList->has($job, null)) {
-            $this->jobList->remove($job);
-            $this->logger->debug("Job '".$job."' removed from JobList.", ["app" => $this->appName]);
-        }
-    }
+	/**
+	 * Add or remove EditorsCheck job depending on the value of _editors_check_interval
+	 *
+	 * @return void
+	 */
+	private function checkEditorsCheckJob() {
+		if (!$this->config->getCronChecker()) {
+			$this->removeJob(EditorsCheck::class);
+			return;
+		}
+		if ($this->config->getEditorsCheckInterval() > 0) {
+			$this->addJob(EditorsCheck::class);
+		} else {
+			$this->removeJob(EditorsCheck::class);
+		}
+	}
 
-    /**
-     * Add or remove EditorsCheck job depending on the value of _editors_check_interval
-     * 
-     */
-    private function checkEditorsCheckJob() {
-        if ($this->config->GetEditorsCheckInterval() > 0) {
-            $this->addJob(EditorsCheck::class);
-        } else {
-            $this->removeJob(EditorsCheck::class);
-        }
-    }
-
-    /**
-     * Method for sequentially calling checks of all jobs
-     * 
-     */
-    public function checkAllJobs() {
-        $this->checkEditorsCheckJob();
-    }
+	/**
+	 * Method for sequentially calling checks of all jobs
+	 *
+	 * @return void
+	 */
+	public function checkAllJobs() {
+		$this->checkEditorsCheckJob();
+	}
 }

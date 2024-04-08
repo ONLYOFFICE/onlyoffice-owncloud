@@ -1,5 +1,24 @@
 # Change Log
 
+## 9.1.1
+## Added
+- support of user avatar in editor
+- list of users to protect ranges of cells
+- setting for disable editors cron check
+- selecting a document to combine from the storage
+- reference data from coediting
+- opening a reference data source
+- changing a reference data source
+- Arabic and Serbian empty file templates
+
+## Changed
+- fixed guest redirect when limiting the app to groups
+- fixed mobile editor size
+- offline viewer for share link
+- updatable list of supported formats
+- filling pdf instead oform
+- compatible with ownCloud Web 7.0
+
 ## 8.2.3
 ## Added
 - Ukrainian translation

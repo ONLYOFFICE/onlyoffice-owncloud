@@ -1,6 +1,6 @@
 /**
  *
- * (c) Copyright Ascensio System SIA 2023
+ * (c) Copyright Ascensio System SIA 2024
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -341,7 +341,7 @@
                         } else if (attribute.key === "comment") {
                             label = t(OCA.Onlyoffice.AppName, "comment");
                         } else if (attribute.key === "modifyFilter") {
-                            label = t(OCA.Onlyoffice.AppName, "custom filter");
+                            label = t(OCA.Onlyoffice.AppName, "global filter");
                         } else {
                             continue;
                         }
@@ -603,7 +603,7 @@
                     "scope": OCA.Onlyoffice.AppName,
                     "key": "modifyFilter",
                     "default": true,
-                    "label": t(OCA.Onlyoffice.AppName, "custom filter"),
+                    "label": t(OCA.Onlyoffice.AppName, "global filter"),
                     "requiredPermissions": [OC.PERMISSION_UPDATE],
                     "incompatibleAttributes": [
                         {

@@ -1,6 +1,6 @@
 /**
  *
- * (c) Copyright Ascensio System SIA 2023
+ * (c) Copyright Ascensio System SIA 2024
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,9 @@
 }
 #body-public #content {
     height: 100%;
+}
+#content-wrapper #content {
+    height: calc(100dvh - 45px);
 }
 
 .AscDesktopEditor #header {

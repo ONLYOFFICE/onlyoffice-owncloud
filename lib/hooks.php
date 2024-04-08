@@ -1,7 +1,8 @@
 <?php
 /**
+ * @author Ascensio System SIA <integration@onlyoffice.com>
  *
- * (c) Copyright Ascensio System SIA 2023
+ * (c) Copyright Ascensio System SIA 2024
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,155 +33,169 @@ use OCA\Onlyoffice\KeyManager;
  * @package OCA\Onlyoffice
  */
 class Hooks {
+	/**
+	 * Application name
+	 *
+	 * @var string
+	 */
+	private static $appName = "onlyoffice";
 
-    /**
-     * Application name
-     *
-     * @var string
-     */
-    private static $appName = "onlyoffice";
+	/**
+	 * Connect hooks
+	 *
+	 * @return void
+	 */
+	public static function connectHooks() {
+		// Listen user deletion
+		Util::connectHook("OC_User", "pre_deleteUser", Hooks::class, "userDelete");
 
-    public static function connectHooks() {
-        // Listen user deletion
-        Util::connectHook("OC_User", "pre_deleteUser", Hooks::class, "userDelete");
+		// Listen file change
+		Util::connectHook("OC_Filesystem", "write", Hooks::class, "fileUpdate");
 
-        // Listen file change
-        Util::connectHook("OC_Filesystem", "write", Hooks::class, "fileUpdate");
+		// Listen file deletion
+		Util::connectHook("OC_Filesystem", "delete", Hooks::class, "fileDelete");
 
-        // Listen file deletion
-        Util::connectHook("OC_Filesystem", "delete", Hooks::class, "fileDelete");
+		// Listen file version deletion
+		Util::connectHook("\OCP\Versions", "preDelete", Hooks::class, "fileVersionDelete");
 
-        // Listen file version deletion
-        Util::connectHook("\OCP\Versions", "preDelete", Hooks::class, "fileVersionDelete");
+		// Listen file version restore
+		Util::connectHook("\OCP\Versions", "rollback", Hooks::class, "fileVersionRestore");
+	}
 
-        // Listen file version restore
-        Util::connectHook("\OCP\Versions", "rollback", Hooks::class, "fileVersionRestore");
-    }
+	/**
+	 * Erase user file versions
+	 *
+	 * @param array $params - hook params
+	 *
+	 * @return void
+	 */
+	public static function userDelete($params) {
+		$userId = $params["uid"];
 
-    /**
-     * Erase user file versions
-     *
-     * @param array $params - hook params
-     */
-    public static function userDelete($params) {
-        $userId = $params["uid"];
+		FileVersions::deleteAllVersions($userId);
+	}
 
-        FileVersions::deleteAllVersions($userId);
-    }
+	/**
+	 * Listen of file change
+	 *
+	 * @param array $params - hook params
+	 *
+	 * @return void
+	 */
+	public static function fileUpdate($params) {
+		$filePath = $params[Filesystem::signal_param_path];
+		if (empty($filePath)) {
+			return;
+		}
 
-    /**
-     * Listen of file change
-     *
-     * @param array $params - hook params
-     */
-    public static function fileUpdate($params) {
-        $filePath = $params[Filesystem::signal_param_path];
-        if (empty($filePath)) {
-            return;
-        }
+		$fileInfo = Filesystem::getFileInfo($filePath);
+		if ($fileInfo === false) {
+			return;
+		}
 
-        $fileInfo = Filesystem::getFileInfo($filePath);
-        if ($fileInfo === false) {
-            return;
-        }
+		$fileId = $fileInfo->getId();
 
-        $fileId = $fileInfo->getId();
+		KeyManager::delete($fileId);
 
-        KeyManager::delete($fileId);
+		\OC::$server->getLogger()->debug("Hook fileUpdate " . json_encode($params), ["app" => self::$appName]);
+	}
 
-        \OC::$server->getLogger()->debug("Hook fileUpdate " . json_encode($params), ["app" => self::$appName]);
-    }
+	/**
+	 * Erase versions of deleted file
+	 *
+	 * @param array $params - hook params
+	 *
+	 * @return void
+	 */
+	public static function fileDelete($params) {
+		$filePath = $params[Filesystem::signal_param_path];
+		if (empty($filePath)) {
+			return;
+		}
 
-    /**
-     * Erase versions of deleted file
-     *
-     * @param array $params - hook params
-     */
-    public static function fileDelete($params) {
-        $filePath = $params[Filesystem::signal_param_path];
-        if (empty($filePath)) {
-            return;
-        }
+		try {
+			$ownerId = Filesystem::getOwner($filePath);
 
-        try {
-            $ownerId = Filesystem::getOwner($filePath);
+			$fileInfo = Filesystem::getFileInfo($filePath);
+			if ($fileInfo === false) {
+				return;
+			}
 
-            $fileInfo = Filesystem::getFileInfo($filePath);
-            if ($fileInfo === false) {
-                return;
-            }
+			$fileId = $fileInfo->getId();
 
-            $fileId = $fileInfo->getId();
+			KeyManager::delete($fileId, true);
 
-            KeyManager::delete($fileId, true);
+			FileVersions::deleteAllVersions($ownerId, $fileId);
+		} catch (\Exception $e) {
+			\OC::$server->getLogger()->logException($e, ["message" => "Hook: fileDelete " . json_encode($params), "app" => self::$appName]);
+		}
+	}
+	
+	/**
+	 * Erase versions of deleted version of file
+	 *
+	 * @param array $params - hook param
+	 *
+	 * @return void
+	 */
+	public static function fileVersionDelete($params) {
+		$pathVersion = $params["path"];
+		if (empty($pathVersion)) {
+			return;
+		}
 
-            FileVersions::deleteAllVersions($ownerId, $fileId);
-        } catch (\Exception $e) {
-            \OC::$server->getLogger()->logException($e, ["message" => "Hook: fileDelete " . json_encode($params), "app" => self::$appName]);
-        }
-    }
-    
-    /**
-     * Erase versions of deleted version of file
-     *
-     * @param array $params - hook param
-     */
-    public static function fileVersionDelete($params) {
-        $pathVersion = $params["path"];
-        if (empty($pathVersion)) {
-            return;
-        }
+		try {
+			list($filePath, $versionId) = FileVersions::splitPathVersion($pathVersion);
+			if (empty($filePath)) {
+				return;
+			}
 
-        try {
-            list ($filePath, $versionId) = FileVersions::splitPathVersion($pathVersion);
-            if (empty($filePath)) {
-                return;
-            }
+			$ownerId = Filesystem::getOwner($filePath);
 
-            $ownerId = Filesystem::getOwner($filePath);
+			$fileInfo = Filesystem::getFileInfo($filePath);
+			if ($fileInfo === false) {
+				return;
+			}
 
-            $fileInfo = Filesystem::getFileInfo($filePath);
-            if ($fileInfo === false) {
-                return;
-            }
+			$fileId = $fileInfo->getId();
 
-            $fileId = $fileInfo->getId();
+			FileVersions::deleteVersion($ownerId, $fileId, $versionId);
+			FileVersions::deleteAuthor($ownerId, $fileId, $versionId);
+		} catch (\Exception $e) {
+			\OC::$server->getLogger()->logException($e, ["message" => "Hook: fileVersionDelete " . json_encode($params), "app" => self::$appName]);
+		}
+	}
 
-            FileVersions::deleteVersion($ownerId, $fileId, $versionId);
-            FileVersions::deleteAuthor($ownerId, $fileId, $versionId);
-        } catch (\Exception $e) {
-            \OC::$server->getLogger()->logException($e, ["message" => "Hook: fileVersionDelete " . json_encode($params), "app" => self::$appName]);
-        }
-    }
+	/**
+	 * Erase versions of restored version of file
+	 *
+	 * @param array $params - hook param
+	 *
+	 * @return void
+	 */
+	public static function fileVersionRestore($params) {
+		$filePath = $params["path"];
+		if (empty($filePath)) {
+			return;
+		}
 
-    /**
-     * Erase versions of restored version of file
-     *
-     * @param array $params - hook param
-     */
-    public static function fileVersionRestore($params) {
-        $filePath = $params["path"];
-        if (empty($filePath)) {
-            return;
-        }
+		$versionId = $params["revision"];
 
-        $versionId = $params["revision"];
+		try {
+			$ownerId = Filesystem::getOwner($filePath);
 
-        try {
-            $ownerId = Filesystem::getOwner($filePath);
+			$fileInfo = Filesystem::getFileInfo($filePath);
+			if ($fileInfo === false) {
+				return;
+			}
 
-            $fileInfo = Filesystem::getFileInfo($filePath);
-            if ($fileInfo === false) {
-                return;
-            }
+			$fileId = $fileInfo->getId();
 
-            $fileId = $fileInfo->getId();
+			KeyManager::delete($fileId);
 
-            KeyManager::delete($fileId);
-
-            FileVersions::deleteVersion($ownerId, $fileId, $versionId);
-        } catch (\Exception $e) {
-            \OC::$server->getLogger()->logException($e, ["message" => "Hook: fileVersionRestore " . json_encode($params), "app" => self::$appName]);
-        }
-    }
+			FileVersions::deleteVersion($ownerId, $fileId, $versionId);
+		} catch (\Exception $e) {
+			\OC::$server->getLogger()->logException($e, ["message" => "Hook: fileVersionRestore " . json_encode($params), "app" => self::$appName]);
+		}
+	}
 }

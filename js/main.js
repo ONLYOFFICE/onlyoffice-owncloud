@@ -1,6 +1,6 @@
 /**
  *
- * (c) Copyright Ascensio System SIA 2023
+ * (c) Copyright Ascensio System SIA 2024
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -173,7 +173,7 @@
 
     OCA.Onlyoffice.FileClick = function (fileName, context) {
         var fileInfoModel = context.fileInfoModel || context.fileList.getModelForFile(fileName);
-        var fileId = context.$file[0].dataset.id || fileInfoModel.id;
+        var fileId = context.$file && context.$file[0].dataset.id || fileInfoModel.id;
         var winEditor = !fileInfoModel && !OCA.Onlyoffice.setting.sameTab ? document : null;
 
         OCA.Onlyoffice.OpenEditor(fileId, context.dir, fileName, 0, winEditor);
@@ -185,9 +185,10 @@
     OCA.Onlyoffice.FileConvertClick = function (fileName, context) {
         var fileInfoModel = context.fileInfoModel || context.fileList.getModelForFile(fileName);
         var fileList = context.fileList;
+        var fileId = context.$file ? context.$file[0].dataset.id : fileInfoModel.id;
 
         var convertData = {
-            fileId: context.$file[0].dataset.id || fileInfoModel.id
+            fileId: fileId
         };
 
         if ($("#isPublic").val()) {
@@ -284,7 +285,7 @@
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         ];
 
-        OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Create new Form template"),
+        OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Create new PDF form"),
             function (filePath) {
                 OCA.Onlyoffice.CreateFile(name, fileList, 0, filePath);
             },
@@ -295,7 +296,7 @@
 
     OCA.Onlyoffice.CreateFormClick = function (fileName, context) {
         var fileList = context.fileList;
-        var name = fileName.replace(/\.[^.]+$/, ".oform");
+        var name = fileName.replace(/\.[^.]+$/, ".pdf");
 
         var attr = context.fileInfoModel.attributes;
         var targetPath = attr.path + "/" + attr.name;
@@ -330,74 +331,65 @@
                     return true;
                 }
 
-                OCA.Files.fileActions.registerAction({
-                    name: "onlyofficeOpen",
-                    displayName: t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE"),
-                    mime: config.mime,
-                    permissions: OC.PERMISSION_READ,
-                    iconClass: "icon-onlyoffice-open",
-                    actionHandler: OCA.Onlyoffice.FileClick
-                });
-
-                if (config.def) {
-                    OCA.Files.fileActions.setDefault(config.mime, "onlyofficeOpen");
-                }
-
-                if (config.conv) {
+                let mimeTypes = config.mime;
+                mimeTypes.forEach((mime) => {
                     OCA.Files.fileActions.registerAction({
-                        name: "onlyofficeConvert",
-                        displayName: t(OCA.Onlyoffice.AppName, "Convert with ONLYOFFICE"),
-                        mime: config.mime,
-                        permissions: ($("#isPublic").val() ? OC.PERMISSION_UPDATE : OC.PERMISSION_READ),
-                        iconClass: "icon-onlyoffice-convert",
-                        actionHandler: OCA.Onlyoffice.FileConvertClick
-                    });
-                }
-
-                if (config.fillForms) {
-                    OCA.Files.fileActions.registerAction({
-                        name: "onlyofficeFill",
-                        displayName: t(OCA.Onlyoffice.AppName, "Fill in form in ONLYOFFICE"),
-                        mime: config.mime,
-                        permissions: OC.PERMISSION_UPDATE,
-                        iconClass: "icon-onlyoffice-fill",
+                        name: "onlyofficeOpen",
+                        displayName: t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE"),
+                        mime: mime,
+                        permissions: OC.PERMISSION_READ,
+                        iconClass: "icon-onlyoffice-open",
                         actionHandler: OCA.Onlyoffice.FileClick
                     });
-                }
 
-                if (config.fillForms) {
-                    OCA.Files.fileActions.setDefault(config.mime, "onlyofficeFill");
-                }
-
-                if (config.createForm) {
-                    var permission = OC.PERMISSION_READ;
-                    if ($("#isPublic").val()) {
-                        permission = OC.PERMISSION_UPDATE;
-                        if (parseInt($("#sharePermission").val()) === (OC.PERMISSION_READ | OC.PERMISSION_CREATE)) {
-                            permission = OC.PERMISSION_READ;
-                        }
+                    if (config.def) {
+                        OCA.Files.fileActions.setDefault(mime, "onlyofficeOpen");
                     }
 
-                    OCA.Files.fileActions.registerAction({
-                        name: "onlyofficeCreateForm",
-                        displayName: t(OCA.Onlyoffice.AppName, "Create form"),
-                        mime: config.mime,
-                        permissions: permission,
-                        iconClass: "icon-onlyoffice-create",
-                        actionHandler: OCA.Onlyoffice.CreateFormClick
-                    });
-                }
+                    if (config.conv) {
+                        OCA.Files.fileActions.registerAction({
+                            name: "onlyofficeConvert",
+                            displayName: t(OCA.Onlyoffice.AppName, "Convert with ONLYOFFICE"),
+                            mime: mime,
+                            permissions: ($("#isPublic").val() ? OC.PERMISSION_UPDATE : OC.PERMISSION_READ),
+                            iconClass: "icon-onlyoffice-convert",
+                            actionHandler: OCA.Onlyoffice.FileConvertClick
+                        });
+                    }
 
-                if (config.saveas && !$("#isPublic").val()) {
-                    OCA.Files.fileActions.registerAction({
-                        name: "onlyofficeDownload",
-                        displayName: t(OCA.Onlyoffice.AppName, "Download as"),
-                        mime: config.mime,
-                        permissions: OC.PERMISSION_READ,
-                        iconClass: "icon-onlyoffice-download",
-                        actionHandler: OCA.Onlyoffice.DownloadClick
-                    });
-                }
+                    if (config.fillForms) {
+                        OCA.Files.fileActions.registerAction({
+                            name: "onlyofficeFill",
+                            displayName: t(OCA.Onlyoffice.AppName, "Fill in form in ONLYOFFICE"),
+                            mime: mime,
+                            permissions: OC.PERMISSION_UPDATE,
+                            iconClass: "icon-onlyoffice-fill",
+                            actionHandler: OCA.Onlyoffice.FileClick
+                        });
+                    }
+
+                    if (config.createForm) {
+                        OCA.Files.fileActions.registerAction({
+                            name: "onlyofficeCreateForm",
+                            displayName: t(OCA.Onlyoffice.AppName, "Create form"),
+                            mime: mime,
+                            permissions: ($("#isPublic").val() ? OC.PERMISSION_UPDATE : OC.PERMISSION_READ),
+                            iconClass: "icon-onlyoffice-create",
+                            actionHandler: OCA.Onlyoffice.CreateFormClick
+                        });
+                    }
+
+                    if (config.saveas && !$("#isPublic").val()) {
+                        OCA.Files.fileActions.registerAction({
+                            name: "onlyofficeDownload",
+                            displayName: t(OCA.Onlyoffice.AppName, "Download as"),
+                            mime: mime,
+                            permissions: OC.PERMISSION_READ,
+                            iconClass: "icon-onlyoffice-download",
+                            actionHandler: OCA.Onlyoffice.DownloadClick
+                        });
+                    }
+                });
             });
         }
 
@@ -459,8 +451,8 @@
 
             menu.addMenuEntry({
                 id: "onlyofficeDocxf",
-                displayName: t(OCA.Onlyoffice.AppName, "Form template"),
-                templateName: t(OCA.Onlyoffice.AppName, "Form template"),
+                displayName: t(OCA.Onlyoffice.AppName, "PDF form"),
+                templateName: t(OCA.Onlyoffice.AppName, "PDF form"),
                 iconClass: "icon-onlyoffice-new-docxf",
                 fileType: "docxf",
                 actionHandler: function (name) {
@@ -471,8 +463,8 @@
             if (!$("#isPublic").val()) {
                 menu.addMenuEntry({
                     id: "onlyofficeDocxfExist",
-                    displayName: t(OCA.Onlyoffice.AppName, "Form template from existing text file"),
-                    templateName: t(OCA.Onlyoffice.AppName, "Form template from existing text file"),
+                    displayName: t(OCA.Onlyoffice.AppName, "PDF form from existing text file"),
+                    templateName: t(OCA.Onlyoffice.AppName, "PDF form from existing text file"),
                     iconClass: "icon-onlyoffice-new-docxf",
                     fileType: "docxf",
                     actionHandler: function (name) {

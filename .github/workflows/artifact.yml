@@ -27,7 +27,8 @@ jobs:
           rm -rf ./.github/
           rm -rf ./.git/
           rm ./.gitmodules
-          rm -rf ./assets/.git
+          rm -rf ./assets/document-templates/.git
+          rm -rf ./assets/document-formats/.git
           cd ./appinfo
           sed -i 's|<licence>apl2|<licence>agpl|' info.xml 
           cd $cwd

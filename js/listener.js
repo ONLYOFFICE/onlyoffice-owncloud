@@ -1,6 +1,6 @@
 /**
  *
- * (c) Copyright Ascensio System SIA 2023
+ * (c) Copyright Ascensio System SIA 2024
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,24 +56,48 @@
             true);
     };
 
-    OCA.Onlyoffice.onRequestCompareFile = function (revisedMimes) {
-        OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Select file to compare"),
-            $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.editorSetRevised,
+    OCA.Onlyoffice.onRequestSelectDocument = function (revisedMimes, documentSelectionType) {
+        let title;
+        switch (documentSelectionType) {
+            case "combine":
+                title = t(OCA.Onlyoffice.AppName, "Select file to combine");
+                break;
+            default:
+                title = t(OCA.Onlyoffice.AppName, "Select file to compare");
+        }
+        OC.dialogs.filepicker(title,
+            $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.editorSetRequested.bind({documentSelectionType: documentSelectionType}),
             false,
             revisedMimes,
             true);
     };
 
+    OCA.Onlyoffice.onRequestReferenceSource = function (referenceSourceMimes) {
+        OC.dialogs.filepicker(t(OCA.Onlyoffice.AppName, "Select data source"),
+            $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.editorReferenceSource,
+            false,
+            referenceSourceMimes,
+            true);
+    }
+
     OCA.Onlyoffice.onDocumentReady = function (documentType) {
-        if (documentType === "word") {
+        if (documentType === "word"
+            || documentType === "cell"
+            || documentType === "slide") {
             OCA.Onlyoffice.bindVersionClick();
         } else {
             OCA.Onlyoffice.unbindVersionClick();
         }
+
+        OCA.Onlyoffice.setViewport();
     };
 
     OCA.Onlyoffice.changeFavicon = function (favicon) {
         $('link[rel="icon"]').attr("href", favicon);
+    };
+
+    OCA.Onlyoffice.setViewport = function() {
+        document.querySelector('meta[name="viewport"]').setAttribute("content","width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0");
     };
 
     OCA.Onlyoffice.onShowMessage = function (messageObj) {
@@ -110,8 +134,11 @@
             case "editorRequestMailMergeRecipients":
                 OCA.Onlyoffice.onRequestMailMergeRecipients(event.data.param);
                 break;
-            case "editorRequestCompareFile":
-                OCA.Onlyoffice.onRequestCompareFile(event.data.param);
+            case "editorRequestSelectDocument":
+                OCA.Onlyoffice.onRequestSelectDocument(event.data.param, event.data.documentSelectionType);
+                break;
+            case "editorRequestReferenceSource":
+                OCA.Onlyoffice.onRequestReferenceSource(event.data.param);
                 break;
             case "onDocumentReady":
                 OCA.Onlyoffice.onDocumentReady(event.data.param);

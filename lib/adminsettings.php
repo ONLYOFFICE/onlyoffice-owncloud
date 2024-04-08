@@ -1,7 +1,8 @@
 <?php
 /**
+ * @author Ascensio System SIA <integration@onlyoffice.com>
  *
- * (c) Copyright Ascensio System SIA 2023
+ * (c) Copyright Ascensio System SIA 2024
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,34 +26,36 @@ use OCP\Settings\ISettings;
  * Settings controller for the administration page
  */
 class AdminSettings implements ISettings {
+	/**
+	 * Constructor
+	 */
+	public function __construct() {
+	}
 
-    public function __construct() {
-    }
+	/**
+	 * Print config section
+	 *
+	 * @return TemplateResponse
+	 */
+	public function getPanel() {
+		return $this->getForm();
+	}
 
-    /**
-     * Print config section
-     *
-     * @return TemplateResponse
-     */
-    public function getPanel() {
-        return $this->getForm();
-    }
+	/**
+	 * Get section ID
+	 *
+	 * @return string
+	 */
+	public function getSectionID() {
+		return "general";
+	}
 
-    /**
-     * Get section ID
-     *
-     * @return string
-     */
-    public function getSectionID() {
-        return "general";
-    }
-
-    /**
-     * Get priority order
-     *
-     * @return int
-     */
-    public function getPriority() {
-        return 50;
-    }
+	/**
+	 * Get priority order
+	 *
+	 * @return int
+	 */
+	public function getPriority() {
+		return 50;
+	}
 }

@@ -48,6 +48,7 @@ OC.L10N.register(
     "review": "рецензії",
     "form filling": "заповнення форм",
     "comment": "коментарі",
+    "global filter": "глобальний фільтр",
     "download": "звантажити",
     "Server settings": "Налаштування сервера",
     "Common settings": "Загальні налаштування",
@@ -98,8 +99,11 @@ OC.L10N.register(
     "Notification sent successfully": "Сповіщення успішно надіслено",
     "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s згадав у %2\$s: \"%3\$s\".",
     "Choose a format to convert {fileName}": "Виберіть формат для {fileName}",
+    "PDF form": "Форма PDF",
+    "PDF form from existing text file": "Форма PDF із файлу, що існує",
     "Create form": "Створити форму",
     "Fill in form in ONLYOFFICE": "Заповнити форму у ONLYOFFICE",
+    "Create new PDF form": "Створити нову форму PDF",
     "Security": "Безпека",
     "Run document macros": "Виконувати макроси документу",
     "Default editor theme": "Типова тема редактора",
@@ -116,6 +120,11 @@ OC.L10N.register(
     "View settings": "Переглянути налаштування",
     "ONLYOFFICE Docs Cloud": "ONLYOFFICE Docs Cloud",
     "Easily launch the editors in the cloud without downloading and installation": "Легко використовуйте редактори у хмарі без звантажень та налаштувань",
-    "Get Now": "Отримати зараз"
+    "Get Now": "Отримати зараз",
+    "Select file to combine": "Вибрати файл для об’єднання",
+    "Select data source": "Вибрати джерело даних",
+    "The data source must not be the current document": "Джерело даних не має бути поточним документом",
+    "Enable background connection check to the editors": "Увімкніть фонову перевірку з’єднання з редакторами",
+    "The domain in the file url does not match the domain of the Document server": "Домен в URL-адресі файлу не збігається з доменом сервера документів"
 },
 "nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);");

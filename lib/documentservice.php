@@ -151,10 +151,10 @@ class DocumentService {
 		}
 
 		if ($toForm) {
-            $data["pdf"] = [
-                "form" => true
-            ];
-        }
+			$data["pdf"] = [
+				"form" => true
+			];
+		}
 
 		$opts = [
 			"timeout" => "120",

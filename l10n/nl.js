@@ -102,7 +102,6 @@ OC.L10N.register(
     "PDF form": "PDF-formulier",
     "PDF form from existing text file": "PDF-formulier van bestaand tekstbestand",
     "Create form": "Formulier maken",
-    "Fill in form in ONLYOFFICE": "Formulier invullen in ONLYOFFICE",
     "Create new PDF form": "Maak nieuw PDF-formulier",
     "Security": "Beveiliging",
     "Run document macros": "Document macro's uitvoeren",

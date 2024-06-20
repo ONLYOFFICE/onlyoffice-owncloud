@@ -357,17 +357,6 @@
                         });
                     }
 
-                    if (config.fillForms) {
-                        OCA.Files.fileActions.registerAction({
-                            name: "onlyofficeFill",
-                            displayName: t(OCA.Onlyoffice.AppName, "Fill in form in ONLYOFFICE"),
-                            mime: mime,
-                            permissions: OC.PERMISSION_UPDATE,
-                            iconClass: "icon-onlyoffice-fill",
-                            actionHandler: OCA.Onlyoffice.FileClick
-                        });
-                    }
-
                     if (config.createForm) {
                         OCA.Files.fileActions.registerAction({
                             name: "onlyofficeCreateForm",

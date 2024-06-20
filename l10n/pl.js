@@ -102,7 +102,6 @@ OC.L10N.register(
     "PDF form": "Formularz PDF",
     "PDF form from existing text file": "Formularz PDF z istniejącego pliku tekstowego",
     "Create form": "Utwórz formularz",
-    "Fill in form in ONLYOFFICE": "Wypełnić formularz w ONLYOFFICE",
     "Create new PDF form": "Utwórz nowy formularz PDF",
     "Security": "Bezpieczeństwo",
     "Run document macros": "Uruchom makra dokumentu",

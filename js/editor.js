@@ -187,7 +187,8 @@
                     }
 
                     if (!config.document.permissions.edit
-                        && config.document.permissions.fillForms) {
+                        && config.document.permissions.fillForms
+                        && config.canEdit) {
                         config.events.onRequestEditRights = OCA.Onlyoffice.onRequestEditRights;
                     }
 

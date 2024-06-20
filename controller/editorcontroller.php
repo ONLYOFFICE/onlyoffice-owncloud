@@ -279,7 +279,7 @@ class EditorController extends Controller {
 			$ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
 			$documentService = new DocumentService($this->trans, $this->config);
 			try {
-				$newFileUri = $documentService->getConvertedUri($fileUrl, $targetExt, $ext, $targetKey);
+				$newFileUri = $documentService->getConvertedUri($fileUrl, $targetExt, $ext, $targetKey, $ext === "pdf");
 			} catch (\Exception $e) {
 				$this->logger->logException($e, ["message" => "getConvertedUri: " . $targetFile->getId(), "app" => $this->appName]);
 				return ["error" => $e->getMessage()];

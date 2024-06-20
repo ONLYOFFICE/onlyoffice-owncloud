@@ -234,6 +234,7 @@ class EditorApiController extends OCSController {
 	 * @param bool $desktop - desktop label
 	 * @param bool $template - file is template
 	 * @param string $anchor - anchor link
+	 * @param bool $forceEdit - open editing
 	 *
 	 * @return JSONResponse
 	 *
@@ -241,7 +242,7 @@ class EditorApiController extends OCSController {
 	 * @PublicPage
 	 * @CORS
 	 */
-	public function config($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $desktop = false, $template = false, $anchor = null) {
+	public function config($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $desktop = false, $template = false, $anchor = null, $forceEdit = false) {
 		$user = $this->userSession->getUser();
 		$userId = null;
 		$accountId = null;
@@ -380,7 +381,7 @@ class EditorApiController extends OCSController {
 					&& $file->isUpdateable()
 					&& !$isPersistentLock
 					&& (empty($shareToken) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE);
-		$params["document"]["permissions"]["edit"] = $editable && !$canFillForms;
+		$params["document"]["permissions"]["edit"] = $editable && ($forceEdit || !$canFillForms);
 		if (($editable || $restrictedEditing) && $canEdit || $canFillForms) {
 			$ownerId = null;
 			$owner = $file->getOwner();

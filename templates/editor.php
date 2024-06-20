@@ -31,7 +31,8 @@ script("onlyoffice", "editor");
 	data-version="<?php p($_["version"]) ?>"
 	data-template="<?php p($_["template"]) ?>"
 	data-anchor="<?php p($_["anchor"]) ?>"
-	data-inframe="<?php p($_["inframe"]) ?>"></div>
+	data-inframe="<?php p($_["inframe"]) ?>"
+	data-forceedit="<?php p($_["forceEdit"]) ?>"></div>
 
 <?php if (!empty($_["documentServerUrl"])) { ?>
 	<script nonce="<?php p(base64_encode($_["requesttoken"])) ?>"

@@ -1280,13 +1280,14 @@ class EditorController extends Controller {
 	 * @param bool $inframe - open in frame
 	 * @param bool $template - file is template
 	 * @param string $anchor - anchor for file content
+	 * @param bool $forceEdit - open editin
 	 *
 	 * @return TemplateResponse|RedirectResponse
 	 *
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function index($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $template = false, $anchor = null) {
+	public function index($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $template = false, $anchor = null, $forceEdit = false) {
 		$this->logger->debug("Open: $fileId ($version) $filePath", ["app" => $this->appName]);
 
 		if (empty($shareToken) && !$this->userSession->isLoggedIn()) {
@@ -1326,7 +1327,8 @@ class EditorController extends Controller {
 			"version" => $version,
 			"template" => $template,
 			"inframe" => false,
-			"anchor" => $anchor
+			"anchor" => $anchor,
+			"forceEdit" => $forceEdit
 		];
 
 		if ($inframe === true) {

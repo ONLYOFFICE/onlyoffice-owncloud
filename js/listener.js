@@ -102,7 +102,11 @@
 
     OCA.Onlyoffice.onShowMessage = function (messageObj) {
         OC.Notification.show(messageObj.message, messageObj.props);
-    }
+    };
+
+    OCA.Onlyoffice.onRequestEditRights = function () {
+        $(OCA.Onlyoffice.frameSelector).attr("src", $(OCA.Onlyoffice.frameSelector).attr("src") + "&forceEdit=true");
+    };
 
     window.addEventListener("message", function (event) {
         if ($("#onlyofficeFrame")[0]) {

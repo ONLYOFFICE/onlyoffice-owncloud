@@ -186,6 +186,11 @@
                         config.events.onRequestSharingSettings = OCA.Onlyoffice.onRequestSharingSettings;
                     }
 
+                    if (!config.document.permissions.edit
+                        && config.document.permissions.fillForms) {
+                        config.events.onRequestEditRights = OCA.Onlyoffice.onRequestEditRights;
+                    }
+
                     OCA.Onlyoffice.docEditor = new DocsAPI.DocEditor("iframeEditor", config);
 
                     if (config.type === "mobile" && $("#app > iframe").css("position") === "fixed"
@@ -206,6 +211,17 @@
                 }
             }
         });
+    };
+
+    OCA.Onlyoffice.onRequestEditRights = function () {
+        if (OCA.Onlyoffice.inframe) {
+            window.parent.postMessage({
+                method: "onRequestEditRights"
+            },
+            "*");
+            return;
+        }
+        location.href += "&forceEdit=true";
     };
 
     OCA.Onlyoffice.onRequestHistory = function (version) {

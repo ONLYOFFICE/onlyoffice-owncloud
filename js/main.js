@@ -69,7 +69,10 @@
 
                 fileList.add(response, { animate: true });
                 if (open) {
-                    OCA.Onlyoffice.OpenEditor(response.id, dir, response.name, 0, winEditor);
+                    let fileName = response.name;
+                    let extension = OCA.Onlyoffice.getFileExtension(fileName);
+                    let forceEdit = OCA.Onlyoffice.setting.formats[extension].fillForms;
+                    OCA.Onlyoffice.OpenEditor(response.id, dir, fileName, winEditor, forceEdit);
                 }
 
                 OCA.Onlyoffice.context = { fileList: fileList };
@@ -82,7 +85,7 @@
         );
     };
 
-    OCA.Onlyoffice.OpenEditor = function (fileId, fileDir, fileName, version, winEditor) {
+    OCA.Onlyoffice.OpenEditor = function (fileId, fileDir, fileName, version, winEditor, forceEdit) {
         var filePath = "";
         if (fileName) {
             filePath = fileDir.replace(new RegExp("\/$"), "") + "/" + fileName;
@@ -99,6 +102,10 @@
                     shareToken: encodeURIComponent($("#sharingToken").val()),
                     fileId: fileId
                 });
+        }
+
+        if (forceEdit) {
+            url += "&forceEdit=true";
         }
 
         if (version > 0) {

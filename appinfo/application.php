@@ -119,7 +119,6 @@ class Application extends App {
 		$detector->registerType("ott", "application/vnd.oasis.opendocument.text-template");
 		$detector->registerType("ots", "application/vnd.oasis.opendocument.spreadsheet-template");
 		$detector->registerType("otp", "application/vnd.oasis.opendocument.presentation-template");
-		$detector->registerType("docxf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document.docxf");
 
 		$previewManager = $container->query(IPreview::class);
 		if ($this->appConfig->getPreview()) {

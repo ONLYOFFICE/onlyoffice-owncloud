@@ -450,25 +450,25 @@
             });
 
             menu.addMenuEntry({
-                id: "onlyofficeDocxf",
+                id: "onlyofficePdf",
                 displayName: t(OCA.Onlyoffice.AppName, "PDF form"),
                 templateName: t(OCA.Onlyoffice.AppName, "PDF form"),
-                iconClass: "icon-onlyoffice-new-docxf",
-                fileType: "docxf",
+                iconClass: "icon-onlyoffice-new-pdf",
+                fileType: "pdf",
                 actionHandler: function (name) {
-                    OCA.Onlyoffice.CreateFile(name + ".docxf", fileList);
+                    OCA.Onlyoffice.CreateFile(name + ".pdf", fileList);
                 }
             });
 
             if (!$("#isPublic").val()) {
                 menu.addMenuEntry({
-                    id: "onlyofficeDocxfExist",
+                    id: "onlyofficePdfExist",
                     displayName: t(OCA.Onlyoffice.AppName, "PDF form from existing text file"),
                     templateName: t(OCA.Onlyoffice.AppName, "PDF form from existing text file"),
-                    iconClass: "icon-onlyoffice-new-docxf",
-                    fileType: "docxf",
+                    iconClass: "icon-onlyoffice-new-pdf",
+                    fileType: "pdf",
                     actionHandler: function (name) {
-                        OCA.Onlyoffice.OpenFormPicker(name + ".docxf", fileList);
+                        OCA.Onlyoffice.OpenFormPicker(name + ".pdf", fileList);
                     }
                 });
             }

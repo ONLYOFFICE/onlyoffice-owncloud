@@ -69,7 +69,10 @@
 
                 fileList.add(response, { animate: true });
                 if (open) {
-                    OCA.Onlyoffice.OpenEditor(response.id, dir, response.name, 0, winEditor);
+                    let fileName = response.name;
+                    let extension = OCA.Onlyoffice.GetFileExtension(fileName);
+                    let forceEdit = OCA.Onlyoffice.setting.formats[extension].fillForms;
+                    OCA.Onlyoffice.OpenEditor(response.id, dir, fileName, winEditor, forceEdit);
                 }
 
                 OCA.Onlyoffice.context = { fileList: fileList };
@@ -82,7 +85,7 @@
         );
     };
 
-    OCA.Onlyoffice.OpenEditor = function (fileId, fileDir, fileName, version, winEditor) {
+    OCA.Onlyoffice.OpenEditor = function (fileId, fileDir, fileName, version, winEditor, forceEdit) {
         var filePath = "";
         if (fileName) {
             filePath = fileDir.replace(new RegExp("\/$"), "") + "/" + fileName;
@@ -99,6 +102,10 @@
                     shareToken: encodeURIComponent($("#sharingToken").val()),
                     fileId: fileId
                 });
+        }
+
+        if (forceEdit) {
+            url += "&forceEdit=true";
         }
 
         if (version > 0) {
@@ -357,17 +364,6 @@
                         });
                     }
 
-                    if (config.fillForms) {
-                        OCA.Files.fileActions.registerAction({
-                            name: "onlyofficeFill",
-                            displayName: t(OCA.Onlyoffice.AppName, "Fill in form in ONLYOFFICE"),
-                            mime: mime,
-                            permissions: OC.PERMISSION_UPDATE,
-                            iconClass: "icon-onlyoffice-fill",
-                            actionHandler: OCA.Onlyoffice.FileClick
-                        });
-                    }
-
                     if (config.createForm) {
                         OCA.Files.fileActions.registerAction({
                             name: "onlyofficeCreateForm",
@@ -450,25 +446,25 @@
             });
 
             menu.addMenuEntry({
-                id: "onlyofficeDocxf",
+                id: "onlyofficePdf",
                 displayName: t(OCA.Onlyoffice.AppName, "PDF form"),
                 templateName: t(OCA.Onlyoffice.AppName, "PDF form"),
-                iconClass: "icon-onlyoffice-new-docxf",
-                fileType: "docxf",
+                iconClass: "icon-onlyoffice-new-pdf",
+                fileType: "pdf",
                 actionHandler: function (name) {
-                    OCA.Onlyoffice.CreateFile(name + ".docxf", fileList);
+                    OCA.Onlyoffice.CreateFile(name + ".pdf", fileList);
                 }
             });
 
             if (!$("#isPublic").val()) {
                 menu.addMenuEntry({
-                    id: "onlyofficeDocxfExist",
+                    id: "onlyofficePdfExist",
                     displayName: t(OCA.Onlyoffice.AppName, "PDF form from existing text file"),
                     templateName: t(OCA.Onlyoffice.AppName, "PDF form from existing text file"),
-                    iconClass: "icon-onlyoffice-new-docxf",
-                    fileType: "docxf",
+                    iconClass: "icon-onlyoffice-new-pdf",
+                    fileType: "pdf",
                     actionHandler: function (name) {
-                        OCA.Onlyoffice.OpenFormPicker(name + ".docxf", fileList);
+                        OCA.Onlyoffice.OpenFormPicker(name + ".pdf", fileList);
                     }
                 });
             }

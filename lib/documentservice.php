@@ -83,10 +83,11 @@ class DocumentService {
 	 * @param string $from_extension - Document extension
 	 * @param string $to_extension - Extension to which to convert
 	 * @param string $document_revision_id - Key for caching on service
+	 * @param bool $toForm - Convert to form
 	 *
 	 * @return string
 	 */
-	public function getConvertedUri($document_uri, $from_extension, $to_extension, $document_revision_id) {
+	public function getConvertedUri($document_uri, $from_extension, $to_extension, $document_revision_id, $toForm = false) {
 		$responceFromConvertService = $this->sendRequestToConvertService($document_uri, $from_extension, $to_extension, $document_revision_id, false);
 
 		$errorElement = $responceFromConvertService->Error;
@@ -147,6 +148,12 @@ class DocumentService {
 
 		if ($this->config->useDemo()) {
 			$data["tenant"] = $this->config->getSystemValue("instanceid", true);
+		}
+
+		if ($toForm) {
+			$data["pdf"] = [
+				"form" => true
+			];
 		}
 
 		$opts = [

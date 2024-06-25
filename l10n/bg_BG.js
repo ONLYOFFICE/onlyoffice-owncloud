@@ -103,7 +103,6 @@ OC.L10N.register(
     "PDF form": "PDF формуляр",
     "PDF form from existing text file": "PDF формуляр от съществуващ текстов файл",
     "Create form": "Създайте формуляр",
-    "Fill in form in ONLYOFFICE": "Попълнете формуляр в ONLYOFFICE",
     "Create new PDF form": "Създайте нов PDF формуляр",
     "Security": "Сигурност",
     "Run document macros": "Изпълнение на макроси на документи",

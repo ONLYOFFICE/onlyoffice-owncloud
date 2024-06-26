@@ -72,7 +72,7 @@
                     let fileName = response.name;
                     let extension = OCA.Onlyoffice.GetFileExtension(fileName);
                     let forceEdit = OCA.Onlyoffice.setting.formats[extension].fillForms;
-                    OCA.Onlyoffice.OpenEditor(response.id, dir, fileName, winEditor, forceEdit);
+                    OCA.Onlyoffice.OpenEditor(response.id, dir, fileName, 0, winEditor, forceEdit);
                 }
 
                 OCA.Onlyoffice.context = { fileList: fileList };

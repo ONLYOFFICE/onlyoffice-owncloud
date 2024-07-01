@@ -88,7 +88,7 @@ class DocumentService {
 	 * @return string
 	 */
 	public function getConvertedUri($document_uri, $from_extension, $to_extension, $document_revision_id, $toForm = false) {
-		$responceFromConvertService = $this->sendRequestToConvertService($document_uri, $from_extension, $to_extension, $document_revision_id, false);
+		$responceFromConvertService = $this->sendRequestToConvertService($document_uri, $from_extension, $to_extension, $document_revision_id, false, $toForm);
 
 		$errorElement = $responceFromConvertService->Error;
 		if ($errorElement->count() > 0) {
@@ -112,10 +112,11 @@ class DocumentService {
 	 * @param string $to_extension - Extension to which to convert
 	 * @param string $document_revision_id - Key for caching on service
 	 * @param bool - $is_async - Perform conversions asynchronously
+	 * @param bool $toForm - Convert to form
 	 *
 	 * @return array
 	 */
-	public function sendRequestToConvertService($document_uri, $from_extension, $to_extension, $document_revision_id, $is_async) {
+	public function sendRequestToConvertService($document_uri, $from_extension, $to_extension, $document_revision_id, $is_async, $toForm = false) {
 		$documentServerUrl = $this->config->getDocumentServerInternalUrl();
 
 		if (empty($documentServerUrl)) {

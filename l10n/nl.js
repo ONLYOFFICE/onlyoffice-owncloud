@@ -48,6 +48,7 @@ OC.L10N.register(
     "review": "overzicht",
     "form filling": "formulier invullen",
     "comment": "opmerking",
+    "global filter": "globale filter",
     "download": "downloaden",
     "Server settings": "Serverinstellingen",
     "Common settings": "Algemene instellingen",
@@ -98,8 +99,10 @@ OC.L10N.register(
     "Notification sent successfully": "Kennisgeving succesvol verzonden",
     "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s genoemd in de %2\$s: \"%3\$s\".",
     "Choose a format to convert {fileName}": "Kies een formaat om {fileName} te converteren",
+    "PDF form": "PDF-formulier",
+    "PDF form from existing text file": "PDF-formulier van bestaand tekstbestand",
     "Create form": "Formulier maken",
-    "Fill in form in ONLYOFFICE": "Formulier invullen in ONLYOFFICE",
+    "Create new PDF form": "Maak nieuw PDF-formulier",
     "Security": "Beveiliging",
     "Run document macros": "Document macro's uitvoeren",
     "Default editor theme": "Standaard editor thema",
@@ -117,6 +120,11 @@ OC.L10N.register(
     "View settings": "Bekijk instellingen",
     "ONLYOFFICE Docs Cloud": "ONLYOFFICE Docs Cloud",
     "Easily launch the editors in the cloud without downloading and installation": "Start de editors gemakkelijk in de cloud zonder te hoeven downloaden en te installeren",
-    "Get Now": "Download Nu"
+    "Get Now": "Download Nu",
+    "Select file to combine": "Selecteer bestand om te combineren",
+    "Select data source": "Selecteer gegevensbron",
+    "The data source must not be the current document": "De gegevensbron mag niet het huidige document zijn",
+    "Enable background connection check to the editors": "Verbindingscontrole op de achtergrond met de editors inschakelen",
+    "The domain in the file url does not match the domain of the Document server": "Het domein in de bestandsurl komt niet overeen met het domein van de Document Server"
 },
 "nplurals=2; plural=(n != 1);");

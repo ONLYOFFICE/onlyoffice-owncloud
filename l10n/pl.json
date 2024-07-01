@@ -46,6 +46,7 @@
     "review" : "recenzja",
     "form filling" : "wypełnianie formularza",
     "comment" : "komentarz",
+    "global filter" : "filtr globalny",
     "download" : "pobierz",
     "Server settings" : "Ustawienia serwera",
     "Common settings" : "Ustawienia ogólne",
@@ -96,8 +97,10 @@
     "Notification sent successfully": "Powiadomienie zostało wysłane",
     "%1$s mentioned in the %2$s: \"%3$s\".": "%1$s dodał(a) Cię w %2$s następujący komentarz: \"%3$s\".",
     "Choose a format to convert {fileName}": "Wybierz format, do którego chcesz przekonwertować {fileName}",
+    "PDF form": "Formularz PDF",
+    "PDF form from existing text file": "Formularz PDF z istniejącego pliku tekstowego",
     "Create form": "Utwórz formularz",
-    "Fill in form in ONLYOFFICE": "Wypełnić formularz w ONLYOFFICE",
+    "Create new PDF form": "Utwórz nowy formularz PDF",
     "Security": "Bezpieczeństwo",
     "Run document macros": "Uruchom makra dokumentu",
     "Default editor theme": "Domyślny motyw edytora",
@@ -115,6 +118,11 @@
     "View settings": "Zobacz ustawienia",
     "ONLYOFFICE Docs Cloud": "ONLYOFFICE Docs Cloud",
     "Easily launch the editors in the cloud without downloading and installation": "Z łatwością uruchamiaj edytory w chmurze bez konieczności pobierania czy instalacji",
-    "Get Now": "Wypróbuj teraz"
+    "Get Now": "Wypróbuj teraz",
+    "Select file to combine" : "Wybierz plik do połączenia",
+    "Select data source": "Wybierz źródło danych",
+    "The data source must not be the current document": "Źródło danych nie może być bieżącym dokumentem",
+    "Enable background connection check to the editors": "Włącz sprawdzanie połączenia z edytorami w tle",
+    "The domain in the file url does not match the domain of the Document server": "Domena w adresie URL pliku nie pasuje do domeny serwera dokumentów"
 },"pluralForm" :"nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);"
 }

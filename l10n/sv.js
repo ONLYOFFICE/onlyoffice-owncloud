@@ -99,7 +99,6 @@ OC.L10N.register(
     "%1\$s mentioned in the %2\$s: \"%3\$s\".": "%1\$s nämnde dig i %2\$s: \"%3\$s\".",
     "Choose a format to convert {fileName}": "Välj det filformat som {fileName} ska konverteras till.",
     "Create form": "Skapa formulär",
-    "Fill in form in ONLYOFFICE": "Fylla i formulär i ONLYOFFICE",
     "Security": "Säkerhet",
     "Run document macros": "Kör dokumentmakron",
     "Light": "Ljus",

@@ -1,5 +1,9 @@
 # Change Log
 
+##
+## Added
+- support tiff format for inserting
+
 ## 9.3.1
 ## Changed
 - creating and editing pdf form

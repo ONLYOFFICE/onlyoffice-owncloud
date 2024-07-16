@@ -17,26 +17,24 @@
  */
 
 (function (OCA) {
+  OCA.Onlyoffice = _.extend({}, OCA.Onlyoffice);
 
-    OCA.Onlyoffice = _.extend({}, OCA.Onlyoffice);
+  if (!window["AscDesktopEditor"]) {
+    return;
+  }
 
-    if (!window["AscDesktopEditor"]) {
-        return;
-    }
+  OCA.Onlyoffice.Desktop = true;
+  $("html").addClass("AscDesktopEditor");
 
-    OCA.Onlyoffice.Desktop = true;
-    $("html").addClass("AscDesktopEditor");
+  var domain = new RegExp("^http(s)?://[^/]+").exec(location)[0];
+  domain += OC.getRootPath();
 
-    var domain = new RegExp("^http(s)?:\/\/[^\/]+").exec(location)[0];
-    domain += OC.getRootPath();
+  var data = {
+    displayName: oc_user.displayName,
+    domain: domain,
+    email: oc_user.email,
+    provider: "ownCloud",
+  };
 
-    var data = {
-        displayName: oc_user.displayName,
-        domain: domain,
-        email: oc_user.email,
-        provider: "ownCloud",
-    };
-
-    window.AscDesktopEditor.execCommand("portal:login", JSON.stringify(data));
-
+  window.AscDesktopEditor.execCommand("portal:login", JSON.stringify(data));
 })(OCA);

@@ -56,8 +56,8 @@
     }
 
     const createData = {
-      name: name,
-      dir: dir,
+      name,
+      dir,
     };
 
     if (templateId) {
@@ -102,7 +102,7 @@
           );
         }
 
-        OCA.Onlyoffice.context = { fileList: fileList };
+        OCA.Onlyoffice.context = { fileList };
         OCA.Onlyoffice.context.fileName = response.name;
 
         OC.Notification.show(t(OCA.Onlyoffice.AppName, "File created"), {
@@ -127,8 +127,8 @@
     let url = OC.generateUrl(
       "/apps/" + OCA.Onlyoffice.AppName + "/{fileId}?filePath={filePath}",
       {
-        fileId: fileId,
-        filePath: filePath,
+        fileId,
+        filePath,
       }
     );
 
@@ -137,7 +137,7 @@
         "apps/" + OCA.Onlyoffice.AppName + "/s/{shareToken}?fileId={fileId}",
         {
           shareToken: encodeURIComponent($("#sharingToken").val()),
-          fileId: fileId,
+          fileId,
         }
       );
     }
@@ -258,7 +258,7 @@
       : fileInfoModel.id;
 
     const convertData = {
-      fileId: fileId,
+      fileId,
     };
 
     if ($("#isPublic").val()) {
@@ -309,7 +309,7 @@
 
         $(dialog[0].querySelectorAll("p")).text(
           t(OCA.Onlyoffice.AppName, "Choose a format to convert {fileName}", {
-            fileName: fileName,
+            fileName,
           })
         );
 
@@ -345,14 +345,14 @@
             {
               text: t("core", "Cancel"),
               classes: "cancel",
-              click: function () {
+              click() {
                 $(this).ocdialog("close");
               },
             },
             {
               text: t("onlyoffice", "Download"),
               classes: "primary",
-              click: function () {
+              click() {
                 const format = this.dataset.format;
                 const fileId = fileInfoModel.id;
                 const downloadLink = OC.generateUrl(
@@ -360,7 +360,7 @@
                     OCA.Onlyoffice.AppName +
                     "/downloadas?fileId={fileId}&toExtension={toExtension}",
                   {
-                    fileId: fileId,
+                    fileId,
                     toExtension: format,
                   }
                 );
@@ -430,7 +430,7 @@
           OCA.Files.fileActions.registerAction({
             name: "onlyofficeOpen",
             displayName: t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE"),
-            mime: mime,
+            mime,
             permissions: OC.PERMISSION_READ,
             iconClass: "icon-onlyoffice-open",
             actionHandler: OCA.Onlyoffice.FileClick,
@@ -444,7 +444,7 @@
             OCA.Files.fileActions.registerAction({
               name: "onlyofficeConvert",
               displayName: t(OCA.Onlyoffice.AppName, "Convert with ONLYOFFICE"),
-              mime: mime,
+              mime,
               permissions: $("#isPublic").val()
                 ? OC.PERMISSION_UPDATE
                 : OC.PERMISSION_READ,
@@ -457,7 +457,7 @@
             OCA.Files.fileActions.registerAction({
               name: "onlyofficeCreateForm",
               displayName: t(OCA.Onlyoffice.AppName, "Create form"),
-              mime: mime,
+              mime,
               permissions: $("#isPublic").val()
                 ? OC.PERMISSION_UPDATE
                 : OC.PERMISSION_READ,
@@ -470,7 +470,7 @@
             OCA.Files.fileActions.registerAction({
               name: "onlyofficeDownload",
               displayName: t(OCA.Onlyoffice.AppName, "Download as"),
-              mime: mime,
+              mime,
               permissions: OC.PERMISSION_READ,
               iconClass: "icon-onlyoffice-download",
               actionHandler: OCA.Onlyoffice.DownloadClick,
@@ -484,7 +484,7 @@
   };
 
   OCA.Onlyoffice.NewFileMenu = {
-    attach: function (menu) {
+    attach(menu) {
       const fileList = menu.fileList;
 
       if (fileList.id !== "files" && fileList.id !== "files.public") {
@@ -497,7 +497,7 @@
         templateName: t(OCA.Onlyoffice.AppName, "Document"),
         iconClass: "icon-onlyoffice-new-docx",
         fileType: "docx",
-        actionHandler: function (name) {
+        actionHandler(name) {
           if (
             !$("#isPublic").val() &&
             OCA.Onlyoffice.TemplateExist("document")
@@ -515,7 +515,7 @@
         templateName: t(OCA.Onlyoffice.AppName, "Spreadsheet"),
         iconClass: "icon-onlyoffice-new-xlsx",
         fileType: "xlsx",
-        actionHandler: function (name) {
+        actionHandler(name) {
           if (
             !$("#isPublic").val() &&
             OCA.Onlyoffice.TemplateExist("spreadsheet")
@@ -533,7 +533,7 @@
         templateName: t(OCA.Onlyoffice.AppName, "Presentation"),
         iconClass: "icon-onlyoffice-new-pptx",
         fileType: "pptx",
-        actionHandler: function (name) {
+        actionHandler(name) {
           if (
             !$("#isPublic").val() &&
             OCA.Onlyoffice.TemplateExist("presentation")
@@ -551,7 +551,7 @@
         templateName: t(OCA.Onlyoffice.AppName, "PDF form"),
         iconClass: "icon-onlyoffice-new-pdf",
         fileType: "pdf",
-        actionHandler: function (name) {
+        actionHandler(name) {
           OCA.Onlyoffice.CreateFile(name + ".pdf", fileList);
         },
       });
@@ -569,7 +569,7 @@
           ),
           iconClass: "icon-onlyoffice-new-pdf",
           fileType: "pdf",
-          actionHandler: function (name) {
+          actionHandler(name) {
             OCA.Onlyoffice.OpenFormPicker(name + ".pdf", fileList);
           },
         });

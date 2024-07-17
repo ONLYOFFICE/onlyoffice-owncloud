@@ -48,14 +48,14 @@
             {
               text: t("core", "Cancel"),
               classes: "cancel",
-              click: function () {
+              click() {
                 $(this).ocdialog("close");
               },
             },
             {
               text: t(OCA.Onlyoffice.AppName, "Create"),
               classes: "primary",
-              click: function () {
+              click() {
                 const templateId = this.dataset.templateId;
                 const fileList = OCA.Files.App.fileList;
                 OCA.Onlyoffice.CreateFile(
@@ -97,7 +97,7 @@
     $.ajax({
       method: "POST",
       url: OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/template"),
-      data: data,
+      data,
       processData: false,
       contentType: false,
       success: function onSuccess(response) {
@@ -118,7 +118,7 @@
           OCA.Onlyoffice.AppName +
           "/ajax/template?templateId={templateId}",
         {
-          templateId: templateId,
+          templateId,
         }
       ),
       success: function onSuccess(response) {
@@ -146,7 +146,7 @@
     OCA.Onlyoffice.FillItemTemplate(dialog, emptyItem, {
       id: 0,
       name: t(OCA.Onlyoffice.AppName, "Empty"),
-      type: type,
+      type,
     });
 
     $(emptyItem).addClass("selected");

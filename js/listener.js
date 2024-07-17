@@ -82,7 +82,7 @@
       $(
         "#onlyofficeFrame"
       )[0].contentWindow.OCA.Onlyoffice.editorSetRequested.bind({
-        documentSelectionType: documentSelectionType,
+        documentSelectionType,
       }),
       false,
       revisedMimes,

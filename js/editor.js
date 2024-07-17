@@ -306,14 +306,14 @@
           "/ajax/version?fileId={fileId}&version={version}",
         {
           fileId: OCA.Onlyoffice.fileId || 0,
-          version: version,
+          version,
         }
       ),
       function onSuccess(response) {
         if (response.error) {
           response = {
             error: response.error,
-            version: version,
+            version,
           };
         }
         OCA.Onlyoffice.docEditor.setHistoryData(response);
@@ -329,7 +329,7 @@
       url: OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/restore"),
       data: {
         fileId: OCA.Onlyoffice.fileId || 0,
-        version: version,
+        version,
       },
       success: function onSuccess(response) {
         OCA.Onlyoffice.refreshHistory(response, version);
@@ -466,7 +466,7 @@
       OC.generateUrl(
         "apps/" + OCA.Onlyoffice.AppName + "/ajax/url?filePath={filePath}",
         {
-          filePath: filePath,
+          filePath,
         }
       ),
       function onSuccess(response) {
@@ -516,7 +516,7 @@
       OC.generateUrl(
         "apps/" + OCA.Onlyoffice.AppName + "/ajax/url?filePath={filePath}",
         {
-          filePath: filePath,
+          filePath,
         }
       ),
       function onSuccess(response) {
@@ -621,7 +621,7 @@
       OC.generateUrl(
         "apps/" + OCA.Onlyoffice.AppName + "/ajax/url?filePath={filePath}",
         {
-          filePath: filePath,
+          filePath,
         }
       ),
       function onSuccess(response) {
@@ -717,8 +717,8 @@
     $.post(
       OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/reference"),
       {
-        referenceData: referenceData,
-        path: path,
+        referenceData,
+        path,
       },
       function onSuccess(response) {
         if (response.error) {
@@ -741,10 +741,10 @@
     $.post(
       OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/mention"),
       {
-        fileId: fileId,
+        fileId,
         anchor: JSON.stringify(actionLink),
-        comment: comment,
-        emails: emails,
+        comment,
+        emails,
       },
       function onSuccess(response) {
         if (response.error) {
@@ -809,7 +809,7 @@
         }),
         contentType: "application/json",
         dataType: "json",
-        success: function () {
+        success() {
           OCA.Onlyoffice.docEditor.setFavorite(event.data.favorite);
         },
       });
@@ -822,8 +822,8 @@
         {
           method: "onShowMessage",
           param: {
-            message: message,
-            props: props,
+            message,
+            props,
           },
         },
         "*"
@@ -860,7 +860,7 @@
       }
 
       data = {
-        currentVersion: currentVersion,
+        currentVersion,
         history: response,
       };
     }

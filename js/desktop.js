@@ -31,7 +31,7 @@
 
   const data = {
     displayName: oc_user.displayName,
-    domain: domain,
+    domain,
     email: oc_user.email,
     provider: "ownCloud",
   };

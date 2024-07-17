@@ -104,8 +104,8 @@
           storageUrl: onlyofficeStorageUrl,
           verifyPeerOff: onlyofficeVerifyPeerOff,
           secret: onlyofficeSecret,
-          jwtHeader: jwtHeader,
-          demo: demo,
+          jwtHeader,
+          demo,
         },
         success: function onSuccess(response) {
           $(".section-onlyoffice").removeClass("icon-loading");
@@ -195,21 +195,21 @@
           "apps/" + OCA.Onlyoffice.AppName + "/ajax/settings/common"
         ),
         data: {
-          defFormats: defFormats,
-          editFormats: editFormats,
-          sameTab: sameTab,
-          preview: preview,
-          cronChecker: cronChecker,
-          versionHistory: versionHistory,
-          limitGroups: limitGroups,
-          chat: chat,
-          compactHeader: compactHeader,
-          feedback: feedback,
-          forcesave: forcesave,
-          help: help,
-          toolbarNoTabs: toolbarNoTabs,
-          reviewDisplay: reviewDisplay,
-          theme: theme,
+          defFormats,
+          editFormats,
+          sameTab,
+          preview,
+          cronChecker,
+          versionHistory,
+          limitGroups,
+          chat,
+          compactHeader,
+          feedback,
+          forcesave,
+          help,
+          toolbarNoTabs,
+          reviewDisplay,
+          theme,
         },
         success: function onSuccess(response) {
           $(".section-onlyoffice").removeClass("icon-loading");
@@ -241,9 +241,9 @@
           "apps/" + OCA.Onlyoffice.AppName + "/ajax/settings/security"
         ),
         data: {
-          plugins: plugins,
-          macros: macros,
-          protection: protection,
+          plugins,
+          macros,
+          protection,
         },
         success: function onSuccess(response) {
           $(".section-onlyoffice").removeClass("icon-loading");

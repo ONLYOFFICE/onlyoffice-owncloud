@@ -271,7 +271,7 @@ define(["vue"], function (vue) {
           return computedObj[key]();
         });
         Object.defineProperty(store.getters, key, {
-          get: function () {
+          get() {
             return computedCache[key].value;
           },
           enumerable: true, // for local getters
@@ -438,7 +438,7 @@ define(["vue"], function (vue) {
             },
       },
       state: {
-        get: function () {
+        get() {
           return getNestedState(store.state, path);
         },
       },
@@ -464,7 +464,7 @@ define(["vue"], function (vue) {
         // Define as getter property because
         // we do not want to evaluate the getters in this time.
         Object.defineProperty(gettersProxy, localType, {
-          get: function () {
+          get() {
             return store.getters[type];
           },
           enumerable: true,
@@ -566,7 +566,7 @@ define(["vue"], function (vue) {
       );
     }
 
-    return { type: type, payload: payload, options: options };
+    return { type, payload, options };
   }
 
   const LABEL_VUEX_BINDINGS = "vuex bindings";
@@ -580,7 +580,7 @@ define(["vue"], function (vue) {
     setupDevtoolsPlugin(
       {
         id: "org.vuejs.vuex",
-        app: app,
+        app,
         label: "Vuex",
         homepage: "https://next.vuex.vuejs.org/",
         logo: "https://vuejs.org/images/icons/favicon-96x96.png",
@@ -671,13 +671,13 @@ define(["vue"], function (vue) {
             event: {
               time: Date.now(),
               title: mutation.type,
-              data: data,
+              data,
             },
           });
         });
 
         store.subscribeAction({
-          before: function (action, state) {
+          before(action, state) {
             const data = {};
             if (action.payload) {
               data.payload = action.payload;
@@ -693,11 +693,11 @@ define(["vue"], function (vue) {
                 title: action.type,
                 groupId: action._id,
                 subtitle: "start",
-                data: data,
+                data,
               },
             });
           },
-          after: function (action, state) {
+          after(action, state) {
             const data = {};
             const duration = Date.now() - action._time;
             data.duration = {
@@ -720,7 +720,7 @@ define(["vue"], function (vue) {
                 title: action.type,
                 groupId: action._id,
                 subtitle: "end",
-                data: data,
+                data,
               },
             });
           },
@@ -804,7 +804,7 @@ define(["vue"], function (vue) {
     const storeState = {
       state: Object.keys(module.state).map(function (key) {
         return {
-          key: key,
+          key,
           editable: true,
           value: module.state[key],
         };
@@ -1077,14 +1077,14 @@ define(["vue"], function (vue) {
   }
 
   const functionAssert = {
-    assert: function (value) {
+    assert(value) {
       return typeof value === "function";
     },
     expected: "function",
   };
 
   const objectAssert = {
-    assert: function (value) {
+    assert(value) {
       return (
         typeof value === "function" ||
         (typeof value === "object" && typeof value.handler === "function")
@@ -1238,7 +1238,7 @@ define(["vue"], function (vue) {
     const payload = ref.payload;
     const options = ref.options;
 
-    const mutation = { type: type, payload: payload };
+    const mutation = { type, payload };
     const entry = this._mutations[type];
     if (!entry) {
       {
@@ -1276,7 +1276,7 @@ define(["vue"], function (vue) {
     const type = ref.type;
     const payload = ref.payload;
 
-    const action = { type: type, payload: payload };
+    const action = { type, payload };
     const entry = this._actions[type];
     if (!entry) {
       {
@@ -1559,10 +1559,10 @@ define(["vue"], function (vue) {
     }
     return Array.isArray(map)
       ? map.map(function (key) {
-          return { key: key, val: key };
+          return { key, val: key };
         })
       : Object.keys(map).map(function (key) {
-          return { key: key, val: map[key] };
+          return { key, val: map[key] };
         });
   }
 
@@ -5367,9 +5367,9 @@ define(["vue"], function (vue) {
 
   const utils = /*#__PURE__*/ Object.freeze({
     __proto__: null,
-    hasBrowserEnv: hasBrowserEnv,
-    hasStandardBrowserEnv: hasStandardBrowserEnv,
-    hasStandardBrowserWebWorkerEnv: hasStandardBrowserWebWorkerEnv,
+    hasBrowserEnv,
+    hasStandardBrowserEnv,
+    hasStandardBrowserWebWorkerEnv,
   });
 
   const platform = {
@@ -5383,7 +5383,7 @@ define(["vue"], function (vue) {
       new platform.classes.URLSearchParams(),
       Object.assign(
         {
-          visitor: function (value, key, path, helpers) {
+          visitor(value, key, path, helpers) {
             if (platform.isNode && utils$1.isBuffer(value)) {
               this.append(key, value.toString("base64"));
               return false;
@@ -5800,7 +5800,7 @@ define(["vue"], function (vue) {
 
     ["get", "set", "has"].forEach((methodName) => {
       Object.defineProperty(obj, methodName + accessorName, {
-        value: function (arg1, arg2, arg3) {
+        value(arg1, arg2, arg3) {
           return this[methodName].call(this, header, arg1, arg2, arg3);
         },
         configurable: true,
@@ -7659,9 +7659,9 @@ define(["vue"], function (vue) {
       ...mapActions(["showMessage"]),
       messageDisplay(desc, status = "danger", title = "") {
         this.showMessage({
-          title: title,
-          desc: desc,
-          status: status,
+          title,
+          desc,
+          status,
           autoClose: {
             enabled: true,
           },

@@ -35,7 +35,7 @@
 
     _shareOptionsTemplate: null,
 
-    validateShareProperties: function (properties) {
+    validateShareProperties(properties) {
       if (this.model.hasReshare()) {
         // it is enough to check the parent share attributes
         // if these are set to avoid privilege escalation
@@ -94,7 +94,7 @@
      *
      * @param properties
      */
-    addShareProperties: function (properties) {
+    addShareProperties(properties) {
       const extendedProperties = properties;
 
       extendedProperties.attributes = properties.attributes || {};
@@ -183,7 +183,7 @@
      * @param shareId
      * @param properties
      */
-    updateShareProperties: function (shareId, properties) {
+    updateShareProperties(shareId, properties) {
       if (
         _.isUndefined(properties.permissions) &&
         _.isUndefined(properties.attributes)
@@ -340,7 +340,7 @@
      *
      * @param event
      */
-    onOnlyOfficeOptionChange: function (event) {
+    onOnlyOfficeOptionChange(event) {
       const that = this;
       let share;
       const $element = $(event.target);
@@ -450,7 +450,7 @@
         shareId,
         {
           permissions: share.permissions,
-          attributes: attributes,
+          attributes,
         },
         {
           onlyofficeUpdatedShareProperties: true,
@@ -463,7 +463,7 @@
      *
      * @param view
      */
-    render: function (view) {
+    render(view) {
       const shares = this.model.getSharesWithCurrentItem();
 
       for (let shareIndex = 0; shareIndex < shares.length; shareIndex++) {
@@ -517,7 +517,7 @@
               attrScope: attribute.scope,
               attrKey: attribute.key,
               name: OCA.Onlyoffice.AppName + "-" + attribute.key,
-              label: label,
+              label,
               checked: attribute.enabled,
             });
           }
@@ -537,7 +537,7 @@
       );
     },
 
-    _getAttribute: function (attributes, scope, key) {
+    _getAttribute(attributes, scope, key) {
       for (const i in attributes) {
         if (
           attributes[i].scope === scope &&
@@ -551,7 +551,7 @@
       return null;
     },
 
-    _updateAttributes: function (attributes, scope, key, enabled) {
+    _updateAttributes(attributes, scope, key, enabled) {
       const updatedAttributes = [];
 
       // copy existing scope-key pairs from attributes
@@ -569,20 +569,20 @@
       // update attributes with scope-key pair to update
       if (scope && key && enabled !== null) {
         updatedAttributes.push({
-          scope: scope,
-          key: key,
-          enabled: enabled,
+          scope,
+          key,
+          enabled,
         });
       }
 
       return updatedAttributes;
     },
 
-    _hasPermission: function (permissions, permission) {
+    _hasPermission(permissions, permission) {
       return (permissions & permission) === permission;
     },
 
-    _removePermission: function (permissions, permission) {
+    _removePermission(permissions, permission) {
       return permissions & ~permission;
     },
 
@@ -590,7 +590,7 @@
      * Fill share options template based on supplied data map of {{ data-item }}
      * @private
      */
-    _template: function (data) {
+    _template(data) {
       if (!this._shareOptionsTemplate) {
         this._shareOptionsTemplate = Handlebars.compile(
           '<div class="onlyOfficeShareOptions">' +
@@ -609,7 +609,7 @@
 
   // api v2
   OCA.Onlyoffice.ShareDialogView = {
-    attach: function (view) {
+    attach(view) {
       if (
         _.isUndefined(view) ||
         _.isUndefined(view.model) ||
@@ -704,7 +704,7 @@
 
   // api v1
   OCA.Onlyoffice.ShareItemModel = {
-    attach: function (model) {
+    attach(model) {
       if (
         _.isUndefined(model) ||
         OCA.Onlyoffice.setting.shareAttributesVersion !== "v1"

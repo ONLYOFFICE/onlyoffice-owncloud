@@ -1,7 +1,7 @@
 define(["vue"], function (vue) {
   "use strict";
 
-  var global$1 =
+  const global$1 =
     typeof global !== "undefined"
       ? global
       : typeof self !== "undefined"
@@ -29,7 +29,7 @@ define(["vue"], function (vue) {
   let supported;
   let perf;
   function isPerformanceSupported() {
-    var _a;
+    let _a;
     if (supported !== undefined) {
       return supported;
     }
@@ -190,7 +190,7 @@ define(["vue"], function (vue) {
    * @license MIT
    */
 
-  var storeKey = "store";
+  const storeKey = "store";
 
   /**
    * forEach for object
@@ -226,7 +226,7 @@ define(["vue"], function (vue) {
       options && options.prepend ? subs.unshift(fn) : subs.push(fn);
     }
     return function () {
-      var i = subs.indexOf(fn);
+      const i = subs.indexOf(fn);
       if (i > -1) {
         subs.splice(i, 1);
       }
@@ -238,7 +238,7 @@ define(["vue"], function (vue) {
     store._mutations = Object.create(null);
     store._wrappedGetters = Object.create(null);
     store._modulesNamespaceMap = Object.create(null);
-    var state = store.state;
+    const state = store.state;
     // init all modules
     installModule(store, state, [], store._modules.root, true);
     // reset state
@@ -246,20 +246,20 @@ define(["vue"], function (vue) {
   }
 
   function resetStoreState(store, state, hot) {
-    var oldState = store._state;
-    var oldScope = store._scope;
+    const oldState = store._state;
+    const oldScope = store._scope;
 
     // bind store public getters
     store.getters = {};
     // reset local getters cache
     store._makeLocalGettersCache = Object.create(null);
-    var wrappedGetters = store._wrappedGetters;
-    var computedObj = {};
-    var computedCache = {};
+    const wrappedGetters = store._wrappedGetters;
+    const computedObj = {};
+    const computedCache = {};
 
     // create a new effect scope and create computed object inside it to avoid
     // getters (computed) getting destroyed on component unmount.
-    var scope = vue.effectScope(true);
+    const scope = vue.effectScope(true);
 
     scope.run(function () {
       forEachValue(wrappedGetters, function (fn, key) {
@@ -309,8 +309,8 @@ define(["vue"], function (vue) {
   }
 
   function installModule(store, rootState, path, module, hot) {
-    var isRoot = !path.length;
-    var namespace = store._modules.getNamespace(path);
+    const isRoot = !path.length;
+    const namespace = store._modules.getNamespace(path);
 
     // register in namespace map
     if (module.namespaced) {
@@ -327,8 +327,8 @@ define(["vue"], function (vue) {
 
     // set state
     if (!isRoot && !hot) {
-      var parentState = getNestedState(rootState, path.slice(0, -1));
-      var moduleName = path[path.length - 1];
+      const parentState = getNestedState(rootState, path.slice(0, -1));
+      const moduleName = path[path.length - 1];
       store._withCommit(function () {
         {
           if (moduleName in parentState) {
@@ -345,21 +345,21 @@ define(["vue"], function (vue) {
       });
     }
 
-    var local = (module.context = makeLocalContext(store, namespace, path));
+    const local = (module.context = makeLocalContext(store, namespace, path));
 
     module.forEachMutation(function (mutation, key) {
-      var namespacedType = namespace + key;
+      const namespacedType = namespace + key;
       registerMutation(store, namespacedType, mutation, local);
     });
 
     module.forEachAction(function (action, key) {
-      var type = action.root ? key : namespace + key;
-      var handler = action.handler || action;
+      const type = action.root ? key : namespace + key;
+      const handler = action.handler || action;
       registerAction(store, type, handler, local);
     });
 
     module.forEachGetter(function (getter, key) {
-      var namespacedType = namespace + key;
+      const namespacedType = namespace + key;
       registerGetter(store, namespacedType, getter, local);
     });
 
@@ -373,16 +373,16 @@ define(["vue"], function (vue) {
    * if there is no namespace, just use root ones
    */
   function makeLocalContext(store, namespace, path) {
-    var noNamespace = namespace === "";
+    const noNamespace = namespace === "";
 
-    var local = {
+    const local = {
       dispatch: noNamespace
         ? store.dispatch
         : function (_type, _payload, _options) {
-            var args = unifyObjectStyle(_type, _payload, _options);
-            var payload = args.payload;
-            var options = args.options;
-            var type = args.type;
+            const args = unifyObjectStyle(_type, _payload, _options);
+            const payload = args.payload;
+            const options = args.options;
+            let type = args.type;
 
             if (!options || !options.root) {
               type = namespace + type;
@@ -403,10 +403,10 @@ define(["vue"], function (vue) {
       commit: noNamespace
         ? store.commit
         : function (_type, _payload, _options) {
-            var args = unifyObjectStyle(_type, _payload, _options);
-            var payload = args.payload;
-            var options = args.options;
-            var type = args.type;
+            const args = unifyObjectStyle(_type, _payload, _options);
+            const payload = args.payload;
+            const options = args.options;
+            let type = args.type;
 
             if (!options || !options.root) {
               type = namespace + type;
@@ -449,8 +449,8 @@ define(["vue"], function (vue) {
 
   function makeLocalGetters(store, namespace) {
     if (!store._makeLocalGettersCache[namespace]) {
-      var gettersProxy = {};
-      var splitPos = namespace.length;
+      const gettersProxy = {};
+      const splitPos = namespace.length;
       Object.keys(store.getters).forEach(function (type) {
         // skip if the target getter is not match this namespace
         if (type.slice(0, splitPos) !== namespace) {
@@ -458,7 +458,7 @@ define(["vue"], function (vue) {
         }
 
         // extract local getter type
-        var localType = type.slice(splitPos);
+        const localType = type.slice(splitPos);
 
         // Add a port to the getters proxy.
         // Define as getter property because
@@ -477,16 +477,16 @@ define(["vue"], function (vue) {
   }
 
   function registerMutation(store, type, handler, local) {
-    var entry = store._mutations[type] || (store._mutations[type] = []);
+    const entry = store._mutations[type] || (store._mutations[type] = []);
     entry.push(function wrappedMutationHandler(payload) {
       handler.call(store, local.state, payload);
     });
   }
 
   function registerAction(store, type, handler, local) {
-    var entry = store._actions[type] || (store._actions[type] = []);
+    const entry = store._actions[type] || (store._actions[type] = []);
     entry.push(function wrappedActionHandler(payload) {
-      var res = handler.call(
+      let res = handler.call(
         store,
         {
           dispatch: local.dispatch,
@@ -569,12 +569,12 @@ define(["vue"], function (vue) {
     return { type: type, payload: payload, options: options };
   }
 
-  var LABEL_VUEX_BINDINGS = "vuex bindings";
-  var MUTATIONS_LAYER_ID = "vuex:mutations";
-  var ACTIONS_LAYER_ID = "vuex:actions";
-  var INSPECTOR_ID = "vuex";
+  const LABEL_VUEX_BINDINGS = "vuex bindings";
+  const MUTATIONS_LAYER_ID = "vuex:mutations";
+  const ACTIONS_LAYER_ID = "vuex:actions";
+  const INSPECTOR_ID = "vuex";
 
-  var actionId = 0;
+  let actionId = 0;
 
   function addDevtools(app, store) {
     setupDevtoolsPlugin(
@@ -610,7 +610,7 @@ define(["vue"], function (vue) {
         api.on.getInspectorTree(function (payload) {
           if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
             if (payload.filter) {
-              var nodes = [];
+              const nodes = [];
               flattenStoreForInspectorTree(
                 nodes,
                 store._modules.root,
@@ -628,7 +628,7 @@ define(["vue"], function (vue) {
 
         api.on.getInspectorState(function (payload) {
           if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
-            var modulePath = payload.nodeId;
+            const modulePath = payload.nodeId;
             makeLocalGetters(store, modulePath);
             payload.state = formatStoreForInspectorState(
               getStoreModule(store._modules, modulePath),
@@ -642,8 +642,8 @@ define(["vue"], function (vue) {
 
         api.on.editInspectorState(function (payload) {
           if (payload.app === app && payload.inspectorId === INSPECTOR_ID) {
-            var modulePath = payload.nodeId;
-            var path = payload.path;
+            const modulePath = payload.nodeId;
+            let path = payload.path;
             if (modulePath !== "root") {
               path = modulePath.split("/").filter(Boolean).concat(path);
             }
@@ -654,7 +654,7 @@ define(["vue"], function (vue) {
         });
 
         store.subscribe(function (mutation, state) {
-          var data = {};
+          const data = {};
 
           if (mutation.payload) {
             data.payload = mutation.payload;
@@ -678,7 +678,7 @@ define(["vue"], function (vue) {
 
         store.subscribeAction({
           before: function (action, state) {
-            var data = {};
+            const data = {};
             if (action.payload) {
               data.payload = action.payload;
             }
@@ -698,8 +698,8 @@ define(["vue"], function (vue) {
             });
           },
           after: function (action, state) {
-            var data = {};
-            var duration = Date.now() - action._time;
+            const data = {};
+            const duration = Date.now() - action._time;
             data.duration = {
               _custom: {
                 type: "duration",
@@ -730,11 +730,11 @@ define(["vue"], function (vue) {
   }
 
   // extracted from tailwind palette
-  var COLOR_LIME_500 = 0x84cc16;
-  var COLOR_DARK = 0x666666;
-  var COLOR_WHITE = 0xffffff;
+  const COLOR_LIME_500 = 0x84cc16;
+  const COLOR_DARK = 0x666666;
+  const COLOR_WHITE = 0xffffff;
 
-  var TAG_NAMESPACED = {
+  const TAG_NAMESPACED = {
     label: "namespaced",
     textColor: COLOR_WHITE,
     backgroundColor: COLOR_DARK,
@@ -800,8 +800,8 @@ define(["vue"], function (vue) {
    */
   function formatStoreForInspectorState(module, getters, path) {
     getters = path === "root" ? getters : getters[path];
-    var gettersKeys = Object.keys(getters);
-    var storeState = {
+    const gettersKeys = Object.keys(getters);
+    const storeState = {
       state: Object.keys(module.state).map(function (key) {
         return {
           key: key,
@@ -812,7 +812,7 @@ define(["vue"], function (vue) {
     };
 
     if (gettersKeys.length) {
-      var tree = transformPathsToObjectTree(getters);
+      const tree = transformPathsToObjectTree(getters);
       storeState.getters = Object.keys(tree).map(function (key) {
         return {
           key: key.endsWith("/") ? extractNameFromPath(key) : key,
@@ -828,12 +828,12 @@ define(["vue"], function (vue) {
   }
 
   function transformPathsToObjectTree(getters) {
-    var result = {};
+    const result = {};
     Object.keys(getters).forEach(function (key) {
-      var path = key.split("/");
+      const path = key.split("/");
       if (path.length > 1) {
-        var target = result;
-        var leafKey = path.pop();
+        let target = result;
+        const leafKey = path.pop();
         path.forEach(function (p) {
           if (!target[p]) {
             target[p] = {
@@ -860,12 +860,12 @@ define(["vue"], function (vue) {
   }
 
   function getStoreModule(moduleMap, path) {
-    var names = path.split("/").filter(function (n) {
+    const names = path.split("/").filter(function (n) {
       return n;
     });
     return names.reduce(
       function (module, moduleName, i) {
-        var child = module[moduleName];
+        const child = module[moduleName];
         if (!child) {
           throw new Error(
             'Missing module "' + moduleName + '" for path "' + path + '".'
@@ -886,19 +886,19 @@ define(["vue"], function (vue) {
   }
 
   // Base data struct for store's module, package with some attribute and method
-  var Module = function Module(rawModule, runtime) {
+  const Module = function Module(rawModule, runtime) {
     this.runtime = runtime;
     // Store some children item
     this._children = Object.create(null);
     // Store the origin module object which passed by programmer
     this._rawModule = rawModule;
-    var rawState = rawModule.state;
+    const rawState = rawModule.state;
 
     // Store the origin module's state
     this.state = (typeof rawState === "function" ? rawState() : rawState) || {};
   };
 
-  var prototypeAccessors$1 = { namespaced: { configurable: true } };
+  const prototypeAccessors$1 = { namespaced: { configurable: true } };
 
   prototypeAccessors$1.namespaced.get = function () {
     return !!this._rawModule.namespaced;
@@ -957,7 +957,7 @@ define(["vue"], function (vue) {
 
   Object.defineProperties(Module.prototype, prototypeAccessors$1);
 
-  var ModuleCollection = function ModuleCollection(rawRootModule) {
+  const ModuleCollection = function ModuleCollection(rawRootModule) {
     // register root module (Vuex.Store options)
     this.register([], rawRootModule, false);
   };
@@ -969,7 +969,7 @@ define(["vue"], function (vue) {
   };
 
   ModuleCollection.prototype.getNamespace = function getNamespace(path) {
-    var module = this.root;
+    let module = this.root;
     return path.reduce(function (namespace, key) {
       module = module.getChild(key);
       return namespace + (module.namespaced ? key + "/" : "");
@@ -985,7 +985,7 @@ define(["vue"], function (vue) {
     rawModule,
     runtime
   ) {
-    var this$1$1 = this;
+    const this$1$1 = this;
     if (runtime === void 0) {
       runtime = true;
     }
@@ -994,11 +994,11 @@ define(["vue"], function (vue) {
       assertRawModule(path, rawModule);
     }
 
-    var newModule = new Module(rawModule, runtime);
+    const newModule = new Module(rawModule, runtime);
     if (path.length === 0) {
       this.root = newModule;
     } else {
-      var parent = this.get(path.slice(0, -1));
+      const parent = this.get(path.slice(0, -1));
       parent.addChild(path[path.length - 1], newModule);
     }
 
@@ -1011,9 +1011,9 @@ define(["vue"], function (vue) {
   };
 
   ModuleCollection.prototype.unregister = function unregister(path) {
-    var parent = this.get(path.slice(0, -1));
-    var key = path[path.length - 1];
-    var child = parent.getChild(key);
+    const parent = this.get(path.slice(0, -1));
+    const key = path[path.length - 1];
+    const child = parent.getChild(key);
 
     if (!child) {
       {
@@ -1035,8 +1035,8 @@ define(["vue"], function (vue) {
   };
 
   ModuleCollection.prototype.isRegistered = function isRegistered(path) {
-    var parent = this.get(path.slice(0, -1));
-    var key = path[path.length - 1];
+    const parent = this.get(path.slice(0, -1));
+    const key = path[path.length - 1];
 
     if (parent) {
       return parent.hasChild(key);
@@ -1055,7 +1055,7 @@ define(["vue"], function (vue) {
 
     // update nested modules
     if (newModule.modules) {
-      for (var key in newModule.modules) {
+      for (const key in newModule.modules) {
         if (!targetModule.getChild(key)) {
           {
             console.warn(
@@ -1076,14 +1076,14 @@ define(["vue"], function (vue) {
     }
   }
 
-  var functionAssert = {
+  const functionAssert = {
     assert: function (value) {
       return typeof value === "function";
     },
     expected: "function",
   };
 
-  var objectAssert = {
+  const objectAssert = {
     assert: function (value) {
       return (
         typeof value === "function" ||
@@ -1093,7 +1093,7 @@ define(["vue"], function (vue) {
     expected: 'function or object with "handler" function',
   };
 
-  var assertTypes = {
+  const assertTypes = {
     getters: functionAssert,
     mutations: functionAssert,
     actions: objectAssert,
@@ -1105,7 +1105,7 @@ define(["vue"], function (vue) {
         return;
       }
 
-      var assertOptions = assertTypes[key];
+      const assertOptions = assertTypes[key];
 
       forEachValue(rawModule[key], function (value, type) {
         assert(
@@ -1117,7 +1117,7 @@ define(["vue"], function (vue) {
   }
 
   function makeAssertionMessage(path, key, type, value, expected) {
-    var buf =
+    let buf =
       key + " should be " + expected + ' but "' + key + "." + type + '"';
     if (path.length > 0) {
       buf += ' in module "' + path.join(".") + '"';
@@ -1126,8 +1126,8 @@ define(["vue"], function (vue) {
     return buf;
   }
 
-  var Store = function Store(options) {
-    var this$1$1 = this;
+  const Store = function Store(options) {
+    const this$1$1 = this;
     if (options === void 0) {
       options = {};
     }
@@ -1143,15 +1143,15 @@ define(["vue"], function (vue) {
       );
     }
 
-    var plugins = options.plugins;
+    let plugins = options.plugins;
     if (plugins === void 0) {
       plugins = [];
     }
-    var strict = options.strict;
+    let strict = options.strict;
     if (strict === void 0) {
       strict = false;
     }
-    var devtools = options.devtools;
+    const devtools = options.devtools;
 
     // store internal state
     this._committing = false;
@@ -1172,10 +1172,10 @@ define(["vue"], function (vue) {
     this._devtools = devtools;
 
     // bind commit and dispatch to self
-    var store = this;
-    var ref = this;
-    var dispatch = ref.dispatch;
-    var commit = ref.commit;
+    const store = this;
+    const ref = this;
+    const dispatch = ref.dispatch;
+    const commit = ref.commit;
     this.dispatch = function boundDispatch(type, payload) {
       return dispatch.call(store, type, payload);
     };
@@ -1186,7 +1186,7 @@ define(["vue"], function (vue) {
     // strict mode
     this.strict = strict;
 
-    var state = this._modules.root.state;
+    const state = this._modules.root.state;
 
     // init root module.
     // this also recursively registers all sub-modules
@@ -1203,13 +1203,13 @@ define(["vue"], function (vue) {
     });
   };
 
-  var prototypeAccessors = { state: { configurable: true } };
+  const prototypeAccessors = { state: { configurable: true } };
 
   Store.prototype.install = function install(app, injectKey) {
     app.provide(injectKey || storeKey, this);
     app.config.globalProperties.$store = this;
 
-    var useDevtools = this._devtools !== undefined ? this._devtools : true;
+    const useDevtools = this._devtools !== undefined ? this._devtools : true;
 
     if (useDevtools) {
       addDevtools(app, this);
@@ -1230,16 +1230,16 @@ define(["vue"], function (vue) {
   };
 
   Store.prototype.commit = function commit(_type, _payload, _options) {
-    var this$1$1 = this;
+    const this$1$1 = this;
 
     // check object-style commit
-    var ref = unifyObjectStyle(_type, _payload, _options);
-    var type = ref.type;
-    var payload = ref.payload;
-    var options = ref.options;
+    const ref = unifyObjectStyle(_type, _payload, _options);
+    const type = ref.type;
+    const payload = ref.payload;
+    const options = ref.options;
 
-    var mutation = { type: type, payload: payload };
-    var entry = this._mutations[type];
+    const mutation = { type: type, payload: payload };
+    const entry = this._mutations[type];
     if (!entry) {
       {
         console.error("[vuex] unknown mutation type: " + type);
@@ -1269,15 +1269,15 @@ define(["vue"], function (vue) {
   };
 
   Store.prototype.dispatch = function dispatch(_type, _payload) {
-    var this$1$1 = this;
+    const this$1$1 = this;
 
     // check object-style dispatch
-    var ref = unifyObjectStyle(_type, _payload);
-    var type = ref.type;
-    var payload = ref.payload;
+    const ref = unifyObjectStyle(_type, _payload);
+    const type = ref.type;
+    const payload = ref.payload;
 
-    var action = { type: type, payload: payload };
-    var entry = this._actions[type];
+    const action = { type: type, payload: payload };
+    const entry = this._actions[type];
     if (!entry) {
       {
         console.error("[vuex] unknown action type: " + type);
@@ -1301,7 +1301,7 @@ define(["vue"], function (vue) {
       }
     }
 
-    var result =
+    const result =
       entry.length > 1
         ? Promise.all(
             entry.map(function (handler) {
@@ -1355,12 +1355,12 @@ define(["vue"], function (vue) {
   };
 
   Store.prototype.subscribeAction = function subscribeAction(fn, options) {
-    var subs = typeof fn === "function" ? { before: fn } : fn;
+    const subs = typeof fn === "function" ? { before: fn } : fn;
     return genericSubscribe(subs, this._actionSubscribers, options);
   };
 
   Store.prototype.watch = function watch$1(getter, cb, options) {
-    var this$1$1 = this;
+    const this$1$1 = this;
 
     {
       assert(
@@ -1378,7 +1378,7 @@ define(["vue"], function (vue) {
   };
 
   Store.prototype.replaceState = function replaceState(state) {
-    var this$1$1 = this;
+    const this$1$1 = this;
 
     this._withCommit(function () {
       this$1$1._state.data = state;
@@ -1419,7 +1419,7 @@ define(["vue"], function (vue) {
   };
 
   Store.prototype.unregisterModule = function unregisterModule(path) {
-    var this$1$1 = this;
+    const this$1$1 = this;
 
     if (typeof path === "string") {
       path = [path];
@@ -1431,7 +1431,7 @@ define(["vue"], function (vue) {
 
     this._modules.unregister(path);
     this._withCommit(function () {
-      var parentState = getNestedState(this$1$1.state, path.slice(0, -1));
+      const parentState = getNestedState(this$1$1.state, path.slice(0, -1));
       delete parentState[path[path.length - 1]];
     });
     resetStore(this);
@@ -1455,7 +1455,7 @@ define(["vue"], function (vue) {
   };
 
   Store.prototype._withCommit = function _withCommit(fn) {
-    var committing = this._committing;
+    const committing = this._committing;
     this._committing = true;
     fn();
     this._committing = committing;
@@ -1469,16 +1469,16 @@ define(["vue"], function (vue) {
    * @param {Object|Array} getters
    * @return {Object}
    */
-  var mapGetters = normalizeNamespace(function (namespace, getters) {
-    var res = {};
+  const mapGetters = normalizeNamespace(function (namespace, getters) {
+    const res = {};
     if (!isValidMap(getters)) {
       console.error(
         "[vuex] mapGetters: mapper parameter must be either an Array or an Object"
       );
     }
     normalizeMap(getters).forEach(function (ref) {
-      var key = ref.key;
-      var val = ref.val;
+      const key = ref.key;
+      let val = ref.val;
 
       // The namespace has been mutated by normalizeNamespace
       val = namespace + val;
@@ -1507,28 +1507,28 @@ define(["vue"], function (vue) {
    * @param {Object|Array} actions # Object's item can be a function which accept `dispatch` function as the first param, it can accept anthor params. You can dispatch action and do any other things in this function. specially, You need to pass anthor params from the mapped function.
    * @return {Object}
    */
-  var mapActions = normalizeNamespace(function (namespace, actions) {
-    var res = {};
+  const mapActions = normalizeNamespace(function (namespace, actions) {
+    const res = {};
     if (!isValidMap(actions)) {
       console.error(
         "[vuex] mapActions: mapper parameter must be either an Array or an Object"
       );
     }
     normalizeMap(actions).forEach(function (ref) {
-      var key = ref.key;
-      var val = ref.val;
+      const key = ref.key;
+      const val = ref.val;
 
       res[key] = function mappedAction() {
-        var args = [],
+        const args = [],
           len = arguments.length;
         while (len--) {
           args[len] = arguments[len];
         }
 
         // get dispatch function from store
-        var dispatch = this.$store.dispatch;
+        let dispatch = this.$store.dispatch;
         if (namespace) {
-          var module = getModuleByNamespace(
+          const module = getModuleByNamespace(
             this.$store,
             "mapActions",
             namespace
@@ -1600,7 +1600,7 @@ define(["vue"], function (vue) {
    * @return {Object}
    */
   function getModuleByNamespace(store, helper, namespace) {
-    var module = store._modulesNamespaceMap[namespace];
+    const module = store._modulesNamespaceMap[namespace];
     if (!module) {
       console.error(
         "[vuex] module namespace not found in " + helper + "(): " + namespace
@@ -2343,7 +2343,7 @@ define(["vue"], function (vue) {
     isFunction(thing.then) &&
     isFunction(thing.catch);
 
-  var utils$1 = {
+  const utils$1 = {
     isArray: isArray$1,
     isArrayBuffer,
     isBuffer: isBuffer$1,
@@ -2397,15 +2397,15 @@ define(["vue"], function (vue) {
     isThenable,
   };
 
-  var lookup = [];
-  var revLookup = [];
-  var Arr = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
-  var inited = false;
+  const lookup = [];
+  const revLookup = [];
+  const Arr = typeof Uint8Array !== "undefined" ? Uint8Array : Array;
+  let inited = false;
   function init() {
     inited = true;
-    var code =
+    const code =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-    for (var i = 0, len = code.length; i < len; ++i) {
+    for (let i = 0, len = code.length; i < len; ++i) {
       lookup[i] = code[i];
       revLookup[code.charCodeAt(i)] = i;
     }
@@ -2418,8 +2418,8 @@ define(["vue"], function (vue) {
     if (!inited) {
       init();
     }
-    var i, j, l, tmp, placeHolders, arr;
-    var len = b64.length;
+    let i, j, tmp;
+    const len = b64.length;
 
     if (len % 4 > 0) {
       throw new Error("Invalid string. Length must be a multiple of 4");
@@ -2430,15 +2430,15 @@ define(["vue"], function (vue) {
     // represent one byte
     // if there is only one, then the three characters before it represent 2 bytes
     // this is just a cheap hack to not do indexOf twice
-    placeHolders = b64[len - 2] === "=" ? 2 : b64[len - 1] === "=" ? 1 : 0;
-
+    const placeHolders =
+      b64[len - 2] === "=" ? 2 : b64[len - 1] === "=" ? 1 : 0;
     // base64 is 4/3 + up to two characters of the original data
-    arr = new Arr((len * 3) / 4 - placeHolders);
+    const arr = new Arr((len * 3) / 4 - placeHolders);
 
     // if there are placeholders, only get up to the last complete 4 chars
-    l = placeHolders > 0 ? len - 4 : len;
+    const l = placeHolders > 0 ? len - 4 : len;
 
-    var L = 0;
+    let L = 0;
 
     for (i = 0, j = 0; i < l; i += 4, j += 3) {
       tmp =
@@ -2478,9 +2478,9 @@ define(["vue"], function (vue) {
   }
 
   function encodeChunk(uint8, start, end) {
-    var tmp;
-    var output = [];
-    for (var i = start; i < end; i += 3) {
+    let tmp;
+    const output = [];
+    for (let i = start; i < end; i += 3) {
       tmp = (uint8[i] << 16) + (uint8[i + 1] << 8) + uint8[i + 2];
       output.push(tripletToBase64(tmp));
     }
@@ -2491,15 +2491,15 @@ define(["vue"], function (vue) {
     if (!inited) {
       init();
     }
-    var tmp;
-    var len = uint8.length;
-    var extraBytes = len % 3; // if we have 1 byte left, pad 2 bytes
-    var output = "";
-    var parts = [];
-    var maxChunkLength = 16383; // must be multiple of 3
+    let tmp;
+    const len = uint8.length;
+    const extraBytes = len % 3; // if we have 1 byte left, pad 2 bytes
+    let output = "";
+    const parts = [];
+    const maxChunkLength = 16383; // must be multiple of 3
 
     // go through the array every three bytes, we'll deal with trailing stuff later
-    for (var i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
+    for (let i = 0, len2 = len - extraBytes; i < len2; i += maxChunkLength) {
       parts.push(
         encodeChunk(
           uint8,
@@ -2529,14 +2529,14 @@ define(["vue"], function (vue) {
   }
 
   function read(buffer, offset, isLE, mLen, nBytes) {
-    var e, m;
-    var eLen = nBytes * 8 - mLen - 1;
-    var eMax = (1 << eLen) - 1;
-    var eBias = eMax >> 1;
-    var nBits = -7;
-    var i = isLE ? nBytes - 1 : 0;
-    var d = isLE ? -1 : 1;
-    var s = buffer[offset + i];
+    let e, m;
+    const eLen = nBytes * 8 - mLen - 1;
+    const eMax = (1 << eLen) - 1;
+    const eBias = eMax >> 1;
+    let nBits = -7;
+    let i = isLE ? nBytes - 1 : 0;
+    const d = isLE ? -1 : 1;
+    let s = buffer[offset + i];
 
     i += d;
 
@@ -2562,14 +2562,14 @@ define(["vue"], function (vue) {
   }
 
   function write(buffer, value, offset, isLE, mLen, nBytes) {
-    var e, m, c;
-    var eLen = nBytes * 8 - mLen - 1;
-    var eMax = (1 << eLen) - 1;
-    var eBias = eMax >> 1;
-    var rt = mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0;
-    var i = isLE ? 0 : nBytes - 1;
-    var d = isLE ? 1 : -1;
-    var s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0;
+    let e, m, c;
+    let eLen = nBytes * 8 - mLen - 1;
+    const eMax = (1 << eLen) - 1;
+    const eBias = eMax >> 1;
+    const rt = mLen === 23 ? Math.pow(2, -24) - Math.pow(2, -77) : 0;
+    let i = isLE ? 0 : nBytes - 1;
+    const d = isLE ? 1 : -1;
+    const s = value < 0 || (value === 0 && 1 / value < 0) ? 1 : 0;
 
     value = Math.abs(value);
 
@@ -2621,15 +2621,15 @@ define(["vue"], function (vue) {
     buffer[offset + i - d] |= s * 128;
   }
 
-  var toString = {}.toString;
+  const toString = {}.toString;
 
-  var isArray =
+  const isArray =
     Array.isArray ||
     function (arr) {
       return toString.call(arr) == "[object Array]";
     };
 
-  var INSPECT_MAX_BYTES = 50;
+  const INSPECT_MAX_BYTES = 50;
 
   /**
              * If `Buffer.TYPED_ARRAY_SUPPORT`:
@@ -2798,7 +2798,7 @@ define(["vue"], function (vue) {
     assertSize(size);
     that = createBuffer(that, size < 0 ? 0 : checked(size) | 0);
     if (!Buffer.TYPED_ARRAY_SUPPORT) {
-      for (var i = 0; i < size; ++i) {
+      for (let i = 0; i < size; ++i) {
         that[i] = 0;
       }
     }
@@ -2827,10 +2827,10 @@ define(["vue"], function (vue) {
       throw new TypeError('"encoding" must be a valid string encoding');
     }
 
-    var length = byteLength(string, encoding) | 0;
+    const length = byteLength(string, encoding) | 0;
     that = createBuffer(that, length);
 
-    var actual = that.write(string, encoding);
+    const actual = that.write(string, encoding);
 
     if (actual !== length) {
       // Writing a hex string, for example, that contains invalid characters will
@@ -2843,9 +2843,9 @@ define(["vue"], function (vue) {
   }
 
   function fromArrayLike(that, array) {
-    var length = array.length < 0 ? 0 : checked(array.length) | 0;
+    const length = array.length < 0 ? 0 : checked(array.length) | 0;
     that = createBuffer(that, length);
-    for (var i = 0; i < length; i += 1) {
+    for (let i = 0; i < length; i += 1) {
       that[i] = array[i] & 255;
     }
     return that;
@@ -2883,7 +2883,7 @@ define(["vue"], function (vue) {
 
   function fromObject(that, obj) {
     if (internalIsBuffer(obj)) {
-      var len = checked(obj.length) | 0;
+      const len = checked(obj.length) | 0;
       that = createBuffer(that, len);
 
       if (that.length === 0) {
@@ -2943,10 +2943,10 @@ define(["vue"], function (vue) {
       return 0;
     }
 
-    var x = a.length;
-    var y = b.length;
+    let x = a.length;
+    let y = b.length;
 
-    for (var i = 0, len = Math.min(x, y); i < len; ++i) {
+    for (let i = 0, len = Math.min(x, y); i < len; ++i) {
       if (a[i] !== b[i]) {
         x = a[i];
         y = b[i];
@@ -2991,7 +2991,7 @@ define(["vue"], function (vue) {
       return Buffer.alloc(0);
     }
 
-    var i;
+    let i;
     if (length === undefined) {
       length = 0;
       for (i = 0; i < list.length; ++i) {
@@ -2999,10 +2999,10 @@ define(["vue"], function (vue) {
       }
     }
 
-    var buffer = Buffer.allocUnsafe(length);
-    var pos = 0;
+    const buffer = Buffer.allocUnsafe(length);
+    let pos = 0;
     for (i = 0; i < list.length; ++i) {
-      var buf = list[i];
+      const buf = list[i];
       if (!internalIsBuffer(buf)) {
         throw new TypeError('"list" argument must be an Array of Buffers');
       }
@@ -3027,13 +3027,13 @@ define(["vue"], function (vue) {
       string = "" + string;
     }
 
-    var len = string.length;
+    const len = string.length;
     if (len === 0) {
       return 0;
     }
 
     // Use a for loop to avoid recursion
-    var loweredCase = false;
+    let loweredCase = false;
     for (;;) {
       switch (encoding) {
         case "ascii":
@@ -3065,7 +3065,7 @@ define(["vue"], function (vue) {
   Buffer.byteLength = byteLength;
 
   function slowToString(encoding, start, end) {
-    var loweredCase = false;
+    let loweredCase = false;
 
     // No need to verify that "this.length <= MAX_UINT32" since it's a read-only
     // property of a typed array.
@@ -3143,28 +3143,28 @@ define(["vue"], function (vue) {
   Buffer.prototype._isBuffer = true;
 
   function swap(b, n, m) {
-    var i = b[n];
+    const i = b[n];
     b[n] = b[m];
     b[m] = i;
   }
 
   Buffer.prototype.swap16 = function swap16() {
-    var len = this.length;
+    const len = this.length;
     if (len % 2 !== 0) {
       throw new RangeError("Buffer size must be a multiple of 16-bits");
     }
-    for (var i = 0; i < len; i += 2) {
+    for (let i = 0; i < len; i += 2) {
       swap(this, i, i + 1);
     }
     return this;
   };
 
   Buffer.prototype.swap32 = function swap32() {
-    var len = this.length;
+    const len = this.length;
     if (len % 4 !== 0) {
       throw new RangeError("Buffer size must be a multiple of 32-bits");
     }
-    for (var i = 0; i < len; i += 4) {
+    for (let i = 0; i < len; i += 4) {
       swap(this, i, i + 3);
       swap(this, i + 1, i + 2);
     }
@@ -3172,11 +3172,11 @@ define(["vue"], function (vue) {
   };
 
   Buffer.prototype.swap64 = function swap64() {
-    var len = this.length;
+    const len = this.length;
     if (len % 8 !== 0) {
       throw new RangeError("Buffer size must be a multiple of 64-bits");
     }
-    for (var i = 0; i < len; i += 8) {
+    for (let i = 0; i < len; i += 8) {
       swap(this, i, i + 7);
       swap(this, i + 1, i + 6);
       swap(this, i + 2, i + 5);
@@ -3186,7 +3186,7 @@ define(["vue"], function (vue) {
   };
 
   Buffer.prototype.toString = function toString() {
-    var length = this.length | 0;
+    const length = this.length | 0;
     if (length === 0) {
       return "";
     }
@@ -3207,8 +3207,8 @@ define(["vue"], function (vue) {
   };
 
   Buffer.prototype.inspect = function inspect() {
-    var str = "";
-    var max = INSPECT_MAX_BYTES;
+    let str = "";
+    const max = INSPECT_MAX_BYTES;
     if (this.length > 0) {
       str = this.toString("hex", 0, max).match(/.{2}/g).join(" ");
       if (this.length > max) {
@@ -3270,14 +3270,14 @@ define(["vue"], function (vue) {
       return 0;
     }
 
-    var x = thisEnd - thisStart;
-    var y = end - start;
-    var len = Math.min(x, y);
+    let x = thisEnd - thisStart;
+    let y = end - start;
+    const len = Math.min(x, y);
 
-    var thisCopy = this.slice(thisStart, thisEnd);
-    var targetCopy = target.slice(start, end);
+    const thisCopy = this.slice(thisStart, thisEnd);
+    const targetCopy = target.slice(start, end);
 
-    for (var i = 0; i < len; ++i) {
+    for (let i = 0; i < len; ++i) {
       if (thisCopy[i] !== targetCopy[i]) {
         x = thisCopy[i];
         y = targetCopy[i];
@@ -3373,9 +3373,9 @@ define(["vue"], function (vue) {
   }
 
   function arrayIndexOf(arr, val, byteOffset, encoding, dir) {
-    var indexSize = 1;
-    var arrLength = arr.length;
-    var valLength = val.length;
+    let indexSize = 1;
+    let arrLength = arr.length;
+    let valLength = val.length;
 
     if (encoding !== undefined) {
       encoding = String(encoding).toLowerCase();
@@ -3403,9 +3403,9 @@ define(["vue"], function (vue) {
       }
     }
 
-    var i;
+    let i;
     if (dir) {
-      var foundIndex = -1;
+      let foundIndex = -1;
       for (i = byteOffset; i < arrLength; i++) {
         if (
           read(arr, i) === read(val, foundIndex === -1 ? 0 : i - foundIndex)
@@ -3428,8 +3428,8 @@ define(["vue"], function (vue) {
         byteOffset = arrLength - valLength;
       }
       for (i = byteOffset; i >= 0; i--) {
-        var found = true;
-        for (var j = 0; j < valLength; j++) {
+        let found = true;
+        for (let j = 0; j < valLength; j++) {
           if (read(arr, i + j) !== read(val, j)) {
             found = false;
             break;
@@ -3462,7 +3462,7 @@ define(["vue"], function (vue) {
 
   function hexWrite(buf, string, offset, length) {
     offset = Number(offset) || 0;
-    var remaining = buf.length - offset;
+    const remaining = buf.length - offset;
     if (!length) {
       length = remaining;
     } else {
@@ -3473,7 +3473,7 @@ define(["vue"], function (vue) {
     }
 
     // must be an even number of digits
-    var strLen = string.length;
+    const strLen = string.length;
     if (strLen % 2 !== 0) {
       throw new TypeError("Invalid hex string");
     }
@@ -3481,8 +3481,8 @@ define(["vue"], function (vue) {
     if (length > strLen / 2) {
       length = strLen / 2;
     }
-    for (var i = 0; i < length; ++i) {
-      var parsed = parseInt(string.substr(i * 2, 2), 16);
+    for (let i = 0; i < length; ++i) {
+      const parsed = parseInt(string.substr(i * 2, 2), 16);
       if (isNaN(parsed)) {
         return i;
       }
@@ -3551,7 +3551,7 @@ define(["vue"], function (vue) {
       );
     }
 
-    var remaining = this.length - offset;
+    const remaining = this.length - offset;
     if (length === undefined || length > remaining) {
       length = remaining;
     }
@@ -3567,7 +3567,7 @@ define(["vue"], function (vue) {
       encoding = "utf8";
     }
 
-    var loweredCase = false;
+    let loweredCase = false;
     for (;;) {
       switch (encoding) {
         case "hex":
@@ -3621,17 +3621,17 @@ define(["vue"], function (vue) {
 
   function utf8Slice(buf, start, end) {
     end = Math.min(buf.length, end);
-    var res = [];
+    const res = [];
 
-    var i = start;
+    let i = start;
     while (i < end) {
-      var firstByte = buf[i];
-      var codePoint = null;
-      var bytesPerSequence =
+      const firstByte = buf[i];
+      let codePoint = null;
+      let bytesPerSequence =
         firstByte > 0xef ? 4 : firstByte > 0xdf ? 3 : firstByte > 0xbf ? 2 : 1;
 
       if (i + bytesPerSequence <= end) {
-        var secondByte, thirdByte, fourthByte, tempCodePoint;
+        let secondByte, thirdByte, fourthByte, tempCodePoint;
 
         switch (bytesPerSequence) {
           case 1:
@@ -3707,17 +3707,17 @@ define(["vue"], function (vue) {
   // Based on http://stackoverflow.com/a/22747272/680742, the browser with
   // the lowest limit is Chrome, with 0x10000 args.
   // We go 1 magnitude less, for safety
-  var MAX_ARGUMENTS_LENGTH = 0x1000;
+  const MAX_ARGUMENTS_LENGTH = 0x1000;
 
   function decodeCodePointsArray(codePoints) {
-    var len = codePoints.length;
+    const len = codePoints.length;
     if (len <= MAX_ARGUMENTS_LENGTH) {
       return String.fromCharCode.apply(String, codePoints); // avoid extra slice()
     }
 
     // Decode in chunks to avoid "call stack size exceeded".
-    var res = "";
-    var i = 0;
+    let res = "";
+    let i = 0;
     while (i < len) {
       res += String.fromCharCode.apply(
         String,
@@ -3728,27 +3728,27 @@ define(["vue"], function (vue) {
   }
 
   function asciiSlice(buf, start, end) {
-    var ret = "";
+    let ret = "";
     end = Math.min(buf.length, end);
 
-    for (var i = start; i < end; ++i) {
+    for (let i = start; i < end; ++i) {
       ret += String.fromCharCode(buf[i] & 0x7f);
     }
     return ret;
   }
 
   function latin1Slice(buf, start, end) {
-    var ret = "";
+    let ret = "";
     end = Math.min(buf.length, end);
 
-    for (var i = start; i < end; ++i) {
+    for (let i = start; i < end; ++i) {
       ret += String.fromCharCode(buf[i]);
     }
     return ret;
   }
 
   function hexSlice(buf, start, end) {
-    var len = buf.length;
+    const len = buf.length;
 
     if (!start || start < 0) {
       start = 0;
@@ -3757,24 +3757,24 @@ define(["vue"], function (vue) {
       end = len;
     }
 
-    var out = "";
-    for (var i = start; i < end; ++i) {
+    let out = "";
+    for (let i = start; i < end; ++i) {
       out += toHex(buf[i]);
     }
     return out;
   }
 
   function utf16leSlice(buf, start, end) {
-    var bytes = buf.slice(start, end);
-    var res = "";
-    for (var i = 0; i < bytes.length; i += 2) {
+    const bytes = buf.slice(start, end);
+    let res = "";
+    for (let i = 0; i < bytes.length; i += 2) {
       res += String.fromCharCode(bytes[i] + bytes[i + 1] * 256);
     }
     return res;
   }
 
   Buffer.prototype.slice = function slice(start, end) {
-    var len = this.length;
+    const len = this.length;
     start = ~~start;
     end = end === undefined ? len : ~~end;
 
@@ -3800,14 +3800,14 @@ define(["vue"], function (vue) {
       end = start;
     }
 
-    var newBuf;
+    let newBuf;
     if (Buffer.TYPED_ARRAY_SUPPORT) {
       newBuf = this.subarray(start, end);
       newBuf.__proto__ = Buffer.prototype;
     } else {
-      var sliceLen = end - start;
+      const sliceLen = end - start;
       newBuf = new Buffer(sliceLen, undefined);
-      for (var i = 0; i < sliceLen; ++i) {
+      for (let i = 0; i < sliceLen; ++i) {
         newBuf[i] = this[i + start];
       }
     }
@@ -3838,9 +3838,9 @@ define(["vue"], function (vue) {
       checkOffset(offset, byteLength, this.length);
     }
 
-    var val = this[offset];
-    var mul = 1;
-    var i = 0;
+    let val = this[offset];
+    let mul = 1;
+    let i = 0;
     while (++i < byteLength && (mul *= 0x100)) {
       val += this[offset + i] * mul;
     }
@@ -3859,8 +3859,8 @@ define(["vue"], function (vue) {
       checkOffset(offset, byteLength, this.length);
     }
 
-    var val = this[offset + --byteLength];
-    var mul = 1;
+    let val = this[offset + --byteLength];
+    let mul = 1;
     while (byteLength > 0 && (mul *= 0x100)) {
       val += this[offset + --byteLength] * mul;
     }
@@ -3922,9 +3922,9 @@ define(["vue"], function (vue) {
       checkOffset(offset, byteLength, this.length);
     }
 
-    var val = this[offset];
-    var mul = 1;
-    var i = 0;
+    let val = this[offset];
+    let mul = 1;
+    let i = 0;
     while (++i < byteLength && (mul *= 0x100)) {
       val += this[offset + i] * mul;
     }
@@ -3948,9 +3948,9 @@ define(["vue"], function (vue) {
       checkOffset(offset, byteLength, this.length);
     }
 
-    var i = byteLength;
-    var mul = 1;
-    var val = this[offset + --i];
+    let i = byteLength;
+    let mul = 1;
+    let val = this[offset + --i];
     while (i > 0 && (mul *= 0x100)) {
       val += this[offset + --i] * mul;
     }
@@ -3977,7 +3977,7 @@ define(["vue"], function (vue) {
     if (!noAssert) {
       checkOffset(offset, 2, this.length);
     }
-    var val = this[offset] | (this[offset + 1] << 8);
+    const val = this[offset] | (this[offset + 1] << 8);
     return val & 0x8000 ? val | 0xffff0000 : val;
   };
 
@@ -3985,7 +3985,7 @@ define(["vue"], function (vue) {
     if (!noAssert) {
       checkOffset(offset, 2, this.length);
     }
-    var val = this[offset + 1] | (this[offset] << 8);
+    const val = this[offset + 1] | (this[offset] << 8);
     return val & 0x8000 ? val | 0xffff0000 : val;
   };
 
@@ -4065,12 +4065,12 @@ define(["vue"], function (vue) {
     offset = offset | 0;
     byteLength = byteLength | 0;
     if (!noAssert) {
-      var maxBytes = Math.pow(2, 8 * byteLength) - 1;
+      const maxBytes = Math.pow(2, 8 * byteLength) - 1;
       checkInt(this, value, offset, byteLength, maxBytes, 0);
     }
 
-    var mul = 1;
-    var i = 0;
+    let mul = 1;
+    let i = 0;
     this[offset] = value & 0xff;
     while (++i < byteLength && (mul *= 0x100)) {
       this[offset + i] = (value / mul) & 0xff;
@@ -4089,12 +4089,12 @@ define(["vue"], function (vue) {
     offset = offset | 0;
     byteLength = byteLength | 0;
     if (!noAssert) {
-      var maxBytes = Math.pow(2, 8 * byteLength) - 1;
+      const maxBytes = Math.pow(2, 8 * byteLength) - 1;
       checkInt(this, value, offset, byteLength, maxBytes, 0);
     }
 
-    var i = byteLength - 1;
-    var mul = 1;
+    let i = byteLength - 1;
+    let mul = 1;
     this[offset + i] = value & 0xff;
     while (--i >= 0 && (mul *= 0x100)) {
       this[offset + i] = (value / mul) & 0xff;
@@ -4120,7 +4120,7 @@ define(["vue"], function (vue) {
     if (value < 0) {
       value = 0xffff + value + 1;
     }
-    for (var i = 0, j = Math.min(buf.length - offset, 2); i < j; ++i) {
+    for (let i = 0, j = Math.min(buf.length - offset, 2); i < j; ++i) {
       buf[offset + i] =
         (value & (0xff << (8 * (littleEndian ? i : 1 - i)))) >>>
         ((littleEndian ? i : 1 - i) * 8);
@@ -4169,7 +4169,7 @@ define(["vue"], function (vue) {
     if (value < 0) {
       value = 0xffffffff + value + 1;
     }
-    for (var i = 0, j = Math.min(buf.length - offset, 4); i < j; ++i) {
+    for (let i = 0, j = Math.min(buf.length - offset, 4); i < j; ++i) {
       buf[offset + i] = (value >>> ((littleEndian ? i : 3 - i) * 8)) & 0xff;
     }
   }
@@ -4225,14 +4225,14 @@ define(["vue"], function (vue) {
     value = +value;
     offset = offset | 0;
     if (!noAssert) {
-      var limit = Math.pow(2, 8 * byteLength - 1);
+      const limit = Math.pow(2, 8 * byteLength - 1);
 
       checkInt(this, value, offset, byteLength, limit - 1, -limit);
     }
 
-    var i = 0;
-    var mul = 1;
-    var sub = 0;
+    let i = 0;
+    let mul = 1;
+    let sub = 0;
     this[offset] = value & 0xff;
     while (++i < byteLength && (mul *= 0x100)) {
       if (value < 0 && sub === 0 && this[offset + i - 1] !== 0) {
@@ -4253,14 +4253,14 @@ define(["vue"], function (vue) {
     value = +value;
     offset = offset | 0;
     if (!noAssert) {
-      var limit = Math.pow(2, 8 * byteLength - 1);
+      const limit = Math.pow(2, 8 * byteLength - 1);
 
       checkInt(this, value, offset, byteLength, limit - 1, -limit);
     }
 
-    var i = byteLength - 1;
-    var mul = 1;
-    var sub = 0;
+    let i = byteLength - 1;
+    let mul = 1;
+    let sub = 0;
     this[offset + i] = value & 0xff;
     while (--i >= 0 && (mul *= 0x100)) {
       if (value < 0 && sub === 0 && this[offset + i + 1] !== 0) {
@@ -4473,8 +4473,8 @@ define(["vue"], function (vue) {
       end = target.length - targetStart + start;
     }
 
-    var len = end - start;
-    var i;
+    const len = end - start;
+    let i;
 
     if (this === target && start < targetStart && targetStart < end) {
       // descending copy from end
@@ -4513,7 +4513,7 @@ define(["vue"], function (vue) {
         end = this.length;
       }
       if (val.length === 1) {
-        var code = val.charCodeAt(0);
+        const code = val.charCodeAt(0);
         if (code < 256) {
           val = code;
         }
@@ -4544,16 +4544,16 @@ define(["vue"], function (vue) {
       val = 0;
     }
 
-    var i;
+    let i;
     if (typeof val === "number") {
       for (i = start; i < end; ++i) {
         this[i] = val;
       }
     } else {
-      var bytes = internalIsBuffer(val)
+      const bytes = internalIsBuffer(val)
         ? val
         : utf8ToBytes(new Buffer(val, encoding).toString());
-      var len = bytes.length;
+      const len = bytes.length;
       for (i = 0; i < end - start; ++i) {
         this[i + start] = bytes[i % len];
       }
@@ -4565,7 +4565,7 @@ define(["vue"], function (vue) {
   // HELPER FUNCTIONS
   // ================
 
-  var INVALID_BASE64_RE = /[^+\/0-9A-Za-z-_]/g;
+  const INVALID_BASE64_RE = /[^+\/0-9A-Za-z-_]/g;
 
   function base64clean(str) {
     // Node strips out invalid characters like \n and \t from the string, base64-js does not
@@ -4597,12 +4597,12 @@ define(["vue"], function (vue) {
 
   function utf8ToBytes(string, units) {
     units = units || Infinity;
-    var codePoint;
-    var length = string.length;
-    var leadSurrogate = null;
-    var bytes = [];
+    let codePoint;
+    const length = string.length;
+    let leadSurrogate = null;
+    const bytes = [];
 
-    for (var i = 0; i < length; ++i) {
+    for (let i = 0; i < length; ++i) {
       codePoint = string.charCodeAt(i);
 
       // is surrogate component
@@ -4690,8 +4690,8 @@ define(["vue"], function (vue) {
   }
 
   function asciiToBytes(str) {
-    var byteArray = [];
-    for (var i = 0; i < str.length; ++i) {
+    const byteArray = [];
+    for (let i = 0; i < str.length; ++i) {
       // Node's code seems to be doing this and not & 0x7F..
       byteArray.push(str.charCodeAt(i) & 0xff);
     }
@@ -4699,9 +4699,9 @@ define(["vue"], function (vue) {
   }
 
   function utf16leToBytes(str, units) {
-    var c, hi, lo;
-    var byteArray = [];
-    for (var i = 0; i < str.length; ++i) {
+    let c, hi, lo;
+    const byteArray = [];
+    for (let i = 0; i < str.length; ++i) {
       if ((units -= 2) < 0) {
         break;
       }
@@ -4721,7 +4721,7 @@ define(["vue"], function (vue) {
   }
 
   function blitBuffer(src, dst, offset, length) {
-    for (var i = 0; i < length; ++i) {
+    for (let i = 0; i < length; ++i) {
       if (i + offset >= dst.length || i >= src.length) {
         break;
       }
@@ -4862,7 +4862,7 @@ define(["vue"], function (vue) {
   };
 
   // eslint-disable-next-line strict
-  var httpAdapter = null;
+  const httpAdapter = null;
 
   /**
    * Determines if the given thing is a array or js object.
@@ -5293,24 +5293,24 @@ define(["vue"], function (vue) {
     }
   }
 
-  var InterceptorManager$1 = InterceptorManager;
+  const InterceptorManager$1 = InterceptorManager;
 
-  var transitionalDefaults = {
+  const transitionalDefaults = {
     silentJSONParsing: true,
     forcedJSONParsing: true,
     clarifyTimeoutError: false,
   };
 
-  var URLSearchParams$1 =
+  const URLSearchParams$1 =
     typeof URLSearchParams !== "undefined"
       ? URLSearchParams
       : AxiosURLSearchParams;
 
-  var FormData$1 = typeof FormData !== "undefined" ? FormData : null;
+  const FormData$1 = typeof FormData !== "undefined" ? FormData : null;
 
-  var Blob$1 = typeof Blob !== "undefined" ? Blob : null;
+  const Blob$1 = typeof Blob !== "undefined" ? Blob : null;
 
-  var platform$1 = {
+  const platform$1 = {
     isBrowser: true,
     classes: {
       URLSearchParams: URLSearchParams$1,
@@ -5365,14 +5365,14 @@ define(["vue"], function (vue) {
     );
   })();
 
-  var utils = /*#__PURE__*/ Object.freeze({
+  const utils = /*#__PURE__*/ Object.freeze({
     __proto__: null,
     hasBrowserEnv: hasBrowserEnv,
     hasStandardBrowserEnv: hasStandardBrowserEnv,
     hasStandardBrowserWebWorkerEnv: hasStandardBrowserWebWorkerEnv,
   });
 
-  var platform = {
+  const platform = {
     ...utils,
     ...platform$1,
   };
@@ -5661,7 +5661,7 @@ define(["vue"], function (vue) {
     }
   );
 
-  var defaults$1 = defaults;
+  const defaults$1 = defaults;
 
   // RawAxiosHeaders whose duplicates are ignored by node
   // c.f. https://nodejs.org/api/http.html#http_message_headers
@@ -5699,7 +5699,7 @@ define(["vue"], function (vue) {
    *
    * @returns {Object} Headers parsed into an object
    */
-  var parseHeaders = (rawHeaders) => {
+  const parseHeaders = (rawHeaders) => {
     const parsed = {};
     let key;
     let val;
@@ -6058,7 +6058,7 @@ define(["vue"], function (vue) {
 
   // reserved names hotfix
   utils$1.reduceDescriptors(AxiosHeaders.prototype, ({ value }, key) => {
-    let mapped = key[0].toUpperCase() + key.slice(1); // map `set` => `Set`
+    const mapped = key[0].toUpperCase() + key.slice(1); // map `set` => `Set`
     return {
       get: () => value,
       set(headerValue) {
@@ -6069,7 +6069,7 @@ define(["vue"], function (vue) {
 
   utils$1.freezeMethods(AxiosHeaders);
 
-  var AxiosHeaders$1 = AxiosHeaders;
+  const AxiosHeaders$1 = AxiosHeaders;
 
   /**
    * Transform the data for a request or a response
@@ -6160,7 +6160,7 @@ define(["vue"], function (vue) {
     }
   }
 
-  var cookies = platform.hasStandardBrowserEnv
+  const cookies = platform.hasStandardBrowserEnv
     ? // Standard browser envs support document.cookie
       {
         write(name, value, expires, path, domain, secure) {
@@ -6243,13 +6243,12 @@ define(["vue"], function (vue) {
     return requestedURL;
   }
 
-  var isURLSameOrigin = platform.hasStandardBrowserEnv
+  const isURLSameOrigin = platform.hasStandardBrowserEnv
     ? // Standard browser envs have full support of the APIs needed to test
       // whether the request URL is of the same origin as current location.
       (function standardBrowserEnv() {
         const msie = /(msie|trident)/i.test(navigator.userAgent);
         const urlParsingNode = document.createElement("a");
-        let originURL;
 
         /**
          * Parse a URL to discover its components
@@ -6290,7 +6289,7 @@ define(["vue"], function (vue) {
           };
         }
 
-        originURL = resolveURL(window.location.href);
+        const originURL = resolveURL(window.location.href);
 
         /**
          * Determine if a URL shares the same origin as the current location
@@ -6404,13 +6403,14 @@ define(["vue"], function (vue) {
 
   const isXHRAdapterSupported = typeof XMLHttpRequest !== "undefined";
 
-  var xhrAdapter =
+  const xhrAdapter =
     isXHRAdapterSupported &&
     function (config) {
       return new Promise(function dispatchXhrRequest(resolve, reject) {
-        let requestData = config.data;
+        const requestData = config.data;
         const requestHeaders = AxiosHeaders$1.from(config.headers).normalize();
-        let { responseType, withXSRFToken } = config;
+        let { withXSRFToken } = config;
+        const { responseType } = config;
         let onCanceled;
         function done() {
           if (config.cancelToken) {
@@ -6724,7 +6724,7 @@ define(["vue"], function (vue) {
   const isResolvedHandle = (adapter) =>
     utils$1.isFunction(adapter) || adapter === null || adapter === false;
 
-  var adapters = {
+  const adapters = {
     getAdapter: (adapters) => {
       adapters = utils$1.isArray(adapters) ? adapters : [adapters];
 
@@ -6764,7 +6764,7 @@ define(["vue"], function (vue) {
               : "is not available in the build")
         );
 
-        let s = length
+        const s = length
           ? reasons.length > 1
             ? "since :\n" + reasons.map(renderReason).join("\n")
             : " " + renderReason(reasons[0])
@@ -7076,7 +7076,7 @@ define(["vue"], function (vue) {
     }
   }
 
-  var validator = {
+  const validator = {
     assertOptions,
     validators: validators$1,
   };
@@ -7187,7 +7187,7 @@ define(["vue"], function (vue) {
       ).toLowerCase();
 
       // Flatten headers
-      let contextHeaders =
+      const contextHeaders =
         headers && utils$1.merge(headers.common, headers[config.method]);
 
       headers &&
@@ -7339,7 +7339,7 @@ define(["vue"], function (vue) {
     }
   );
 
-  var Axios$1 = Axios;
+  const Axios$1 = Axios;
 
   /**
    * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -7459,7 +7459,7 @@ define(["vue"], function (vue) {
     }
   }
 
-  var CancelToken$1 = CancelToken;
+  const CancelToken$1 = CancelToken;
 
   /**
    * Syntactic sugar for invoking a function and expanding an array for arguments.
@@ -7569,7 +7569,7 @@ define(["vue"], function (vue) {
     HttpStatusCode[value] = key;
   });
 
-  var HttpStatusCode$1 = HttpStatusCode;
+  const HttpStatusCode$1 = HttpStatusCode;
 
   /**
    * Create an instance of Axios
@@ -7640,9 +7640,9 @@ define(["vue"], function (vue) {
   axios.default = axios;
 
   // this module should only have a default export
-  var axios$1 = axios;
+  const axios$1 = axios;
 
-  var script = {
+  const script = {
     data: () => ({
       mode: "edit",
       fileId: null,
@@ -7668,7 +7668,7 @@ define(["vue"], function (vue) {
         });
       },
       onRequestClose() {
-        let params = {
+        const params = {
           driveAliasAndItem: null,
         };
         if (this.currentFolder) {
@@ -7735,7 +7735,7 @@ define(["vue"], function (vue) {
             throw response.data.error;
           }
           this.config = response.data;
-          let events = [];
+          const events = [];
           events["onRequestClose"] = this.onRequestClose;
           this.config.editorConfig.customization.goback.requestClose = true;
           this.config.events = events;
@@ -7753,8 +7753,8 @@ define(["vue"], function (vue) {
           return this.getDocumentServerUrl();
         })
         .then((documentServerUrl) => {
-          let iframeEditor = document.getElementById("iframeEditor");
-          let docApi = document.createElement("script");
+          const iframeEditor = document.getElementById("iframeEditor");
+          const docApi = document.createElement("script");
           docApi.setAttribute(
             "src",
             documentServerUrl + "web-apps/apps/api/documents/api.js"
@@ -7790,14 +7790,14 @@ define(["vue"], function (vue) {
     if (ref === void 0) {
       ref = {};
     }
-    var insertAt = ref.insertAt;
+    const insertAt = ref.insertAt;
 
     if (!css || typeof document === "undefined") {
       return;
     }
 
-    var head = document.head || document.getElementsByTagName("head")[0];
-    var style = document.createElement("style");
+    const head = document.head || document.getElementsByTagName("head")[0];
+    const style = document.createElement("style");
     style.type = "text/css";
 
     if (insertAt === "top") {
@@ -7817,7 +7817,7 @@ define(["vue"], function (vue) {
     }
   }
 
-  var css_248z =
+  const css_248z =
     "\n#app {\r\n        width: 100%;\n}\n#app > iframe {\r\n        position: fixed;\r\n        height: calc(100vh - 52px);\r\n        right: 0;\n}\r\n";
   styleInject(css_248z);
 
@@ -7919,7 +7919,7 @@ define(["vue"], function (vue) {
       },
     ],
   };
-  var app = {
+  const app = {
     appInfo,
     routes,
   };

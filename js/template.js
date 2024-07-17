@@ -31,8 +31,8 @@
     $.get(
       OC.filePath(OCA.Onlyoffice.AppName, "templates", "templatePicker.html"),
       function (tmpl) {
-        var $tmpl = $(tmpl);
-        var dialog = $tmpl.octemplate({
+        const $tmpl = $(tmpl);
+        const dialog = $tmpl.octemplate({
           dialog_name: "onlyoffice-template-picker",
           dialog_title: t(OCA.Onlyoffice.AppName, "Select template"),
         });
@@ -56,8 +56,8 @@
               text: t(OCA.Onlyoffice.AppName, "Create"),
               classes: "primary",
               click: function () {
-                var templateId = this.dataset.templateId;
-                var fileList = OCA.Files.App.fileList;
+                const templateId = this.dataset.templateId;
+                const fileList = OCA.Files.App.fileList;
                 OCA.Onlyoffice.CreateFile(
                   name + extension,
                   fileList,
@@ -91,7 +91,7 @@
   };
 
   OCA.Onlyoffice.AddTemplate = function (file, callback) {
-    var data = new FormData();
+    const data = new FormData();
     data.append("file", file);
 
     $.ajax({
@@ -130,13 +130,13 @@
   };
 
   OCA.Onlyoffice.AttachTemplates = function (dialog, type) {
-    var emptyItem = dialog[0].querySelector(".onlyoffice-template-item");
+    const emptyItem = dialog[0].querySelector(".onlyoffice-template-item");
 
     OCA.Onlyoffice.templates.forEach((template) => {
       if (template.type !== type) {
         return;
       }
-      var item = emptyItem.cloneNode(true);
+      const item = emptyItem.cloneNode(true);
       OCA.Onlyoffice.FillItemTemplate(dialog, item, template);
       dialog[0]
         .querySelector(".onlyoffice-template-container")
@@ -156,7 +156,7 @@
     $.get(
       OC.filePath(OCA.Onlyoffice.AppName, "templates", "templateItem.html"),
       function (item) {
-        var item = $(item);
+        item = $(item);
 
         item.attr("data-id", template.id);
         item
@@ -188,7 +188,7 @@
   };
 
   OCA.Onlyoffice.TemplateExist = function (type) {
-    var isExist = OCA.Onlyoffice.templates.some((template) => {
+    const isExist = OCA.Onlyoffice.templates.some((template) => {
       return template.type === type;
     });
 

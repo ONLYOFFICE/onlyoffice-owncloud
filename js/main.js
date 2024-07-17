@@ -41,8 +41,8 @@
     targetPath,
     open = true
   ) {
-    var dir = fileList.getCurrentDirectory();
-
+    const dir = fileList.getCurrentDirectory();
+    let winEditor = null;
     if (
       (!OCA.Onlyoffice.setting.sameTab ||
         OCA.Onlyoffice.mobile ||
@@ -52,10 +52,10 @@
       $loaderUrl = OCA.Onlyoffice.Desktop
         ? ""
         : OC.filePath(OCA.Onlyoffice.AppName, "templates", "loader.html");
-      var winEditor = window.open($loaderUrl);
+      winEditor = window.open($loaderUrl);
     }
 
-    var createData = {
+    const createData = {
       name: name,
       dir: dir,
     };
@@ -89,9 +89,9 @@
 
         fileList.add(response, { animate: true });
         if (open) {
-          let fileName = response.name;
-          let extension = OCA.Onlyoffice.GetFileExtension(fileName);
-          let forceEdit = OCA.Onlyoffice.setting.formats[extension].fillForms;
+          const fileName = response.name;
+          const extension = OCA.Onlyoffice.GetFileExtension(fileName);
+          const forceEdit = OCA.Onlyoffice.setting.formats[extension].fillForms;
           OCA.Onlyoffice.OpenEditor(
             response.id,
             dir,
@@ -120,11 +120,11 @@
     winEditor,
     forceEdit
   ) {
-    var filePath = "";
+    let filePath = "";
     if (fileName) {
       filePath = fileDir.replace(new RegExp("/$"), "") + "/" + fileName;
     }
-    var url = OC.generateUrl(
+    let url = OC.generateUrl(
       "/apps/" + OCA.Onlyoffice.AppName + "/{fileId}?filePath={filePath}",
       {
         fileId: fileId,
@@ -164,14 +164,14 @@
     ) {
       location.href = url;
     } else {
-      var $iframe = $(
+      const $iframe = $(
         '<iframe id="onlyofficeFrame" nonce="' +
           btoa(OC.requestToken) +
           '" scrolling="no" allowfullscreen src="' +
           url +
           '&inframe=true" />'
       );
-      var scrollTop = 0;
+      let scrollTop = 0;
       if ($("#app-content").length) {
         $("#app-content").append($iframe);
 
@@ -199,7 +199,7 @@
 
     OCA.Onlyoffice.context = null;
 
-    var url = OCA.Onlyoffice.folderUrl;
+    const url = OCA.Onlyoffice.folderUrl;
     if (!!url) {
       window.history.pushState(null, null, url);
       OCA.Onlyoffice.folderUrl = null;
@@ -236,11 +236,11 @@
   };
 
   OCA.Onlyoffice.FileClick = function (fileName, context) {
-    var fileInfoModel =
+    const fileInfoModel =
       context.fileInfoModel || context.fileList.getModelForFile(fileName);
-    var fileId =
+    const fileId =
       (context.$file && context.$file[0].dataset.id) || fileInfoModel.id;
-    var winEditor =
+    const winEditor =
       !fileInfoModel && !OCA.Onlyoffice.setting.sameTab ? document : null;
 
     OCA.Onlyoffice.OpenEditor(fileId, context.dir, fileName, 0, winEditor);
@@ -250,12 +250,14 @@
   };
 
   OCA.Onlyoffice.FileConvertClick = function (fileName, context) {
-    var fileInfoModel =
+    const fileInfoModel =
       context.fileInfoModel || context.fileList.getModelForFile(fileName);
-    var fileList = context.fileList;
-    var fileId = context.$file ? context.$file[0].dataset.id : fileInfoModel.id;
+    const fileList = context.fileList;
+    const fileId = context.$file
+      ? context.$file[0].dataset.id
+      : fileInfoModel.id;
 
-    var convertData = {
+    const convertData = {
       fileId: fileId,
     };
 
@@ -293,14 +295,14 @@
   };
 
   OCA.Onlyoffice.DownloadClick = function (fileName, context) {
-    var fileInfoModel =
+    const fileInfoModel =
       context.fileInfoModel || context.fileList.getModelForFile(fileName);
 
     $("#download-picker").remove();
     $.get(
       OC.filePath(OCA.Onlyoffice.AppName, "templates", "downloadPicker.html"),
       function (tmpl) {
-        var dialog = $(tmpl).octemplate({
+        const dialog = $(tmpl).octemplate({
           dialog_name: "download-picker",
           dialog_title: t("onlyoffice", "Download as"),
         });
@@ -311,9 +313,9 @@
           })
         );
 
-        var extension = OCA.Onlyoffice.GetFileExtension(fileName);
-        var selectNode = dialog[0].querySelectorAll("select")[0];
-        var optionNodeOrigin = selectNode.querySelectorAll("option")[0];
+        const extension = OCA.Onlyoffice.GetFileExtension(fileName);
+        const selectNode = dialog[0].querySelectorAll("select")[0];
+        const optionNodeOrigin = selectNode.querySelectorAll("option")[0];
 
         $(optionNodeOrigin).attr("data-value", extension);
         $(optionNodeOrigin).text(t(OCA.Onlyoffice.AppName, "Origin format"));
@@ -326,7 +328,7 @@
         };
 
         OCA.Onlyoffice.setting.formats[extension].saveas.forEach((ext) => {
-          var optionNode = optionNodeOrigin.cloneNode(true);
+          const optionNode = optionNodeOrigin.cloneNode(true);
 
           $(optionNode).attr("data-value", ext);
           $(optionNode).text(ext);
@@ -351,9 +353,9 @@
               text: t("onlyoffice", "Download"),
               classes: "primary",
               click: function () {
-                var format = this.dataset.format;
-                var fileId = fileInfoModel.id;
-                var downloadLink = OC.generateUrl(
+                const format = this.dataset.format;
+                const fileId = fileInfoModel.id;
+                const downloadLink = OC.generateUrl(
                   "apps/" +
                     OCA.Onlyoffice.AppName +
                     "/downloadas?fileId={fileId}&toExtension={toExtension}",
@@ -374,7 +376,7 @@
   };
 
   OCA.Onlyoffice.OpenFormPicker = function (name, fileList) {
-    var filterMimes = [
+    const filterMimes = [
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     ];
 
@@ -390,11 +392,11 @@
   };
 
   OCA.Onlyoffice.CreateFormClick = function (fileName, context) {
-    var fileList = context.fileList;
-    var name = fileName.replace(/\.[^.]+$/, ".pdf");
+    const fileList = context.fileList;
+    const name = fileName.replace(/\.[^.]+$/, ".pdf");
 
-    var attr = context.fileInfoModel.attributes;
-    var targetPath = attr.path + "/" + attr.name;
+    const attr = context.fileInfoModel.attributes;
+    const targetPath = attr.path + "/" + attr.name;
 
     OCA.Onlyoffice.CreateFile(name, fileList, 0, targetPath, false);
   };
@@ -415,15 +417,15 @@
   };
 
   OCA.Onlyoffice.registerAction = function () {
-    var register = function () {
-      var formats = OCA.Onlyoffice.setting.formats;
+    const register = function () {
+      const formats = OCA.Onlyoffice.setting.formats;
 
       $.each(formats, function (ext, config) {
         if (!config.mime) {
           return true;
         }
 
-        let mimeTypes = config.mime;
+        const mimeTypes = config.mime;
         mimeTypes.forEach((mime) => {
           OCA.Files.fileActions.registerAction({
             name: "onlyofficeOpen",
@@ -483,7 +485,7 @@
 
   OCA.Onlyoffice.NewFileMenu = {
     attach: function (menu) {
-      var fileList = menu.fileList;
+      const fileList = menu.fileList;
 
       if (fileList.id !== "files" && fileList.id !== "files.public") {
         return;
@@ -576,7 +578,7 @@
   };
 
   OCA.Onlyoffice.GetFileExtension = function (fileName) {
-    var extension = fileName
+    const extension = fileName
       .substr(fileName.lastIndexOf(".") + 1)
       .toLowerCase();
     return extension;
@@ -599,7 +601,7 @@
       "click.onlyoffice-version",
       "#versionsTabView .downloadVersion",
       function () {
-        var ext = OCA.Onlyoffice.GetFileExtension(
+        const ext = OCA.Onlyoffice.GetFileExtension(
           $("#app-sidebar .fileName h3").text()
         );
         if (
@@ -609,17 +611,20 @@
           return true;
         }
 
-        var versionNodes = $("#versionsTabView ul.versions>li");
-        var versionNode = $(this).closest("#versionsTabView ul.versions>li")[0];
+        const versionNodes = $("#versionsTabView ul.versions>li");
+        const versionNode = $(this).closest(
+          "#versionsTabView ul.versions>li"
+        )[0];
 
-        var href = $(this).attr("href");
-        var search = new RegExp("/meta/(\\d+)/v/\\d+");
-        var result = search.exec(href);
+        const href = $(this).attr("href");
+        const search = new RegExp("/meta/(\\d+)/v/\\d+");
+        const result = search.exec(href);
+        let fileId = null;
         if (result && result.length > 1) {
-          var fileId = result[1];
+          fileId = result[1];
         }
 
-        var versionNum =
+        const versionNum =
           versionNodes.length - $.inArray(versionNode, versionNodes);
 
         OCA.Onlyoffice.openVersion(fileId || "", versionNum);
@@ -636,23 +641,23 @@
     );
   };
 
-  var initPage = function () {
+  const initPage = function () {
     if (
       $("#isPublic").val() === "1" &&
       $("#mimetype").val() !== "httpd/unix-directory"
     ) {
-      var fileName = $("#filename").val();
-      var extension = OCA.Onlyoffice.GetFileExtension(fileName);
+      const fileName = $("#filename").val();
+      const extension = OCA.Onlyoffice.GetFileExtension(fileName);
 
-      var initSharedButton = function () {
-        var formats = OCA.Onlyoffice.setting.formats;
+      const initSharedButton = function () {
+        const formats = OCA.Onlyoffice.setting.formats;
 
-        var config = formats[extension];
+        const config = formats[extension];
         if (!config) {
           return;
         }
 
-        var editorUrl = OC.generateUrl(
+        const editorUrl = OC.generateUrl(
           "apps/" +
             OCA.Onlyoffice.AppName +
             "/s/" +
@@ -664,7 +669,7 @@
           (oc_appswebroots.files_pdfviewer && extension === "pdf") ||
           (oc_appswebroots.files_texteditor && extension === "txt")
         ) {
-          var button = document.createElement("a");
+          const button = document.createElement("a");
           button.href = editorUrl;
           button.className = "onlyoffice-public-open button";
           button.innerText = t(OCA.Onlyoffice.AppName, "Open in ONLYOFFICE");
@@ -675,7 +680,7 @@
 
           $("#preview").prepend(button);
         } else {
-          var $iframe = $(
+          const $iframe = $(
             '<iframe id="onlyofficeFrame" nonce="' +
               btoa(OC.requestToken) +
               '" scrolling="no" allowfullscreen src="' +

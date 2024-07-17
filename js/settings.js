@@ -25,7 +25,7 @@
       OCA.Onlyoffice
     );
 
-    var advToogle = function () {
+    const advToogle = function () {
       $("#onlyofficeSecretPanel").toggleClass("onlyoffice-hide");
       $("#onlyofficeAdv .icon").toggleClass("icon-triangle-s icon-triangle-n");
     };
@@ -47,7 +47,7 @@
       $("#onlyofficeLimitGroups").val() != ""
     );
 
-    var groupListToggle = function () {
+    const groupListToggle = function () {
       if ($("#onlyofficeGroups").prop("checked")) {
         OC.Settings.setupGroupsSelect($("#onlyofficeLimitGroups"));
       } else {
@@ -58,7 +58,7 @@
     $("#onlyofficeGroups").click(groupListToggle);
     groupListToggle();
 
-    var demoToggle = function () {
+    const demoToggle = function () {
       $("#onlyofficeAddrSettings input:not(#onlyofficeStorageUrl)").prop(
         "disabled",
         $("#onlyofficeDemo").prop("checked")
@@ -70,7 +70,7 @@
 
     $("#onlyofficeAddrSave").click(function () {
       $(".section-onlyoffice").addClass("icon-loading");
-      var onlyofficeUrl = $("#onlyofficeUrl").val().trim();
+      const onlyofficeUrl = $("#onlyofficeUrl").val().trim();
 
       if (!onlyofficeUrl.length) {
         $(
@@ -78,20 +78,20 @@
         ).val("");
       }
 
-      var onlyofficeInternalUrl = (
+      const onlyofficeInternalUrl = (
         $("#onlyofficeInternalUrl:visible").val() || ""
       ).trim();
-      var onlyofficeStorageUrl = (
+      const onlyofficeStorageUrl = (
         $("#onlyofficeStorageUrl:visible").val() || ""
       ).trim();
-      var onlyofficeVerifyPeerOff = $("#onlyofficeVerifyPeerOff").prop(
+      const onlyofficeVerifyPeerOff = $("#onlyofficeVerifyPeerOff").prop(
         "checked"
       );
-      var onlyofficeSecret = (
+      const onlyofficeSecret = (
         $("#onlyofficeSecret:visible").val() || ""
       ).trim();
-      var jwtHeader = ($("#onlyofficeJwtHeader:visible").val() || "").trim();
-      var demo = $("#onlyofficeDemo").prop("checked");
+      const jwtHeader = ($("#onlyofficeJwtHeader:visible").val() || "").trim();
+      const demo = $("#onlyofficeDemo").prop("checked");
 
       $.ajax({
         method: "PUT",
@@ -122,7 +122,7 @@
                 !!response.error.length
             );
 
-            var message = response.error
+            const message = response.error
               ? t(OCA.Onlyoffice.AppName, "Error when trying to connect") +
                 " (" +
                 response.error +
@@ -132,7 +132,7 @@
                   "Settings have been successfully updated"
                 );
 
-            var versionMessage = response.version
+            const versionMessage = response.version
               ? " (" +
                 t(OCA.Onlyoffice.AppName, "version") +
                 " " +
@@ -154,36 +154,38 @@
     $("#onlyofficeSave").click(function () {
       $(".section-onlyoffice").addClass("icon-loading");
 
-      var defFormats = {};
+      const defFormats = {};
       $('input[id^="onlyofficeDefFormat"]').each(function () {
         defFormats[this.name] = this.checked;
       });
 
-      var editFormats = {};
+      const editFormats = {};
       $('input[id^="onlyofficeEditFormat"]').each(function () {
         editFormats[this.name] = this.checked;
       });
 
-      var sameTab = $("#onlyofficeSameTab").is(":checked");
-      var preview = $("#onlyofficePreview").is(":checked");
-      var cronChecker = $("#onlyofficeCronChecker").is(":checked");
-      var versionHistory = $("#onlyofficeVersionHistory").is(":checked");
+      const sameTab = $("#onlyofficeSameTab").is(":checked");
+      const preview = $("#onlyofficePreview").is(":checked");
+      const cronChecker = $("#onlyofficeCronChecker").is(":checked");
+      const versionHistory = $("#onlyofficeVersionHistory").is(":checked");
 
-      var limitGroupsString = $("#onlyofficeGroups").prop("checked")
+      const limitGroupsString = $("#onlyofficeGroups").prop("checked")
         ? $("#onlyofficeLimitGroups").val()
         : "";
-      var limitGroups = limitGroupsString ? limitGroupsString.split("|") : [];
+      const limitGroups = limitGroupsString ? limitGroupsString.split("|") : [];
 
-      var chat = $("#onlyofficeChat").is(":checked");
-      var compactHeader = $("#onlyofficeCompactHeader").is(":checked");
-      var feedback = $("#onlyofficeFeedback").is(":checked");
-      var forcesave = $("#onlyofficeForcesave").is(":checked");
-      var help = $("#onlyofficeHelp").is(":checked");
-      var toolbarNoTabs = $("#onlyofficeToolbarNoTabs").is(":checked");
-      var reviewDisplay = $("input[type='radio'][name='reviewDisplay']:checked")
+      const chat = $("#onlyofficeChat").is(":checked");
+      const compactHeader = $("#onlyofficeCompactHeader").is(":checked");
+      const feedback = $("#onlyofficeFeedback").is(":checked");
+      const forcesave = $("#onlyofficeForcesave").is(":checked");
+      const help = $("#onlyofficeHelp").is(":checked");
+      const toolbarNoTabs = $("#onlyofficeToolbarNoTabs").is(":checked");
+      const reviewDisplay = $(
+        "input[type='radio'][name='reviewDisplay']:checked"
+      )
         .attr("id")
         .replace("onlyofficeReviewDisplay_", "");
-      var theme = $("input[type='radio'][name='theme']:checked")
+      const theme = $("input[type='radio'][name='theme']:checked")
         .attr("id")
         .replace("onlyofficeTheme_", "");
 
@@ -212,7 +214,7 @@
         success: function onSuccess(response) {
           $(".section-onlyoffice").removeClass("icon-loading");
           if (response) {
-            var message = t(
+            const message = t(
               OCA.Onlyoffice.AppName,
               "Settings have been successfully updated"
             );
@@ -227,9 +229,9 @@
     $("#onlyofficeSecuritySave").click(function () {
       $(".section-onlyoffice").addClass("icon-loading");
 
-      var plugins = $("#onlyofficePlugins").is(":checked");
-      var macros = $("#onlyofficeMacros").is(":checked");
-      var protection = $("input[type='radio'][name='protection']:checked")
+      const plugins = $("#onlyofficePlugins").is(":checked");
+      const macros = $("#onlyofficeMacros").is(":checked");
+      const protection = $("input[type='radio'][name='protection']:checked")
         .attr("id")
         .replace("onlyofficeProtection_", "");
 
@@ -246,7 +248,7 @@
         success: function onSuccess(response) {
           $(".section-onlyoffice").removeClass("icon-loading");
           if (response) {
-            var message = t(
+            const message = t(
               OCA.Onlyoffice.AppName,
               "Settings have been successfully updated"
             );
@@ -259,7 +261,7 @@
     });
 
     $(".section-onlyoffice input").keypress(function (e) {
-      var code = e.keyCode || e.which;
+      const code = e.keyCode || e.which;
       if (code === 13) {
         $("#onlyofficeAddrSave").click();
       }
@@ -284,7 +286,7 @@
         success: function onSuccess(response) {
           $(".section-onlyoffice").removeClass("icon-loading");
           if (response) {
-            var message = t(
+            const message = t(
               OCA.Onlyoffice.AppName,
               "All history successfully deleted"
             );
@@ -297,12 +299,12 @@
     });
 
     $("#onlyofficeAddTemplate").change(function () {
-      var file = this.files[0];
+      const file = this.files[0];
 
       $(".section-onlyoffice").addClass("icon-loading");
       OCA.Onlyoffice.AddTemplate(file, (template, error) => {
         $(".section-onlyoffice").removeClass("icon-loading");
-        var message = error
+        const message = error
           ? t(OCA.Onlyoffice.AppName, "Error") + ": " + error
           : t(OCA.Onlyoffice.AppName, "Template successfully added");
 
@@ -317,14 +319,14 @@
     });
 
     $(document).on("click", ".onlyoffice-template-delete", function (event) {
-      var item = $(event.target).parents(".onlyoffice-template-item");
-      var templateId = $(item).attr("data-id");
+      const item = $(event.target).parents(".onlyoffice-template-item");
+      const templateId = $(item).attr("data-id");
 
       $(".section-onlyoffice").addClass("icon-loading");
       OCA.Onlyoffice.DeleteTemplate(templateId, (response) => {
         $(".section-onlyoffice").removeClass("icon-loading");
 
-        var message = response.error
+        const message = response.error
           ? t(OCA.Onlyoffice.AppName, "Error") + ": " + response.error
           : t(OCA.Onlyoffice.AppName, "Template successfully deleted");
         OC.Notification.show(message, {
@@ -338,10 +340,10 @@
     });
 
     $(document).on("click", ".onlyoffice-template-item p", function (event) {
-      var item = $(event.target).parents(".onlyoffice-template-item");
-      var templateId = $(item).attr("data-id");
+      const item = $(event.target).parents(".onlyoffice-template-item");
+      const templateId = $(item).attr("data-id");
 
-      var url = OC.generateUrl(
+      const url = OC.generateUrl(
         "/apps/" + OCA.Onlyoffice.AppName + "/{fileId}?template={template}",
         {
           fileId: templateId,
@@ -353,10 +355,10 @@
     });
 
     $(document).on("click", ".onlyoffice-template-download", function (event) {
-      var item = $(event.target).parents(".onlyoffice-template-item");
-      var templateId = $(item).attr("data-id");
+      const item = $(event.target).parents(".onlyoffice-template-item");
+      const templateId = $(item).attr("data-id");
 
-      var downloadLink = OC.generateUrl(
+      const downloadLink = OC.generateUrl(
         "apps/" +
           OCA.Onlyoffice.AppName +
           "/downloadas?fileId={fileId}&template={template}",

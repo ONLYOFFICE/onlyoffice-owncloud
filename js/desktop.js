@@ -26,10 +26,10 @@
   OCA.Onlyoffice.Desktop = true;
   $("html").addClass("AscDesktopEditor");
 
-  var domain = new RegExp("^http(s)?://[^/]+").exec(location)[0];
+  let domain = new RegExp("^http(s)?://[^/]+").exec(location)[0];
   domain += OC.getRootPath();
 
-  var data = {
+  const data = {
     displayName: oc_user.displayName,
     domain: domain,
     email: oc_user.email,

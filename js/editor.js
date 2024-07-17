@@ -30,7 +30,7 @@
 
   OCA.Onlyoffice.InitEditor = function () {
     OCA.Onlyoffice.fileId = $("#iframeEditor").data("id");
-    var filePath = $("#iframeEditor").data("path");
+    const filePath = $("#iframeEditor").data("path");
     OCA.Onlyoffice.shareToken = $("#iframeEditor").data("sharetoken");
     OCA.Onlyoffice.version = $("#iframeEditor").data("version");
     OCA.Onlyoffice.template = $("#iframeEditor").data("template");
@@ -63,7 +63,7 @@
       return;
     }
 
-    var docsVersion = DocsAPI.DocEditor.version().split(".");
+    const docsVersion = DocsAPI.DocEditor.version().split(".");
     if (docsVersion[0] < 6 || (docsVersion[0] == 6 && docsVersion[1] == 0)) {
       OCA.Onlyoffice.showMessage(
         t(OCA.Onlyoffice.AppName, "Not supported version"),
@@ -73,11 +73,11 @@
       return;
     }
 
-    var configUrl =
+    let configUrl =
       OC.linkToOCS("apps/" + OCA.Onlyoffice.AppName + "/api/v1/config", 2) +
       (OCA.Onlyoffice.fileId || 0);
 
-    var params = [];
+    const params = [];
     if (filePath) {
       params.push("filePath=" + encodeURIComponent(filePath));
     }
@@ -125,14 +125,14 @@
             OCA.Onlyoffice.resizeEvents();
           }
 
-          var docIsChanged = null;
-          var docIsChangedTimeout = null;
+          let docIsChanged = null;
+          let docIsChangedTimeout = null;
 
-          var setPageTitle = function (event) {
+          const setPageTitle = function (event) {
             clearTimeout(docIsChangedTimeout);
 
             if (docIsChanged !== event.data) {
-              var titleChange = function () {
+              const titleChange = function () {
                 OCA.Onlyoffice.currentWindow.document.title =
                   config.document.title +
                   (event.data ? " *" : "") +
@@ -248,7 +248,7 @@
             $("#app > iframe").css("height", "calc(100% - 45px)");
           }
 
-          var favicon = OC.filePath(
+          const favicon = OC.filePath(
             OCA.Onlyoffice.AppName,
             "img",
             OCA.Onlyoffice.documentType + ".ico"
@@ -297,7 +297,7 @@
   };
 
   OCA.Onlyoffice.onRequestHistoryData = function (event) {
-    var version = event.data;
+    const version = event.data;
 
     $.get(
       OC.generateUrl(
@@ -322,7 +322,7 @@
   };
 
   OCA.Onlyoffice.onRequestRestore = function (event) {
-    var version = event.data.version;
+    const version = event.data.version;
 
     $.ajax({
       method: "PUT",
@@ -370,7 +370,7 @@
   };
 
   OCA.Onlyoffice.onRequestSaveAs = function (event) {
-    var saveData = {
+    const saveData = {
       name: event.data.title,
       url: event.data.url,
     };
@@ -421,7 +421,7 @@
   };
 
   OCA.Onlyoffice.onRequestInsertImage = function (event) {
-    var imageMimes = [
+    const imageMimes = [
       "image/bmp",
       "image/x-bmp",
       "image/x-bitmap",
@@ -488,7 +488,7 @@
   };
 
   OCA.Onlyoffice.onRequestMailMergeRecipients = function () {
-    var recipientMimes = [
+    const recipientMimes = [
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     ];
 
@@ -581,7 +581,7 @@
   };
 
   OCA.Onlyoffice.onRequestSelectDocument = function (event) {
-    var revisedMimes = [
+    const revisedMimes = [
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     ];
 
@@ -616,7 +616,7 @@
   };
 
   OCA.Onlyoffice.editorSetRequested = function (filePath) {
-    let documentSelectionType = this.documentSelectionType;
+    const documentSelectionType = this.documentSelectionType;
     $.get(
       OC.generateUrl(
         "apps/" + OCA.Onlyoffice.AppName + "/ajax/url?filePath={filePath}",
@@ -640,22 +640,22 @@
   };
 
   OCA.Onlyoffice.onMakeActionLink = function (event) {
-    var url = location.href;
+    let url = location.href;
     if (event && event.data) {
-      var indexAnchor = url.indexOf("#");
+      const indexAnchor = url.indexOf("#");
       if (indexAnchor != -1) {
         url = url.substring(0, indexAnchor);
       }
 
-      var data = JSON.stringify(event.data);
+      let data = JSON.stringify(event.data);
       data = "anchor=" + encodeURIComponent(data);
 
-      var inframeRegex = /inframe=([^&]*&?)/g;
+      const inframeRegex = /inframe=([^&]*&?)/g;
       if (inframeRegex.test(url)) {
         url = url.replace(inframeRegex, data);
       }
 
-      var anchorRegex = /anchor=([^&]*)/g;
+      const anchorRegex = /anchor=([^&]*)/g;
       if (anchorRegex.test(url)) {
         url = url.replace(anchorRegex, data);
       } else {
@@ -668,7 +668,7 @@
   };
 
   OCA.Onlyoffice.onRequestUsers = function (event) {
-    let operationType =
+    const operationType =
       typeof event.data.c !== "undefined" ? event.data.c : null;
     switch (operationType) {
       case "info":
@@ -711,8 +711,8 @@
   };
 
   OCA.Onlyoffice.onRequestReferenceData = function (event) {
-    let referenceData = event.data.referenceData;
-    let path = event.data.path;
+    const referenceData = event.data.referenceData;
+    const path = event.data.path;
 
     $.post(
       OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/reference"),
@@ -732,11 +732,11 @@
   };
 
   OCA.Onlyoffice.onRequestSendNotify = function (event) {
-    var actionLink = event.data.actionLink;
-    var comment = event.data.message;
-    var emails = event.data.emails;
+    const actionLink = event.data.actionLink;
+    const comment = event.data.message;
+    const emails = event.data.emails;
 
-    var fileId = OCA.Onlyoffice.fileId;
+    const fileId = OCA.Onlyoffice.fileId;
 
     $.post(
       OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/mention"),
@@ -763,10 +763,10 @@
   };
 
   OCA.Onlyoffice.onRequestOpen = function (event) {
-    let filePath = event.data.path;
-    let fileId = event.data.referenceData.fileKey;
-    let windowName = event.data.windowName;
-    let sourceUrl = OC.generateUrl(
+    const filePath = event.data.path;
+    const fileId = event.data.referenceData.fileKey;
+    const windowName = event.data.windowName;
+    const sourceUrl = OC.generateUrl(
       `apps/${OCA.Onlyoffice.AppName}/${fileId}?filePath=${OC.encodePath(
         filePath
       )}`
@@ -775,7 +775,7 @@
   };
 
   OCA.Onlyoffice.onRequestReferenceSource = function (event) {
-    let referenceSourceMimes = [
+    const referenceSourceMimes = [
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     ];
     if (OCA.Onlyoffice.inframe) {
@@ -835,10 +835,11 @@
   };
 
   OCA.Onlyoffice.refreshHistory = function (response, version) {
+    let data = null;
     if (response.error) {
-      var data = { error: response.error };
+      data = { error: response.error };
     } else {
-      var currentVersion = 0;
+      let currentVersion = 0;
       $.each(response, function (i, fileVersion) {
         if (fileVersion.version >= currentVersion) {
           currentVersion = fileVersion.version;
@@ -871,8 +872,8 @@
       return;
     }
 
-    var headerHeight = $("#header").length > 0 ? $("#header").height() : 45;
-    var wrapEl = $("#app>iframe");
+    const headerHeight = $("#header").length > 0 ? $("#header").height() : 45;
+    const wrapEl = $("#app>iframe");
     if (wrapEl.length > 0) {
       wrapEl[0].style.height = screen.availHeight - headerHeight + "px";
       window.scrollTo(0, -1);

@@ -39,29 +39,29 @@
       if (this.model.hasReshare()) {
         // it is enough to check the parent share attributes
         // if these are set to avoid privilege escalation
-        var parentShareAttributes = this.model.getReshareAttributes();
+        const parentShareAttributes = this.model.getReshareAttributes();
 
-        var download = this._getAttribute(
+        const download = this._getAttribute(
           parentShareAttributes,
           "permissions",
           "download"
         );
-        var review = this._getAttribute(
+        const review = this._getAttribute(
           parentShareAttributes,
           OCA.Onlyoffice.AppName,
           "review"
         );
-        var fillForms = this._getAttribute(
+        const fillForms = this._getAttribute(
           parentShareAttributes,
           OCA.Onlyoffice.AppName,
           "fillForms"
         );
-        var comment = this._getAttribute(
+        const comment = this._getAttribute(
           parentShareAttributes,
           OCA.Onlyoffice.AppName,
           "comment"
         );
-        var modifyFilter = this._getAttribute(
+        const modifyFilter = this._getAttribute(
           parentShareAttributes,
           OCA.Onlyoffice.AppName,
           "modifyFilter"
@@ -95,7 +95,7 @@
      * @param properties
      */
     addShareProperties: function (properties) {
-      var extendedProperties = properties;
+      const extendedProperties = properties;
 
       extendedProperties.attributes = properties.attributes || {};
 
@@ -192,7 +192,7 @@
         return properties;
       }
 
-      var updatedProperties = properties;
+      const updatedProperties = properties;
       updatedProperties.attributes = properties.attributes || {};
 
       // if share permission got enabled unset all attributes
@@ -276,7 +276,7 @@
       }
 
       // default checkboxes on permission update
-      var canDownload = this._getAttribute(
+      const canDownload = this._getAttribute(
         properties.attributes,
         "permissions",
         "download"
@@ -341,14 +341,14 @@
      * @param event
      */
     onOnlyOfficeOptionChange: function (event) {
-      var that = this;
-      var share;
-      var $element = $(event.target);
-      var $li = $element.closest("li");
-      var shareId = $li.data("share-id");
+      const that = this;
+      let share;
+      const $element = $(event.target);
+      const $li = $element.closest("li");
+      const shareId = $li.data("share-id");
 
-      var shares = this.model.getSharesWithCurrentItem();
-      for (var shareIndex = 0; shareIndex < shares.length; shareIndex++) {
+      const shares = this.model.getSharesWithCurrentItem();
+      for (let shareIndex = 0; shareIndex < shares.length; shareIndex++) {
         if (shares[shareIndex].id === shareId) {
           share = shares[shareIndex];
           break;
@@ -361,12 +361,12 @@
       }
 
       // parse current checkboxes
-      var attributes = share.attributes || {};
+      let attributes = share.attributes || {};
       $("li[data-share-id='" + shareId + "'] .onlyOfficeShareOption").each(
         function (index, checkbox) {
-          var shareOptionAttrScope = $(checkbox).data("attr-scope");
-          var shareOptionAttrKey = $(checkbox).data("attr-key");
-          var shareOptionChecked = $(checkbox).is(":checked");
+          const shareOptionAttrScope = $(checkbox).data("attr-scope");
+          const shareOptionAttrKey = $(checkbox).data("attr-key");
+          const shareOptionChecked = $(checkbox).is(":checked");
 
           attributes = that._updateAttributes(
             attributes,
@@ -377,17 +377,17 @@
         }
       );
 
-      var review = this._getAttribute(
+      const review = this._getAttribute(
         attributes,
         OCA.Onlyoffice.AppName,
         "review"
       );
-      var fillForms = this._getAttribute(
+      const fillForms = this._getAttribute(
         attributes,
         OCA.Onlyoffice.AppName,
         "fillForms"
       );
-      var comment = this._getAttribute(
+      const comment = this._getAttribute(
         attributes,
         OCA.Onlyoffice.AppName,
         "comment"
@@ -464,16 +464,16 @@
      * @param view
      */
     render: function (view) {
-      var shares = this.model.getSharesWithCurrentItem();
+      const shares = this.model.getSharesWithCurrentItem();
 
-      for (var shareIndex = 0; shareIndex < shares.length; shareIndex++) {
-        var share = shares[shareIndex];
+      for (let shareIndex = 0; shareIndex < shares.length; shareIndex++) {
+        const share = shares[shareIndex];
 
         // get existing share element if already initialized
-        var $share = view.$el.find("li[data-share-id=" + share.id + "]");
+        const $share = view.$el.find("li[data-share-id=" + share.id + "]");
         if ($share) {
-          var shareOptionsData = [];
-          var attributes = [
+          const shareOptionsData = [];
+          const attributes = [
             { key: "download", scope: "permissions" },
             { key: "review", scope: OCA.Onlyoffice.AppName },
             { key: "fillForms", scope: OCA.Onlyoffice.AppName },
@@ -481,11 +481,11 @@
             { key: "modifyFilter", scope: OCA.Onlyoffice.AppName },
           ];
           for (
-            var attributeIndex = 0;
+            let attributeIndex = 0;
             attributeIndex < attributes.length;
             attributeIndex++
           ) {
-            var attribute = this._getAttribute(
+            const attribute = this._getAttribute(
               share.attributes,
               attributes[attributeIndex].scope,
               attributes[attributeIndex].key
@@ -495,7 +495,7 @@
               continue;
             }
 
-            var label;
+            let label;
             if (attribute.key === "download") {
               label = t(OCA.Onlyoffice.AppName, "download");
             } else if (attribute.key === "review") {
@@ -538,7 +538,7 @@
     },
 
     _getAttribute: function (attributes, scope, key) {
-      for (var i in attributes) {
+      for (const i in attributes) {
         if (
           attributes[i].scope === scope &&
           attributes[i].key === key &&
@@ -552,11 +552,11 @@
     },
 
     _updateAttributes: function (attributes, scope, key, enabled) {
-      var updatedAttributes = [];
+      const updatedAttributes = [];
 
       // copy existing scope-key pairs from attributes
-      for (var i in attributes) {
-        var attribute = attributes[i];
+      for (const i in attributes) {
+        const attribute = attributes[i];
         if (attribute.scope !== scope || attribute.key !== key) {
           updatedAttributes.push({
             scope: attribute.scope,
@@ -621,13 +621,13 @@
         return;
       }
 
-      var fileName = view.model.getFileInfo().attributes.name;
+      const fileName = view.model.getFileInfo().attributes.name;
 
-      var extension = OCA.Onlyoffice.GetFileExtension(fileName);
+      const extension = OCA.Onlyoffice.GetFileExtension(fileName);
 
-      var formats = OCA.Onlyoffice.setting.formats;
+      const formats = OCA.Onlyoffice.setting.formats;
 
-      var config = formats[extension];
+      const config = formats[extension];
       if (!config) {
         return;
       }
@@ -637,18 +637,18 @@
       OCA.Onlyoffice.ShareOptions.model = view.model;
 
       // customize rendering of checkboxes
-      var baseRenderCall = view.render;
+      const baseRenderCall = view.render;
       view.render = function () {
         baseRenderCall.call(view);
         OCA.Onlyoffice.ShareOptions.render(view);
       };
 
-      var model = view.model;
+      const model = view.model;
 
-      var baseAddShareCall = model.addShare;
+      const baseAddShareCall = model.addShare;
       model.addShare = function (properties, options) {
         // add onlyoffice attributes
-        var newProperties =
+        const newProperties =
           OCA.Onlyoffice.ShareOptions.addShareProperties(properties);
 
         if (
@@ -666,10 +666,10 @@
         baseAddShareCall.call(model, newProperties, options || {});
       };
 
-      var baseUpdateShareCall = model.updateShare;
+      const baseUpdateShareCall = model.updateShare;
       model.updateShare = function (shareId, properties, options) {
-        var newProperties = properties || {};
-        var newOptions = options || {};
+        let newProperties = properties || {};
+        const newOptions = options || {};
 
         // update for onlyoffice attributes
         if (!options.hasOwnProperty("onlyofficeUpdatedShareProperties")) {
@@ -715,18 +715,18 @@
         return;
       }
 
-      var fileName = model.getFileInfo().attributes.name;
+      const fileName = model.getFileInfo().attributes.name;
 
-      var extension = OCA.Onlyoffice.GetFileExtension(fileName);
+      const extension = OCA.Onlyoffice.GetFileExtension(fileName);
 
-      var formats = OCA.Onlyoffice.setting.formats;
+      const formats = OCA.Onlyoffice.setting.formats;
 
-      var config = formats[extension];
+      const config = formats[extension];
       if (!config) {
         return;
       }
 
-      var addDownload =
+      const addDownload =
         model.getRegisteredShareAttribute("permissions", "download") === null;
 
       if (addDownload) {

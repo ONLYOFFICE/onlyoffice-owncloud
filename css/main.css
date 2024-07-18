@@ -39,6 +39,15 @@
   background-image: url("../img/app-dark.svg");
 }
 
+.AscDesktopEditor #content-wrapper {
+  padding-top: 0;
+}
+
+.AscDesktopEditor #controls,
+.AscDesktopEditor #app-sidebar {
+  top: 0;
+}
+
 /* onlyoffice-inline */
 body.onlyoffice-inline #content-wrapper {
   overflow: hidden;
@@ -78,15 +87,6 @@ body.onlyoffice-inline #content #app-content {
 /* AscDesktopEditor */
 .AscDesktopEditor #header {
   display: none;
-}
-
-.AscDesktopEditor #content-wrapper {
-  padding-top: 0;
-}
-
-.AscDesktopEditor #controls,
-.AscDesktopEditor #app-sidebar {
-  top: 0;
 }
 
 .AscDesktopEditor #body-user table.multiselect thead {

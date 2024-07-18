@@ -165,7 +165,7 @@
       location.href = url;
     } else {
       const $iframe = $(
-        '<iframe id="onlyofficeFrame" nonce="' +
+        '<iframe id="onlyoffice-frame" nonce="' +
           btoa(OC.requestToken) +
           '" scrolling="no" allowfullscreen src="' +
           url +
@@ -182,7 +182,7 @@
         scrollTop = $("#content-wrapper").scrollTop();
       }
 
-      $("#onlyofficeFrame").css("top", scrollTop);
+      $("#onlyoffice-frame").css("top", scrollTop);
 
       $("body").addClass("onlyoffice-inline");
       OC.Apps.hideAppSidebar();
@@ -586,7 +586,7 @@
 
   OCA.Onlyoffice.openVersion = function (fileId, version) {
     if ($("body").hasClass("onlyoffice-inline")) {
-      $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.onRequestHistory(
+      $("#onlyoffice-frame")[0].contentWindow.OCA.Onlyoffice.onRequestHistory(
         version
       );
       return;
@@ -681,7 +681,7 @@
           $("#preview").prepend(button);
         } else {
           const $iframe = $(
-            '<iframe id="onlyofficeFrame" nonce="' +
+            '<iframe id="onlyoffice-frame" nonce="' +
               btoa(OC.requestToken) +
               '" scrolling="no" allowfullscreen src="' +
               editorUrl +

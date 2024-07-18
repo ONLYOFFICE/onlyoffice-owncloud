@@ -60,7 +60,7 @@ body.onlyoffice-inline #content #app-content {
   overflow: hidden;
 }
 
-#onlyofficeFrame {
+#onlyoffice-frame {
   background-color: #fff;
   display: block;
   height: calc(100vh - 45px);

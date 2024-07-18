@@ -25,7 +25,7 @@
   );
 
   OCA.Onlyoffice.onRequestClose = function () {
-    $("#onlyofficeFrame").remove();
+    $("#onlyoffice-frame").remove();
 
     OCA.Onlyoffice.CloseEditor();
   };
@@ -35,7 +35,7 @@
       t(OCA.Onlyoffice.AppName, "Save as"),
       function (fileDir) {
         saveData.dir = fileDir;
-        $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.editorSaveAs(
+        $("#onlyoffice-frame")[0].contentWindow.OCA.Onlyoffice.editorSaveAs(
           saveData
         );
       },
@@ -48,7 +48,7 @@
   OCA.Onlyoffice.onRequestInsertImage = function (imageMimes) {
     OC.dialogs.filepicker(
       t(OCA.Onlyoffice.AppName, "Insert image"),
-      $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.editorInsertImage,
+      $("#onlyoffice-frame")[0].contentWindow.OCA.Onlyoffice.editorInsertImage,
       false,
       imageMimes,
       true
@@ -58,7 +58,7 @@
   OCA.Onlyoffice.onRequestMailMergeRecipients = function (recipientMimes) {
     OC.dialogs.filepicker(
       t(OCA.Onlyoffice.AppName, "Select recipients"),
-      $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.editorSetRecipient,
+      $("#onlyoffice-frame")[0].contentWindow.OCA.Onlyoffice.editorSetRecipient,
       false,
       recipientMimes,
       true
@@ -80,7 +80,7 @@
     OC.dialogs.filepicker(
       title,
       $(
-        "#onlyofficeFrame"
+        "#onlyoffice-frame"
       )[0].contentWindow.OCA.Onlyoffice.editorSetRequested.bind({
         documentSelectionType,
       }),
@@ -93,7 +93,7 @@
   OCA.Onlyoffice.onRequestReferenceSource = function (referenceSourceMimes) {
     OC.dialogs.filepicker(
       t(OCA.Onlyoffice.AppName, "Select data source"),
-      $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice
+      $("#onlyoffice-frame")[0].contentWindow.OCA.Onlyoffice
         .editorReferenceSource,
       false,
       referenceSourceMimes,
@@ -133,18 +133,18 @@
   };
 
   OCA.Onlyoffice.onRequestEditRights = function () {
-    $("#onlyofficeFrame").attr(
+    $("#onlyoffice-frame").attr(
       "src",
-      $("#onlyofficeFrame").attr("src") + "&forceEdit=true"
+      $("#onlyoffice-frame").attr("src") + "&forceEdit=true"
     );
   };
 
   window.addEventListener(
     "message",
     function (event) {
-      if ($("#onlyofficeFrame")[0]) {
+      if ($("#onlyoffice-frame")[0]) {
         if (
-          $("#onlyofficeFrame")[0].contentWindow !== event.source ||
+          $("#onlyoffice-frame")[0].contentWindow !== event.source ||
           !event.data["method"]
         ) {
           return;
@@ -200,7 +200,7 @@
 
   window.addEventListener("popstate", function (event) {
     if (
-      $("#onlyofficeFrame").length &&
+      $("#onlyoffice-frame").length &&
       location.href.indexOf(OCA.Onlyoffice.AppName) === -1
     ) {
       OCA.Onlyoffice.onRequestClose();
@@ -210,15 +210,15 @@
   window.addEventListener("DOMNodeRemoved", function (event) {
     if (
       $(event.target).length &&
-      $("#onlyofficeFrame").length &&
+      $("#onlyoffice-frame").length &&
       ($(event.target)[0].id === "viewer" ||
-        $(event.target)[0].id === $("#onlyofficeFrame")[0].id)
+        $(event.target)[0].id === $("#onlyoffice-frame")[0].id)
     ) {
       OCA.Onlyoffice.changeFavicon(
-        $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.faviconBase
+        $("#onlyoffice-frame")[0].contentWindow.OCA.Onlyoffice.faviconBase
       );
       window.document.title =
-        $("#onlyofficeFrame")[0].contentWindow.OCA.Onlyoffice.titleBase;
+        $("#onlyoffice-frame")[0].contentWindow.OCA.Onlyoffice.titleBase;
     }
   });
 })(OCA);

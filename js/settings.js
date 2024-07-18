@@ -27,7 +27,7 @@
 
     const advToogle = function () {
       $("#onlyofficeSecretPanel").toggleClass("onlyoffice-hide");
-      $("#onlyofficeAdv .icon").toggleClass("icon-triangle-s icon-triangle-n");
+      $("#onlyoffice-adv .icon").toggleClass("icon-triangle-s icon-triangle-n");
     };
 
     if (
@@ -38,7 +38,7 @@
       advToogle();
     }
 
-    $("#onlyofficeAdv").click(function () {
+    $("#onlyoffice-adv").click(function () {
       advToogle();
     });
 
@@ -68,7 +68,7 @@
     $("#onlyofficeDemo").click(demoToggle);
     demoToggle();
 
-    $("#onlyofficeAddrSave").click(function () {
+    $("#onlyoffice-addr-save").click(function () {
       $(".section-onlyoffice").addClass("icon-loading");
       const onlyofficeUrl = $("#onlyofficeUrl").val().trim();
 
@@ -151,7 +151,7 @@
       });
     });
 
-    $("#onlyofficeSave").click(function () {
+    $("#onlyoffice-save").click(function () {
       $(".section-onlyoffice").addClass("icon-loading");
 
       const defFormats = {};
@@ -263,7 +263,7 @@
     $(".section-onlyoffice input").keypress(function (e) {
       const code = e.keyCode || e.which;
       if (code === 13) {
-        $("#onlyofficeAddrSave").click();
+        $("#onlyoffice-addr-save").click();
       }
     });
 

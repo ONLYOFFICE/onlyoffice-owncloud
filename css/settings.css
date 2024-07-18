@@ -38,21 +38,21 @@
   display: none;
 }
 
-#onlyofficeAdv {
+#onlyoffice-adv {
   cursor: pointer;
   text-decoration: none;
 }
 
-#onlyofficeAdv .icon {
+#onlyoffice-adv .icon {
   display: inline-block;
   margin-bottom: -3px;
 }
 
-#onlyofficeAddrSave {
+#onlyoffice-addr-save {
   float: left;
 }
 
-#onlyofficeSave {
+#onlyoffice-save {
   margin-bottom: 25px;
 }
 
@@ -60,7 +60,7 @@
   margin-left: 90px;
 }
 
-#s2id_onlyofficeLimitGroups {
+#s2i-onlyoffice-limit-groups {
   margin-bottom: 16px;
 }
 
@@ -85,7 +85,7 @@
   margin-left: 20px;
 }
 
-#onlyofficeDocsCloudBannerWrapper {
+#onlyoffice-docscloud-banner-wrapper {
   background-color: #fff;
   background-image: url("../img/get-editors-background.svg");
   background-repeat: no-repeat;
@@ -99,17 +99,17 @@
   text-align: center;
 }
 
-#onlyofficeDocsCloudBannerPicWrapper {
+#onlyoffice-docscloud-banner-pic-wrapper {
   height: 100%;
   padding: 10px 0 0 20px;
   width: 20%;
 }
 
-#onlyofficeDocsCloudBannerPic {
+#onlyoffice-docscloud-banner-pic {
   content: url("../img/get-editors-pic.svg");
 }
 
-#onlyofficeDocsCloudBannerContent {
+#onlyoffice-docscloud-banner-content {
   color: #000;
   display: flex;
   flex-direction: row;
@@ -118,7 +118,7 @@
   width: 80%;
 }
 
-#onlyofficeDocsCloudBannerContentText {
+#onlyoffice-docscloud-banner-content-text {
   color: #000;
   font-size: 14px;
   height: 100%;
@@ -127,40 +127,40 @@
   width: 60%;
 }
 
-#onlyofficeDocsCloudBannerContentText h2 {
+#onlyoffice-docscloud-banner-content-text h2 {
   color: #000;
   margin: 0;
 }
 
-#onlyofficeDocsCloudBannerContentButtonWrapper {
+#onlyoffice-docscloud-banner-content-button-wrapper {
   height: 100%;
   margin: auto;
   width: 40%;
 }
 
-#onlyofficeDocsCloudBannerContentButton {
+#onlyoffice-docscloud-banner-content-button {
   background-color: #ededed;
   border: 1px solid #dbdbdb;
   color: #000;
 }
 
 @media (max-width: 580px) {
-  #onlyofficeDocsCloudBannerPicWrapper {
+  #onlyoffice-docscloud-banner-pic-wrapper {
     padding: 20px 0 0 5px;
     width: 30%;
   }
 
-  #onlyofficeDocsCloudBannerContent {
+  #onlyoffice-docscloud-banner-content {
     flex-direction: column;
     width: 70%;
   }
 
-  #onlyofficeDocsCloudBannerContentText {
+  #onlyoffice-docscloud-banner-content-text {
     padding-right: 5px;
     width: 100%;
   }
 
-  #onlyofficeDocsCloudBannerContentButtonWrapper {
+  #onlyoffice-docscloud-banner-content-button-wrapper {
     padding: 15px 0 15px 15px;
     text-align: left;
     width: 100%;
@@ -168,16 +168,16 @@
 }
 
 @media (max-width: 335px) {
-  #onlyofficeDocsCloudBannerWrapper {
+  #onlyoffice-docscloud-banner-wrapper {
     flex-direction: column;
   }
 
-  #onlyofficeDocsCloudBannerPicWrapper {
+  #onlyoffice-docscloud-banner-pic-wrapper {
     padding: unset;
     width: 100%;
   }
 
-  #onlyofficeDocsCloudBannerContent {
+  #onlyoffice-docscloud-banner-content {
     width: 100%;
   }
 }

@@ -17,77 +17,91 @@
  */
 
 .icon-onlyoffice-new-docx {
-    background-image: url("../img/new-docx.svg");
+  background-image: url("../img/new-docx.svg");
 }
+
 .icon-onlyoffice-new-xlsx {
-    background-image: url("../img/new-xlsx.svg");
+  background-image: url("../img/new-xlsx.svg");
 }
+
 .icon-onlyoffice-new-pptx {
-    background-image: url("../img/new-pptx.svg");
+  background-image: url("../img/new-pptx.svg");
 }
+
 .icon-onlyoffice-new-pdf {
-    background-image: url("../img/new-pdf.svg");
+  background-image: url("../img/new-pdf.svg");
 }
+
 .icon-onlyoffice-open,
 .icon-onlyoffice-convert,
 .icon-onlyoffice-download,
 .icon-onlyoffice-create {
-    background-image: url("../img/app-dark.svg");
+  background-image: url("../img/app-dark.svg");
 }
 
 /* onlyoffice-inline */
 body.onlyoffice-inline #content-wrapper {
-    overscroll-behavior-y: none;
-    overflow: hidden;
+  overflow: hidden;
+  overscroll-behavior-y: none;
 }
+
 body.onlyoffice-inline #app-navigation,
 body.onlyoffice-inline .searchbox,
 body.onlyoffice-inline #app-content #controls {
-    display: none;
+  display: none;
 }
+
 body.onlyoffice-inline #app-navigation-toggle {
-    display: none !important;
+  display: none !important;
 }
+
 body.onlyoffice-inline #content #app-content {
-    margin-left: 0;
-    overflow: hidden;
+  margin-left: 0;
+  overflow: hidden;
 }
+
 #onlyofficeFrame {
-    background-color: #fff;
-    width: 100%;
-    height: calc(100vh - 45px);
-    display: block;
-    position: absolute;
-    top: 0;
-    z-index: 110;
+  background-color: #fff;
+  display: block;
+  height: calc(100vh - 45px);
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 110;
 }
 
 .onlyoffice-public-open {
-    display: inline-block;
-    margin-top: 10px;
+  display: inline-block;
+  margin-top: 10px;
 }
 
 /* AscDesktopEditor */
 .AscDesktopEditor #header {
-    display: none;
+  display: none;
 }
+
 .AscDesktopEditor #content-wrapper {
-    padding-top: 0;
+  padding-top: 0;
 }
+
 .AscDesktopEditor #controls,
 .AscDesktopEditor #app-sidebar {
-    top: 0;
+  top: 0;
 }
+
 .AscDesktopEditor #body-user table.multiselect thead {
-    top: 44px;
+  top: 44px;
 }
+
 .AscDesktopEditor #body-user #gallery-button {
-    display: none;
+  display: none;
 }
+
 .onlyoffice-download-container {
-    display: flex;
+  display: flex;
 }
+
 .onlyoffice-download-container p {
-    margin-right: 10px;
-    padding-top: 10px;
+  margin-right: 10px;
+  padding-top: 10px;
 }

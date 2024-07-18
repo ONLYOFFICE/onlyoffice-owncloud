@@ -17,56 +17,67 @@
  */
 
 .onlyoffice-template-container {
-    margin-left: 0px !important;
-    max-width: 500px;
+  margin-left: 0 !important;
+  max-width: 500px;
 }
+
 .onlyoffice-template-container li {
-    height: 27px;
-    padding-top: 5px;
+  height: 27px;
+  padding-top: 5px;
 }
+
 .onlyoffice-template-container.container-dialog li:hover,
 .onlyoffice-template-item.selected {
-    background-color: rgb(230, 230, 230);
+  background-color: rgb(230 230 230);
 }
+
 .onlyoffice-template-item img,
 .onlyoffice-template-item p,
 .onlyoffice-template-delete,
 .onlyoffice-template-download {
-    display: inline-block;
-    margin-right: 10px;
-    cursor: pointer;
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 10px;
 }
+
 .onlyoffice-template-item.item-dialog {
-    padding-left: 5px;
+  padding-left: 5px;
 }
+
 .onlyoffice-template-delete,
 .onlyoffice-template-download {
-    margin-bottom: 2px;
-    opacity: .8;
+  margin-bottom: 2px;
+  opacity: 0.8;
 }
+
 .onlyoffice-template-item p {
-    max-width: 400px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
+  max-width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
+
 .onlyoffice-template-item img {
-    float: left;
-    margin-top: 3px;
+  float: left;
+  margin-top: 3px;
 }
+
 .onlyoffice-template-item.selected label {
-    color: rgb(55, 137, 243);
+  color: rgb(55 137 243);
 }
+
 .onlyoffice-template-download {
-    background-image: url("../../../core/img/actions/download.svg");
-    height: 16px;
-    width: 16px;
+  background-image: url("../../../core/img/actions/download.svg");
+  height: 16px;
+  width: 16px;
 }
+
 .onlyoffice-template.icon-add {
-    opacity: 0.5;
-    padding-left: 35px;
-    padding-bottom: 5px;
+  opacity: 0.5;
+  padding-bottom: 5px;
+  padding-left: 35px;
 }
+
 .onlyoffice-template.icon-add:hover {
-    opacity: 0.7;
+  opacity: 0.7;
 }

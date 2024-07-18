@@ -2626,7 +2626,7 @@ define(["vue"], function (vue) {
   const isArray =
     Array.isArray ||
     function (arr) {
-      return toString.call(arr) == "[object Array]";
+      return toString.call(arr) === "[object Array]";
     };
 
   const INSPECT_MAX_BYTES = 50;
@@ -7698,7 +7698,7 @@ define(["vue"], function (vue) {
       },
       create() {
         return new Promise((resolve, reject) => {
-          if (this.mode != "create") {
+          if (this.mode !== "create") {
             resolve();
             return;
           }

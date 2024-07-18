@@ -277,7 +277,7 @@
           return;
         }
 
-        if (response.parentId == fileList.dirInfo.id) {
+        if (response.parentId === fileList.dirInfo.id) {
           fileList.add(response, { animate: true });
         }
 

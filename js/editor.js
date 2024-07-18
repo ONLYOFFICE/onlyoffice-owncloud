@@ -64,7 +64,10 @@
     }
 
     const docsVersion = DocsAPI.DocEditor.version().split(".");
-    if (docsVersion[0] < 6 || (docsVersion[0] == 6 && docsVersion[1] == 0)) {
+    if (
+      docsVersion[0] < 6 ||
+      (parseInt(docsVersion[0]) === 6 && parseInt(docsVersion[1]) === 0)
+    ) {
       OCA.Onlyoffice.showMessage(
         t(OCA.Onlyoffice.AppName, "Not supported version"),
         "error",
@@ -643,7 +646,7 @@
     let url = location.href;
     if (event && event.data) {
       const indexAnchor = url.indexOf("#");
-      if (indexAnchor != -1) {
+      if (parseInt(indexAnchor) !== -1) {
         url = url.substring(0, indexAnchor);
       }
 
@@ -659,7 +662,7 @@
       if (anchorRegex.test(url)) {
         url = url.replace(anchorRegex, data);
       } else {
-        url += url.indexOf("?") == -1 ? "?" : "&";
+        url += url.indexOf("?") === -1 ? "?" : "&";
         url += data;
       }
     }

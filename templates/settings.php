@@ -56,7 +56,7 @@ script("onlyoffice", "template");
 		</p>
 
 		<p>
-			<a id="onlyofficeAdv" class="onlyoffice-header">
+			<a id="onlyoffice-adv" class="onlyoffice-header">
 				<?php p($l->t("Advanced server settings")) ?>
 				<span class="icon icon-triangle-s"></span>
 			</a>
@@ -73,7 +73,7 @@ script("onlyoffice", "template");
 	</div>
 
 	<div>
-		<button id="onlyofficeAddrSave" class="button"><?php p($l->t("Save")) ?></button>
+		<button id="onlyoffice-addr-save" class="button"><?php p($l->t("Save")) ?></button>
 		<div class="onlyoffice-demo">
 			<input type="checkbox" class="checkbox" id="onlyofficeDemo"
 			<?php if ($_["demo"]["enabled"]) { ?>checked="checked"<?php } ?>
@@ -87,18 +87,18 @@ script("onlyoffice", "template");
 			<?php } ?>
 		</div>
 
-		<div id="onlyofficeDocsCloudBannerWrapper">
-			<div id="onlyofficeDocsCloudBannerPicWrapper">
-				<div id="onlyofficeDocsCloudBannerPic">
+		<div id="onlyoffice-docscloud-banner-wrapper">
+			<div id="onlyoffice-docscloud-banner-pic-wrapper">
+				<div id="onlyoffice-docscloud-banner-pic">
 				</div>
 			</div>
-			<div id="onlyofficeDocsCloudBannerContent">
-				<div id="onlyofficeDocsCloudBannerContentText">
+			<div id="onlyoffice-docscloud-banner-content">
+				<div id="onlyoffice-docscloud-banner-content-text">
 					<p><h2><?php p($l->t("ONLYOFFICE Docs Cloud")) ?></h2></p>
 					<p><?php p($l->t("Easily launch the editors in the cloud without downloading and installation")) ?></p>
 				</div>
-			<div id="onlyofficeDocsCloudBannerContentButtonWrapper">
-				<a id="onlyofficeDocsCloudBannerContentButton" class="button" href="<?php p($_["linkToDocs"]) ?>" target="_blank">
+			<div id="onlyoffice-docscloud-banner-content-button-wrapper">
+				<a id="onlyoffice-docscloud-banner-content-button" class="button" href="<?php p($_["linkToDocs"]) ?>" target="_blank">
 				<?php p($l->t("Get Now")) ?>
 				</a>
 			</div>
@@ -282,7 +282,7 @@ script("onlyoffice", "template");
 		</div>
 
 		<br />
-		<p><button id="onlyofficeSave" class="button"><?php p($l->t("Save")) ?></button></p>
+		<p><button id="onlyoffice-save" class="button"><?php p($l->t("Save")) ?></button></p>
 
 		<h2>
 			<?php p($l->t("Common templates")) ?>

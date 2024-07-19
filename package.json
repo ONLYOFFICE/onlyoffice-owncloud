@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "@ownclouders/eslint-config": "^0.0.1",
+    "@ownclouders/prettier-config": "^0.0.1",
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0",
+    "stylelint": "^14.14.0",
+    "stylelint-config-sass-guidelines": "^9.0.0",
+    "stylelint-config-standard": "^26.0.0"
+  }
+}

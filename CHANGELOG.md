@@ -3,6 +3,7 @@
 ##
 ## Added
 - support tiff format for inserting
+- fi-FI, Hebrew (Israel), nb-NO, sl-SI empty file templates
 
 ## 9.3.1
 ## Changed

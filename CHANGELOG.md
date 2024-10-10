@@ -5,6 +5,9 @@
 - support tiff format for inserting
 - fi-FI, Hebrew (Israel), nb-NO, sl-SI empty file templates
 
+## Changed
+- used default empty template instead of en-US
+
 ## 9.3.1
 ## Changed
 - creating and editing pdf form

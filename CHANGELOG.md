@@ -5,6 +5,9 @@
 - support tiff format for inserting
 - Finnish, Hebrew, Norwegian, Slovenian empty file templates
 
+## Changed
+- used default empty template instead of en-US
+
 ## 9.3.1
 ## Changed
 - creating and editing pdf form

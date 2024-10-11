@@ -3,6 +3,7 @@
 ##
 ## Added
 - support tiff format for inserting
+- Finnish, Hebrew, Norwegian, Slovenian empty file templates
 
 ## 9.3.1
 ## Changed

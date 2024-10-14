@@ -234,7 +234,6 @@ class EditorApiController extends OCSController {
 	 * @param bool $desktop - desktop label
 	 * @param bool $template - file is template
 	 * @param string $anchor - anchor link
-	 * @param bool $forceEdit - open editing
 	 *
 	 * @return JSONResponse
 	 *
@@ -242,7 +241,7 @@ class EditorApiController extends OCSController {
 	 * @PublicPage
 	 * @CORS
 	 */
-	public function config($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $desktop = false, $template = false, $anchor = null, $forceEdit = false) {
+	public function config($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $desktop = false, $template = false, $anchor = null) {
 		$user = $this->userSession->getUser();
 		$userId = null;
 		$accountId = null;

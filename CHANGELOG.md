@@ -1,6 +1,6 @@
 # Change Log
 
-##
+## 9.5.1
 ## Added
 - default empty templates
 - support tiff format for inserting

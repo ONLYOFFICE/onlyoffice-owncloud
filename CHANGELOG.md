@@ -7,6 +7,7 @@
 
 ## Changed
 - used default empty template instead of en-US
+- demo server address changed
 - editing pdf by default
 
 ## 9.3.1

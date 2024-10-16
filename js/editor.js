@@ -36,7 +36,6 @@
     OCA.Onlyoffice.template = $("#iframeEditor").data("template");
     OCA.Onlyoffice.inframe = !!$("#iframeEditor").data("inframe");
     OCA.Onlyoffice.anchor = $("#iframeEditor").attr("data-anchor");
-    OCA.Onlyoffice.forceEdit = $("#iframeEditor").attr("data-forceEdit");
     OCA.Onlyoffice.currentWindow = window;
 
     if (OCA.Onlyoffice.inframe) {
@@ -102,10 +101,6 @@
 
     if (OCA.Onlyoffice.anchor) {
       params.push("anchor=" + encodeURIComponent(OCA.Onlyoffice.anchor));
-    }
-
-    if (OCA.Onlyoffice.forceEdit) {
-      params.push("forceEdit=true");
     }
 
     if (OCA.Onlyoffice.Desktop) {
@@ -229,15 +224,6 @@
               OCA.Onlyoffice.onRequestSharingSettings;
           }
 
-          if (
-            !config.document.permissions.edit &&
-            config.document.permissions.fillForms &&
-            config.canEdit
-          ) {
-            config.events.onRequestEditRights =
-              OCA.Onlyoffice.onRequestEditRights;
-          }
-
           OCA.Onlyoffice.docEditor = new DocsAPI.DocEditor(
             "iframeEditor",
             config
@@ -270,19 +256,6 @@
         }
       },
     });
-  };
-
-  OCA.Onlyoffice.onRequestEditRights = function () {
-    if (OCA.Onlyoffice.inframe) {
-      window.parent.postMessage(
-        {
-          method: "onRequestEditRights",
-        },
-        "*"
-      );
-      return;
-    }
-    location.href += "&forceEdit=true";
   };
 
   OCA.Onlyoffice.onRequestHistory = function (version) {

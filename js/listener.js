@@ -132,13 +132,6 @@
     OC.Notification.show(messageObj.message, messageObj.props);
   };
 
-  OCA.Onlyoffice.onRequestEditRights = function () {
-    $("#onlyoffice-frame").attr(
-      "src",
-      $("#onlyoffice-frame").attr("src") + "&forceEdit=true"
-    );
-  };
-
   window.addEventListener(
     "message",
     function (event) {
@@ -191,8 +184,6 @@
         case "onShowMessage":
           OCA.Onlyoffice.onShowMessage(event.data.param);
           break;
-        case "onRequestEditRights":
-          OCA.Onlyoffice.onRequestEditRights();
       }
     },
     false

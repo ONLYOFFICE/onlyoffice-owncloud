@@ -91,14 +91,12 @@
         if (open) {
           const fileName = response.name;
           const extension = OCA.Onlyoffice.GetFileExtension(fileName);
-          const forceEdit = OCA.Onlyoffice.setting.formats[extension].fillForms;
           OCA.Onlyoffice.OpenEditor(
             response.id,
             dir,
             fileName,
             0,
-            winEditor,
-            forceEdit
+            winEditor
           );
         }
 
@@ -117,8 +115,7 @@
     fileDir,
     fileName,
     version,
-    winEditor,
-    forceEdit
+    winEditor
   ) {
     let filePath = "";
     if (fileName) {
@@ -140,10 +137,6 @@
           fileId,
         }
       );
-    }
-
-    if (forceEdit) {
-      url += "&forceEdit=true";
     }
 
     if (version > 0) {

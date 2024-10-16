@@ -1278,7 +1278,6 @@ class EditorController extends Controller {
 	 * @param string $shareToken - access token
 	 * @param integer $version - file version
 	 * @param bool $inframe - open in frame
-	 * @param bool $forceEdit - open editing
 	 * @param bool $template - file is template
 	 * @param string $anchor - anchor for file content
 	 *
@@ -1287,7 +1286,7 @@ class EditorController extends Controller {
 	 * @NoAdminRequired
 	 * @NoCSRFRequired
 	 */
-	public function index($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $forceEdit = false, $template = false, $anchor = null) {
+	public function index($fileId, $filePath = null, $shareToken = null, $version = 0, $inframe = false, $template = false, $anchor = null) {
 		$this->logger->debug("Open: $fileId ($version) $filePath", ["app" => $this->appName]);
 
 		if (empty($shareToken) && !$this->userSession->isLoggedIn()) {
@@ -1327,8 +1326,7 @@ class EditorController extends Controller {
 			"version" => $version,
 			"template" => $template,
 			"inframe" => false,
-			"anchor" => $anchor,
-			"forceEdit" => $forceEdit
+			"anchor" => $anchor
 		];
 
 		if ($inframe === true) {
@@ -1359,7 +1357,6 @@ class EditorController extends Controller {
 	 * @param string $shareToken - access token
 	 * @param integer $version - file version
 	 * @param bool $inframe - open in frame
-	 * @param bool $forceEdit - open editing
 	 *
 	 * @return TemplateResponse
 	 *
@@ -1367,8 +1364,8 @@ class EditorController extends Controller {
 	 * @NoCSRFRequired
 	 * @PublicPage
 	 */
-	public function publicPage($fileId, $shareToken, $version = 0, $inframe = false, $forceEdit = false) {
-		return $this->index($fileId, null, $shareToken, $version, $inframe, $forceEdit);
+	public function publicPage($fileId, $shareToken, $version = 0, $inframe = false) {
+		return $this->index($fileId, null, $shareToken, $version, $inframe);
 	}
 
 	/**

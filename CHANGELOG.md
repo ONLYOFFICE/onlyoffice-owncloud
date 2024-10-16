@@ -2,11 +2,11 @@
 
 ##
 ## Added
+- default empty templates
 - support tiff format for inserting
 - Finnish, Hebrew, Norwegian, Slovenian empty file templates
 
 ## Changed
-- used default empty template instead of en-US
 - demo server address changed
 - editing pdf by default
 

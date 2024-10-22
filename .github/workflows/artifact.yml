@@ -28,7 +28,12 @@ jobs:
           cd onlyoffice
           rm -rf ./.github/
           rm -rf ./.git/
+          rm ./.eslintrc.json
           rm ./.gitmodules
+          rm ./.stylelintrc.json
+          rm ./npm-shrinkwrap.json
+          rm ./package.json
+          rm ./ruleset.xml
           rm -rf ./assets/document-templates/.git
           rm -rf ./assets/document-formats/.git
           cd ./appinfo

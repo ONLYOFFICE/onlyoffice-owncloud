@@ -1,5 +1,15 @@
 # Change Log
 
+## 9.5.1
+## Added
+- default empty templates
+- support tiff format for inserting
+- Finnish, Hebrew, Norwegian, Slovenian empty file templates
+
+## Changed
+- demo server address changed
+- editing pdf by default
+
 ## 9.3.1
 ## Changed
 - creating and editing pdf form

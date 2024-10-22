@@ -1,0 +1,11 @@
+{
+    "extends": "@ownclouders",
+    "rules": {
+      "array-bracket-newline": ["error", "consistent"],
+      "multiline-ternary": ["error", "always-multiline"],
+      "no-var": "error",
+      "prefer-const": "error",
+      "object-shorthand": ["error", "always"],
+      "eqeqeq": ["error", "smart"]
+    }
+}

@@ -17,147 +17,167 @@
  */
 
 #content .section-onlyoffice h2 .icon-info {
-    padding-top: 17px;
+  padding-top: 17px;
 }
+
 .onlyoffice-error {
-    color: red;
+  color: #f00;
 }
+
 .onlyoffice-header {
-    display: inline-block;
-    margin-top: 16px;
+  display: inline-block;
+  margin-top: 16px;
 }
+
 .section-onlyoffice input {
-    display: block;
-    width: 250px;
+  display: block;
+  width: 250px;
 }
+
 .onlyoffice-hide {
-    display: none;
+  display: none;
 }
-#onlyofficeAdv {
-    cursor: pointer;
-    text-decoration: none;
+
+#onlyoffice-adv {
+  cursor: pointer;
+  text-decoration: none;
 }
-#onlyofficeAdv .icon {
-    display: inline-block;
-    margin-bottom: -3px;
+
+#onlyoffice-adv .icon {
+  display: inline-block;
+  margin-bottom: -3px;
 }
-#onlyofficeAddrSave {
-    float: left;
+
+#onlyoffice-addr-save {
+  float: left;
 }
-#onlyofficeSave {
-    margin-bottom: 25px;
+
+#onlyoffice-save {
+  margin-bottom: 25px;
 }
+
 .onlyoffice-demo {
-    margin-left: 90px;
+  margin-left: 90px;
 }
-#s2id_onlyofficeLimitGroups {
-    margin-bottom: 16px;
+
+#s2i-onlyoffice-limit-groups {
+  margin-bottom: 16px;
 }
+
 .onlyoffice-exts {
-    column-width: 100px;
-    -moz-column-width: 100px;
-    -webkit-column-width: 100px;
+  -moz-column-width: 100px;
+  -webkit-column-width: 100px;
+  column-width: 100px;
 }
+
 .onlyoffice-tables {
-    column-width: 140px;
-    -moz-column-width: 140px;
-    -webkit-column-width: 140px;
+  -moz-column-width: 140px;
+  -webkit-column-width: 140px;
+  column-width: 140px;
 }
+
 #personal-show + label {
-    margin-top: -25px;
-    margin-left: 230px;
+  margin-left: 230px;
+  margin-top: -25px;
 }
+
 .onlyoffice-option-desc {
-    margin-left: 20px;
-}
-#onlyofficeDocsCloudBannerWrapper {
-    max-width: 596px;
-    min-height: 108px;
-    text-align: center;
-    background-image: url("../img/get-editors-background.svg");
-    background-repeat: no-repeat;
-    background-color: #FFFFFF;
-    border: 1px solid #EFEFEF;
-    border-radius: 3px;
-    display: flex;
-    flex-direction: row;
-    margin-top: 10px;
+  margin-left: 20px;
 }
 
-#onlyofficeDocsCloudBannerPicWrapper {
-    height: 100%;
-    width: 20%;
-    padding: 10px 0 0 20px;
+#onlyoffice-docscloud-banner-wrapper {
+  background-color: #fff;
+  background-image: url("../img/get-editors-background.svg");
+  background-repeat: no-repeat;
+  border: 1px solid #efefef;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+  max-width: 596px;
+  min-height: 108px;
+  text-align: center;
 }
 
-#onlyofficeDocsCloudBannerPic {
-    content: url("../img/get-editors-pic.svg");
+#onlyoffice-docscloud-banner-pic-wrapper {
+  height: 100%;
+  padding: 10px 0 0 20px;
+  width: 20%;
 }
 
-#onlyofficeDocsCloudBannerContent {
-    height: 100%;
-    width: 80%;
-    color: #000000;
-    display: flex;
-    flex-direction: row;
-    margin: auto;
+#onlyoffice-docscloud-banner-pic {
+  content: url("../img/get-editors-pic.svg");
 }
 
-#onlyofficeDocsCloudBannerContentText {
-    width: 60%;
-    height: 100%;
-    color: #000;
-    font-size: 14px;
-    text-align: justify;
-    padding-left: 15px;
+#onlyoffice-docscloud-banner-content {
+  color: #000;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  margin: auto;
+  width: 80%;
 }
 
-#onlyofficeDocsCloudBannerContentText h2 {
-    margin: 0;
-    color: #000000;
+#onlyoffice-docscloud-banner-content-text {
+  color: #000;
+  font-size: 14px;
+  height: 100%;
+  padding-left: 15px;
+  text-align: justify;
+  width: 60%;
 }
 
-#onlyofficeDocsCloudBannerContentButtonWrapper {
-    width: 40%;
-    height: 100%;
-    margin: auto;
+#onlyoffice-docscloud-banner-content-text h2 {
+  color: #000;
+  margin: 0;
 }
 
-#onlyofficeDocsCloudBannerContentButton {
-    background-color: #EDEDED;
-    color: #000;
-    border: 1px solid #DBDBDB;
+#onlyoffice-docscloud-banner-content-button-wrapper {
+  height: 100%;
+  margin: auto;
+  width: 40%;
+}
+
+#onlyoffice-docscloud-banner-content-button {
+  background-color: #ededed;
+  border: 1px solid #dbdbdb;
+  color: #000;
 }
 
 @media (max-width: 580px) {
-    #onlyofficeDocsCloudBannerPicWrapper {
-        padding: 20px 0 0 5px;
-        width: 30%;
-    }
-    #onlyofficeDocsCloudBannerContent {
-        flex-direction: column;
-        width: 70%;
-    }
-    #onlyofficeDocsCloudBannerContentText {
-        width: 100%;
-        padding-right: 5px;
-    }
-    #onlyofficeDocsCloudBannerContentButtonWrapper {
-        width: 100%;
-        padding: 15px 0 15px 15px;
-        text-align: left;
-    }
+  #onlyoffice-docscloud-banner-pic-wrapper {
+    padding: 20px 0 0 5px;
+    width: 30%;
+  }
+
+  #onlyoffice-docscloud-banner-content {
+    flex-direction: column;
+    width: 70%;
+  }
+
+  #onlyoffice-docscloud-banner-content-text {
+    padding-right: 5px;
+    width: 100%;
+  }
+
+  #onlyoffice-docscloud-banner-content-button-wrapper {
+    padding: 15px 0 15px 15px;
+    text-align: left;
+    width: 100%;
+  }
 }
 
 @media (max-width: 335px) {
-    #onlyofficeDocsCloudBannerWrapper {
-        flex-direction: column;
-    }
-    #onlyofficeDocsCloudBannerPicWrapper {
-        width: 100%;
-        padding: unset;
-    }
-    #onlyofficeDocsCloudBannerContent {
-        width: 100%;
-    }
+  #onlyoffice-docscloud-banner-wrapper {
+    flex-direction: column;
+  }
+
+  #onlyoffice-docscloud-banner-pic-wrapper {
+    padding: unset;
+    width: 100%;
+  }
+
+  #onlyoffice-docscloud-banner-content {
+    width: 100%;
+  }
 }

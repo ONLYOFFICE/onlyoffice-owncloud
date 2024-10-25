@@ -303,7 +303,7 @@ class EditorApiController extends OCSController {
 				"title" => $fileName,
 				"url" => $fileUrl,
 				"referenceData" => [
-					"fileKey" => $file->getId(),
+					"fileKey" => (string)$file->getId(),
 					"instanceId" => $this->config->getSystemValue("instanceid", true),
 				],
 			],

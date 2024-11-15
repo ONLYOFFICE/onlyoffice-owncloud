@@ -7,14 +7,16 @@ This app allows users to edit office documents from [ownCloud](https://owncloud.
 The app allows to:
 
 * Create and edit text documents, spreadsheets, and presentations.
+* Create and edit PDF forms.
+* Edit PDF files.
 * Share files with different permission types - viewing/editing, commenting, reviewing, filling forms. It's also possible to restrict downloading (in all editors) and modifying filters (in spreadshhets). Sharing via public link is also available. 
 * Co-edit documents in real-time: use two co-editing modes (Fast and Strict), Track Changes, comments, and built-in chat. Co-editing is also available several federated ownCloud instances connected to one Document Server.
 * Work with documents, spreadsheets, and presentations within ownCloud Web. 
 
 Supported formats:
 
-* For editing: DOCM, DOCX, DOCXF, DOTM, DOTX, EPUB, FB2, HTML, ODT, OTT, RTF, TXT, CSV, ODS, OTS, XLSM, XLSX, XLTM, XLTX, ODP, OTP, POTM, POTX, PPSM, PPSX, PPTM, PPTX.
-* For viewing only: DJVU, DOC, DOT, FODT, HTM, MHT, MHTML, OFORM, PDF, STW, SXW, WPS, WPT, XML, XPS, ET, ETT, FODS, SXC, XLS, XLSB, XLT, DPS, DPT, FODP, POT, PPS, PPT, SXI.
+* For editing: DOCM, DOCX, DOTM, DOTX, PDF, EPUB, FB2, HTML, ODT, OTT, RTF, TXT, CSV, ODS, OTS, XLSM, XLSX, XLTM, XLTX, ODP, OTP, POTM, POTX, PPSM, PPSX, PPTM, PPTX.
+* For viewing only: DJVU, DOC, DOT, FODT, HTM, MHT, MHTML, STW, SXW, WPS, WPT, XML, XPS, ET, ETT, FODS, SXC, XLS, XLSB, XLT, DPS, DPT, FODP, POT, PPS, PPT, SXI.
 
 ODT, ODS, and ODP is also available for instant conversion. After you enable the corresponding option in the admin settings, ODF-formatted documents are immediately converted in the editor and opened after you click on it.
 

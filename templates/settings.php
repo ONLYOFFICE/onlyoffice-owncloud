@@ -26,7 +26,7 @@ script("onlyoffice", "template");
 <div class="section section-onlyoffice">
 	<h2 id="onlyoffice">
 		ONLYOFFICE
-		<a target="_blank" class="icon-info svg" title="" href="https://api.onlyoffice.com/editors/owncloud" data-original-title="<?php p($l->t("Documentation")) ?>"></a>
+		<a target="_blank" class="icon-info svg" title="" href="https://helpcenter.onlyoffice.com/integration/gettingstarted-owncloud.aspx" data-original-title="<?php p($l->t("Documentation")) ?>"></a>
 	</h2>
 
 	<h2><?php p($l->t("Server settings")) ?></h2>

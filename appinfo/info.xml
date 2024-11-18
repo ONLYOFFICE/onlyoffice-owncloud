@@ -12,9 +12,9 @@
         <filesystem/>
     </types>
     <documentation>
-        <admin>https://api.onlyoffice.com/editors/owncloud</admin>
+        <admin>https://helpcenter.onlyoffice.com/integration/owncloud.aspx</admin>
+        <user>https://helpcenter.onlyoffice.com/integration/owncloud.aspx</user>
         <developer>https://github.com/ONLYOFFICE/onlyoffice-owncloud</developer>
-        <user>https://api.onlyoffice.com/editors/owncloud</user>
     </documentation>
     <category>tools</category>
     <website>https://www.onlyoffice.com</website>

@@ -134,7 +134,8 @@ class SettingsController extends Controller {
 			"reviewDisplay" => $this->config->getCustomizationReviewDisplay(),
 			"theme" => $this->config->getCustomizationTheme(),
 			"templates" => $this->getGlobalTemplates(),
-			"linkToDocs" => $this->config->getLinkToDocs()
+			"linkToDocs" => $this->config->getLinkToDocs(),
+			"unknownAuthor" => $this->config->getUnknownAuthor()
 		];
 		return new TemplateResponse($this->appName, "settings", $data, "blank");
 	}
@@ -218,6 +219,7 @@ class SettingsController extends Controller {
 	 * @param bool $toolbarNoTabs - display toolbar tab
 	 * @param string $reviewDisplay - review viewing mode
 	 * @param string $theme - default theme mode
+	 * @param string $unknownAuthor - display unknown author
 	 *
 	 * @return array
 	 */
@@ -236,7 +238,8 @@ class SettingsController extends Controller {
 		$help,
 		$toolbarNoTabs,
 		$reviewDisplay,
-		$theme
+		$theme,
+		$unknownAuthor
 	) {
 		$this->config->setDefaultFormats($defFormats);
 		$this->config->setEditableFormats($editFormats);
@@ -253,6 +256,7 @@ class SettingsController extends Controller {
 		$this->config->setCustomizationToolbarNoTabs($toolbarNoTabs);
 		$this->config->setCustomizationReviewDisplay($reviewDisplay);
 		$this->config->setCustomizationTheme($theme);
+		$this->config->setUnknownAuthor($unknownAuthor);
 
 		return [
 			];

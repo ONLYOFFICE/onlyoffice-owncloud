@@ -987,6 +987,8 @@ class AppConfig {
 	 * Save unknownAuthor setting
 	 *
 	 * @param string $value - unknown author
+	 * 
+	 * @return void
 	 */
 	public function setUnknownAuthor($value) {
 		$this->logger->info("Set unknownAuthor: " . trim($value), ["app" => $this->appName]);

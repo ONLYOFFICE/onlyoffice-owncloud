@@ -946,6 +946,10 @@ class EditorController extends Controller {
 				"id" => $this->buildUserId($author["id"]),
 				"name" => $author["name"]
 			];
+		} elseif (!empty($this->config->getUnknownAuthor())) {
+			$historyItem["user"] = [
+				"name" => $this->config->getUnknownAuthor()
+			];
 		} elseif ($owner !== null) {
 			$historyItem["user"] = [
 				"id" => $this->buildUserId($ownerId),

@@ -39,9 +39,7 @@
     OCA.Onlyoffice.currentWindow = window;
 
     if (OCA.Onlyoffice.inframe) {
-      OCA.Onlyoffice.faviconBase = $('link[rel="icon"]').attr("href");
       OCA.Onlyoffice.currentWindow = window.parent;
-      OCA.Onlyoffice.titleBase = OCA.Onlyoffice.currentWindow.document.title;
     }
 
     if (!OCA.Onlyoffice.fileId && !OCA.Onlyoffice.shareToken) {

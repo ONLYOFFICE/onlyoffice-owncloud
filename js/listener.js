@@ -20,6 +20,8 @@
   OCA.Onlyoffice = _.extend(
     {
       AppName: "onlyoffice",
+      titleBase: window.document.title,
+      favIconBase: $('link[rel="icon"]').attr("href"),
     },
     OCA.Onlyoffice
   );
@@ -198,18 +200,22 @@
     }
   });
 
-  window.addEventListener("DOMNodeRemoved", function (event) {
-    if (
-      $(event.target).length &&
-      $("#onlyoffice-frame").length &&
-      ($(event.target)[0].id === "viewer" ||
-        $(event.target)[0].id === $("#onlyoffice-frame")[0].id)
-    ) {
-      OCA.Onlyoffice.changeFavicon(
-        $("#onlyoffice-frame")[0].contentWindow.OCA.Onlyoffice.faviconBase
-      );
-      window.document.title =
-        $("#onlyoffice-frame")[0].contentWindow.OCA.Onlyoffice.titleBase;
+  const mutationObserver = new MutationObserver(mutationRecords => {
+    if (mutationRecords[0] && mutationRecords[0].removedNodes) {
+      mutationRecords[0].removedNodes.forEach((node) => {
+        if (node.id && node.id === "onlyoffice-frame") {
+          OCA.Onlyoffice.changeFavicon(
+            OCA.Onlyoffice.favIconBase
+          );
+          window.document.title = OCA.Onlyoffice.titleBase;
+        }
+      })
     }
   });
+
+  mutationObserver.observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+    characterDataOldValue: true,
+    });
 })(OCA);

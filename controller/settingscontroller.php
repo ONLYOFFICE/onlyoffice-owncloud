@@ -118,6 +118,7 @@ class SettingsController extends Controller {
 			"sameTab" => $this->config->getSameTab(),
 			"preview" => $this->config->getPreview(),
 			"cronChecker" => $this->config->getCronChecker(),
+			"emailNotifications" => $this->config->getEmailNotifications(),
 			"versionHistory" => $this->config->getVersionHistory(),
 			"protection" => $this->config->getProtection(),
 			"encryption" => $this->config->checkEncryptionModule(),
@@ -209,6 +210,7 @@ class SettingsController extends Controller {
 	 * @param bool $sameTab - open in the same tab
 	 * @param bool $preview - generate preview files
 	 * @param bool $cronChecker - disable cron checker
+	 * @param bool $emailNotifications - notifications via e-mail
 	 * @param bool $versionHistory - keep version history
 	 * @param array $limitGroups - list of groups
 	 * @param bool $chat - display chat
@@ -229,6 +231,7 @@ class SettingsController extends Controller {
 		$sameTab,
 		$preview,
 		$cronChecker,
+		$emailNotifications,
 		$versionHistory,
 		$limitGroups,
 		$chat,
@@ -246,6 +249,7 @@ class SettingsController extends Controller {
 		$this->config->setSameTab($sameTab);
 		$this->config->setPreview($preview);
 		$this->config->setCronChecker($cronChecker);
+		$this->config->setEmailNotifications($emailNotifications);
 		$this->config->setVersionHistory($versionHistory);
 		$this->config->setLimitGroups($limitGroups);
 		$this->config->setCustomizationChat($chat);

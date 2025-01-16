@@ -167,6 +167,7 @@
       const sameTab = $("#onlyofficeSameTab").is(":checked");
       const preview = $("#onlyofficePreview").is(":checked");
       const cronChecker = $("#onlyofficeCronChecker").is(":checked");
+      const emailNotifications = $('#onlyofficeEmailNotifications').is(':checked');
       const versionHistory = $("#onlyofficeVersionHistory").is(":checked");
 
       const limitGroupsString = $("#onlyofficeGroups").prop("checked")
@@ -201,6 +202,7 @@
           sameTab,
           preview,
           cronChecker,
+          emailNotifications,
           versionHistory,
           limitGroups,
           chat,

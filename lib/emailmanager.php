@@ -218,6 +218,7 @@ class EmailManager {
 	 * @param OC_Template $template - e-mail template
 	 * @param string $email - e-mail address
 	 * @param string $recipientName - recipient name
+	 * @param string $subject - email subject
 	 *
 	 * @return bool
 	 */

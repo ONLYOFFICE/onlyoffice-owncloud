@@ -196,7 +196,7 @@ class EmailManager {
 	 *
 	 * @param string $heading - e-mail heading text
 	 * @param string $body - e-mail body html
-	 * @param array $button - params for NC-button (0-text, 1-link)
+	 * @param array $button - params for link (0-text, 1-link)
 	 *
 	 * @return OC_Template
 	 */

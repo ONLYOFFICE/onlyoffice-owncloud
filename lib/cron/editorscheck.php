@@ -28,10 +28,13 @@ use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IURLGenerator;
+use OCP\Mail\IMailer;
+use OCP\IUserManager;
 
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\DocumentService;
+use OCA\Onlyoffice\EmailManager;
 
 /**
  * Editors availability check background job
@@ -88,6 +91,13 @@ class EditorsCheck extends TimedJob {
 	private $groupManager;
 
 	/**
+     * Email manager
+     *
+     * @var EmailManager
+     */
+    private $emailManager;
+
+	/**
 	 * @param string $AppName - application name
 	 * @param IURLGenerator $urlGenerator - url generator service
 	 * @param ITimeFactory $time - time
@@ -114,6 +124,9 @@ class EditorsCheck extends TimedJob {
 		$this->crypt = $crypt;
 		$this->groupManager = $groupManager;
 		$this->setInterval($this->config->getEditorsCheckInterval());
+		$mailer = \OC::$server->getMailer();
+        $userManager = \OC::$server->getUserManager();
+        $this->emailManager = new EmailManager($AppName, $trans, $logger, $mailer, $userManager, $urlGenerator);
 	}
 
 	/**
@@ -192,6 +205,9 @@ class EditorsCheck extends TimedJob {
 		foreach ($this->getUsersToNotify() as $uid) {
 			$notification->setUser($uid);
 			$notificationManager->notify($notification);
+			if ($this->config->getEmailNotifications()) {
+                $this->emailManager->notifyEditorsCheckEmail($uid);
+            }
 		}
 	}
 }

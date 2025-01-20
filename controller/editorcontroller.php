@@ -150,18 +150,18 @@ class EditorController extends Controller {
 	private $avatarManager;
 
 	/**
-     * Mailer
-     *
-     * @var IMailer
-     */
-    private $mailer;
+	 * Mailer
+	 *
+	 * @var IMailer
+	 */
+	private $mailer;
 
-    /**
-     * Email manager
-     *
-     * @var EmailManager
-     */
-    private $emailManager;
+	/**
+	 * Email manager
+	 *
+	 * @var EmailManager
+	 */
+	private $emailManager;
 
 	/**
 	 * @param string $AppName - application name
@@ -602,7 +602,7 @@ class EditorController extends Controller {
 
 			$notificationManager->notify($notification);
 			if ($this->config->getEmailNotifications()) {
-                $this->emailManager->notifyMentionEmail($userId, $recipientId, $file->getId(), $file->getName(), $anchor, $notification->getObjectId());
+				$this->emailManager->notifyMentionEmail($userId, $recipientId, $file->getId(), $file->getName(), $anchor, $notification->getObjectId());
 			}
 		}
 

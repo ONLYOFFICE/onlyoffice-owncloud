@@ -763,6 +763,8 @@ class AppConfig {
 	 * Save e-mail notifications setting
 	 *
 	 * @param bool $value - emailNotifications
+	 * 
+	 * @return void
 	 */
 	public function setEmailNotifications($value) {
 		$this->logger->info("Set e-mail notifications: " . json_encode($value), ["app" => $this->appName]);

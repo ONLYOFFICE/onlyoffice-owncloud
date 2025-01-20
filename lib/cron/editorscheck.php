@@ -91,11 +91,11 @@ class EditorsCheck extends TimedJob {
 	private $groupManager;
 
 	/**
-     * Email manager
-     *
-     * @var EmailManager
-     */
-    private $emailManager;
+	 * Email manager
+	 *
+	 * @var EmailManager
+	 */
+	private $emailManager;
 
 	/**
 	 * @param string $AppName - application name
@@ -125,8 +125,8 @@ class EditorsCheck extends TimedJob {
 		$this->groupManager = $groupManager;
 		$this->setInterval($this->config->getEditorsCheckInterval());
 		$mailer = \OC::$server->getMailer();
-        $userManager = \OC::$server->getUserManager();
-        $this->emailManager = new EmailManager($AppName, $trans, $logger, $mailer, $userManager, $urlGenerator);
+		$userManager = \OC::$server->getUserManager();
+		$this->emailManager = new EmailManager($AppName, $trans, $logger, $mailer, $userManager, $urlGenerator);
 	}
 
 	/**
@@ -206,8 +206,8 @@ class EditorsCheck extends TimedJob {
 			$notification->setUser($uid);
 			$notificationManager->notify($notification);
 			if ($this->config->getEmailNotifications()) {
-                $this->emailManager->notifyEditorsCheckEmail($uid);
-            }
+				$this->emailManager->notifyEditorsCheckEmail($uid);
+			}
 		}
 	}
 }

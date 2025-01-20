@@ -229,7 +229,6 @@ class EmailManager {
 			$message->setSubject($subject);
 			$msgPage = $template->fetchPage();
 			$message->setHtmlBody($msgPage);
-			$message->setHtmlBody($msgPage);
 			$this->mailer->send($message);
 		} catch (\Exception $e) {
 			$this->logger->logException($e, ["message" => "Send email", "app" => $this->appName]);

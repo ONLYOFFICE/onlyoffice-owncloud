@@ -123,7 +123,7 @@ class DocumentService {
 			throw new \Exception($this->trans->t("ONLYOFFICE app is not configured. Please contact admin"));
 		}
 
-		$urlToConverter = $documentServerUrl . "ConvertService.ashx";
+		$urlToConverter = $documentServerUrl . "converter";
 
 		if (empty($document_revision_id)) {
 			$document_revision_id = $document_uri;

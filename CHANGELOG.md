@@ -2,6 +2,9 @@
 ## Added
 - setting for setup unknown author display name
 
+## Changed
+- URL for requests to Conversion API
+
 ## 9.5.1
 ## Added
 - default empty templates

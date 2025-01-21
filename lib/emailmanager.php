@@ -108,6 +108,7 @@ class EmailManager {
 	 * @param string $fileName - file name
 	 * @param string $anchor - anchor
 	 * @param string $notificationObjectId - object of notification
+	 *
 	 * @return bool
 	 */
 	public function notifyMentionEmail(

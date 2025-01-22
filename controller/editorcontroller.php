@@ -39,6 +39,7 @@ use OCP\IUser;
 use OCP\IUserSession;
 use OCP\IUserManager;
 use OCP\IGroupManager;
+use OCP\Mail\IMailer;
 use OCP\Share\IManager;
 use OCP\Share;
 
@@ -47,6 +48,7 @@ use OCA\Files\Helper;
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\DocumentService;
+use OCA\Onlyoffice\EmailManager;
 use OCA\Onlyoffice\FileUtility;
 use OCA\Onlyoffice\VersionManager;
 use OCA\Onlyoffice\FileVersions;
@@ -148,6 +150,20 @@ class EditorController extends Controller {
 	private $avatarManager;
 
 	/**
+	 * Mailer
+	 *
+	 * @var IMailer
+	 */
+	private $mailer;
+
+	/**
+	 * Email manager
+	 *
+	 * @var EmailManager
+	 */
+	private $emailManager;
+
+	/**
 	 * @param string $AppName - application name
 	 * @param IRequest $request - request object
 	 * @param IRootFolder $root - root folder
@@ -161,6 +177,7 @@ class EditorController extends Controller {
 	 * @param IManager $shareManager - Share manager
 	 * @param ISession $session - Session
 	 * @param IGroupManager $groupManager - Group manager
+	 * @param IMailer $mailer - Mailer
 	 */
 	public function __construct(
 		$AppName,
@@ -175,7 +192,8 @@ class EditorController extends Controller {
 		Crypt $crypt,
 		IManager $shareManager,
 		ISession $session,
-		IGroupManager $groupManager
+		IGroupManager $groupManager,
+		IMailer $mailer
 	) {
 		parent::__construct($AppName, $request);
 
@@ -194,6 +212,7 @@ class EditorController extends Controller {
 
 		$this->fileUtility = new FileUtility($AppName, $trans, $logger, $config, $shareManager, $session);
 		$this->avatarManager = \OC::$server->getAvatarManager();
+		$this->emailManager = new EmailManager($AppName, $trans, $logger, $mailer, $userManager, $urlGenerator);
 	}
 
 	/**
@@ -582,6 +601,9 @@ class EditorController extends Controller {
 			$notification->setUser($recipientId);
 
 			$notificationManager->notify($notification);
+			if ($this->config->getEmailNotifications()) {
+				$this->emailManager->notifyMentionEmail($userId, $recipientId, $file->getId(), $file->getName(), $anchor, $notification->getObjectId());
+			}
 		}
 
 		return ["message" => $this->trans->t("Notification sent successfully")];

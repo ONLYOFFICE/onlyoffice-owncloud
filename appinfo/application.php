@@ -228,7 +228,8 @@ class Application extends App {
 					$this->crypt,
 					$c->query("IManager"),
 					$c->query("Session"),
-					$c->query("ServerContainer")->getGroupManager()
+					$c->query("ServerContainer")->getGroupManager(),
+					$c->query("Mailer")
 				);
 			}
 		);

@@ -1,6 +1,7 @@
 # Change Log
 ## Added
 - setting for setup unknown author display name
+- setting for sending notifications by email
 
 ## Changed
 - URL for requests to Conversion API

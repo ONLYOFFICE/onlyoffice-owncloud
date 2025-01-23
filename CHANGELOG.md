@@ -5,6 +5,7 @@
 
 ## Changed
 - URL for requests to Conversion API
+- reading JSON instead of XML from Conversion API
 
 ## 9.5.1
 ## Added

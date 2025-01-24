@@ -1,7 +1,9 @@
 # Change Log
+
 ## Added
 - setting for setup unknown author display name
 - setting for sending notifications by email
+- opening docm, xlsm, pptm files
 
 ## Changed
 - URL for requests to Conversion API

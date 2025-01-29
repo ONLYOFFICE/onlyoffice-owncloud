@@ -4,6 +4,7 @@
 - setting for setup unknown author display name
 - setting for sending notifications by email
 - opening docm, xlsm, pptm files
+- support IMPORTRANGE
 
 ## Changed
 - URL for requests to Conversion API

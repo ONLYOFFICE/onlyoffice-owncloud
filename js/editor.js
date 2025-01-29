@@ -685,6 +685,7 @@
   };
 
   OCA.Onlyoffice.onRequestReferenceData = function (event) {
+    const link = event.data.link
     const referenceData = event.data.referenceData;
     const path = event.data.path;
 
@@ -693,6 +694,7 @@
       {
         referenceData,
         path,
+        link,
       },
       function onSuccess(response) {
         if (response.error) {

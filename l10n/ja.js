@@ -125,6 +125,15 @@ OC.L10N.register(
     "Select data source": "データソースの選択",
     "The data source must not be the current document": "データソースは現在の文書であってはなりません",
     "Enable background connection check to the editors": "エディタへのバックグラウンド接続チェックを有効にする",
-    "The domain in the file url does not match the domain of the Document server": "ファイルURLのドメインがドキュメントサーバーのドメインと一致しません"
+    "The domain in the file url does not match the domain of the Document server": "ファイルURLのドメインがドキュメントサーバーのドメインと一致しません",
+    "Unknown author display name": "不明の作成者表示名",
+    "Enable e-mail notifications": "電子メール通知を有効にする",
+    "You were mentioned in the document": "あなたがドキュメントでメンションされました",
+    "%1\$s mentioned you in the document comment": "%1\$s さんは文書コメントであなたをメンションしました",
+    "This is a mail message to notify that you have been mentioned by <b>%1\$s</b> in the comment to the <a href=\"%2\$s\">%3\$s</a>:<br>\"%4\$s\"": "これは、 <b>%1\$s</b> さんが <a href=\"%2\$s\">%3\$s</a> へのコメントであなたをメンションしたことを通知するメッセージです:<br>\"%4\$s\"",
+    "Open file": "ファイルを開く",
+    "ONLYOFFICE Document Server is unavailable": "ONLYOFFICEドキュメントサーバーは只今ご利用いただけません",
+    "This is a mail message to notify that the connection with the ONLYOFFICE Document Server has been lost. Please check the connection settings:": "これは、ONLYOFFICEドキュメントサーバーとの接続が失われたことを通知するメッセージです。接続設定をご確認ください：",
+    "Go to Settings": "設定に進む"
 },
 "nplurals=1; plural=0;");

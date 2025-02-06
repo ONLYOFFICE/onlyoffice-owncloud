@@ -126,7 +126,7 @@ class EditorsCheck extends TimedJob {
 		$this->setInterval($this->config->getEditorsCheckInterval());
 		$mailer = \OC::$server->getMailer();
 		$userManager = \OC::$server->getUserManager();
-		$this->emailManager = new EmailManager($AppName, $trans, $logger, $mailer, $userManager, $urlGenerator);
+		$this->emailManager = new EmailManager($AppName, $trans, $this->logger, $mailer, $userManager, $urlGenerator);
 	}
 
 	/**

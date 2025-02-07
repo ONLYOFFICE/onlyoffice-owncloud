@@ -122,6 +122,8 @@ class Application extends App {
 		$detector->registerType("docm", "application/vnd.ms-word.document.macroenabled.12");
 		$detector->registerType("xlsm", "application/vnd.ms-excel.sheet.macroenabled.12");
 		$detector->registerType("pptm", "application/vnd.ms-powerpoint.presentation.macroenabled.12");
+		$detector->registerType("hwp", "application/x-hwp");
+		$detector->registerType("hwpx", "application/x-hwpx");
 
 		$previewManager = $container->query(IPreview::class);
 		if ($this->appConfig->getPreview()) {

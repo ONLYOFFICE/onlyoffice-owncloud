@@ -2,7 +2,7 @@
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
  *
- * (c) Copyright Ascensio System SIA 2024
+ * (c) Copyright Ascensio System SIA 2025
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -303,7 +303,7 @@ class EditorApiController extends OCSController {
 				"title" => $fileName,
 				"url" => $fileUrl,
 				"referenceData" => [
-					"fileKey" => $file->getId(),
+					"fileKey" => (string)$file->getId(),
 					"instanceId" => $this->config->getSystemValue("instanceid", true),
 				],
 			],

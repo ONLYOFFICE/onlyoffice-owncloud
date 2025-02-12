@@ -1,6 +1,6 @@
 /**
  *
- * (c) Copyright Ascensio System SIA 2024
+ * (c) Copyright Ascensio System SIA 2025
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -167,6 +167,7 @@
       const sameTab = $("#onlyofficeSameTab").is(":checked");
       const preview = $("#onlyofficePreview").is(":checked");
       const cronChecker = $("#onlyofficeCronChecker").is(":checked");
+      const emailNotifications = $('#onlyofficeEmailNotifications').is(':checked');
       const versionHistory = $("#onlyofficeVersionHistory").is(":checked");
 
       const limitGroupsString = $("#onlyofficeGroups").prop("checked")
@@ -188,6 +189,7 @@
       const theme = $("input[type='radio'][name='theme']:checked")
         .attr("id")
         .replace("onlyofficeTheme_", "");
+      const unknownAuthor = $('#onlyofficeUnknownAuthor').val().trim();
 
       $.ajax({
         method: "PUT",
@@ -200,6 +202,7 @@
           sameTab,
           preview,
           cronChecker,
+          emailNotifications,
           versionHistory,
           limitGroups,
           chat,
@@ -210,6 +213,7 @@
           toolbarNoTabs,
           reviewDisplay,
           theme,
+          unknownAuthor,
         },
         success: function onSuccess(response) {
           $(".section-onlyoffice").removeClass("icon-loading");

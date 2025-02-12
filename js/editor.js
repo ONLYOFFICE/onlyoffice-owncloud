@@ -1,6 +1,6 @@
 /**
  *
- * (c) Copyright Ascensio System SIA 2024
+ * (c) Copyright Ascensio System SIA 2025
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,9 +39,7 @@
     OCA.Onlyoffice.currentWindow = window;
 
     if (OCA.Onlyoffice.inframe) {
-      OCA.Onlyoffice.faviconBase = $('link[rel="icon"]').attr("href");
       OCA.Onlyoffice.currentWindow = window.parent;
-      OCA.Onlyoffice.titleBase = OCA.Onlyoffice.currentWindow.document.title;
     }
 
     if (!OCA.Onlyoffice.fileId && !OCA.Onlyoffice.shareToken) {
@@ -687,6 +685,7 @@
   };
 
   OCA.Onlyoffice.onRequestReferenceData = function (event) {
+    const link = event.data.link
     const referenceData = event.data.referenceData;
     const path = event.data.path;
 
@@ -695,6 +694,7 @@
       {
         referenceData,
         path,
+        link,
       },
       function onSuccess(response) {
         if (response.error) {

@@ -2,7 +2,7 @@
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
  *
- * (c) Copyright Ascensio System SIA 2024
+ * (c) Copyright Ascensio System SIA 2025
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -126,6 +126,13 @@ class AppConfig {
 	private $_cronChecker = "cronChecker";
 
 	/**
+	 * The config key for the e-mail notifications
+	 *
+	 * @var string
+	 */
+	private $_emailNotifications = "emailNotifications";
+
+	/**
 	 * The config key for the keep versions history
 	 *
 	 * @var string
@@ -194,6 +201,13 @@ class AppConfig {
 	 * @var string
 	 */
 	private $_customizationTheme = "customizationTheme";
+
+	/**
+	 * Display name of the unknown author
+	 *
+	 * @var string
+	 */
+	private $_unknownAuthor = "unknownAuthor";
 
 	/**
 	 * The config key for the setting limit groups
@@ -737,6 +751,28 @@ class AppConfig {
 	}
 
 	/**
+	 * Get e-mail notifications setting
+	 *
+	 * @return bool
+	 */
+	public function getEmailNotifications() {
+		return $this->config->getAppValue($this->appName, $this->_emailNotifications, "true") !== "false";
+	}
+
+	/**
+	 * Save e-mail notifications setting
+	 *
+	 * @param bool $value - emailNotifications
+	 * 
+	 * @return void
+	 */
+	public function setEmailNotifications($value) {
+		$this->logger->info("Set e-mail notifications: " . json_encode($value), ["app" => $this->appName]);
+
+		$this->config->setAppValue($this->appName, $this->_emailNotifications, json_encode($value));
+	}
+
+	/**
 	 * Save keep versions history
 	 *
 	 * @param bool $value - version history
@@ -974,6 +1010,27 @@ class AppConfig {
 			return "theme-dark";
 		}
 		return "theme-classic-light";
+	}
+
+	/**
+	 * Save unknownAuthor setting
+	 *
+	 * @param string $value - unknown author
+	 * 
+	 * @return void
+	 */
+	public function setUnknownAuthor($value) {
+		$this->logger->info("Set unknownAuthor: " . trim($value), ["app" => $this->appName]);
+		$this->config->setAppValue($this->appName, $this->_unknownAuthor, trim($value));
+	}
+
+	/**
+	 * Get unknownAuthor setting
+	 *
+	 * @return string
+	 */
+	public function getUnknownAuthor() {
+		return $this->config->getAppValue($this->appName, $this->_unknownAuthor, "");
 	}
 
 	/**

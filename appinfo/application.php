@@ -2,7 +2,7 @@
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
  *
- * (c) Copyright Ascensio System SIA 2024
+ * (c) Copyright Ascensio System SIA 2025
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,6 +119,9 @@ class Application extends App {
 		$detector->registerType("ott", "application/vnd.oasis.opendocument.text-template");
 		$detector->registerType("ots", "application/vnd.oasis.opendocument.spreadsheet-template");
 		$detector->registerType("otp", "application/vnd.oasis.opendocument.presentation-template");
+		$detector->registerType("docm", "application/vnd.ms-word.document.macroenabled.12");
+		$detector->registerType("xlsm", "application/vnd.ms-excel.sheet.macroenabled.12");
+		$detector->registerType("pptm", "application/vnd.ms-powerpoint.presentation.macroenabled.12");
 
 		$previewManager = $container->query(IPreview::class);
 		if ($this->appConfig->getPreview()) {
@@ -228,7 +231,8 @@ class Application extends App {
 					$this->crypt,
 					$c->query("IManager"),
 					$c->query("Session"),
-					$c->query("ServerContainer")->getGroupManager()
+					$c->query("ServerContainer")->getGroupManager(),
+					$c->query("Mailer")
 				);
 			}
 		);

@@ -2,7 +2,7 @@
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
  *
- * (c) Copyright Ascensio System SIA 2024
+ * (c) Copyright Ascensio System SIA 2025
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ use OCP\IUser;
 use OCP\IUserSession;
 use OCP\IUserManager;
 use OCP\IGroupManager;
+use OCP\Mail\IMailer;
 use OCP\Share\IManager;
 use OCP\Share;
 
@@ -47,6 +48,7 @@ use OCA\Files\Helper;
 use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\DocumentService;
+use OCA\Onlyoffice\EmailManager;
 use OCA\Onlyoffice\FileUtility;
 use OCA\Onlyoffice\VersionManager;
 use OCA\Onlyoffice\FileVersions;
@@ -148,6 +150,20 @@ class EditorController extends Controller {
 	private $avatarManager;
 
 	/**
+	 * Mailer
+	 *
+	 * @var IMailer
+	 */
+	private $mailer;
+
+	/**
+	 * Email manager
+	 *
+	 * @var EmailManager
+	 */
+	private $emailManager;
+
+	/**
 	 * @param string $AppName - application name
 	 * @param IRequest $request - request object
 	 * @param IRootFolder $root - root folder
@@ -161,6 +177,7 @@ class EditorController extends Controller {
 	 * @param IManager $shareManager - Share manager
 	 * @param ISession $session - Session
 	 * @param IGroupManager $groupManager - Group manager
+	 * @param IMailer $mailer - Mailer
 	 */
 	public function __construct(
 		$AppName,
@@ -175,7 +192,8 @@ class EditorController extends Controller {
 		Crypt $crypt,
 		IManager $shareManager,
 		ISession $session,
-		IGroupManager $groupManager
+		IGroupManager $groupManager,
+		IMailer $mailer
 	) {
 		parent::__construct($AppName, $request);
 
@@ -194,6 +212,7 @@ class EditorController extends Controller {
 
 		$this->fileUtility = new FileUtility($AppName, $trans, $logger, $config, $shareManager, $session);
 		$this->avatarManager = \OC::$server->getAvatarManager();
+		$this->emailManager = new EmailManager($AppName, $trans, $logger, $mailer, $userManager, $urlGenerator);
 	}
 
 	/**
@@ -412,7 +431,7 @@ class EditorController extends Controller {
 			if ($user->getUID() != $currentUserId && (!empty($email) || $operationType === "protect")) {
 				$userElement = [
 					"name" => $user->getDisplayName(),
-					"id" => $user->getUID()
+					"id" => $operationType === "protect" ? $this->buildUserId($user->getUID()) : $user->getUID()
 				];
 				if (!empty($email)) {
 					$userElement["email"] = $email;
@@ -582,6 +601,9 @@ class EditorController extends Controller {
 			$notification->setUser($recipientId);
 
 			$notificationManager->notify($notification);
+			if ($this->config->getEmailNotifications()) {
+				$this->emailManager->notifyMentionEmail($userId, $recipientId, $file->getId(), $file->getName(), $anchor, $notification->getObjectId());
+			}
 		}
 
 		return ["message" => $this->trans->t("Notification sent successfully")];
@@ -592,13 +614,14 @@ class EditorController extends Controller {
 	 *
 	 * @param array $referenceData - reference data
 	 * @param string $path - file path
+	 * @param string $link - file link
 	 *
 	 * @return array
 	 *
 	 * @NoAdminRequired
 	 * @PublicPage
 	 */
-	public function reference($referenceData, $path = null) {
+	public function reference($referenceData, $path = null, $link = null) {
 		$this->logger->debug("reference: " . json_encode($referenceData) . " $path", ["app" => $this->appName]);
 
 		if (!$this->config->isUserAllowedToUse()) {
@@ -633,6 +656,15 @@ class EditorController extends Controller {
 			}
 		}
 
+		if ($file === null
+			&& !empty($link)
+		) {
+			$fileId = $this->getFileIdByLink($link);
+			if (!empty($fileId)) {
+				list($file, $error, $share) = $this->getFile($userId, $fileId);
+			}
+		}
+
 		if ($file === null) {
 			$this->logger->error("Reference not found: $fileId $path", ["app" => $this->appName]);
 			return ["error" => $this->trans->t("File not found")];
@@ -648,7 +680,7 @@ class EditorController extends Controller {
 			"path" => $userFolder->getRelativePath($file->getPath()),
 			"key" => $key,
 			"referenceData" => [
-				"fileKey" => $file->getId(),
+				"fileKey" => (string)$file->getId(),
 				"instanceId" => $this->config->getSystemValue("instanceid", true),
 			],
 			"url" => $this->getUrl($file, $user),
@@ -910,13 +942,26 @@ class EditorController extends Controller {
 			$versionId = $version->getRevisionId();
 
 			$author = FileVersions::getAuthor($ownerId, $fileId, $versionId);
-			$authorId = $author !== null ? $author["id"] : $ownerId;
-			$authorName = $author !== null ? $author["name"] : $owner->getDisplayName();
-
-			$historyItem["user"] = [
-				"id" => $this->buildUserId($authorId),
-				"name" => $authorName
-			];
+			if ($author !== null) {
+				$historyItem["user"] = [
+					"id" => $this->buildUserId($author["id"]),
+					"name" => $author["name"],
+				];
+			} else {
+				if (!empty($this->config->getUnknownAuthor()) && $versionNum !== 1) {
+					$authorName = $this->config->getUnknownAuthor();
+					$historyItem["user"] = [
+						"name" => $authorName,
+					];
+				} else {
+					$authorName = $owner->getDisplayName();
+					$authorId = $owner->getUID();
+					$historyItem["user"] = [
+						"id" => $this->buildUserId($authorId),
+						"name" => $authorName,
+					];
+				}
+			}
 
 			$historyData = FileVersions::getHistoryData($ownerId, $fileId, $versionId, $prevVersion);
 			if ($historyData !== null) {
@@ -945,6 +990,10 @@ class EditorController extends Controller {
 			$historyItem["user"] = [
 				"id" => $this->buildUserId($author["id"]),
 				"name" => $author["name"]
+			];
+		} elseif (!empty($this->config->getUnknownAuthor()) && $versionNum !== 0) {
+			$historyItem["user"] = [
+				"name" => $this->config->getUnknownAuthor()
 			];
 		} elseif ($owner !== null) {
 			$historyItem["user"] = [
@@ -1544,6 +1593,38 @@ class EditorController extends Controller {
 			$userId = end($userIdExp);
 		}
 		return $userId;
+	}
+
+	/**
+	 * Get File id from by link
+	 *
+	 * @param string $link - link to the file
+	 *
+	 * @return string|null
+	 */
+	private function getFileIdByLink(string $link) {
+		$path = parse_url($link, PHP_URL_PATH);
+		$encodedPath = array_map("urlencode", explode("/", $path));
+		$link = str_replace($path, implode("/", $encodedPath), $link);
+		if (filter_var($link, FILTER_VALIDATE_URL) === false) {
+			return null;
+		}
+
+		if (!empty($this->config->getStorageUrl())) {
+			$storageUrl = $this->config->getStorageUrl();
+		} else {
+			$storageUrl = $this->urlGenerator->getAbsoluteURL("/");
+		}
+
+		if (parse_url($link, PHP_URL_HOST) !== parse_url($storageUrl, PHP_URL_HOST)) {
+			return null;
+		}
+
+		if (preg_match('/\/onlyoffice\/(\d+)/', $link, $matches)) {
+			return $matches[1];
+		}
+
+		return null;
 	}
 
 	/**

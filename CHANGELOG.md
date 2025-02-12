@@ -1,5 +1,16 @@
 # Change Log
 
+## 9.6.1
+## Added
+- setting for setup unknown author display name
+- setting for sending notifications by email
+- opening docm, xlsm, pptm files
+- support IMPORTRANGE
+
+## Changed
+- URL for requests to Conversion API
+- reading JSON instead of XML from Conversion API
+
 ## 9.5.1
 ## Added
 - default empty templates

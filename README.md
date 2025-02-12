@@ -1,4 +1,4 @@
-# ![onlyoffice icon](screenshots/icon.png) ownCloud ONLYOFFICE integration app
+# ![onlyoffice icon](screenshots/icon.png) ONLYOFFICE app for ownCloud
 
 This app allows users to edit office documents from [ownCloud](https://owncloud.com) using ONLYOFFICE Docs packaged as Document Server - [Community or Enterprise Edition](#onlyoffice-docs-editions).
 
@@ -7,14 +7,16 @@ This app allows users to edit office documents from [ownCloud](https://owncloud.
 The app allows to:
 
 * Create and edit text documents, spreadsheets, and presentations.
+* Create and edit PDF forms.
+* Edit PDF files.
 * Share files with different permission types - viewing/editing, commenting, reviewing, filling forms. It's also possible to restrict downloading (in all editors) and modifying filters (in spreadshhets). Sharing via public link is also available. 
 * Co-edit documents in real-time: use two co-editing modes (Fast and Strict), Track Changes, comments, and built-in chat. Co-editing is also available several federated ownCloud instances connected to one Document Server.
 * Work with documents, spreadsheets, and presentations within ownCloud Web. 
 
 Supported formats:
 
-* For editing: DOCM, DOCX, DOCXF, DOTM, DOTX, EPUB, FB2, HTML, ODT, OTT, RTF, TXT, CSV, ODS, OTS, XLSM, XLSX, XLTM, XLTX, ODP, OTP, POTM, POTX, PPSM, PPSX, PPTM, PPTX.
-* For viewing only: DJVU, DOC, DOT, FODT, HTM, MHT, MHTML, OFORM, PDF, STW, SXW, WPS, WPT, XML, XPS, ET, ETT, FODS, SXC, XLS, XLSB, XLT, DPS, DPT, FODP, POT, PPS, PPT, SXI.
+* For editing: DOCM, DOCX, DOTM, DOTX, PDF, EPUB, FB2, HTML, ODT, OTT, RTF, TXT, CSV, ODS, OTS, XLSM, XLSX, XLTM, XLTX, ODP, OTP, POTM, POTX, PPSM, PPSX, PPTM, PPTX.
+* For viewing only: DJVU, DOC, DOT, FODT, HTM, MHT, MHTML, STW, SXW, WPS, WPT, XML, XPS, ET, ETT, FODS, SXC, XLS, XLSB, XLT, DPS, DPT, FODP, POT, PPS, PPT, SXI.
 
 ODT, ODS, and ODP is also available for instant conversion. After you enable the corresponding option in the admin settings, ODF-formatted documents are immediately converted in the editor and opened after you click on it.
 
@@ -36,9 +38,9 @@ To use ONLYOFFICE behind a proxy, please refer to [this article](https://helpcen
 
 You can also use our **[Docker installation](https://github.com/ONLYOFFICE/docker-onlyoffice-owncloud)** to install pre-configured Document Server (free version) and ownCloud with a couple of commands.
 
-## Installing ownCloud ONLYOFFICE integration app
+## Installing ONLYOFFICE app for ownCloud
 
-The ownCloud administrator can install the integration app from the in-built application market.
+The ownCloud administrator can install the app from the in-built application market.
 For that click the upper-left hamburger menu and select **Market**. After that find **ONLYOFFICE** in the list of available applications and install it.
 
 If the server with the ownCloud installed does not have an Internet access, or if you need it for some other reason, the administrator can install the application manually: 
@@ -49,7 +51,7 @@ If the server with the ownCloud installed does not have an Internet access, or i
     cd apps/
     ```
 
-2. Get the ownCloud ONLYOFFICE integration app.
+2. Get the ONLYOFFICE app for ownCloud.
 There are several ways to do that:
 
     a. Download the latest signed version from the official store for [ownCloud](https://marketplace.owncloud.com/apps/onlyoffice).
@@ -73,7 +75,7 @@ There are several ways to do that:
 
 4. In ownCloud open the `~/settings/admin?sectionid=apps&category=disabled` page with _Not enabled_ apps by administrator and click _Enable_ for the **ONLYOFFICE** application.
 
-## Configuring ownCloud ONLYOFFICE integration app
+## Configuring ONLYOFFICE app for ownCloud
 
 In ownCloud open the `~/settings/admin?sectionid=additional#onlyoffice` page with administrative settings for **ONLYOFFICE** section.
 Enter the following address to connect ONLYOFFICE Document Server:
@@ -129,7 +131,7 @@ Depending on your webserver configuration you can drop the `index.php` segment f
 
 ## How it works
 
-The ONLYOFFICE integration follows the API documented [here](https://api.onlyoffice.com/editors/basic):
+The ONLYOFFICE app follows the API documented [here](https://api.onlyoffice.com/editors/basic):
 
 * When creating a new file, the user navigates to a document folder within ownCloud and clicks the **Document**, **Spreadsheet** or **Presentation** item in the _new_ (+) menu.
 
@@ -194,7 +196,7 @@ The instruction on enabling _master key_ based encryption is available in the of
     
     To solve this, we added an asynchronous background task which runs on the server to check availability of the editors. It allows testing the connection between your **ownCloud instance** and **ONLYOFFICE Document Server**, namely availability of server addresses and the validity of the JWT secret are being checked.
  
-    If any issue is detected, the ONLYOFFICE integration connector (consequently, the ability to create and open files) will be disabled. As an ownCloud admin, you will get the corresponding notification. 
+    If any issue is detected, the ONLYOFFICE app (consequently, the ability to create and open files) will be disabled. As an ownCloud admin, you will get the corresponding notification. 
 
     This option allows you to avoid issues when the server settings become incorrect and require changes.
 

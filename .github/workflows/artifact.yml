@@ -5,7 +5,6 @@ on:
   push:
     branches: [master]
   pull_request:
-    types: [opened, reopened]
     branches: [master]
 
 jobs:
@@ -13,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Get Info
         run: |
           echo "version=$(grep -Eo '[0-9]+(\.[0-9]+)+' CHANGELOG.md | head -n 1)" >> $GITHUB_OUTPUT
@@ -28,7 +27,12 @@ jobs:
           cd onlyoffice
           rm -rf ./.github/
           rm -rf ./.git/
+          rm ./.eslintrc.json
           rm ./.gitmodules
+          rm ./.stylelintrc.json
+          rm ./npm-shrinkwrap.json
+          rm ./package.json
+          rm ./ruleset.xml
           rm -rf ./assets/document-templates/.git
           rm -rf ./assets/document-formats/.git
           cd ./appinfo
@@ -36,7 +40,7 @@ jobs:
           cd $cwd
           tar -czvf onlyoffice.tar.gz onlyoffice
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: onlyoffice
           path: onlyoffice.tar.gz

@@ -94,7 +94,7 @@ You need to enter them in the appropriate fields.
 
 Starting from version 7.2, JWT is enabled by default and the secret key is generated automatically to restrict the access to ONLYOFFICE Docs and for security reasons and data integrity. 
 Specify your own **Secret key** in the ownCloud administrative configuration. 
-In the ONLYOFFICE Docs [config file](https://api.onlyoffice.com/editors/signature/), specify the same secret key and enable the validation.
+In the ONLYOFFICE Docs config file, specify the same secret key and enable the validation.
 
 Enable or disable the _Open file in the same tab_ setting.
 
@@ -131,7 +131,7 @@ Depending on your webserver configuration you can drop the `index.php` segment f
 
 ## How it works
 
-The ONLYOFFICE app follows the API documented [here](https://api.onlyoffice.com/editors/basic):
+The ONLYOFFICE app follows the API documented [here](https://api.onlyoffice.com):
 
 * When creating a new file, the user navigates to a document folder within ownCloud and clicks the **Document**, **Spreadsheet** or **Presentation** item in the _new_ (+) menu.
 
@@ -159,7 +159,7 @@ This method adds the copy of the file from the assets folder to the folder the u
 
 * When all users and client browsers are done with editing, they close the editing window.
 
-* After [10 seconds](https://api.onlyoffice.com/editors/save#savedelay) of inactivity, ONLYOFFICE Document Server sends a POST to the _callbackUrl_ letting ownCloud know that the clients have finished editing the document and closed it.
+* After 10 seconds of inactivity, ONLYOFFICE Document Server sends a POST to the _callbackUrl_ letting ownCloud know that the clients have finished editing the document and closed it.
 
 * ownCloud downloads the new version of the document, replacing the old one.
 

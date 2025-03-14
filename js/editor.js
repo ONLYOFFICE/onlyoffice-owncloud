@@ -49,30 +49,6 @@
       return;
     }
 
-    if (typeof DocsAPI === "undefined") {
-      OCA.Onlyoffice.showMessage(
-        t(
-          OCA.Onlyoffice.AppName,
-          "ONLYOFFICE cannot be reached. Please contact admin"
-        ),
-        { type: "error" }
-      );
-      return;
-    }
-
-    const docsVersion = DocsAPI.DocEditor.version().split(".");
-    if (
-      docsVersion[0] < 6 ||
-      (parseInt(docsVersion[0]) === 6 && parseInt(docsVersion[1]) === 0)
-    ) {
-      OCA.Onlyoffice.showMessage(
-        t(OCA.Onlyoffice.AppName, "Not supported version"),
-        "error",
-        { timeout: -1 }
-      );
-      return;
-    }
-
     let configUrl =
       OC.linkToOCS("apps/" + OCA.Onlyoffice.AppName + "/api/v1/config", 2) +
       (OCA.Onlyoffice.fileId || 0);
@@ -116,141 +92,196 @@
             OCA.Onlyoffice.showMessage(config.error, { type: "error" });
             return;
           }
-          OCA.Onlyoffice.device = config.type;
-          if (OCA.Onlyoffice.device === "mobile") {
-            OCA.Onlyoffice.resizeEvents();
+          if (!config.documentServerUrl) {
+            OCA.Onlyoffice.showMessage(
+              t(
+                OCA.Onlyoffice.AppName,
+                "ONLYOFFICE cannot be reached. Please contact admin"
+              ),
+              { type: "error" }
+            );
+            return;
           }
-
-          let docIsChanged = null;
-          let docIsChangedTimeout = null;
-
-          const setPageTitle = function (event) {
-            clearTimeout(docIsChangedTimeout);
-
-            if (docIsChanged !== event.data) {
-              const titleChange = function () {
-                OCA.Onlyoffice.currentWindow.document.title =
-                  config.document.title +
-                  (event.data ? " *" : "") +
-                  " - " +
-                  oc_defaults.title;
-                docIsChanged = event.data;
-              };
-
-              if (event === false || event.data) {
-                titleChange();
-              } else {
-                docIsChangedTimeout = setTimeout(titleChange, 500);
-              }
-            }
+          const script = document.createElement("script");
+          script.src =
+            config.documentServerUrl +
+            "web-apps/apps/api/documents/api.js?shardKey=" +
+            config.document.key;
+          script.setAttribute("nonce", btoa(OC.requestToken));
+          script.onerror = function () {
+            OCA.Onlyoffice.showMessage(
+              t(
+                OCA.Onlyoffice.AppName,
+                "ONLYOFFICE cannot be reached. Please contact admin"
+              ),
+              { type: "error" }
+            );
+            return;
           };
-          setPageTitle(false);
-
-          OCA.Onlyoffice.documentType = config.documentType;
-
-          config.events = {
-            onDocumentStateChange: setPageTitle,
-            onDocumentReady: OCA.Onlyoffice.onDocumentReady,
-            onMakeActionLink: OCA.Onlyoffice.onMakeActionLink,
-          };
-
-          if (config.editorConfig.tenant) {
-            config.events.onAppReady = function () {
-              OCA.Onlyoffice.docEditor.showMessage(
+          script.onload = function () {
+            if (typeof DocsAPI === "undefined") {
+              OCA.Onlyoffice.showMessage(
                 t(
                   OCA.Onlyoffice.AppName,
-                  "You are using public demo ONLYOFFICE Docs server. Please do not store private sensitive data."
-                )
+                  "ONLYOFFICE cannot be reached. Please contact admin"
+                ),
+                { type: "error" }
               );
+              return;
+            }
+
+            const docsVersion = DocsAPI.DocEditor.version().split(".");
+            if (
+              docsVersion[0] < 6 ||
+              (parseInt(docsVersion[0]) === 6 && parseInt(docsVersion[1]) === 0)
+            ) {
+              OCA.Onlyoffice.showMessage(
+                t(OCA.Onlyoffice.AppName, "Not supported version"),
+                "error",
+                { timeout: -1 }
+              );
+              return;
+            }
+
+            OCA.Onlyoffice.device = config.type;
+            if (OCA.Onlyoffice.device === "mobile") {
+              OCA.Onlyoffice.resizeEvents();
+            }
+
+            let docIsChanged = null;
+            let docIsChangedTimeout = null;
+
+            const setPageTitle = function (event) {
+              clearTimeout(docIsChangedTimeout);
+
+              if (docIsChanged !== event.data) {
+                const titleChange = function () {
+                  OCA.Onlyoffice.currentWindow.document.title =
+                    config.document.title +
+                    (event.data ? " *" : "") +
+                    " - " +
+                    oc_defaults.title;
+                  docIsChanged = event.data;
+                };
+
+                if (event === false || event.data) {
+                  titleChange();
+                } else {
+                  docIsChangedTimeout = setTimeout(titleChange, 500);
+                }
+              }
             };
-          }
+            setPageTitle(false);
 
-          if (
-            (OCA.Onlyoffice.inframe && !OCA.Onlyoffice.shareToken) ||
-            OC.currentUser
-          ) {
-            config.events.onRequestSaveAs = OCA.Onlyoffice.onRequestSaveAs;
-            config.events.onRequestInsertImage =
-              OCA.Onlyoffice.onRequestInsertImage;
-            config.events.onRequestMailMergeRecipients =
-              OCA.Onlyoffice.onRequestMailMergeRecipients;
-            config.events.onRequestSelectDocument =
-              OCA.Onlyoffice.onRequestSelectDocument;
-            config.events.onRequestCompareFile =
-              OCA.Onlyoffice.onRequestSelectDocument; //todo: remove (for editors 7.4)
-            config.events.onRequestSendNotify =
-              OCA.Onlyoffice.onRequestSendNotify;
-            config.events.onRequestReferenceData =
-              OCA.Onlyoffice.onRequestReferenceData;
-            config.events.onRequestOpen = OCA.Onlyoffice.onRequestOpen;
-            config.events.onRequestReferenceSource =
-              OCA.Onlyoffice.onRequestReferenceSource;
-            config.events.onMetaChange = OCA.Onlyoffice.onMetaChange;
+            OCA.Onlyoffice.documentType = config.documentType;
 
-            if (OC.currentUser) {
-              config.events.onRequestUsers = OCA.Onlyoffice.onRequestUsers;
+            config.events = {
+              onDocumentStateChange: setPageTitle,
+              onDocumentReady: OCA.Onlyoffice.onDocumentReady,
+              onMakeActionLink: OCA.Onlyoffice.onMakeActionLink,
+            };
+
+            if (config.editorConfig.tenant) {
+              config.events.onAppReady = function () {
+                OCA.Onlyoffice.docEditor.showMessage(
+                  t(
+                    OCA.Onlyoffice.AppName,
+                    "You are using public demo ONLYOFFICE Docs server. Please do not store private sensitive data."
+                  )
+                );
+              };
             }
 
-            if (!OCA.Onlyoffice.filePath) {
-              OCA.Onlyoffice.filePath = config._file_path;
-            }
+            if (
+              (OCA.Onlyoffice.inframe && !OCA.Onlyoffice.shareToken) ||
+              OC.currentUser
+            ) {
+              config.events.onRequestSaveAs = OCA.Onlyoffice.onRequestSaveAs;
+              config.events.onRequestInsertImage =
+                OCA.Onlyoffice.onRequestInsertImage;
+              config.events.onRequestMailMergeRecipients =
+                OCA.Onlyoffice.onRequestMailMergeRecipients;
+              config.events.onRequestSelectDocument =
+                OCA.Onlyoffice.onRequestSelectDocument;
+              config.events.onRequestCompareFile =
+                OCA.Onlyoffice.onRequestSelectDocument; //todo: remove (for editors 7.4)
+              config.events.onRequestSendNotify =
+                OCA.Onlyoffice.onRequestSendNotify;
+              config.events.onRequestReferenceData =
+                OCA.Onlyoffice.onRequestReferenceData;
+              config.events.onRequestOpen = OCA.Onlyoffice.onRequestOpen;
+              config.events.onRequestReferenceSource =
+                OCA.Onlyoffice.onRequestReferenceSource;
+              config.events.onMetaChange = OCA.Onlyoffice.onMetaChange;
 
-            if (!OCA.Onlyoffice.template) {
-              config.events.onRequestHistory = OCA.Onlyoffice.onRequestHistory;
-              config.events.onRequestHistoryData =
-                OCA.Onlyoffice.onRequestHistoryData;
-              config.events.onRequestRestore = OCA.Onlyoffice.onRequestRestore;
+              if (OC.currentUser) {
+                config.events.onRequestUsers = OCA.Onlyoffice.onRequestUsers;
+              }
 
-              if (!OCA.Onlyoffice.version) {
-                config.events.onRequestHistoryClose =
-                  OCA.Onlyoffice.onRequestHistoryClose;
+              if (!OCA.Onlyoffice.filePath) {
+                OCA.Onlyoffice.filePath = config._file_path;
+              }
+
+              if (!OCA.Onlyoffice.template) {
+                config.events.onRequestHistory =
+                  OCA.Onlyoffice.onRequestHistory;
+                config.events.onRequestHistoryData =
+                  OCA.Onlyoffice.onRequestHistoryData;
+                config.events.onRequestRestore =
+                  OCA.Onlyoffice.onRequestRestore;
+
+                if (!OCA.Onlyoffice.version) {
+                  config.events.onRequestHistoryClose =
+                    OCA.Onlyoffice.onRequestHistoryClose;
+                }
               }
             }
-          }
 
-          if (OCA.Onlyoffice.inframe) {
-            config.events.onRequestClose = OCA.Onlyoffice.onRequestClose;
-          }
+            if (OCA.Onlyoffice.inframe) {
+              config.events.onRequestClose = OCA.Onlyoffice.onRequestClose;
+            }
 
-          if (
-            OCA.Onlyoffice.inframe &&
-            config._files_sharing &&
-            !OCA.Onlyoffice.shareToken &&
-            window.parent.OCA.Onlyoffice.context
-          ) {
-            config.events.onRequestSharingSettings =
-              OCA.Onlyoffice.onRequestSharingSettings;
-          }
+            if (
+              OCA.Onlyoffice.inframe &&
+              config._files_sharing &&
+              !OCA.Onlyoffice.shareToken &&
+              window.parent.OCA.Onlyoffice.context
+            ) {
+              config.events.onRequestSharingSettings =
+                OCA.Onlyoffice.onRequestSharingSettings;
+            }
 
-          OCA.Onlyoffice.docEditor = new DocsAPI.DocEditor(
-            "iframeEditor",
-            config
-          );
-
-          if (
-            config.type === "mobile" &&
-            $("#app > iframe").css("position") === "fixed" &&
-            !OCA.Onlyoffice.inframe
-          ) {
-            $("#app > iframe").css("height", "calc(100% - 45px)");
-          }
-
-          const favicon = OC.filePath(
-            OCA.Onlyoffice.AppName,
-            "img",
-            OCA.Onlyoffice.documentType + ".ico"
-          );
-          if (OCA.Onlyoffice.inframe) {
-            window.parent.postMessage(
-              {
-                method: "changeFavicon",
-                param: favicon,
-              },
-              "*"
+            OCA.Onlyoffice.docEditor = new DocsAPI.DocEditor(
+              "iframeEditor",
+              config
             );
-          } else {
-            $('link[rel="icon"]').attr("href", favicon);
-          }
+
+            if (
+              config.type === "mobile" &&
+              $("#app > iframe").css("position") === "fixed" &&
+              !OCA.Onlyoffice.inframe
+            ) {
+              $("#app > iframe").css("height", "calc(100% - 45px)");
+            }
+
+            const favicon = OC.filePath(
+              OCA.Onlyoffice.AppName,
+              "img",
+              OCA.Onlyoffice.documentType + ".ico"
+            );
+            if (OCA.Onlyoffice.inframe) {
+              window.parent.postMessage(
+                {
+                  method: "changeFavicon",
+                  param: favicon,
+                },
+                "*"
+              );
+            } else {
+              $('link[rel="icon"]').attr("href", favicon);
+            }
+          };
+          document.head.appendChild(script);
         }
       },
     });
@@ -691,7 +722,7 @@
   };
 
   OCA.Onlyoffice.onRequestReferenceData = function (event) {
-    const link = event.data.link
+    const link = event.data.link;
     const referenceData = event.data.referenceData;
     const path = event.data.path;
 

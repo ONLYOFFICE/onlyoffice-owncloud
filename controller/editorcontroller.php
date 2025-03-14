@@ -1368,7 +1368,6 @@ class EditorController extends Controller {
 		}
 
 		$params = [
-			"documentServerUrl" => $documentServerUrl,
 			"fileId" => $fileId,
 			"filePath" => $filePath,
 			"shareToken" => $shareToken,

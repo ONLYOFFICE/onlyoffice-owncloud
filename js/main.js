@@ -91,13 +91,7 @@
         if (open) {
           const fileName = response.name;
           const extension = OCA.Onlyoffice.GetFileExtension(fileName);
-          OCA.Onlyoffice.OpenEditor(
-            response.id,
-            dir,
-            fileName,
-            0,
-            winEditor
-          );
+          OCA.Onlyoffice.OpenEditor(response.id, dir, fileName, 0, winEditor);
         }
 
         OCA.Onlyoffice.context = { fileList };
@@ -146,9 +140,14 @@
     if (winEditor && winEditor.location) {
       winEditor.location.href = url;
     } else if (
-      !OCA.Onlyoffice.setting.sameTab ||
+      (!OCA.Onlyoffice.setting.sameTab &&
+        !OCA.Onlyoffice.setting.enableSharing) ||
       OCA.Onlyoffice.mobile ||
-      OCA.Onlyoffice.Desktop
+      OCA.Onlyoffice.Desktop ||
+      ($("#isPublic").val() &&
+        $("#mimetype").val() === "httpd/unix-directory" &&
+        !OCA.Onlyoffice.setting.sameTab &&
+        OCA.Onlyoffice.setting.enableSharing)
     ) {
       winEditor = window.open(url, "_blank");
     } else if (
@@ -157,6 +156,20 @@
     ) {
       location.href = url;
     } else {
+      const urlParams = new URLSearchParams(window.location.search);
+      const openfileParam = urlParams.get('openfile');
+      if (
+        OCA.Onlyoffice.setting.enableSharing &&
+        !$("#isPublic").val() &&
+        (openfileParam === null || openfileParam === "false")
+      ) {
+        let url = new URL(window.location.href);
+        url.searchParams.set("openfile", "true");
+        url = url.toString();
+        console.log(url)
+        window.open(url, "_blank");
+        return;
+      }
       const $iframe = $(
         '<iframe id="onlyoffice-frame" nonce="' +
           btoa(OC.requestToken) +

@@ -116,6 +116,7 @@ class SettingsController extends Controller {
 			"currentServer" => $this->urlGenerator->getAbsoluteURL("/"),
 			"formats" => $this->config->formatsSetting(),
 			"sameTab" => $this->config->getSameTab(),
+			"enableSharing" => $this->config->getEnableSharing(),
 			"preview" => $this->config->getPreview(),
 			"cronChecker" => $this->config->getCronChecker(),
 			"emailNotifications" => $this->config->getEmailNotifications(),
@@ -208,6 +209,7 @@ class SettingsController extends Controller {
 	 * @param array $defFormats - formats array with default action
 	 * @param array $editFormats - editable formats array
 	 * @param bool $sameTab - open in the same tab
+	 * @param bool $enableSharing - enable sharingsameTab
 	 * @param bool $preview - generate preview files
 	 * @param bool $cronChecker - disable cron checker
 	 * @param bool $emailNotifications - notifications via e-mail
@@ -229,6 +231,7 @@ class SettingsController extends Controller {
 		$defFormats,
 		$editFormats,
 		$sameTab,
+		$enableSharing,
 		$preview,
 		$cronChecker,
 		$emailNotifications,
@@ -246,6 +249,7 @@ class SettingsController extends Controller {
 	) {
 		$this->config->setDefaultFormats($defFormats);
 		$this->config->setEditableFormats($editFormats);
+		$this->config->setEnableSharing($enableSharing);
 		$this->config->setSameTab($sameTab);
 		$this->config->setPreview($preview);
 		$this->config->setCronChecker($cronChecker);
@@ -312,7 +316,8 @@ class SettingsController extends Controller {
 		$result = [
 			"formats" => $this->config->formatsSetting(),
 			"sameTab" => $this->config->getSameTab(),
-			"shareAttributesVersion" => $this->config->shareAttributesVersion()
+			"shareAttributesVersion" => $this->config->shareAttributesVersion(),
+			"enableSharing" => $this->config->getEnableSharing()
 		];
 		return $result;
 	}

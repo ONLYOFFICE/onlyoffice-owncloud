@@ -112,6 +112,13 @@ class AppConfig {
 	private $_sameTab = "sameTab";
 
 	/**
+	* The config key for the enabling sharring in a same tab
+	*
+	* @var string
+	*/
+	private $_enableSharing = "enableSharing";
+
+	/**
 	 * The config key for the generate preview
 	 *
 	 * @var string
@@ -694,6 +701,10 @@ class AppConfig {
 	public function setSameTab($value) {
 		$this->logger->info("Set opening in a same tab: " . json_encode($value), ["app" => $this->appName]);
 
+		if ($value === true) {
+			$this->setEnableSharing(false);
+		}
+
 		$this->config->setAppValue($this->appName, $this->_sameTab, json_encode($value));
 	}
 
@@ -704,6 +715,26 @@ class AppConfig {
 	 */
 	public function getSameTab() {
 		return $this->config->getAppValue($this->appName, $this->_sameTab, "false") === "true";
+	}
+
+	/**
+	* Save the enable sharing setting
+	*
+	* @param bool $value - enable sharing
+	*/
+	public function setEnableSharing($value) {
+		$this->logger->info("Set enable sharing: " . json_encode($value), ["app" => $this->appName]);
+		
+		$this->config->setAppValue($this->appName, $this->_enableSharing, json_encode($value));
+	}
+	
+	/**
+	* Get the enable sharing setting
+	*
+	* @return bool
+	*/
+	public function getEnableSharing() {
+		return $this->config->getAppValue($this->appName, $this->_enableSharing, "false") === "true";
 	}
 
 	/**

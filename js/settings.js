@@ -165,6 +165,7 @@
       });
 
       const sameTab = $("#onlyofficeSameTab").is(":checked");
+      const enableSharing = $('#onlyofficeEnableSharing').is(':checked');
       const preview = $("#onlyofficePreview").is(":checked");
       const cronChecker = $("#onlyofficeCronChecker").is(":checked");
       const emailNotifications = $('#onlyofficeEmailNotifications').is(':checked');
@@ -200,6 +201,7 @@
           defFormats,
           editFormats,
           sameTab,
+          enableSharing,
           preview,
           cronChecker,
           emailNotifications,
@@ -374,5 +376,16 @@
 
       location.href = downloadLink;
     });
+    const sameTabCheckbox = document.getElementById("onlyofficeSameTab");
+    const sharingBlock = document.getElementById(
+      "onlyofficeEnableSharingBlock"
+    );
+    const sharingCheckbox = document.getElementById("onlyofficeEnableSharing");
+
+    sameTabCheckbox.onclick = function () {
+      const isChecked = sameTabCheckbox.checked;
+      sharingBlock.style.display = isChecked ? "none" : "block";
+      sharingCheckbox.checked = isChecked ? sharingCheckbox.checked : false;
+    };
   });
 })(jQuery, OC);

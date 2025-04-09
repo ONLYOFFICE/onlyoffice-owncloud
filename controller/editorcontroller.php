@@ -687,6 +687,11 @@ class EditorController extends Controller {
 		];
 
 		if (!empty($this->config->getDocumentServerSecret())) {
+			$now = time();
+			$iat = $now;
+			$exp = $now + $this->config->getJwtExpiration() * 60;
+			$params["iat"] = $iat;
+			$params["exp"] = $exp;
 			$token = \Firebase\JWT\JWT::encode($response, $this->config->getDocumentServerSecret(), "HS256");
 			$response["token"] = $token;
 		}
@@ -1108,6 +1113,11 @@ class EditorController extends Controller {
 		}
 
 		if (!empty($this->config->getDocumentServerSecret())) {
+			$now = time();
+			$iat = $now;
+			$exp = $now + $this->config->getJwtExpiration() * 60;
+			$params["iat"] = $iat;
+			$params["exp"] = $exp;
 			$token = \Firebase\JWT\JWT::encode($result, $this->config->getDocumentServerSecret(), "HS256");
 			$result["token"] = $token;
 		}
@@ -1219,6 +1229,11 @@ class EditorController extends Controller {
 		];
 
 		if (!empty($this->config->getDocumentServerSecret())) {
+			$now = time();
+			$iat = $now;
+			$exp = $now + $this->config->getJwtExpiration() * 60;
+			$params["iat"] = $iat;
+			$params["exp"] = $exp;
 			$token = \Firebase\JWT\JWT::encode($result, $this->config->getDocumentServerSecret(), "HS256");
 			$result["token"] = $token;
 		}

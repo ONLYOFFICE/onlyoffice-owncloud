@@ -164,12 +164,19 @@ class DocumentService {
 		];
 
 		if (!empty($this->config->getDocumentServerSecret())) {
+			$now = time();
+			$iat = $now;
+			$exp = $now + $this->config->getJwtExpiration() * 60;
 			$params = [
-				"payload" => $data
+				"payload" => $data,
+				"iat" => $iat,
+				"exp" => $exp
 			];
 			$token = \Firebase\JWT\JWT::encode($params, $this->config->getDocumentServerSecret(), "HS256");
 			$opts["headers"][$this->config->jwtHeader()] = "Bearer " . $token;
 
+			$data["iat"] = $iat;
+			$data["exp"] = $exp;
 			$token = \Firebase\JWT\JWT::encode($data, $this->config->getDocumentServerSecret(), "HS256");
 			$data["token"] = $token;
 			$opts["body"] = json_encode($data);
@@ -282,12 +289,19 @@ class DocumentService {
 		];
 
 		if (!empty($this->config->getDocumentServerSecret())) {
+			$now = time();
+			$iat = $now;
+			$exp = $now + $this->config->getJwtExpiration() * 60;
 			$params = [
-				"payload" => $data
+				"payload" => $data,
+				"iat" => $iat,
+				"exp" => $exp
 			];
 			$token = \Firebase\JWT\JWT::encode($params, $this->config->getDocumentServerSecret(), "HS256");
 			$opts["headers"][$this->config->jwtHeader()] = "Bearer " . $token;
 
+			$data["iat"] = $iat;
+			$data["exp"] = $exp;
 			$token = \Firebase\JWT\JWT::encode($data, $this->config->getDocumentServerSecret(), "HS256");
 			$data["token"] = $token;
 			$opts["body"] = json_encode($data);

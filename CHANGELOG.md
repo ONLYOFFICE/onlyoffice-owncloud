@@ -3,6 +3,7 @@
 ## Added
 - support hwp, hwpx, pages, numbers, key formats
 - shardKey param to url for requests to Conversion API
+- jwt expire configuration
 
 ## 9.6.1
 ## Added

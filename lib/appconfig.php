@@ -1010,13 +1010,16 @@ class AppConfig {
 	 */
 	public function getCustomizationTheme() {
 		$value = $this->config->getAppValue($this->appName, $this->_customizationTheme, "theme-classic-light");
-		if ($value === "theme-light") {
-			return "theme-light";
-		}
-		if ($value === "theme-dark") {
-			return "theme-dark";
-		}
-		return "theme-classic-light";
+		$validThemes = [
+			"theme-system",
+			"theme-light",
+			"theme-classic-light",
+			"theme-dark",
+			"theme-contrast-dark",
+			"theme-gray"
+		];
+
+		return in_array($value, $validThemes) ? $value : "theme-classic-light";
 	}
 
 	/**

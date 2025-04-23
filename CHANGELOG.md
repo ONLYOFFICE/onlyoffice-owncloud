@@ -4,6 +4,7 @@
 - support hwp, hwpx, pages, numbers, key formats
 - shardKey param to url for requests to Conversion API
 - jwt expire configuration
+- system, contrast-dark and gray themes
 
 ## 9.6.1
 ## Added

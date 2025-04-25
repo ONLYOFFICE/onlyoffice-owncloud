@@ -1,6 +1,7 @@
 # Change Log
 
 ## Added
+- support external link for reference data
 - support hwp, hwpx, pages, numbers, key formats
 - shardKey param to url for requests to Conversion API
 - jwt expire configuration

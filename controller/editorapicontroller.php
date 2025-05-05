@@ -523,20 +523,22 @@ class EditorApiController extends OCSController {
 			$params["_file_path"] = $userFolder->getRelativePath($file->getPath());
 		}
 
-		if ($folderLink !== null
-			&& $this->config->getSystemValue($this->config->customization_goback) !== false
-		) {
+		$isGoBackNeeded = $folderLink !== null && $this->config->getSystemValue($this->config->customization_goback) !== false;
+		$shouldShowGoBack = $desktop || !$this->config->getSameTab() || !empty($shareToken);
+
+		if ($isGoBackNeeded && $shouldShowGoBack) {
 			$params["editorConfig"]["customization"]["goback"] = [
 				"url"  => $folderLink
 			];
+		}
 
-			if (!$desktop) {
-				if ($this->config->getSameTab()) {
-					$params["editorConfig"]["customization"]["goback"]["blank"] = false;
-					if ($inframe === true) {
-						$params["editorConfig"]["customization"]["goback"]["requestClose"] = true;
-					}
-				}
+		if (!$desktop) {
+			$hasSameTabWithoutShare = $this->config->getSameTab() && empty($shareToken);
+			$hasSameTabWithShareAndFolder = !empty($shareToken) && $this->config->getSameTab() && $folderLink !== null;
+			$shouldShowCloseButton = $hasSameTabWithoutShare || $hasSameTabWithShareAndFolder;
+			if ($shouldShowCloseButton) {
+				$params["editorConfig"]["customization"]["close"]["visible"] = true;
+				$params["editorConfig"]["customization"]["close"]["text"] = $this->trans->t("Close file");
 			}
 		}
 

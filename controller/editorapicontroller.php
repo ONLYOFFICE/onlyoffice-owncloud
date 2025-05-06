@@ -538,7 +538,6 @@ class EditorApiController extends OCSController {
 			$shouldShowCloseButton = $hasSameTabWithoutShare || $hasSameTabWithShareAndFolder;
 			if ($shouldShowCloseButton) {
 				$params["editorConfig"]["customization"]["close"]["visible"] = true;
-				$params["editorConfig"]["customization"]["close"]["text"] = $this->trans->t("Close file");
 			}
 		}
 

@@ -104,6 +104,11 @@ OC.L10N.register(
     "Light": "Lys",
     "Classic Light": "Klassisk lys",
     "Dark": "Mørk",
-    "This feature is unavailable due to encryption settings.": "Denne funktion er utilgængelig på grund af krypteringsindstillingerne"
+    "This feature is unavailable due to encryption settings.": "Denne funktion er utilgængelig på grund af krypteringsindstillingerne",
+    "Select file to insert text": "Vælg en fil for at indsætte tekst",
+    "Select file": "Vælg fil",
+    "Same as system": "Samme som system",
+    "Contrast dark": "Mørk kontrast",
+    "Gray": "Gråt"
 },
 "nplurals=2; plural=(n > 1);");

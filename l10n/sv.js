@@ -133,6 +133,11 @@ OC.L10N.register(
     "Go to Settings": "Gå till inställningar",
     "ONLYOFFICE Docs Cloud": "ONLYOFFICE Docs-moln",
     "Easily launch the editors in the cloud without downloading and installation": "Starta redigerarna i molnet enkelt utan nedladdning och installation",
-    "Get Now": "Skaffa nu"
+    "Get Now": "Skaffa nu",
+    "Select file to insert text": "Välj en fil för att infoga text",
+    "Select file": "Välj fil",
+    "Same as system": "Samma som systemet",
+    "Contrast dark": "Mörk kontrast",
+    "Gray": "Grå"
 },
 "nplurals=2; plural=(n != 1);");

@@ -538,6 +538,8 @@ class EditorApiController extends OCSController {
 			$params["editorConfig"]["customization"]["goback"] = [
 				"url" => $folderLink
 			];
+		} elseif ($inframe === true && !empty($shareToken)) {
+			$params["editorConfig"]["customization"]["close"]["visible"] = true;
 		}
 
 		if ($inframe === true) {

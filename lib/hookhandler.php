@@ -43,10 +43,7 @@ class HookHandler {
 		if (!empty($appConfig->getDocumentServerUrl()) && $appConfig->settingsAreSuccessful() && empty($appConfig->getLimitGroups())) {
 			Util::addScript("onlyoffice", "main");
 			Util::addScript("onlyoffice", "share");
-
-			if ($appConfig->getSameTab()) {
-				Util::addScript("onlyoffice", "listener");
-			}
+			Util::addScript("onlyoffice", "listener");
 
 			Util::addStyle("onlyoffice", "main");
 		}

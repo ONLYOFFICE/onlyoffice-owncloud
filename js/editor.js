@@ -441,6 +441,7 @@
       "image/x-png",
       "application/png",
       "application/x-png",
+      "image/svg+xml",
     ];
 
     if (event.data) {

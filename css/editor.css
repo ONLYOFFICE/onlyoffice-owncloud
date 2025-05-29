@@ -36,3 +36,7 @@
 .AscDesktopEditor #content-wrapper {
   padding-top: 0;
 }
+
+.AscDesktopEditor #app > iframe {
+  height: 100vh !important;
+}

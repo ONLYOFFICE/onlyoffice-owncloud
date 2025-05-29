@@ -378,10 +378,9 @@ class EditorApiController extends OCSController {
 		$editable = $version < 1
 					&& !$template
 					&& $file->isUpdateable()
-					&& !$isPersistentLock
 					&& (empty($shareToken) || ($share->getPermissions() & Constants::PERMISSION_UPDATE) === Constants::PERMISSION_UPDATE);
-		$params["document"]["permissions"]["edit"] = $editable;
-		if (($editable || $restrictedEditing) && ($canEdit || $canFillForms)) {
+		$params["document"]["permissions"]["edit"] = $editable && !$isPersistentLock;
+		if (($editable || $restrictedEditing) && ($canEdit || $canFillForms) && !$isPersistentLock) {
 			$ownerId = null;
 			$owner = $file->getOwner();
 			if (!empty($owner)) {
@@ -523,21 +522,24 @@ class EditorApiController extends OCSController {
 			$params["_file_path"] = $userFolder->getRelativePath($file->getPath());
 		}
 
-		if ($folderLink !== null
-			&& $this->config->getSystemValue($this->config->customization_goback) !== false
-		) {
-			$params["editorConfig"]["customization"]["goback"] = [
-				"url"  => $folderLink
-			];
-
-			if (!$desktop) {
-				if ($this->config->getSameTab()) {
-					$params["editorConfig"]["customization"]["goback"]["blank"] = false;
-					if ($inframe === true) {
-						$params["editorConfig"]["customization"]["goback"]["requestClose"] = true;
-					}
+		$canGoBack = $folderLink !== null && $this->config->getSystemValue($this->config->customization_goback) !== false;
+		if (!$desktop && $this->config->getSameTab()) {
+			if ($inframe === true) {
+				$params["editorConfig"]["customization"]["close"]["visible"] = true;
+			} else {
+				if ($canGoBack) {
+					$params["editorConfig"]["customization"]["goback"] = [
+						"url" => $folderLink,
+						"blank" => false
+					];
 				}
 			}
+		} elseif ($canGoBack) {
+			$params["editorConfig"]["customization"]["goback"] = [
+				"url" => $folderLink
+			];
+		} elseif ($inframe === true && !empty($shareToken)) {
+			$params["editorConfig"]["customization"]["close"]["visible"] = true;
 		}
 
 		if ($inframe === true) {
@@ -560,7 +562,16 @@ class EditorApiController extends OCSController {
 			}
 		}
 
+		if (!empty($this->config->getDocumentServerUrl())) {
+			$params["documentServerUrl"] = $this->config->getDocumentServerUrl();
+		}
+
 		if (!empty($this->config->getDocumentServerSecret())) {
+			$now = time();
+			$iat = $now;
+			$exp = $now + $this->config->getJwtExpiration() * 60;
+			$params["iat"] = $iat;
+			$params["exp"] = $exp;
 			$token = \Firebase\JWT\JWT::encode($params, $this->config->getDocumentServerSecret(), "HS256");
 			$params["token"] = $token;
 		}

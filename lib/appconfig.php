@@ -329,6 +329,13 @@ class AppConfig {
 	private $_editors_check_interval = "editors_check_interval";
 
 	/**
+	 * The config key for the JWT expiration
+	 *
+	 * @var string
+	 */
+	private $_jwt_expiration = "jwt_expiration";
+
+	/**
 	 * The config key for store cache
 	 *
 	 * @var ICache
@@ -1003,13 +1010,16 @@ class AppConfig {
 	 */
 	public function getCustomizationTheme() {
 		$value = $this->config->getAppValue($this->appName, $this->_customizationTheme, "theme-classic-light");
-		if ($value === "theme-light") {
-			return "theme-light";
-		}
-		if ($value === "theme-dark") {
-			return "theme-dark";
-		}
-		return "theme-classic-light";
+		$validThemes = [
+			"theme-system",
+			"theme-light",
+			"theme-classic-light",
+			"theme-dark",
+			"theme-contrast-dark",
+			"theme-gray"
+		];
+
+		return in_array($value, $validThemes) ? $value : "theme-classic-light";
 	}
 
 	/**
@@ -1352,6 +1362,20 @@ class AppConfig {
 			$interval = 60 * 60 * 24;
 		}
 		return (integer)$interval;
+	}
+
+	/**
+	 * Get the JWT expiration
+	 *
+	 * @return int
+	 */
+	public function getJwtExpiration() {
+		$jwtExp = $this->getSystemValue($this->_jwt_expiration);
+		if (empty($jwtExp)) {
+			return 5;
+		}
+
+		return (integer)$jwtExp;
 	}
 
 	/**

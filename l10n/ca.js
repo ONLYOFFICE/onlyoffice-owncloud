@@ -101,6 +101,11 @@ OC.L10N.register(
     "Security": "Seguretat",
     "Light": "Llum",
     "Classic Light": "Llum clàssica",
-    "Dark": "Fosc"
+    "Dark": "Fosc",
+    "Select file to insert text": "Seleccioneu el fitxer per inserir text",
+    "Select file": "Seleccioneu un fitxer",
+    "Same as system": "Igual que el sistema",
+    "Contrast dark": "Contrast fosc",
+    "Gray": "Gris"
 },
 "nplurals=2; plural=(n != 1);");

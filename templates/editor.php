@@ -32,10 +32,4 @@ script("onlyoffice", "editor");
 	data-template="<?php p($_["template"]) ?>"
 	data-anchor="<?php p($_["anchor"]) ?>"
 	data-inframe="<?php p($_["inframe"]) ?>"></div>
-
-<?php if (!empty($_["documentServerUrl"])) { ?>
-	<script nonce="<?php p(base64_encode($_["requesttoken"])) ?>"
-	src="<?php p($_["documentServerUrl"]) ?>web-apps/apps/api/documents/api.js" type="text/javascript"></script>
-<?php } ?>
-
 </div>

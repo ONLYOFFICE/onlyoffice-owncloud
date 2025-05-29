@@ -134,6 +134,11 @@ OC.L10N.register(
     "Open file": "打开文件",
     "ONLYOFFICE Document Server is unavailable": "ONLYOFFICE 文档服务器不可用",
     "This is a mail message to notify that the connection with the ONLYOFFICE Document Server has been lost. Please check the connection settings:": "此邮件是为了通知您，您与 ONLYOFFICE 文档服务器的连接已丢失。请检查连接设置",
-    "Go to Settings": "转到设置"
+    "Go to Settings": "转到设置",
+    "Select file to insert text": "选择文件以插入文本",
+    "Select file": "选择文件",
+    "Same as system": "和系統一致",
+    "Contrast dark": "深色对比",
+    "Gray": "灰色"
 },
 "nplurals=1; plural=0;");

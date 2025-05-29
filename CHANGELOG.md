@@ -1,5 +1,14 @@
 # Change Log
 
+## 9.9.1
+## Added
+- support external link for reference data
+- support hwp, hwpx, pages, numbers, key formats
+- shardKey param to url for requests to Conversion API
+- jwt expire configuration
+- system, contrast-dark and gray themes
+- close button
+
 ## 9.6.1
 ## Added
 - setting for setup unknown author display name

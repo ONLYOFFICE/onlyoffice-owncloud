@@ -134,6 +134,11 @@ OC.L10N.register(
     "Open file": "ファイルを開く",
     "ONLYOFFICE Document Server is unavailable": "ONLYOFFICEドキュメントサーバーは只今ご利用いただけません",
     "This is a mail message to notify that the connection with the ONLYOFFICE Document Server has been lost. Please check the connection settings:": "これは、ONLYOFFICEドキュメントサーバーとの接続が失われたことを通知するメッセージです。接続設定をご確認ください：",
-    "Go to Settings": "設定に進む"
+    "Go to Settings": "設定に進む",
+    "Select file to insert text": "テキストを挿入するファイルを選択する",
+    "Select file": "ファイルを選択",
+    "Same as system": "システム設定と同じ",
+    "Contrast dark": "ダークコントラスト",
+    "Gray": "灰色"
 },
 "nplurals=1; plural=0;");

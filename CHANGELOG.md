@@ -3,6 +3,11 @@
 ##
 ## Added
 - insert svg to editor
+- view vsdx, vssx, vstx, vsdm, vssm, vstm
+- view odg, md
+
+## Changed
+- edit xlsb
 
 ## 9.9.1
 ## Added

@@ -124,6 +124,12 @@ class Application extends App {
 		$detector->registerType("pptm", "application/vnd.ms-powerpoint.presentation.macroenabled.12");
 		$detector->registerType("hwp", "application/x-hwp");
 		$detector->registerType("hwpx", "application/x-hwpx");
+		$detector->registerType("vsdx", "application/vnd.visio");
+		$detector->registerType("vsdm", "application/vnd.ms-visio.drawing.macroEnabled.12");
+		$detector->registerType("vssm", "application/vnd.ms-visio.stencil.macroEnabled.12");
+		$detector->registerType("vssx", "application/vnd.ms-visio.stencil");
+		$detector->registerType("vstm", "application/vnd.ms-visio.template.macroEnabled.12");
+		$detector->registerType("vstx", "application/vnd.ms-visio.template");
 
 		$previewManager = $container->query(IPreview::class);
 		if ($this->appConfig->getPreview()) {

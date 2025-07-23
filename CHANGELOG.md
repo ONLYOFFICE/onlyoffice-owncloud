@@ -8,6 +8,7 @@
 
 ## Changed
 - edit xlsb
+- there are only system, light and dark themes
 
 ## 9.9.1
 ## Added

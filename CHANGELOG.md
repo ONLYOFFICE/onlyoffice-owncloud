@@ -8,6 +8,7 @@
 
 ## Changed
 - edit xlsb
+- customization_goback setting removed
 
 ## 9.9.1
 ## Added

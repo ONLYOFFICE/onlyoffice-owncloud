@@ -106,7 +106,6 @@ OC.L10N.register(
     "Security": "Сигурност",
     "Run document macros": "Изпълнение на макроси на документи",
     "Light": "Светла",
-    "Classic Light": "Класически светла",
     "Dark": "Тъмна",
     "Enable plugins": "Активирайте плъгини",
     "Enable document protection for": "Активирайте защита на документи за",
@@ -133,8 +132,6 @@ OC.L10N.register(
     "Go to Settings": "Отиди в настройки",
     "Select file to insert text": "Избери файл за вмъкване на текст",
     "Select file": "Избери файл",
-    "Same as system": "Същото като в системата",
-    "Contrast dark": "Контрастна тъмна",
-    "Gray": "Сива"
+    "Same as system": "Същото като в системата"
 },
 "nplurals=2; plural=(n != 1);");

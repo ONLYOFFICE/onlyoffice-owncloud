@@ -106,7 +106,6 @@ OC.L10N.register(
     "Run document macros": "Document macro's uitvoeren",
     "Default editor theme": "Standaard editor thema",
     "Light": "Licht",
-    "Classic Light": "Klassiek Licht",
     "Dark": "Donker",
     "This feature is unavailable due to encryption settings.": "Deze functie is niet beschikbaar vanwege versleutelingsinstellingen.",
     "Enable plugins": "Plug-ins inschakelen",
@@ -127,8 +126,6 @@ OC.L10N.register(
     "The domain in the file url does not match the domain of the Document server": "Het domein in de bestandsurl komt niet overeen met het domein van de Document Server",
     "Select file to insert text": "Een bestand selecteren om tekst in te voegen",
     "Select file": "Bestand selecteren",
-    "Same as system": "Zelfde als systeem",
-    "Contrast dark": "Contrast donker",
-    "Gray": "Grijs"
+    "Same as system": "Zelfde als systeem"
 },
 "nplurals=2; plural=(n != 1);");

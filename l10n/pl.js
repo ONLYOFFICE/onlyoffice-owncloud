@@ -106,7 +106,6 @@ OC.L10N.register(
     "Run document macros": "Uruchom makra dokumentu",
     "Default editor theme": "Domyślny motyw edytora",
     "Light": "Jasny",
-    "Classic Light": "Klasyczny jasny",
     "Dark": "Ciemny",
     "This feature is unavailable due to encryption settings.": "Dana funkcja jest niedostępna ze względu na ustawienia szyfrowania.",
     "Enable plugins": "Włącz wtyczki",
@@ -127,8 +126,6 @@ OC.L10N.register(
     "The domain in the file url does not match the domain of the Document server": "Domena w adresie URL pliku nie pasuje do domeny serwera dokumentów",
     "Select file to insert text": "Wybierz plik do wstawienia tekstu",
     "Select file": "Wybrać plik",
-    "Same as system": "Taki sam jak systemu",
-    "Contrast dark": "Ciemny kontrast",
-    "Gray": "Szary"
+    "Same as system": "Taki sam jak systemu"
 },
 "nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);");

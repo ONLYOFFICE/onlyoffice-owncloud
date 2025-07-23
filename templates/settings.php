@@ -227,12 +227,6 @@ script("onlyoffice", "template");
 			<label for="onlyofficeHelp"><?php p($l->t("Display Help menu button")) ?></label>
 		</p>
 
-		<p>
-			<input type="checkbox" class="checkbox" id="onlyofficeToolbarNoTabs"
-			<?php if ($_["toolbarNoTabs"]) { ?>checked="checked"<?php } ?> />
-			<label for="onlyofficeToolbarNoTabs"><?php p($l->t("Display monochrome toolbar header")) ?></label>
-		</p>
-
 		<p class="onlyoffice-header">
 			<?php p($l->t("Review mode for viewing")) ?>
 		</p>

@@ -522,7 +522,7 @@ class EditorApiController extends OCSController {
 			$params["_file_path"] = $userFolder->getRelativePath($file->getPath());
 		}
 
-		$canGoBack = $folderLink !== null && $this->config->getSystemValue($this->config->customization_goback) !== false;
+		$canGoBack = $folderLink !== null;
 		if (!$desktop && $this->config->getSameTab()) {
 			if ($inframe === true) {
 				$params["editorConfig"]["customization"]["close"]["visible"] = true;

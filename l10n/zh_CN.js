@@ -107,7 +107,6 @@ OC.L10N.register(
     "Run document macros": "运行文档宏",
     "Default editor theme": "编辑器默认的主题",
     "Light": "光",
-    "Classic Light": "经典浅色",
     "Dark": "黑暗的",
     "This feature is unavailable due to encryption settings.": "由于加密设置，该功能不可用。",
     "Enable plugins": "启用插件",
@@ -137,8 +136,6 @@ OC.L10N.register(
     "Go to Settings": "转到设置",
     "Select file to insert text": "选择文件以插入文本",
     "Select file": "选择文件",
-    "Same as system": "和系統一致",
-    "Contrast dark": "深色对比",
-    "Gray": "灰色"
+    "Same as system": "和系統一致"
 },
 "nplurals=1; plural=0;");

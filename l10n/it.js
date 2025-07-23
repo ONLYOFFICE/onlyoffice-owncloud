@@ -107,7 +107,6 @@ OC.L10N.register(
     "Run document macros": "Esegui le macro del documento",
     "Default editor theme": "Tema dell'editor predefinito",
     "Light": "Chiaro",
-    "Classic Light": "Classico chiaro",
     "Dark": "Scuro",
     "This feature is unavailable due to encryption settings.": "Questa funzionalità non è disponibile a causa delle impostazioni di crittografia.",
     "Enable plugins": "Abilitare plugin",
@@ -137,8 +136,6 @@ OC.L10N.register(
     "Go to Settings": "Vai alle impostazioni",
     "Select file to insert text": "Seleziona il file per inserire testo",
     "Select file": "Seleziona file",
-    "Same as system": "Uguale al sistema",
-    "Contrast dark": "Contrasto scuro",
-    "Gray": "Grigio"
+    "Same as system": "Uguale al sistema"
 },
 "nplurals=2; plural=(n != 1);");

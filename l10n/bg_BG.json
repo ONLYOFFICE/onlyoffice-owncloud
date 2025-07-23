@@ -103,7 +103,6 @@
     "Create new PDF form": "Създайте нов PDF формуляр",
     "Security": "Сигурност",
     "Light": "Светла",
-    "Classic Light": "Класически светла",
     "Dark": "Тъмна",
     "Enable plugins": "Активирайте плъгини",
     "Enable document protection for": "Активирайте защита на документи за",
@@ -130,8 +129,6 @@
     "Go to Settings": "Отиди в настройки",
     "Select file to insert text": "Избери файл за вмъкване на текст",
     "Select file": "Избери файл",
-    "Same as system": "Същото като в системата",
-    "Contrast dark": "Контрастна тъмна",
-    "Gray": "Сива"
+    "Same as system": "Същото като в системата"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -106,7 +106,6 @@ OC.L10N.register(
     "Run document macros": "Kör dokumentmakron",
     "Default editor theme": "Standard editortema",
     "Light": "Ljus",
-    "Classic Light": "Klassiskt ljus",
     "Dark": "Mörk",
     "This feature is unavailable due to encryption settings.": "Denna funktion är otillgänglig på grund av krypteringsinställningar.",
     "Enable plugins": "Aktivera plugins",
@@ -136,8 +135,6 @@ OC.L10N.register(
     "Get Now": "Skaffa nu",
     "Select file to insert text": "Välj en fil för att infoga text",
     "Select file": "Välj fil",
-    "Same as system": "Samma som systemet",
-    "Contrast dark": "Mörk kontrast",
-    "Gray": "Grå"
+    "Same as system": "Samma som systemet"
 },
 "nplurals=2; plural=(n != 1);");

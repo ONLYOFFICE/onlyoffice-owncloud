@@ -180,7 +180,6 @@
       const feedback = $("#onlyofficeFeedback").is(":checked");
       const forcesave = $("#onlyofficeForcesave").is(":checked");
       const help = $("#onlyofficeHelp").is(":checked");
-      const toolbarNoTabs = $("#onlyofficeToolbarNoTabs").is(":checked");
       const reviewDisplay = $(
         "input[type='radio'][name='reviewDisplay']:checked"
       )
@@ -210,7 +209,6 @@
           feedback,
           forcesave,
           help,
-          toolbarNoTabs,
           reviewDisplay,
           theme,
           unknownAuthor,

@@ -11,6 +11,7 @@
 - customization_goback setting removed
 - there are only system, light and dark themes
 - toolbarNoTabs settings removed
+- fix opening version from sidebar
 
 ## 9.9.1
 ## Added

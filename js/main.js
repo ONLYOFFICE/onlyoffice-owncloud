@@ -609,8 +609,8 @@
           "#versionsTabView ul.versions>li"
         )[0];
 
-        const href = $(this).attr("href");
-        const search = new RegExp("/meta/(\\d+)/v/\\d+");
+        const href = $("#app-sidebar .fileName .permalink").attr("href");
+        const search = new RegExp("/f/(\\d+)");
         const result = search.exec(href);
         let fileId = null;
         if (result && result.length > 1) {

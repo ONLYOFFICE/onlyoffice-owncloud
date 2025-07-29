@@ -604,11 +604,6 @@
           return true;
         }
 
-        const versionNodes = $("#versionsTabView ul.versions>li");
-        const versionNode = $(this).closest(
-          "#versionsTabView ul.versions>li"
-        )[0];
-
         const href = $("#app-sidebar .fileName .permalink").attr("href");
         const search = new RegExp("/f/(\\d+)");
         const result = search.exec(href);
@@ -616,11 +611,17 @@
         if (result && result.length > 1) {
           fileId = result[1];
         }
+        if (fileId) {
+          const versionNodes = $("#versionsTabView ul.versions>li");
+          const versionNode = $(this).closest(
+            "#versionsTabView ul.versions>li"
+          )[0];
 
-        const versionNum =
-          versionNodes.length - $.inArray(versionNode, versionNodes);
+          const versionNum =
+            versionNodes.length - $.inArray(versionNode, versionNodes);
 
-        OCA.Onlyoffice.openVersion(fileId || "", versionNum);
+          OCA.Onlyoffice.openVersion(fileId || "", versionNum);
+        }
 
         return false;
       }

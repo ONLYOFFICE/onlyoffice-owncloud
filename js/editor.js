@@ -337,7 +337,7 @@
         version,
       },
       success: function onSuccess(response) {
-        OCA.Onlyoffice.refreshHistory(response, version);
+        OCA.Onlyoffice.refreshHistory(response, response.at(-1).version);
 
         if (OCA.Onlyoffice.inframe) {
           window.parent.postMessage(

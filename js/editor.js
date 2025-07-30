@@ -30,7 +30,7 @@
 
   OCA.Onlyoffice.InitEditor = function () {
     OCA.Onlyoffice.fileId = $("#iframeEditor").data("id");
-    const filePath = $("#iframeEditor").data("path");
+    OCA.Onlyoffice.filePath = $("#iframeEditor").data("path");
     OCA.Onlyoffice.shareToken = $("#iframeEditor").data("sharetoken");
     OCA.Onlyoffice.version = $("#iframeEditor").data("version");
     OCA.Onlyoffice.template = $("#iframeEditor").data("template");
@@ -49,40 +49,7 @@
       return;
     }
 
-    let configUrl =
-      OC.linkToOCS("apps/" + OCA.Onlyoffice.AppName + "/api/v1/config", 2) +
-      (OCA.Onlyoffice.fileId || 0);
-
-    const params = [];
-    if (filePath) {
-      params.push("filePath=" + encodeURIComponent(filePath));
-    }
-    if (OCA.Onlyoffice.shareToken) {
-      params.push(
-        "shareToken=" + encodeURIComponent(OCA.Onlyoffice.shareToken)
-      );
-    }
-    if (OCA.Onlyoffice.version > 0) {
-      params.push("version=" + OCA.Onlyoffice.version);
-    }
-    if (OCA.Onlyoffice.template) {
-      params.push("template=true");
-    }
-
-    if (OCA.Onlyoffice.inframe) {
-      params.push("inframe=true");
-    }
-
-    if (OCA.Onlyoffice.anchor) {
-      params.push("anchor=" + encodeURIComponent(OCA.Onlyoffice.anchor));
-    }
-
-    if (OCA.Onlyoffice.Desktop) {
-      params.push("desktop=true");
-    }
-    if (params.length) {
-      configUrl += "?" + params.join("&");
-    }
+    const configUrl = OCA.Onlyoffice.getConfigUrl();
 
     $.ajax({
       url: configUrl,
@@ -213,6 +180,8 @@
               config.events.onRequestReferenceSource =
                 OCA.Onlyoffice.onRequestReferenceSource;
               config.events.onMetaChange = OCA.Onlyoffice.onMetaChange;
+              config.events.onRequestRefreshFile =
+                OCA.Onlyoffice.onRequestRefreshFile;
 
               if (OC.currentUser) {
                 config.events.onRequestUsers = OCA.Onlyoffice.onRequestUsers;
@@ -830,6 +799,16 @@
     }
   };
 
+  OCA.Onlyoffice.onRequestRefreshFile = function () {
+    const configUrl = OCA.Onlyoffice.getConfigUrl();
+    $.ajax({
+      url: configUrl,
+      success: function onSuccess(config) {
+        OCA.Onlyoffice.docEditor.refreshFile(config);
+      },
+    });
+  };
+
   OCA.Onlyoffice.showMessage = function (message, props = null) {
     if (OCA.Onlyoffice.inframe) {
       window.parent.postMessage(
@@ -913,6 +892,45 @@
         "content",
         "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
       );
+  };
+
+  OCA.Onlyoffice.getConfigUrl = function () {
+    let configUrl =
+      OC.linkToOCS("apps/" + OCA.Onlyoffice.AppName + "/api/v1/config", 2) +
+      (OCA.Onlyoffice.fileId || 0);
+
+    const params = [];
+    if (OCA.Onlyoffice.filePath) {
+      params.push("filePath=" + encodeURIComponent(OCA.Onlyoffice.filePath));
+    }
+    if (OCA.Onlyoffice.shareToken) {
+      params.push(
+        "shareToken=" + encodeURIComponent(OCA.Onlyoffice.shareToken)
+      );
+    }
+    if (OCA.Onlyoffice.version > 0) {
+      params.push("version=" + OCA.Onlyoffice.version);
+    }
+    if (OCA.Onlyoffice.template) {
+      params.push("template=true");
+    }
+
+    if (OCA.Onlyoffice.inframe) {
+      params.push("inframe=true");
+    }
+
+    if (OCA.Onlyoffice.anchor) {
+      params.push("anchor=" + encodeURIComponent(OCA.Onlyoffice.anchor));
+    }
+
+    if (OCA.Onlyoffice.Desktop) {
+      params.push("desktop=true");
+    }
+    if (params.length) {
+      configUrl += "?" + params.join("&");
+    }
+
+    return configUrl;
   };
 
   $(document).ready(OCA.Onlyoffice.InitEditor);

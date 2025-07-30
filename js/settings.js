@@ -68,6 +68,21 @@
     $("#onlyofficeDemo").click(demoToggle);
     demoToggle();
 
+    const connectionError = document.getElementById(
+      "onlyofficeSettingsState"
+    ).value;
+    if (connectionError !== "") {
+      const message =
+        t(OCA.Onlyoffice.AppName, "Error when trying to connect") +
+        " (" +
+        connectionError +
+        ")";
+      OC.Notification.show(message, {
+        timeout: 3,
+        type: "error",
+      });
+    }
+
     $("#onlyoffice-addr-save").click(function () {
       $(".section-onlyoffice").addClass("icon-loading");
       const onlyofficeUrl = $("#onlyofficeUrl").val().trim();
@@ -167,7 +182,9 @@
       const sameTab = $("#onlyofficeSameTab").is(":checked");
       const preview = $("#onlyofficePreview").is(":checked");
       const cronChecker = $("#onlyofficeCronChecker").is(":checked");
-      const emailNotifications = $('#onlyofficeEmailNotifications').is(':checked');
+      const emailNotifications = $("#onlyofficeEmailNotifications").is(
+        ":checked"
+      );
       const versionHistory = $("#onlyofficeVersionHistory").is(":checked");
 
       const limitGroupsString = $("#onlyofficeGroups").prop("checked")
@@ -179,6 +196,7 @@
       const compactHeader = $("#onlyofficeCompactHeader").is(":checked");
       const feedback = $("#onlyofficeFeedback").is(":checked");
       const forcesave = $("#onlyofficeForcesave").is(":checked");
+      const liveViewOnShare = $("#onlyofficeLiveViewOnShare").is(":checked");
       const help = $("#onlyofficeHelp").is(":checked");
       const reviewDisplay = $(
         "input[type='radio'][name='reviewDisplay']:checked"
@@ -188,7 +206,7 @@
       const theme = $("input[type='radio'][name='theme']:checked")
         .attr("id")
         .replace("onlyofficeTheme_", "");
-      const unknownAuthor = $('#onlyofficeUnknownAuthor').val().trim();
+      const unknownAuthor = $("#onlyofficeUnknownAuthor").val().trim();
 
       $.ajax({
         method: "PUT",
@@ -208,6 +226,7 @@
           compactHeader,
           feedback,
           forcesave,
+          liveViewOnShare,
           help,
           reviewDisplay,
           theme,

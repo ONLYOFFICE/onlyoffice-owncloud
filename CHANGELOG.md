@@ -5,6 +5,7 @@
 - insert svg to editor
 - view vsdx, vssx, vstx, vsdm, vssm, vstm
 - view odg, md
+- setting for enabling live-view for shared docs
 
 ## Changed
 - edit xlsb
@@ -12,6 +13,7 @@
 - there are only system, light and dark themes
 - toolbarNoTabs settings removed
 - fix opening version from sidebar
+- display error when opening settings page if it exists
 
 ## 9.9.1
 ## Added

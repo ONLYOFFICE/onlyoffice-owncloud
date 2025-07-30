@@ -199,6 +199,12 @@ script("onlyoffice", "template");
 		<?php } ?>
 		</p>
 
+		<p>
+			<input type="checkbox" class="checkbox" id="onlyofficeLiveViewOnShare"
+			<?php if ($_["liveViewOnShare"]) { ?>checked="checked"<?php } ?> />
+			<label for="onlyofficeLiveViewOnShare"><?php p($l->t("Enable live-viewing mode when accessing file by public link")) ?></label>
+		</p>
+
 		<p class="onlyoffice-header">
 			<?php p($l->t("The customization section allows personalizing the editor interface")) ?>
 		</p>
@@ -338,4 +344,5 @@ script("onlyoffice", "template");
 		<br />
 		<p><button id="onlyofficeSecuritySave" class="button"><?php p($l->t("Save")) ?></button></p>
 	</div>
+	<input type ="hidden" id="onlyofficeSettingsState" value="<?php p($_["settingsError"]) ?>" />
 </div>

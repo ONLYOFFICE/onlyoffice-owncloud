@@ -127,8 +127,10 @@ class SettingsController extends Controller {
 			"compactHeader" => $this->config->getCustomizationCompactHeader(),
 			"feedback" => $this->config->getCustomizationFeedback(),
 			"forcesave" => $this->config->getCustomizationForcesave(),
+			"liveViewOnShare" => $this->config->getLiveViewOnShare(),
 			"help" => $this->config->getCustomizationHelp(),
 			"successful" => $this->config->settingsAreSuccessful(),
+			"settingsError" => $this->config->getSettingsError(),
 			"plugins" => $this->config->getCustomizationPlugins(),
 			"macros" => $this->config->getCustomizationMacros(),
 			"reviewDisplay" => $this->config->getCustomizationReviewDisplay(),
@@ -216,6 +218,7 @@ class SettingsController extends Controller {
 	 * @param bool $compactHeader - display compact header
 	 * @param bool $feedback - display feedback
 	 * @param bool $forcesave - forcesave
+	 * @param bool $liveViewOnShare - live view on share
 	 * @param bool $help - display help
 	 * @param string $reviewDisplay - review viewing mode
 	 * @param string $theme - default theme mode
@@ -236,6 +239,7 @@ class SettingsController extends Controller {
 		$compactHeader,
 		$feedback,
 		$forcesave,
+		$liveViewOnShare,
 		$help,
 		$reviewDisplay,
 		$theme,
@@ -253,6 +257,7 @@ class SettingsController extends Controller {
 		$this->config->setCustomizationCompactHeader($compactHeader);
 		$this->config->setCustomizationFeedback($feedback);
 		$this->config->setCustomizationForcesave($forcesave);
+		$this->config->setLiveViewOnShare($liveViewOnShare);
 		$this->config->setCustomizationHelp($help);
 		$this->config->setCustomizationReviewDisplay($reviewDisplay);
 		$this->config->setCustomizationTheme($theme);

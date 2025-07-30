@@ -129,6 +129,7 @@ class SettingsController extends Controller {
 			"forcesave" => $this->config->getCustomizationForcesave(),
 			"help" => $this->config->getCustomizationHelp(),
 			"successful" => $this->config->settingsAreSuccessful(),
+			"settingsError" => $this->config->getSettingsError(),
 			"plugins" => $this->config->getCustomizationPlugins(),
 			"macros" => $this->config->getCustomizationMacros(),
 			"reviewDisplay" => $this->config->getCustomizationReviewDisplay(),

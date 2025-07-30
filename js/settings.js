@@ -196,6 +196,7 @@
       const compactHeader = $("#onlyofficeCompactHeader").is(":checked");
       const feedback = $("#onlyofficeFeedback").is(":checked");
       const forcesave = $("#onlyofficeForcesave").is(":checked");
+      const liveViewOnShare = $("#onlyofficeLiveViewOnShare").is(":checked");
       const help = $("#onlyofficeHelp").is(":checked");
       const reviewDisplay = $(
         "input[type='radio'][name='reviewDisplay']:checked"
@@ -225,6 +226,7 @@
           compactHeader,
           feedback,
           forcesave,
+          liveViewOnShare,
           help,
           reviewDisplay,
           theme,

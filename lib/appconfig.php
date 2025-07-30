@@ -175,6 +175,13 @@ class AppConfig {
 	private $_customizationForcesave = "customizationForcesave";
 
 	/**
+	 * The config key for the live view on share setting
+	 *
+	 * @var string
+	 */
+	private $_liveViewOnShare = "liveViewOnShare";
+
+	/**
 	 * The config key for the help display setting
 	 *
 	 * @var string
@@ -901,6 +908,28 @@ class AppConfig {
 		$value = $this->config->getAppValue($this->appName, $this->_customizationForcesave, "false") === "true";
 
 		return $value && ($this->checkEncryptionModule() === false);
+	}
+
+	/**
+	 * Save live view on share setting
+	 *
+	 * @param bool $value - live view on share
+	 * 
+	 * @return void
+	 */
+	public function setLiveViewOnShare($value) {
+		$this->logger->info("Set live view on share: " . json_encode($value), ["app" => $this->appName]);
+
+		$this->config->setAppValue($this->appName, $this->_liveViewOnShare, json_encode($value));
+	}
+
+	/**
+	 * Get live view on share setting
+	 *
+	 * @return bool
+	 */
+	public function getLiveViewOnShare() {
+		return $this->config->getAppValue($this->appName, $this->_liveViewOnShare, "false") === "true";
 	}
 
 	/**

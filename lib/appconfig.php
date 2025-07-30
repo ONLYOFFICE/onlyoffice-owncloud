@@ -1264,8 +1264,7 @@ class AppConfig {
 	/**
 	 * Get the error text of the status settings
 	 *
-	 * @param string $value - error
-	 *
+	 * @return bool
 	 */
 	public function getSettingsError() {
 		return $this->config->getAppValue($this->appName, $this->_settingsError, "");

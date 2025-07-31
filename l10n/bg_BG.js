@@ -104,8 +104,10 @@ OC.L10N.register(
     "Create new PDF form": "Създайте нов PDF формуляр",
     "Security": "Сигурност",
     "Run document macros": "Изпълнение на макроси на документи",
+    "Default editor theme": "Редакторска тема по подразбиране",
     "Light": "Светла",
     "Dark": "Тъмна",
+    "This feature is unavailable due to encryption settings.": "Данната функция е недостъпна из-за настройки на шифроване",
     "Enable plugins": "Активирайте плъгини",
     "Enable document protection for": "Активирайте защита на документи за",
     "All users": "Всички потребители",
@@ -115,6 +117,8 @@ OC.L10N.register(
     "Please check the settings to resolve the problem.": "Моля, проверете настройките, за да разрешите проблема.",
     "View settings": "Виж настройки",
     "ONLYOFFICE Docs Cloud": "ONLYOFFICE Docs Cloud",
+    "Easily launch the editors in the cloud without downloading and installation": "Лесно стартирайте редакторите в облака без изтегляне и инсталиране",
+    "Get Now": "Вземете сега",
     "Select file to combine": "Избери файл за комбиниране",
     "Select data source": "Избери източник на данни",
     "The data source must not be the current document": "Източникът на данни не трябва да е текущият документ",
@@ -131,6 +135,7 @@ OC.L10N.register(
     "Go to Settings": "Отиди в настройки",
     "Select file to insert text": "Избери файл за вмъкване на текст",
     "Select file": "Избери файл",
-    "Same as system": "Същото като в системата"
+    "Same as system": "Същото като в системата",
+    "Enable live-viewing mode when accessing file by public link" : "Активирайте режима на живо извеждане при достъп до файл чрез публична връзка"
 },
 "nplurals=2; plural=(n != 1);");

@@ -135,6 +135,7 @@ OC.L10N.register(
     "Go to Settings": "转到设置",
     "Select file to insert text": "选择文件以插入文本",
     "Select file": "选择文件",
-    "Same as system": "和系統一致"
+    "Same as system": "和系統一致",
+    "Enable live-viewing mode when accessing file by public link" : "启用公共链接实时查看"
 },
 "nplurals=1; plural=0;");

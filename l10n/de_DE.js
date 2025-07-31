@@ -135,6 +135,7 @@ OC.L10N.register(
     "Go to Settings": "Zu den Einstellungen gehen",
     "Select file to insert text": "Wählen Sie die Datei aus, um Text einzufügen",
     "Select file": "Datei auswählen",
-    "Same as system": "Wie im System"
+    "Same as system": "Wie im System",
+    "Enable live-viewing mode when accessing file by public link": "Live-Anzeigemodus aktivieren beim Zugriff auf die Datei über einen öffentlichen Link"
 },
 "nplurals=2; plural=(n != 1);");

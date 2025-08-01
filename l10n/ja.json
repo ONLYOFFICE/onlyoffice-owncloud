@@ -133,6 +133,7 @@
     "Go to Settings": "設定に進む",
     "Select file to insert text": "テキストを挿入するファイルを選択する",
     "Select file": "ファイルを選択",
-    "Same as system": "システム設定と同じ"
+    "Same as system": "システム設定と同じ",
+    "Enable live-viewing mode when accessing file by public link" : "公開リンクでファイルにアクセスする際にライブビューモードを有効にする"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

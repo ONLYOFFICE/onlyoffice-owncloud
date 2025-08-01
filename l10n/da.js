@@ -48,7 +48,7 @@ OC.L10N.register(
     "review": "Anmeldelse",
     "form filling": "Formular udfyldning",
     "comment": "Kommentar",
-    "Global filter": "Globalt filter",
+    "global filter": "globalt filter",
     "download": "Hent",
     "Server settings": "Serverindstillinger",
     "Common settings": "Fælles indstillinger",

@@ -478,6 +478,9 @@ class EditorApiController extends OCSController {
 				case "slide":
 					$createName = $this->trans->t("Presentation") . ".pptx";
 					break;
+				case "pdf":
+					$createName = $this->trans->t("PDF form") . ".pdf";
+					break;
 			}
 
 			$createParam = [

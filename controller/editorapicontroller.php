@@ -481,8 +481,7 @@ class EditorApiController extends OCSController {
 			}
 
 			$createParam = [
-				"dir" => "/",
-				"name" => $createName
+				"dir" => "/"
 			];
 
 			if (!empty($folderPath)) {
@@ -492,9 +491,13 @@ class EditorApiController extends OCSController {
 				}
 			}
 
-			$createUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.create_new", $createParam);
+			if (!empty($createName)) {
+				$createParam["name"] =  $createName;
 
-			$params["editorConfig"]["createUrl"] = urldecode($createUrl);
+				$createUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.create_new", $createParam);
+
+				$params["editorConfig"]["createUrl"] = urldecode($createUrl);
+			}
 
 			$templatesList = TemplateManager::getGlobalTemplates($file->getMimeType());
 			if (!empty($templatesList)) {

@@ -130,6 +130,8 @@ class Application extends App {
 		$detector->registerType("vssx", "application/vnd.ms-visio.stencil");
 		$detector->registerType("vstm", "application/vnd.ms-visio.template.macroEnabled.12");
 		$detector->registerType("vstx", "application/vnd.ms-visio.template");
+		$detector->registerType("xlsb", "application/vnd.ms-excel.sheet.binary.macroenabled.12");
+		$detector->registerType("odg", "application/vnd.oasis.opendocument.presentationapplication/vnd.oasis.opendocument.graphics");
 
 		$previewManager = $container->query(IPreview::class);
 		if ($this->appConfig->getPreview()) {

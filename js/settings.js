@@ -94,18 +94,16 @@
       }
 
       const onlyofficeInternalUrl = (
-        $("#onlyofficeInternalUrl:visible").val() || ""
+        $("#onlyofficeInternalUrl").val() || ""
       ).trim();
       const onlyofficeStorageUrl = (
-        $("#onlyofficeStorageUrl:visible").val() || ""
+        $("#onlyofficeStorageUrl").val() || ""
       ).trim();
       const onlyofficeVerifyPeerOff = $("#onlyofficeVerifyPeerOff").prop(
         "checked"
       );
-      const onlyofficeSecret = (
-        $("#onlyofficeSecret:visible").val() || ""
-      ).trim();
-      const jwtHeader = ($("#onlyofficeJwtHeader:visible").val() || "").trim();
+      const onlyofficeSecret = ($("#onlyofficeSecret").val() || "").trim();
+      const jwtHeader = ($("#onlyofficeJwtHeader").val() || "").trim();
       const demo = $("#onlyofficeDemo").prop("checked");
 
       $.ajax({

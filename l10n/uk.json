@@ -31,6 +31,7 @@
     "Bad Response. Errors: ": "Недійсна відповідь. Помилки:",
     "Documentation": "Документація",
     "ONLYOFFICE Docs Location specifies the address of the server with the document services installed. Please change the '<documentserver>' for the server address in the below line.": "Розташування ONLYOFFICE Docs визначає адресу сервера зі встановленими службами документів. Будь ласка, замініть '<documentserver>' на дійсну адресу сервера.",
+    "Encryption App is enabled, the application cannot work. You can continue working with the application if you enable master key.": "Програму шифрування ввімкнено, але вона не може працювати. Ви можете продовжити роботу з програмою, якщо ввімкнете головний ключ.",
     "ONLYOFFICE Docs address": "Адреса ONLYOFFICE Docs",
     "Advanced server settings": "Додаткові налаштування сервера",
     "ONLYOFFICE Docs address for internal requests from the server": "Адреса ONLYOFFICE Docs для внутрішніх запитів сервера",
@@ -55,7 +56,6 @@
     "Display the header more compact": "Зробити заголовок компактнішим",
     "Display Feedback & Support menu button": "Показувати кнопку зворотнього зв'язку та підтримки",
     "Display Help menu button": "Показувати пункт меню Довідка",
-    "Display monochrome toolbar header": "Зробити заголовок панелі інструментів однотонни",
     "Save as": "Зберегти як",
     "File saved": "Файл збережено",
     "Insert image": "Вставити зображення",
@@ -104,8 +104,8 @@
     "Run document macros": "Виконувати макроси документу",
     "Default editor theme": "Типова тема редактора",
     "Light": "Світла",
-    "Classic Light": "Світла класична",
     "Dark": "Темна",
+    "This feature is unavailable due to encryption settings.": "Ця функція недоступна через налаштування шифрування.",
     "Enable plugins": "Увімкнути роботу з розширеннями",
     "Enable document protection for": "Увімкнути захист документів",
     "All users": "Для всіх користувачів",
@@ -134,7 +134,6 @@
     "Select file to insert text": "Вибрати файл для вставки тексту",
     "Select file": "Вибрати файл",
     "Same as system": "Системна",
-    "Contrast dark": "Контрастно-чорний",
-    "Gray": "Сірий"
+    "Enable live-viewing mode when accessing file by public link" : "Активирайте режима на живо извеждане при достъп до файл чрез публична връзка"
 },"pluralForm" :"nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);"
 }

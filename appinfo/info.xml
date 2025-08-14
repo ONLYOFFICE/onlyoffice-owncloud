@@ -3,10 +3,20 @@
     <id>onlyoffice</id>
     <name>ONLYOFFICE</name>
     <summary>ONLYOFFICE connector</summary>
-    <description>ONLYOFFICE connector allows you to view, edit and collaborate on text documents, spreadsheets and presentations within ownCloud using ONLYOFFICE Docs. This will create a new Edit in ONLYOFFICE action within the document library for Office documents. This allows multiple users to co-author documents in real time from the familiar web interface and save the changes back to your file storage.</description>
+    <description><![CDATA[
+Unlock seamless collaboration with the ONLYOFFICE app for ownCloud. With this powerful integration, you can create, edit, and co-author text documents, spreadsheets, and presentations directly in your ownCloud. Enjoy advanced functionalities like building and filling out PDF forms, annotating PDFs, and converting non-OOXML files into widely-used OOXML formats.
+
+Empower collaboration with real-time co-editing, track changes, version history, and integrated chat features for effortless teamwork. Customize access permissions to control who can view, edit, or comment on documents, ensuring secure and role-based access for every participant. Add extra layers of protection with watermarks, passwords, and restricted content copying to safeguard your data.
+
+The ONLYOFFICE app for ownCloud supports over 50 file formats, including DOCX, XLSX, PPTX, PDF, RTF, TXT, CSV, ODT, ODS, ODP, EPUB, FB2, HTML, HWP, HWPX, Pages, Numbers, Keynote, etc., making any file accessible with ease. Integration is seamless across platforms, with support for desktop and mobile apps so you can access your files anytime, anywhere.
+
+Simplify your workflows with easy configuration through the ownCloud Admin Panel and leverage features like federated cloud sharing, and interface customization.
+
+Moreover, any AI assistant, including local ones, can be effortlessly connected right to the editors to boost speed and efficiency. This enables the use of diverse AI models for tasks such as chatbot interactions, translations, OCR, and more.
+]]></description>
     <licence>apl2</licence>
     <author>Ascensio System SIA</author>
-    <version>9.9.1</version>
+    <version>9.10.1</version>
     <namespace>Onlyoffice</namespace>
     <types>
         <filesystem/>

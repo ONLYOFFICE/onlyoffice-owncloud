@@ -56,7 +56,6 @@
     "Display the header more compact" : "По-компактно показване на заглавната част",
     "Display Feedback & Support menu button" : "Показване на бутоните за Обратна връзка и Поддръжка",
     "Display Help menu button" : "Показване на бутон за меню Помощ",
-    "Display monochrome toolbar header" : "Показване на монохромна заглавна лента с инструменти",
     "Save as" : "Запази като",
     "File saved" : "Файлът е запазен",
     "Insert image" : "Вмъкване на изображение",
@@ -102,9 +101,11 @@
     "Create form": "Създайте формуляр",
     "Create new PDF form": "Създайте нов PDF формуляр",
     "Security": "Сигурност",
+    "Run document macros": "Изпълнение на макроси на документи",
+    "Default editor theme": "Редакторска тема по подразбиране",
     "Light": "Светла",
-    "Classic Light": "Класически светла",
     "Dark": "Тъмна",
+    "This feature is unavailable due to encryption settings.": "Данната функция е недостъпна из-за настройки на шифроване",
     "Enable plugins": "Активирайте плъгини",
     "Enable document protection for": "Активирайте защита на документи за",
     "All users": "Всички потребители",
@@ -114,6 +115,8 @@
     "Please check the settings to resolve the problem.": "Моля, проверете настройките, за да разрешите проблема.",
     "View settings": "Виж настройки",
     "ONLYOFFICE Docs Cloud": "ONLYOFFICE Docs Cloud",
+    "Easily launch the editors in the cloud without downloading and installation": "Лесно стартирайте редакторите в облака без изтегляне и инсталиране",
+    "Get Now": "Вземете сега",
     "Select file to combine" : "Избери файл за комбиниране",
     "Select data source": "Избери източник на данни",
     "The data source must not be the current document": "Източникът на данни не трябва да е текущият документ",
@@ -131,7 +134,6 @@
     "Select file to insert text": "Избери файл за вмъкване на текст",
     "Select file": "Избери файл",
     "Same as system": "Същото като в системата",
-    "Contrast dark": "Контрастна тъмна",
-    "Gray": "Сива"
+    "Enable live-viewing mode when accessing file by public link" : "Активирайте режима на живо извеждане при достъп до файл чрез публична връзка"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

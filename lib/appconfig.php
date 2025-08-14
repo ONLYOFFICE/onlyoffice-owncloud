@@ -175,18 +175,18 @@ class AppConfig {
 	private $_customizationForcesave = "customizationForcesave";
 
 	/**
+	 * The config key for the live view on share setting
+	 *
+	 * @var string
+	 */
+	private $_liveViewOnShare = "liveViewOnShare";
+
+	/**
 	 * The config key for the help display setting
 	 *
 	 * @var string
 	 */
 	private $_customizationHelp = "customizationHelp";
-
-	/**
-	 * The config key for the no tabs setting
-	 *
-	 * @var string
-	 */
-	private $_customizationToolbarNoTabs = "customizationToolbarNoTabs";
 
 	/**
 	 * The config key for the review mode setting
@@ -299,13 +299,6 @@ class AppConfig {
 	 * @var string
 	 */
 	public $customization_autosave = "customization_autosave";
-
-	/**
-	 * The config key for the goback
-	 *
-	 * @var string
-	 */
-	public $customization_goback = "customization_goback";
 
 	/**
 	 * The config key for the macros
@@ -918,6 +911,28 @@ class AppConfig {
 	}
 
 	/**
+	 * Save live view on share setting
+	 *
+	 * @param bool $value - live view on share
+	 * 
+	 * @return void
+	 */
+	public function setLiveViewOnShare($value) {
+		$this->logger->info("Set live view on share: " . json_encode($value), ["app" => $this->appName]);
+
+		$this->config->setAppValue($this->appName, $this->_liveViewOnShare, json_encode($value));
+	}
+
+	/**
+	 * Get live view on share setting
+	 *
+	 * @return bool
+	 */
+	public function getLiveViewOnShare() {
+		return $this->config->getAppValue($this->appName, $this->_liveViewOnShare, "false") === "true";
+	}
+
+	/**
 	 * Save help display setting
 	 *
 	 * @param bool $value - display help
@@ -937,28 +952,6 @@ class AppConfig {
 	 */
 	public function getCustomizationHelp() {
 		return $this->config->getAppValue($this->appName, $this->_customizationHelp, "true") === "true";
-	}
-
-	/**
-	 * Save without tabs setting
-	 *
-	 * @param bool $value - without tabs
-	 *
-	 * @return void
-	 */
-	public function setCustomizationToolbarNoTabs($value) {
-		$this->logger->info("Set without tabs: " . json_encode($value), ["app" => $this->appName]);
-
-		$this->config->setAppValue($this->appName, $this->_customizationToolbarNoTabs, json_encode($value));
-	}
-
-	/**
-	 * Get without tabs setting
-	 *
-	 * @return bool
-	 */
-	public function getCustomizationToolbarNoTabs() {
-		return $this->config->getAppValue($this->appName, $this->_customizationToolbarNoTabs, "true") === "true";
 	}
 
 	/**
@@ -1009,17 +1002,14 @@ class AppConfig {
 	 * @return string
 	 */
 	public function getCustomizationTheme() {
-		$value = $this->config->getAppValue($this->appName, $this->_customizationTheme, "theme-classic-light");
+		$value = $this->config->getAppValue($this->appName, $this->_customizationTheme, "default-light");
 		$validThemes = [
 			"theme-system",
-			"theme-light",
-			"theme-classic-light",
-			"theme-dark",
-			"theme-contrast-dark",
-			"theme-gray"
+			"default-light",
+			"default-dark"
 		];
 
-		return in_array($value, $validThemes) ? $value : "theme-classic-light";
+		return in_array($value, $validThemes) ? $value : "default-light";
 	}
 
 	/**
@@ -1272,12 +1262,22 @@ class AppConfig {
 	}
 
 	/**
+	 * Get the error text of the status settings
+	 *
+	 * @return bool
+	 */
+	public function getSettingsError() {
+		return $this->config->getAppValue($this->appName, $this->_settingsError, "");
+	}
+
+
+	/**
 	 * Get the status settings
 	 *
 	 * @return bool
 	 */
 	public function settingsAreSuccessful() {
-		return empty($this->config->getAppValue($this->appName, $this->_settingsError, ""));
+		return empty($this->getSettingsError());
 	}
 
 	/**
@@ -1456,6 +1456,9 @@ class AppConfig {
 			],
 			"csv" => [
 				"edit" => true,
+			],
+			"vsdx" => [
+				"def" => true,
 			],
 		];
 		return $additionalFormatAttributes;

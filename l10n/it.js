@@ -58,7 +58,6 @@ OC.L10N.register(
     "Display the header more compact" : "Mostra l'intestazione più compatta",
     "Display Feedback & Support menu button" : "Pulsante del menu Mostra feedback e supporto",
     "Display Help menu button" : "Pulsante del menu Mostra guida",
-    "Display monochrome toolbar header" : "Visualizza intestazione della barra degli strumenti monocromatica",
     "Save as" : "Salva come",
     "File saved" : "File salvato",
     "Insert image" : "Inserisci l'immagine",
@@ -107,7 +106,6 @@ OC.L10N.register(
     "Run document macros": "Esegui le macro del documento",
     "Default editor theme": "Tema dell'editor predefinito",
     "Light": "Chiaro",
-    "Classic Light": "Classico chiaro",
     "Dark": "Scuro",
     "This feature is unavailable due to encryption settings.": "Questa funzionalità non è disponibile a causa delle impostazioni di crittografia.",
     "Enable plugins": "Abilitare plugin",
@@ -138,7 +136,6 @@ OC.L10N.register(
     "Select file to insert text": "Seleziona il file per inserire testo",
     "Select file": "Seleziona file",
     "Same as system": "Uguale al sistema",
-    "Contrast dark": "Contrasto scuro",
-    "Gray": "Grigio"
+    "Enable live-viewing mode when accessing file by public link" : "Abilita la modalità di visualizzazione in tempo reale quando accedi al file tramite link pubblico"
 },
 "nplurals=2; plural=(n != 1);");

@@ -58,7 +58,6 @@ OC.L10N.register(
     "Display the header more compact" : "Отображать заголовок компактным",
     "Display Feedback & Support menu button" : "Отображать кнопку Обратной связи и поддержки",
     "Display Help menu button" : "Отображать кнопку справки",
-    "Display monochrome toolbar header" : "Отображать монохромный заголовок панели инструментов",
     "Save as" : "Сохранить как",
     "File saved" : "Файл сохранён",
     "Insert image" : "Вставить изображение",
@@ -107,7 +106,6 @@ OC.L10N.register(
     "Run document macros": "Запускать макросы документа",
     "Default editor theme": "Тема редактора по умолчанию",
     "Light": "Светлая",
-    "Classic Light": "Светлая классическая",
     "Dark": "Темная",
     "This feature is unavailable due to encryption settings.": "Данная функция недоступна из-за настроек шифрования",
     "Enable plugins": "Включить работу с плагинами",
@@ -138,7 +136,6 @@ OC.L10N.register(
     "Select file to insert text" : "Выбрать файл для вставки текста",
     "Select file" : "Выбрать файл",
     "Same as system" : "Такая же, как в системе",
-    "Contrast dark" : "Контрастная темная",
-    "Gray" : "Серая"
+    "Enable live-viewing mode when accessing file by public link" : "Включить режим просмотра в реальном времени при доступе к файлу по публичной ссылке"
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");

@@ -58,7 +58,6 @@ OC.L10N.register(
     "Display the header more compact" : "更紧致的显示菜单栏",
     "Display Feedback & Support menu button" : "显示反馈&支持菜单按钮",
     "Display Help menu button" : "显示帮助菜单按钮",
-    "Display monochrome toolbar header" : "显示单色工具栏标题",
     "Save as" : "另存为",
     "File saved" : "文件已保存",
     "Insert image" : "插入图片",
@@ -107,7 +106,6 @@ OC.L10N.register(
     "Run document macros": "运行文档宏",
     "Default editor theme": "编辑器默认的主题",
     "Light": "光",
-    "Classic Light": "经典浅色",
     "Dark": "黑暗的",
     "This feature is unavailable due to encryption settings.": "由于加密设置，该功能不可用。",
     "Enable plugins": "启用插件",
@@ -138,7 +136,6 @@ OC.L10N.register(
     "Select file to insert text": "选择文件以插入文本",
     "Select file": "选择文件",
     "Same as system": "和系統一致",
-    "Contrast dark": "深色对比",
-    "Gray": "灰色"
+    "Enable live-viewing mode when accessing file by public link" : "启用公共链接实时查看"
 },
 "nplurals=1; plural=0;");

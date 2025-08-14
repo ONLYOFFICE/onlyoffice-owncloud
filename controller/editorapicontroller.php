@@ -414,7 +414,7 @@ class EditorApiController extends OCSController {
 		} else {
 			$params["editorConfig"]["mode"] = "view";
 
-			if (isset($shareToken) && empty($userId)) {
+			if (isset($shareToken) && empty($userId) && !$this->config->getLiveViewOnShare()) {
 				$params["editorConfig"]["coEditing"] = [
 					"mode" => "strict",
 					"change" => false
@@ -478,11 +478,13 @@ class EditorApiController extends OCSController {
 				case "slide":
 					$createName = $this->trans->t("Presentation") . ".pptx";
 					break;
+				case "pdf":
+					$createName = $this->trans->t("PDF form") . ".pdf";
+					break;
 			}
 
 			$createParam = [
-				"dir" => "/",
-				"name" => $createName
+				"dir" => "/"
 			];
 
 			if (!empty($folderPath)) {
@@ -492,9 +494,13 @@ class EditorApiController extends OCSController {
 				}
 			}
 
-			$createUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.create_new", $createParam);
+			if (!empty($createName)) {
+				$createParam["name"] =  $createName;
 
-			$params["editorConfig"]["createUrl"] = urldecode($createUrl);
+				$createUrl = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.create_new", $createParam);
+
+				$params["editorConfig"]["createUrl"] = urldecode($createUrl);
+			}
 
 			$templatesList = TemplateManager::getGlobalTemplates($file->getMimeType());
 			if (!empty($templatesList)) {
@@ -522,7 +528,7 @@ class EditorApiController extends OCSController {
 			$params["_file_path"] = $userFolder->getRelativePath($file->getPath());
 		}
 
-		$canGoBack = $folderLink !== null && $this->config->getSystemValue($this->config->customization_goback) !== false;
+		$canGoBack = $folderLink !== null;
 		if (!$desktop && $this->config->getSameTab()) {
 			if ($inframe === true) {
 				$params["editorConfig"]["customization"]["close"]["visible"] = true;
@@ -730,11 +736,6 @@ class EditorApiController extends OCSController {
 		$theme = $this->config->getCustomizationTheme();
 		if (isset($theme)) {
 			$params["editorConfig"]["customization"]["uiTheme"] = $theme;
-		}
-
-		//default is false
-		if ($this->config->getCustomizationToolbarNoTabs() === true) {
-			$params["editorConfig"]["customization"]["toolbarNoTabs"] = true;
 		}
 
 		//default is true

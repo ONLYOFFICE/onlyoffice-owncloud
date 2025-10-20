@@ -33,6 +33,8 @@ class HookHandler {
 	/**
 	 * Adds scripts and styles
 	 *
+	 * @param array $arguments
+	 *
 	 * @return void
 	 */
 	public static function publicPage($arguments) {
@@ -43,8 +45,8 @@ class HookHandler {
 
 		if (!empty($appConfig->getDocumentServerUrl())
 			&& $appConfig->settingsAreSuccessful()
-			&& $appConfig->isUserAllowedToUse($uidOwner)) {
-
+			&& $appConfig->isUserAllowedToUse($uidOwner)
+		) {
 			Util::addScript("onlyoffice", "main");
 			Util::addScript("onlyoffice", "share");
 			Util::addScript("onlyoffice", "listener");

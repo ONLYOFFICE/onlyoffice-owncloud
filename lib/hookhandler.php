@@ -39,7 +39,7 @@ class HookHandler {
 		$appName = "onlyoffice";
 
 		$appConfig = new AppConfig($appName);
-		$uidOwner = $arguments['uidOwner'];
+		$uidOwner = !empty($arguments['uidOwner']) ? $arguments['uidOwner'] : null;
 
 		if (!empty($appConfig->getDocumentServerUrl())
 			&& $appConfig->settingsAreSuccessful()

@@ -35,12 +35,16 @@ class HookHandler {
 	 *
 	 * @return void
 	 */
-	public static function publicPage() {
+	public static function publicPage($arguments) {
 		$appName = "onlyoffice";
 
 		$appConfig = new AppConfig($appName);
+		$uidOwner = $arguments['uidOwner'];
 
-		if (!empty($appConfig->getDocumentServerUrl()) && $appConfig->settingsAreSuccessful() && empty($appConfig->getLimitGroups())) {
+		if (!empty($appConfig->getDocumentServerUrl())
+			&& $appConfig->settingsAreSuccessful()
+			&& $appConfig->isUserAllowedToUse($uidOwner)) {
+
 			Util::addScript("onlyoffice", "main");
 			Util::addScript("onlyoffice", "share");
 			Util::addScript("onlyoffice", "listener");

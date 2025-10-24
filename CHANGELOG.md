@@ -1,6 +1,7 @@
 # Change Log
 ## Changed
 - fix opening a shared link when group access to the app is restricted
+- show confirmation modal before performing clear version metadata
 
 ## 9.10.1
 ## Added

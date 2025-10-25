@@ -135,15 +135,22 @@
                 !!response.error.length
             );
 
-            const message = response.error
-              ? t(OCA.Onlyoffice.AppName, "Error when trying to connect") +
-                " (" +
-                response.error +
-                ")"
-              : t(
-                  OCA.Onlyoffice.AppName,
-                  "Settings have been successfully updated"
-                );
+            if (response.error.length === 0 && response.secret === null) {
+							OC.dialogs.info(
+                t(OCA.Onlyoffice.AppName, 'Server settings have been successfully updated') + ". " +
+                t(OCA.Onlyoffice.AppName, 'To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page.'),
+                t(OCA.Onlyoffice.AppName, 'Info'),
+              )
+            } else {
+              const message = response.error
+                ? t(OCA.Onlyoffice.AppName, "Error when trying to connect") +
+                  " (" +
+                  response.error +
+                  ")"
+                : t(
+                    OCA.Onlyoffice.AppName,
+                    "Settings have been successfully updated"
+                  );
 
             const versionMessage = response.version
               ? " (" +
@@ -153,10 +160,11 @@
                 ")"
               : "";
 
-            OC.Notification.show(message + versionMessage, {
-              type: response.error ? "error" : null,
-              timeout: 3,
-            });
+              OC.Notification.show(message + versionMessage, {
+                type: response.error ? "error" : null,
+                timeout: 3,
+              });
+            }
           } else {
             $(".section-onlyoffice-2").addClass("onlyoffice-hide");
           }

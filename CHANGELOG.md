@@ -2,6 +2,9 @@
 ## Changed
 - fix opening a shared link when group access to the app is restricted
 
+## Added
+- plugin description and useful links in admin settings
+
 ## 9.10.1
 ## Added
 - insert svg to editor

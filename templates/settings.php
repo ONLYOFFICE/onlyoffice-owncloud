@@ -28,6 +28,15 @@ script("onlyoffice", "template");
 		ONLYOFFICE
 	</h2>
 
+    <div class="onlyoffice-description">
+        <h1><?php p($l->t("Welcome to ONLYOFFICE Docs!")) ?></h1>
+        <p><?php p($l->t("Create, edit, and co-author documents, sheets, slides, and PDFs within ownCloud using ONLYOFFICE Docs.")) ?></p>
+        <div class="useful-links">
+            <a href="https://helpcenter.onlyoffice.com/integration/nextcloud.aspx" target="_blank"><?php p($l->t("Learn more")) ?></a>
+            <a href="https://feedback.onlyoffice.com/forums/966080-your-voice-matters?category_id=519288" target="_blank"><?php p($l->t("Suggest a feature")) ?></a>
+        </div>
+    </div>
+
 	<h2><?php p($l->t("Server settings")) ?></h2>
 
 <?php if ($_["encryption"] === true) { ?>

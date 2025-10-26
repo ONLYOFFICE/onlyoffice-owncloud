@@ -144,6 +144,41 @@
   color: #000;
 }
 
+.onlyoffice-description {
+    display: flex;
+    flex-direction: column;
+    row-gap: 11px;
+    margin: 24px 0;
+}
+
+.onlyoffice-description h1 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.onlyoffice-description p {
+    font-size: 12px;
+    margin-bottom: 0 !important;
+}
+
+.onlyoffice-description .useful-links {
+    display: flex;
+    column-gap: 24px;
+}
+
+.onlyoffice-description .useful-links a {
+    display: flex;
+    font-size: 12px;
+    font-weight: 500;
+    gap: 4px;
+}
+
+.onlyoffice-description .useful-links a::after {
+    content: url('../img/top-right-arrow.svg');
+    width: 12px;
+    height: 12px;
+}
+
 @media (max-width: 580px) {
   #onlyoffice-docscloud-banner-pic-wrapper {
     padding: 20px 0 0 5px;

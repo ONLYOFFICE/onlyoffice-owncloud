@@ -26,8 +26,16 @@ script("onlyoffice", "template");
 <div class="section section-onlyoffice">
 	<h2 id="onlyoffice">
 		ONLYOFFICE
-		<a target="_blank" class="icon-info svg" title="" href="https://helpcenter.onlyoffice.com/integration/gettingstarted-owncloud.aspx" data-original-title="<?php p($l->t("Documentation")) ?>"></a>
 	</h2>
+
+    <div class="onlyoffice-description">
+        <h1><?php p($l->t("Welcome to ONLYOFFICE Docs!")) ?></h1>
+        <p><?php p($l->t("Create, edit, and co-author documents, sheets, slides, and PDFs within ownCloud using ONLYOFFICE Docs.")) ?></p>
+        <div class="useful-links">
+            <a href="https://helpcenter.onlyoffice.com/integration/owncloud.aspx" target="_blank"><?php p($l->t("Learn more")) ?></a>
+            <a href="https://feedback.onlyoffice.com/forums/966080-your-voice-matters?category_id=519288" target="_blank"><?php p($l->t("Suggest a feature")) ?></a>
+        </div>
+    </div>
 
 	<h2><?php p($l->t("Server settings")) ?></h2>
 

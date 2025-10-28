@@ -140,6 +140,10 @@ OC.L10N.register(
     "Common settings have been successfully updated": "",
     "Security settings have been successfully updated": "",
     "Are you sure you want to clear metadata?": "",
-    "Confirm metadata removal": ""
+    "Confirm metadata removal": "",
+    "Welcome to ONLYOFFICE Docs!": "",
+    "Create, edit, and co-author documents, sheets, slides, and PDFs within ownCloud using ONLYOFFICE Docs.": "",
+    "Learn more": "",
+    "Suggest a feature": ""
 },
 "nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);");

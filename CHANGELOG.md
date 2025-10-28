@@ -5,6 +5,9 @@
 - change settings save button color to primary
 - show confirmation modal before performing clear version metadata
 
+## Added
+- plugin description and useful links in admin settings
+
 ## 9.10.1
 ## Added
 - insert svg to editor

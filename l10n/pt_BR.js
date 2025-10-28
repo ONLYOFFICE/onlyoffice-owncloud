@@ -28,7 +28,6 @@ OC.L10N.register(
     "Spreadsheet" : "Planilha",
     "Presentation" : "Apresentação",
     "Error when trying to connect" : "Erro ao tentar conectar",
-    "Settings have been successfully updated" : "Configurações salvas com sucesso",
     "Server can't read xml" : "Servidor não pode ler xml",
     "Bad Response. Errors: " : "Resposta ruim. Erros:",
     "Documentation" : "Documentação",

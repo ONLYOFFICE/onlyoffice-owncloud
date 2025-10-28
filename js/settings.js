@@ -136,11 +136,18 @@
             );
 
             if (response.error.length === 0 && response.secret === null) {
-							OC.dialogs.info(
-                t(OCA.Onlyoffice.AppName, 'Server settings have been successfully updated') + ". " +
-                t(OCA.Onlyoffice.AppName, 'To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page.'),
-                t(OCA.Onlyoffice.AppName, 'Info'),
-              )
+              OC.dialogs.info(
+                t(
+                  OCA.Onlyoffice.AppName,
+                  "Server settings have been successfully updated"
+                ) +
+                  ". " +
+                  t(
+                    OCA.Onlyoffice.AppName,
+                    "To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page."
+                  ),
+                t(OCA.Onlyoffice.AppName, "Info")
+              );
             } else {
               const message = response.error
                 ? t(OCA.Onlyoffice.AppName, "Error when trying to connect") +
@@ -152,13 +159,13 @@
                     "Settings have been successfully updated"
                   );
 
-            const versionMessage = response.version
-              ? " (" +
-                t(OCA.Onlyoffice.AppName, "version") +
-                " " +
-                response.version +
-                ")"
-              : "";
+              const versionMessage = response.version
+                ? " (" +
+                  t(OCA.Onlyoffice.AppName, "version") +
+                  " " +
+                  response.version +
+                  ")"
+                : "";
 
               OC.Notification.show(message + versionMessage, {
                 type: response.error ? "error" : null,

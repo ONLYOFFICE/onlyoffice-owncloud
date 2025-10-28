@@ -135,7 +135,7 @@
                 !!response.error.length
             );
 
-            if (response.error.length === 0 && response.secret === null) {
+            if (!response.error && response.secret === null) {
               OC.dialogs.info(
                 t(
                   OCA.Onlyoffice.AppName,

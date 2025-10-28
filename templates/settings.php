@@ -80,7 +80,7 @@ script("onlyoffice", "template");
 	</div>
 
 	<div>
-		<button id="onlyoffice-addr-save" class="button"><?php p($l->t("Save")) ?></button>
+		<button id="onlyoffice-addr-save" class="button primary"><?php p($l->t("Save")) ?></button>
 		<div class="onlyoffice-demo">
 			<input type="checkbox" class="checkbox" id="onlyofficeDemo"
 			<?php if ($_["demo"]["enabled"]) { ?>checked="checked"<?php } ?>
@@ -296,7 +296,7 @@ script("onlyoffice", "template");
 		</div>
 
 		<br />
-		<p><button id="onlyoffice-save" class="button"><?php p($l->t("Save")) ?></button></p>
+		<p><button id="onlyoffice-save" class="button primary"><?php p($l->t("Save")) ?></button></p>
 
 		<h2>
 			<?php p($l->t("Common templates")) ?>
@@ -350,7 +350,7 @@ script("onlyoffice", "template");
 		</div>
 
 		<br />
-		<p><button id="onlyofficeSecuritySave" class="button"><?php p($l->t("Save")) ?></button></p>
+		<p><button id="onlyofficeSecuritySave" class="button primary"><?php p($l->t("Save")) ?></button></p>
 	</div>
 	<input type ="hidden" id="onlyofficeSettingsState" value="<?php p($_["settingsError"]) ?>" />
 </div>

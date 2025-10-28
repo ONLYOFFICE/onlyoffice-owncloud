@@ -1,6 +1,8 @@
 # Change Log
 ## Changed
 - fix opening a shared link when group access to the app is restricted
+- replaced general save success message with dedicated messages for each settings section
+- change settings save button color to primary
 - show confirmation modal before performing clear version metadata
 
 ## 9.10.1

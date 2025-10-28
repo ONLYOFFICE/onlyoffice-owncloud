@@ -142,7 +142,7 @@
                 ")"
               : t(
                   OCA.Onlyoffice.AppName,
-                  "Settings have been successfully updated"
+                  "Server settings have been successfully updated"
                 );
 
             const versionMessage = response.version
@@ -235,7 +235,7 @@
           if (response) {
             const message = t(
               OCA.Onlyoffice.AppName,
-              "Settings have been successfully updated"
+              "Common settings have been successfully updated"
             );
             OC.Notification.show(message, {
               timeout: 3,
@@ -269,7 +269,7 @@
           if (response) {
             const message = t(
               OCA.Onlyoffice.AppName,
-              "Settings have been successfully updated"
+              "Security settings have been successfully updated"
             );
             OC.Notification.show(message, {
               timeout: 3,

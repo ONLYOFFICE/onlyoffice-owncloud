@@ -28,7 +28,6 @@ OC.L10N.register(
     "Spreadsheet" : "スプレッドシート",
     "Presentation" : "プレゼンテーション",
     "Error when trying to connect" : "接続時にエラーが発生しました",
-    "Settings have been successfully updated" : "設定が更新されました",
     "Server can't read xml" : "サーバーでxmlを読み込ませんでした",
     "Bad Response. Errors: " : "不正なレスポンス エラー: ",
     "Documentation" : "ドキュメンテーション",

@@ -156,7 +156,7 @@
                   ")"
                 : t(
                     OCA.Onlyoffice.AppName,
-                    "Settings have been successfully updated"
+                    "Server settings have been successfully updated"
                   );
 
               const versionMessage = response.version
@@ -250,7 +250,7 @@
           if (response) {
             const message = t(
               OCA.Onlyoffice.AppName,
-              "Settings have been successfully updated"
+              "Common settings have been successfully updated"
             );
             OC.Notification.show(message, {
               timeout: 3,
@@ -284,7 +284,7 @@
           if (response) {
             const message = t(
               OCA.Onlyoffice.AppName,
-              "Settings have been successfully updated"
+              "Security settings have been successfully updated"
             );
             OC.Notification.show(message, {
               timeout: 3,
@@ -310,26 +310,36 @@
     });
 
     $("#onlyofficeClearVersionHistory").click(function () {
-      $(".section-onlyoffice").addClass("icon-loading");
-
-      $.ajax({
-        method: "DELETE",
-        url: OC.generateUrl(
-          "apps/" + OCA.Onlyoffice.AppName + "/ajax/settings/history"
-        ),
-        success: function onSuccess(response) {
-          $(".section-onlyoffice").removeClass("icon-loading");
-          if (response) {
-            const message = t(
-              OCA.Onlyoffice.AppName,
-              "All history successfully deleted"
-            );
-            OC.Notification.show(message, {
-              timeout: 3,
-            });
+      OC.dialogs.confirm(
+        t(OCA.Onlyoffice.AppName, 'Are you sure you want to clear metadata?'),
+        t(OCA.Onlyoffice.AppName, 'Confirm metadata removal'),
+        (clicked) => {
+          if (!clicked) {
+            return
           }
+
+          $(".section-onlyoffice").addClass("icon-loading");
+
+          $.ajax({
+            method: "DELETE",
+            url: OC.generateUrl(
+              "apps/" + OCA.Onlyoffice.AppName + "/ajax/settings/history"
+            ),
+            success: function onSuccess(response) {
+              $(".section-onlyoffice").removeClass("icon-loading");
+              if (response) {
+                const message = t(
+                  OCA.Onlyoffice.AppName,
+                  "All history successfully deleted"
+                );
+                OC.Notification.show(message, {
+                  timeout: 3,
+                });
+              }
+            },
+          });
         },
-      });
+      )
     });
 
     $("#onlyofficeAddTemplate").change(function () {

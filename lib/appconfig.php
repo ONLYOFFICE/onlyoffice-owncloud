@@ -1406,6 +1406,7 @@ class AppConfig {
 							"fillForms" => in_array("fill", $onlyOfficeFormat["actions"]),
 							"comment" => in_array("comment", $onlyOfficeFormat["actions"]),
 							"saveas" => $onlyOfficeFormat["convert"],
+							"review" => in_array("review", $onlyOfficeFormat["actions"]),
 						];
 						if (isset($additionalFormats[$onlyOfficeFormat["name"]])) {
 							$result[$onlyOfficeFormat["name"]] = array_merge($result[$onlyOfficeFormat["name"]], $additionalFormats[$onlyOfficeFormat["name"]]);
@@ -1429,7 +1430,6 @@ class AppConfig {
 		$additionalFormatAttributes = [
 			"docx" => [
 				"def" => true,
-				"review" => true,
 			],
 			"docxf" => [
 				"def" => true,

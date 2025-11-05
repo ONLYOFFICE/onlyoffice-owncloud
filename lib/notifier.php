@@ -24,6 +24,7 @@ use OCP\IURLGenerator;
 use OCP\ILogger;
 use OCP\IUserManager;
 use OCP\L10N\IFactory;
+use OCP\Notification\IAction;
 use OCP\Notification\INotification;
 use OCP\Notification\INotifier;
 
@@ -135,6 +136,17 @@ class Notifier implements INotifier {
 					]
 				);
 
+				$notification->setLink($editorLink);
+				break;
+			case "documentUnsaved":
+				$fileId = $parameters["fileId"];
+				$fileName = $parameters["fileName"];
+
+				$this->logger->info("Notify prepare: unsaved document $fileId");
+
+				$editorLink = $this->urlGenerator->linkToRouteAbsolute($this->appName . ".editor.index", ["fileId" => $fileId]);
+				$notification->setParsedSubject($trans->t("%1\$s could not be saved. Please open the file again.", [$fileName]))
+					->setIcon($this->urlGenerator->getAbsoluteURL($this->urlGenerator->imagePath($this->appName, 'app-dark.svg')));
 				$notification->setLink($editorLink);
 				break;
 			default:

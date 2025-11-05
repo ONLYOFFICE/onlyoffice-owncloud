@@ -24,7 +24,6 @@ use OCP\IURLGenerator;
 use OCP\ILogger;
 use OCP\IUserManager;
 use OCP\L10N\IFactory;
-use OCP\Notification\IAction;
 use OCP\Notification\INotification;
 use OCP\Notification\INotifier;
 

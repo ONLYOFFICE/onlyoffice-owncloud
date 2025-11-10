@@ -110,10 +110,19 @@ class DocumentService {
 	 * @param string $document_revision_id - Key for caching on service
 	 * @param bool - $is_async - Perform conversions asynchronously
 	 * @param bool $toForm - Convert to form
+	 * @param array  $thumbnail - Settings for the thumbnail
 	 *
 	 * @return array
 	 */
-	public function sendRequestToConvertService($document_uri, $from_extension, $to_extension, $document_revision_id, $is_async, $toForm = false) {
+	public function sendRequestToConvertService(
+		$document_uri,
+		$from_extension,
+		$to_extension,
+		$document_revision_id,
+		$is_async,
+		$toForm = false,
+		$thumbnail = []
+	) {
 		$documentServerUrl = $this->config->getDocumentServerInternalUrl();
 
 		if (empty($documentServerUrl)) {
@@ -153,6 +162,10 @@ class DocumentService {
 			$data["pdf"] = [
 				"form" => true
 			];
+		}
+
+		if (!empty($thumbnail)) {
+			$data['thumbnail'] = $thumbnail;
 		}
 
 		$opts = [

@@ -4,6 +4,7 @@
 - replaced general save success message with dedicated messages for each settings section
 - change settings save button color to primary
 - show confirmation modal before performing clear version metadata
+- download all document pages when converting to image types with Download As method
 
 ## Added
 - plugin description and useful links in admin settings

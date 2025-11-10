@@ -394,6 +394,6 @@ class Preview implements IProvider2 {
 
 		$fileExtension = strtolower(pathinfo($file->getName(), PATHINFO_EXTENSION));
 
-		return [$fileUrl, $fileExtension, $key];
+		return [$fileUrl, $fileExtension, "thumb_$key"];
 	}
 }

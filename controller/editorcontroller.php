@@ -1315,13 +1315,30 @@ class EditorController extends Controller {
 		}
 
 		$newFileUri = null;
+		$newFileType = $toExtension;
 		$documentService = new DocumentService($this->trans, $this->config);
 		$key = $this->fileUtility->getKey($file);
 		$fileUrl = $this->getUrl($file, $user);
+		$thumbnail = ['first' => false];
 		try {
-			$newFileUri = $documentService->getConvertedUri($fileUrl, $ext, $toExtension, $key);
+			$response = $documentService->sendRequestToConvertService(
+				$fileUrl,
+				$ext,
+				$toExtension,
+				$key,
+				false,
+				false,
+				$thumbnail,
+			);
+			if (isset($response->error)) {
+				$documentService->processConvServResponceError($response->error);
+			}
+			if (isset($response->endConvert) && $response->endConvert === true) {
+				$newFileUri = $response->fileUrl;
+				$newFileType = $response->fileType;
+			}
 		} catch (\Exception $e) {
-			$this->logger->logException($e, ["message" => "getConvertedUri: " . $file->getId(), "app" => $this->appName]);
+			$this->logger->logException($e, ["message" => "sendRequestToConvertService: " . $file->getId(), "app" => $this->appName]);
 			return $this->renderError($e->getMessage());
 		}
 
@@ -1333,9 +1350,9 @@ class EditorController extends Controller {
 		}
 
 		$fileNameWithoutExt = substr($fileName, 0, \strlen($fileName) - \strlen($ext) - 1);
-		$newFileName = $fileNameWithoutExt . "." . $toExtension;
+		$newFileName = "$fileNameWithoutExt.$newFileType";
 
-		$mimeType = $this->config->getMimeType($toExtension);
+		$mimeType = $this->config->getMimeType($newFileType);
 
 		return new DataDownloadResponse($newData, $newFileName, $mimeType);
 	}

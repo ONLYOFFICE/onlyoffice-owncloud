@@ -1,4 +1,6 @@
 # Change Log
+
+## 9.12.1
 ## Changed
 - fix opening a shared link when group access to the app is restricted
 - replaced general save success message with dedicated messages for each settings section

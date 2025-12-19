@@ -10,7 +10,6 @@
 
 ## Added
 - plugin description and useful links in admin settings
-- document unsaved notifications
 
 ## 9.10.1
 ## Added

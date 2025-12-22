@@ -135,6 +135,18 @@ OC.L10N.register(
     "Select file to insert text": "Seleccionar archivo para insertar texto",
     "Select file": "Seleccionar archivo",
     "Same as system": "Igual que el sistema",
-    "Enable live-viewing mode when accessing file by public link": "Habilitar el modo de vista en vivo al acceder al archivo mediante un enlace público"
+    "Enable live-viewing mode when accessing file by public link": "Habilitar el modo de vista en vivo al acceder al archivo mediante un enlace público",
+    "Server settings have been successfully updated": "La configuración del servidor se ha actualizado correctamente",
+    "Common settings have been successfully updated": "La configuración general se ha actualizado correctamente",
+    "Security settings have been successfully updated": "La configuración de seguridad se ha actualizado correctamente",
+    "Are you sure you want to clear metadata?": "¿Está seguro(a) de que desea borrar los metadatos?",
+    "Confirm metadata removal": "Confirmar la eliminación de metadatos",
+    "Welcome to ONLYOFFICE Docs!": "¡Bienvenido(a) a ONLYOFFICE Docs!",
+    "Create, edit, and co-author documents, sheets, slides, and PDFs within ownCloud using ONLYOFFICE Docs.": "Crea, edita y coautoriza documentos, hojas de cálculo, presentaciones y PDFs dentro de ownCloud usando ONLYOFFICE Docs.",
+    "Learn more": "Más información",
+    "Suggest a feature": "Sugerir una función",
+    "To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page.": "Para garantizar la seguridad de los parámetros importantes en las solicitudes de ONLYOFFICE Docs, establezca una clave secreta en la página de configuración.",
+    "Info": "Información",
+    "%1$s could not be saved. Please open the file again.": "%1$s no se pudo guardar. Por favor, abra el archivo de nuevo."
 },
 "nplurals=2; plural=(n != 1);");

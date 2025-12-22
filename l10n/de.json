@@ -133,6 +133,18 @@
     "Select file to insert text": "Wählen Sie die Datei aus, um Text einzufügen",
     "Select file": "Datei auswählen",
     "Same as system": "Wie im System",
-    "Enable live-viewing mode when accessing file by public link" : "Live-Anzeigemodus aktivieren beim Zugriff auf die Datei über einen öffentlichen Link"
+    "Enable live-viewing mode when accessing file by public link" : "Live-Anzeigemodus aktivieren beim Zugriff auf die Datei über einen öffentlichen Link",
+    "Server settings have been successfully updated": "Die Servereinstellungen erfolgreich aktualisiert",
+    "Common settings have been successfully updated": "Die allgemeinen Einstellungen erfolgreich aktualisiert",
+    "Security settings have been successfully updated": "Die Sicherheitseinstellungen erfolgreich aktualisiert",
+    "Are you sure you want to clear metadata?": "Möchten Sie die Metadaten wirklich löschen?",
+    "Confirm metadata removal": "Metadatenlöschung bestätigen",
+    "Welcome to ONLYOFFICE Docs!": "Willkommen bei ONLYOFFICE Docs!",
+    "Create, edit, and co-author documents, sheets, slides, and PDFs within ownCloud using ONLYOFFICE Docs.": "Mit ONLYOFFICE Docs können Sie in ownCloud Dokumente, Tabellen, Präsentationen und PDFs erstellen und gemeinsam bearbeiten.",
+    "Learn more": "Mehr erfahren",
+    "Suggest a feature": "Funktion vorschlagen",
+    "To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page.": "Um die Sicherheit wichtiger Parameter in ONLYOFFICE Docs-Anfragen zu gewährleisten, legen Sie bitte einen geheimen Schlüssel auf der Einstellungsseite fest.",
+    "Info": "Info",
+    "%1$s could not be saved. Please open the file again.": "%1$s konnte nicht gespeichert werden. Bitte öffnen Sie die Datei erneut."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

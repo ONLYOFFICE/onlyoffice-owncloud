@@ -28,7 +28,6 @@ OC.L10N.register(
     "Spreadsheet" : "Foglio di calcolo",
     "Presentation" : "Presentazione",
     "Error when trying to connect" : "Errore durante il tentativo di connessione",
-    "Settings have been successfully updated" : "Le impostazioni sono state aggiornate con successo",
     "Server can't read xml" : "Il server non può leggere xml",
     "Bad Response. Errors: " : "Risposta non corretta. Errori: ",
     "Documentation" : "Documentazione" ,
@@ -136,6 +135,18 @@ OC.L10N.register(
     "Select file to insert text": "Seleziona il file per inserire testo",
     "Select file": "Seleziona file",
     "Same as system": "Uguale al sistema",
-    "Enable live-viewing mode when accessing file by public link" : "Abilita la modalità di visualizzazione in tempo reale quando accedi al file tramite link pubblico"
+    "Enable live-viewing mode when accessing file by public link" : "Abilita la modalità di visualizzazione in tempo reale quando accedi al file tramite link pubblico",
+    "Server settings have been successfully updated": "Le impostazioni del server sono state aggiornate con successo",
+    "Common settings have been successfully updated": "Le impostazioni comuni sono state aggiornate con successo",
+    "Security settings have been successfully updated": "Le impostazioni di sicurezza sono state aggiornate con successo",
+    "Are you sure you want to clear metadata?": "Sei sicuro di voler cancellare i metadati?",
+    "Confirm metadata removal": "Conferma rimozione metadati",
+    "Welcome to ONLYOFFICE Docs!": "Benvenuto in ONLYOFFICE Docs!",
+    "Create, edit, and co-author documents, sheets, slides, and PDFs within ownCloud using ONLYOFFICE Docs.": "Crea, modifica e lavora in collaborazione su documenti, fogli di calcolo, diapositive e PDF utilizzando ONLYOFFICE Docs all'interno di ownCloud.",
+    "Learn more": "Scopri di più",
+    "Suggest a feature": "Suggerisci una funzione",
+    "To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page.": "Per garantire la sicurezza dei parametri importanti nelle richieste di ONLYOFFICE Docs, imposta una Chiave Segreta nella pagina delle Impostazioni.",
+    "Info": "Info",
+    "%1$s could not be saved. Please open the file again.": "Non è stato possibile salvare %1$s. Apri nuovamente il file."
 },
 "nplurals=2; plural=(n != 1);");

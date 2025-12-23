@@ -28,7 +28,6 @@ OC.L10N.register(
     "Spreadsheet" : "スプレッドシート",
     "Presentation" : "プレゼンテーション",
     "Error when trying to connect" : "接続時にエラーが発生しました",
-    "Settings have been successfully updated" : "設定が更新されました",
     "Server can't read xml" : "サーバーでxmlを読み込ませんでした",
     "Bad Response. Errors: " : "不正なレスポンス エラー: ",
     "Documentation" : "ドキュメンテーション",
@@ -136,6 +135,18 @@ OC.L10N.register(
     "Select file to insert text": "テキストを挿入するファイルを選択",
     "Select file": "ファイルを選択",
     "Same as system": "システム設定と同じ",
-    "Enable live-viewing mode when accessing file by public link" : "公開リンクでファイルにアクセスする際にライブビューモードを有効にする"
+    "Enable live-viewing mode when accessing file by public link" : "公開リンクでファイルにアクセスする際にライブビューモードを有効にする",
+    "Server settings have been successfully updated": "サーバー設定が正常に更新されました",
+    "Common settings have been successfully updated": "共通設定が正常に更新されました",
+    "Security settings have been successfully updated": "セキュリティ設定が正常に更新されました",
+    "Are you sure you want to clear metadata?": "メタデータをクリアしてもよろしいですか？",
+    "Confirm metadata removal": "メタデータの削除をご確認ください",
+    "Welcome to ONLYOFFICE Docs!": "ONLYOFFICE Docsへようこそ！",
+    "Create, edit, and co-author documents, sheets, slides, and PDFs within ownCloud using ONLYOFFICE Docs.": "ONLYOFFICE Docsを使用して、ownCloud内でドキュメント、スプレッドシート、スライド、PDFを作成、編集、共同編集ができます。",
+    "Learn more": "詳細を見る",
+    "Suggest a feature": "機能を提案",
+    "To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page.": "ONLYOFFICE Docsリクエストの重要なパラメータのセキュリティを確保するため、設定ページでシークレットキーを設定してください。",
+    "Info": "情報",
+    "%1$s could not be saved. Please open the file again.": "%1$sを保存できませんでした。ファイルを再度開いてください。"
 },
 "nplurals=1; plural=0;");

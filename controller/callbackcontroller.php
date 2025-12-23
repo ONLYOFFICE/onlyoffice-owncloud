@@ -602,6 +602,20 @@ class CallbackController extends Controller {
 					$result = 0;
 				} catch (\Exception $e) {
 					$this->logger->logException($e, ["message" => "Track: $fileId status $status error", "app" => $this->appName]);
+					// if (isset($file) && $status === self::TRACKERSTATUS_MUSTSAVE) {
+					// 	$notificationManager = \OC::$server->getNotificationManager();
+					// 	$notification = $notificationManager->createNotification();
+					// 	$notification->setApp($this->appName)
+					// 		->setDateTime(new \DateTime())
+					// 		->setObject("documentUnsaved", $fileId)
+					// 		->setSubject(
+					// 			"documentunsaved_info",
+					// 			["fileId" => $fileId,
+					// 			"fileName" => $file->getName()]
+					// 		)
+					// 		->setUser($userId);
+					// 	$notificationManager->notify($notification);
+					// }
 				}
 				break;
 

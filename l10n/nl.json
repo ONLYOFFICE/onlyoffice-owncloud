@@ -26,7 +26,6 @@
     "Spreadsheet" : "Werkblad",
     "Presentation" : "Presentaties",
     "Error when trying to connect" : "Fout bij het verbinden",
-    "Settings have been successfully updated" : "Instellingen zijn met succes bijgewerkt",
     "Server can't read xml" : "Server kan xml niet lezen",
     "Bad Response. Errors: " : "Slechte Reactie. Fouten",
     "Documentation" : "Documentatie",
@@ -134,6 +133,9 @@
     "Select file to insert text": "Een bestand selecteren om tekst in te voegen",
     "Select file": "Bestand selecteren",
     "Same as system": "Zelfde als systeem",
-    "Enable live-viewing mode when accessing file by public link" : "Aktivera livevisningsläge vid åtkomst till fil via offentlig länk"
+    "Enable live-viewing mode when accessing file by public link" : "Aktivera livevisningsläge vid åtkomst till fil via offentlig länk",
+    "Welcome to ONLYOFFICE Docs!": "Welkom bij ONLYOFFICE Docs!",
+    "Learn more": "Meer informatie",
+    "Suggest a feature": "Stel een functie voor"
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

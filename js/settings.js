@@ -135,28 +135,43 @@
                 !!response.error.length
             );
 
-            const message = response.error
-              ? t(OCA.Onlyoffice.AppName, "Error when trying to connect") +
-                " (" +
-                response.error +
-                ")"
-              : t(
+            if (!response.error && response.secret === null) {
+              OC.dialogs.info(
+                t(
                   OCA.Onlyoffice.AppName,
-                  "Settings have been successfully updated"
-                );
+                  "Server settings have been successfully updated"
+                ) +
+                  ". " +
+                  t(
+                    OCA.Onlyoffice.AppName,
+                    "To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page."
+                  ),
+                t(OCA.Onlyoffice.AppName, "Info")
+              );
+            } else {
+              const message = response.error
+                ? t(OCA.Onlyoffice.AppName, "Error when trying to connect") +
+                  " (" +
+                  response.error +
+                  ")"
+                : t(
+                    OCA.Onlyoffice.AppName,
+                    "Server settings have been successfully updated"
+                  );
 
-            const versionMessage = response.version
-              ? " (" +
-                t(OCA.Onlyoffice.AppName, "version") +
-                " " +
-                response.version +
-                ")"
-              : "";
+              const versionMessage = response.version
+                ? " (" +
+                  t(OCA.Onlyoffice.AppName, "version") +
+                  " " +
+                  response.version +
+                  ")"
+                : "";
 
-            OC.Notification.show(message + versionMessage, {
-              type: response.error ? "error" : null,
-              timeout: 3,
-            });
+              OC.Notification.show(message + versionMessage, {
+                type: response.error ? "error" : null,
+                timeout: 3,
+              });
+            }
           } else {
             $(".section-onlyoffice-2").addClass("onlyoffice-hide");
           }
@@ -235,7 +250,7 @@
           if (response) {
             const message = t(
               OCA.Onlyoffice.AppName,
-              "Settings have been successfully updated"
+              "Common settings have been successfully updated"
             );
             OC.Notification.show(message, {
               timeout: 3,
@@ -269,7 +284,7 @@
           if (response) {
             const message = t(
               OCA.Onlyoffice.AppName,
-              "Settings have been successfully updated"
+              "Security settings have been successfully updated"
             );
             OC.Notification.show(message, {
               timeout: 3,
@@ -295,26 +310,36 @@
     });
 
     $("#onlyofficeClearVersionHistory").click(function () {
-      $(".section-onlyoffice").addClass("icon-loading");
-
-      $.ajax({
-        method: "DELETE",
-        url: OC.generateUrl(
-          "apps/" + OCA.Onlyoffice.AppName + "/ajax/settings/history"
-        ),
-        success: function onSuccess(response) {
-          $(".section-onlyoffice").removeClass("icon-loading");
-          if (response) {
-            const message = t(
-              OCA.Onlyoffice.AppName,
-              "All history successfully deleted"
-            );
-            OC.Notification.show(message, {
-              timeout: 3,
-            });
+      OC.dialogs.confirm(
+        t(OCA.Onlyoffice.AppName, 'Are you sure you want to clear metadata?'),
+        t(OCA.Onlyoffice.AppName, 'Confirm metadata removal'),
+        (clicked) => {
+          if (!clicked) {
+            return
           }
+
+          $(".section-onlyoffice").addClass("icon-loading");
+
+          $.ajax({
+            method: "DELETE",
+            url: OC.generateUrl(
+              "apps/" + OCA.Onlyoffice.AppName + "/ajax/settings/history"
+            ),
+            success: function onSuccess(response) {
+              $(".section-onlyoffice").removeClass("icon-loading");
+              if (response) {
+                const message = t(
+                  OCA.Onlyoffice.AppName,
+                  "All history successfully deleted"
+                );
+                OC.Notification.show(message, {
+                  timeout: 3,
+                });
+              }
+            },
+          });
         },
-      });
+      )
     });
 
     $("#onlyofficeAddTemplate").change(function () {

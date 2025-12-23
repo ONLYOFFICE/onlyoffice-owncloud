@@ -1404,7 +1404,10 @@ class AppConfig {
 							"editable" => in_array("lossy-edit", $onlyOfficeFormat["actions"]),
 							"conv" => in_array("auto-convert", $onlyOfficeFormat["actions"]),
 							"fillForms" => in_array("fill", $onlyOfficeFormat["actions"]),
+							"comment" => in_array("comment", $onlyOfficeFormat["actions"]),
 							"saveas" => $onlyOfficeFormat["convert"],
+							"review" => in_array("review", $onlyOfficeFormat["actions"]),
+							"modifyFilter" => in_array("customfilter", $onlyOfficeFormat["actions"]),
 						];
 						if (isset($additionalFormats[$onlyOfficeFormat["name"]])) {
 							$result[$onlyOfficeFormat["name"]] = array_merge($result[$onlyOfficeFormat["name"]], $additionalFormats[$onlyOfficeFormat["name"]]);
@@ -1428,8 +1431,6 @@ class AppConfig {
 		$additionalFormatAttributes = [
 			"docx" => [
 				"def" => true,
-				"review" => true,
-				"comment" => true,
 			],
 			"docxf" => [
 				"def" => true,
@@ -1444,12 +1445,9 @@ class AppConfig {
 			],
 			"pptx" => [
 				"def" => true,
-				"comment" => true,
 			],
 			"xlsx" => [
 				"def" => true,
-				"comment" => true,
-				"modifyFilter" => true,
 			],
 			"txt" => [
 				"edit" => true,

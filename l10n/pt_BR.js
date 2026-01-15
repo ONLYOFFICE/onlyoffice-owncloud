@@ -148,5 +148,5 @@ OC.L10N.register(
     "To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page.": "Para garantir a segurança de parâmetros importantes nas solicitações do ONLYOFFICE Docs, defina uma Chave Secreta na página Configurações.",
     "Info": "Informações",
     "%1$s could not be saved. Please open the file again.": "%1$s não pôde ser salvo. Por favor, abra o arquivo novamente."
-    },
+},
 "nplurals=2; plural=(n > 1);");

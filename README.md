@@ -1,19 +1,36 @@
 # ![onlyoffice icon](screenshots/icon.png) ONLYOFFICE app for ownCloud
 
+<p align="center">  
+  <a href="https://marketplace.owncloud.com/apps/onlyoffice">  
+    <img alt="ownCloud Marketplace" src="https://img.shields.io/badge/ownCloud%20Marketplace-Download-blue?style=for-the-badge&logo=owncloud">  
+  </a>  
+  <a href="https://github.com/ONLYOFFICE/onlyoffice-owncloud/releases">  
+    <img alt="Release" src="https://img.shields.io/github/v/release/onlyoffice/onlyoffice-owncloud?style=for-the-badge">  
+  </a>  
+</p>
+
 This app allows users to edit office documents from [ownCloud](https://owncloud.com) using ONLYOFFICE Docs packaged as Document Server - [Community or Enterprise Edition](#onlyoffice-docs-editions).
 
-## Features
+## Features ✨
 
 The app allows to:
 
-* Create and edit text documents, spreadsheets, and presentations.
-* Create and edit PDF forms.
-* Edit PDF files.
-* Share files with different permission types - viewing/editing, commenting, reviewing, filling forms. It's also possible to restrict downloading (in all editors) and modifying filters (in spreadshhets). Sharing via public link is also available. 
-* Co-edit documents in real-time: use two co-editing modes (Fast and Strict), Track Changes, comments, and built-in chat. Co-editing is also available several federated ownCloud instances connected to one Document Server.
-* Work with documents, spreadsheets, and presentations within ownCloud Web. 
+* ✍️ Create and edit [text documents](https://www.onlyoffice.com/word-processor?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwnCloud), [spreadsheets](https://www.onlyoffice.com/spreadsheet-editor?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwnCloud), and [presentations](https://www.onlyoffice.com/slides?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwnCloud).
+* 📝 Create and edit PDF forms.
+* ✂️ Edit [PDF](https://www.onlyoffice.com/pdf-editor?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwnCloud) files.
+* 📊 View [diagram](https://www.onlyoffice.com/diagram-viewer?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwnCloud) files.
+* 🔗 Share files with different permission types - viewing/editing, commenting, reviewing, filling forms. It's also possible to restrict downloading (in all editors) and modifying filters (in spreadshhets). Sharing via public link is also available. 
+* 👥 Co-edit documents in [real time](https://www.onlyoffice.com/seamless-collaboration?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwnCloud): two co-editing modes (Fast and Strict), Track Changes, comments, and built-in chat. Co-editing is also available several federated ownCloud instances connected to one Document Server.
+* 🌐 Work with documents, spreadsheets, and presentations within ownCloud Web. 
+* 🤖 Enable [AI assistants](https://www.onlyoffice.com/ai-assistants?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwnCloud) in the editors to work faster and more efficient (it's possible to connect any AI provider).
 
-Supported formats:
+<p align="center">
+  <a href="https://www.onlyoffice.com/office-for-owncloud?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwnCloud">
+    <img width="840" src="https://static-site.onlyoffice.com/public/images/templates/office-for-owncloud/hero/hero@2x.png" alt="ONLYOFFICE Docs for ownCloud">
+  </a>
+</p>
+
+### Supported formats:
 
 **For viewing:**
 
@@ -32,25 +49,27 @@ Supported formats:
 
 ODT, ODS, and ODP is also available for instant conversion. After you enable the corresponding option in the admin settings, ODF-formatted documents are immediately converted in the editor and opened after you click on it.
 
-## Installing ONLYOFFICE Docs
+## Installing ONLYOFFICE Docs 📦
 
 You will need an instance of ONLYOFFICE Docs (Document Server) that is resolvable and connectable both from ownCloud and any end clients. ONLYOFFICE Document Server must also be able to POST to ownCloud directly.
 
 ONLYOFFICE Document Server and ownCloud can be installed either on different computers, or on the same machine. If you use one machine, set up a custom port for Document Server as by default both ONLYOFFICE Document Server and ownCloud work on port 80.
 
-You can install free Community version of ONLYOFFICE Docs or scalable Enterprise Edition with pro features.
+You can install free Community version of ONLYOFFICE Docs or scalable Enterprise Edition.
 
-To install free Community version, use [Docker](https://github.com/onlyoffice/Docker-DocumentServer) (recommended) or follow [these instructions](https://helpcenter.onlyoffice.com/installation/docs-community-install-ubuntu.aspx) for Debian, Ubuntu, or derivatives.  
+To install free Community version, use [Docker](https://github.com/onlyoffice/Docker-DocumentServer) (recommended) or follow [these instructions](https://helpcenter.onlyoffice.com/docs/installation/docs-community-install-ubuntu.aspx) for Debian, Ubuntu, or derivatives.  
 
-To install Enterprise Edition, follow instructions [here](https://helpcenter.onlyoffice.com/installation/docs-enterprise-index.aspx).
+To install Enterprise Edition, follow instructions [here](https://helpcenter.onlyoffice.com/docs/installation/enterprise).
 
 Community Edition vs Enterprise Edition comparison can be found [here](#onlyoffice-docs-editions).
 
-To use ONLYOFFICE behind a proxy, please refer to [this article](https://helpcenter.onlyoffice.com/installation/docs-community-proxy.aspx).
+To use ONLYOFFICE behind a proxy, please refer to [this article](https://helpcenter.onlyoffice.com/docs/installation/docs-community-proxy.aspx).
 
 You can also use our **[Docker installation](https://github.com/ONLYOFFICE/docker-onlyoffice-owncloud)** to install pre-configured Document Server (free version) and ownCloud with a couple of commands.
 
-## Installing ONLYOFFICE app for ownCloud
+Alternatively, you can opt for ONLYOFFICE Docs Cloud which doesn't require downloading and installation. To get ONLYOFFICE Docs Cloud, get started [here](https://www.onlyoffice.com/docs-registration?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwnCloud).
+
+## Installing ONLYOFFICE app for ownCloud 📥
 
 The ownCloud administrator can install the app from the in-built application market.
 For that click the upper-left hamburger menu and select **Market**. After that find **ONLYOFFICE** in the list of available applications and install it.
@@ -87,7 +106,7 @@ There are several ways to do that:
 
 4. In ownCloud open the `~/settings/admin?sectionid=apps&category=disabled` page with _Not enabled_ apps by administrator and click _Enable_ for the **ONLYOFFICE** application.
 
-## Configuring ONLYOFFICE app for ownCloud
+## Configuring ONLYOFFICE app for ownCloud 🛠️
 
 In ownCloud open the `~/settings/admin?sectionid=additional#onlyoffice` page with administrative settings for **ONLYOFFICE** section.
 Enter the following address to connect ONLYOFFICE Document Server:
@@ -113,7 +132,7 @@ Enable or disable the _Open file in the same tab_ setting.
 The **Open in ONLYOFFICE** action will be added to the file context menu.
 You can specify this action as default and it will be used when the file name is clicked for the selected file types.
 
-## Checking the connection 
+## Checking the connection ☑️
 
 You can check the connection to ONLYOFFICE Document Server by using the following occ command:
 
@@ -121,7 +140,7 @@ You can check the connection to ONLYOFFICE Document Server by using the followin
 
 You will see a text either with information about the successful connection or the cause of the error.
 
-## Enabling editing for ownCloud Web
+## Enabling editing for ownCloud Web 🌐
 
 To enable work within ownCloud web, register the connector in the ownCloud Web config.json:
 
@@ -141,9 +160,9 @@ To register the connector, use these lines:
 
 Depending on your webserver configuration you can drop the `index.php` segment from the url path.
 
-## How it works
+## How it works ⚙️
 
-The ONLYOFFICE app follows the API documented [here](https://api.onlyoffice.com):
+The ONLYOFFICE app follows the API documented here [api.onlyoffice.com](https://api.onlyoffice.com/?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwnCloud):
 
 * When creating a new file, the user navigates to a document folder within ownCloud and clicks the **Document**, **Spreadsheet** or **Presentation** item in the _new_ (+) menu.
 
@@ -175,7 +194,7 @@ This method adds the copy of the file from the assets folder to the folder the u
 
 * ownCloud downloads the new version of the document, replacing the old one.
 
-## Known issues
+## Known issues ❓
 
 * Adding the storage using the **External storages** app has issues with the co-editing in some cases.
 If the connection is made using the same authorization keys (the _Username and password_ or _Global credentials_ authentication type is selected), then the co-editing is available for the users.
@@ -227,15 +246,15 @@ The instruction on enabling _master key_ based encryption is available in the of
 
 ONLYOFFICE offers different versions of its online document editors that can be deployed on your own servers.
 
-* Community Edition (`onlyoffice-documentserver` package)
-* Enterprise Edition (`onlyoffice-documentserver-ee` package)
+* Community Edition 🆓 (`onlyoffice-documentserver` package)
+* Enterprise Edition 🏢 (`onlyoffice-documentserver-ee` package)
 
 The table below will help you to make the right choice.
 
 | Pricing and licensing | Community Edition | Enterprise Edition |
 | ------------- | ------------- | ------------- |
-| | [Get it now](https://www.onlyoffice.com/download-docs.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwncloud#docs-community)  | [Start Free Trial](https://www.onlyoffice.com/download-docs.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwncloud#docs-enterprise)  |
-| Cost  | FREE  | [Go to the pricing page](https://www.onlyoffice.com/docs-enterprise-prices.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwncloud)  |
+| | [Get it now](https://www.onlyoffice.com/download-community?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwnCloud#docs-community)  | [Start Free Trial](https://www.onlyoffice.com/download?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwnCloud#docs-enterprise)  |
+| Cost  | FREE  | [Go to the pricing page](https://www.onlyoffice.com/docs-enterprise-prices?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwncloud)  |
 | Simultaneous connections | up to 20 maximum  | As in chosen pricing plan |
 | Number of users | up to 20 recommended | As in chosen pricing plan |
 | License | GNU AGPL v.3 | Proprietary |
@@ -294,11 +313,21 @@ The table below will help you to make the right choice.
 | Adding form fields	          | + | + |
 | Form preview                    | + | + |
 | Saving as PDF	                  | + | + |
-| **Working with PDF**      | **Community Edition** | **Enterprise Edition** |
-| Text annotations (highlight, underline, cross out) | + | + |
+| **PDF Editor features**      | **Community Edition** | **Enterprise Edition** |
+| Text editing and co-editing                        | + | + |
+| Work with pages (adding, deleting, rotating)                      | + | + |
+| Inserting objects (shapes, images, hyperlinks, etc.)                       | + | + |
+| Text annotations (highlight, underline, cross out, stamps) | + | + |
 | Comments                        | + | + |
 | Freehand drawings               | + | + |
 | Form filling                    | + | + |
-| | [Get it now](https://www.onlyoffice.com/download-docs.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwncloud#docs-community)  | [Start Free Trial](https://www.onlyoffice.com/download-docs.aspx?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwncloud#docs-enterprise)  |
+| | [Get it now](https://www.onlyoffice.com/download-community?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwnCloud#docs-community)  | [Start Free Trial](https://www.onlyoffice.com/download?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwnCloud#docs-enterprise)  |
 
 \* If supported by DMS.
+
+## Need help? User Feedback and Support 💡
+
+* **🐞 Found a bug?** Please report it by creating an [issue](https://github.com/ONLYOFFICE/onlyoffice-owncloud/issues).  
+* **❓ Have a question?** Ask our community and developers on the [ONLYOFFICE Forum](https://community.onlyoffice.com/).  
+* **👨‍💻 Need help for developers?** Check our [API documentation](https://api.onlyoffice.com/?utm_source=github&utm_medium=cpc&utm_campaign=GitHubOwnCloud). 
+* **💡 Want to suggest a feature?** Share your ideas on our [feedback platform](https://feedback.onlyoffice.com/forums/966080-your-voice-matters).

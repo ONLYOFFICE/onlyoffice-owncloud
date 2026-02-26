@@ -1328,7 +1328,7 @@ class EditorController extends Controller {
 				$key,
 				false,
 				false,
-				$thumbnail,
+				$thumbnail
 			);
 			if (isset($response->error)) {
 				$documentService->processConvServResponceError($response->error);

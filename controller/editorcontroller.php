@@ -406,7 +406,7 @@ class EditorController extends Controller {
 				foreach ($currentUserGroups as $currentUserGroup) {
 					$group = $this->groupManager->get($currentUserGroup);
 					foreach ($group->getUsers() as $user) {
-						if (!\in_array($user, $users)) {
+						if (!\in_array($user, $users, true)) {
 							array_push($users, $user);
 						}
 					}
@@ -420,7 +420,7 @@ class EditorController extends Controller {
 		if (!$all) {
 			$accessList = $this->getAccessList($file);
 			foreach ($accessList as $accessUser) {
-				if (!\in_array($accessUser, $users)) {
+				if (!\in_array($accessUser, $users, true)) {
 					array_push($users, $accessUser);
 				}
 			}
@@ -505,7 +505,7 @@ class EditorController extends Controller {
 			$recipients = $this->userManager->getByEmail($email);
 			foreach ($recipients as $recipient) {
 				$recipientId = $recipient->getUID();
-				if (!\in_array($recipientId, $recipientIds)) {
+				if (!\in_array($recipientId, $recipientIds, true)) {
 					array_push($recipientIds, $recipientId);
 				}
 			}
@@ -563,7 +563,7 @@ class EditorController extends Controller {
 
 		foreach ($recipientIds as $recipientId) {
 			$recipient = $this->userManager->get($recipientId);
-			$isAvailable = \in_array($recipient, $accessList);
+			$isAvailable = \in_array($recipient, $accessList, true);
 
 			if (!$isAvailable
 				&& $file->getFileInfo()->getMountPoint() instanceof \OCA\Files_External\Config\ExternalMountPoint
@@ -1582,13 +1582,13 @@ class EditorController extends Controller {
 			}
 
 			foreach ($accessList as $accessUser) {
-				if (!\in_array($accessUser, $result)) {
+				if (!\in_array($accessUser, $result, true)) {
 					array_push($result, $accessUser);
 				}
 			}
 		}
 
-		if (!\in_array($file->getOwner(), $result)) {
+		if (!\in_array($file->getOwner(), $result, true)) {
 			array_push($result, $file->getOwner());
 		}
 

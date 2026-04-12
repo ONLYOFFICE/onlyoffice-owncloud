@@ -793,7 +793,7 @@ class EditorApiController extends OCSController {
 	private function isFavorite($fileId) {
 		$currentTags = $this->tagManager->load("files")->getTagsForObjects([$fileId]);
 		if ($currentTags) {
-			return \in_array(Tags::TAG_FAVORITE, $currentTags[$fileId]);
+			return \in_array(Tags::TAG_FAVORITE, $currentTags[$fileId], true);
 		}
 
 		return false;

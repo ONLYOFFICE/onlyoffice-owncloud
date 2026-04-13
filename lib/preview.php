@@ -208,7 +208,7 @@ class Preview implements IProvider2 {
 			if (!empty($mimeTypeRegex)) {
 				$mimeTypeRegex = $mimeTypeRegex . "|";
 			}
-			$mimeTypeRegex = $mimeTypeRegex . str_replace("/", "\/", $format);
+			$mimeTypeRegex .= preg_quote($format, "/");
 		}
 		$mimeTypeRegex = "/" . $mimeTypeRegex . "/";
 

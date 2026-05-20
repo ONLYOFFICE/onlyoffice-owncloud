@@ -2,7 +2,7 @@
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
  *
- * (c) Copyright Ascensio System SIA 2025
+ * (c) Copyright Ascensio System SIA 2026
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -136,7 +136,7 @@ class DocumentService {
 		}
 
 		$document_revision_id = self::generateRevisionId($document_revision_id);
-		$urlToConverter = $urlToConverter . "?shardKey=" . $document_revision_id;
+		$urlToConverter = $urlToConverter . "?shardkey=" . $document_revision_id;
 
 		if (empty($from_extension)) {
 			$from_extension = pathinfo($document_uri)["extension"];

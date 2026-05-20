@@ -123,7 +123,7 @@ Sometimes your network configuration might not allow the requests between instal
 The _Advanced server settings_ allows to set the ONLYOFFICE Document Server address for internal requests from ownCloud server and the returning ownCloud address for the internal requests from ONLYOFFICE Document Server.
 You need to enter them in the appropriate fields.
 
-Starting from version 7.2, JWT is enabled by default and the secret key is generated automatically to restrict the access to ONLYOFFICE Docs and for security reasons and data integrity.
+JWT is enabled by default and the secret key is generated automatically to restrict the access to ONLYOFFICE Docs and for security reasons and data integrity.
 Specify your own **Secret key** in the ownCloud administrative configuration.
 In the ONLYOFFICE Docs config file, specify the same secret key and enable the validation.
 

@@ -31,7 +31,7 @@
 ## Added
 - support external link for reference data
 - support hwp, hwpx, pages, numbers, key formats
-- shardKey param to url for requests to Conversion API
+- shardkey param to url for requests to Conversion API
 - jwt expire configuration
 - system, contrast-dark and gray themes
 - close button

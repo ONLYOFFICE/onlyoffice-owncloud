@@ -1,6 +1,6 @@
 /**
  *
- * (c) Copyright Ascensio System SIA 2025
+ * (c) Copyright Ascensio System SIA 2026
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@
           const script = document.createElement("script");
           script.src =
             config.documentServerUrl +
-            "web-apps/apps/api/documents/api.js?shardKey=" +
+            "web-apps/apps/api/documents/api.js?shardkey=" +
             config.document.key;
           script.setAttribute("nonce", btoa(OC.requestToken));
           script.onerror = function () {

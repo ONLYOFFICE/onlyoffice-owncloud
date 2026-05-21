@@ -14,7 +14,7 @@ Simplify your workflows with easy configuration through the ownCloud Admin Panel
 
 Moreover, any AI assistant, including local ones, can be effortlessly connected right to the editors to boost speed and efficiency. This enables the use of diverse AI models for tasks such as chatbot interactions, translations, OCR, and more.
 ]]></description>
-    <licence>apl2</licence>
+    <licence>agpl</licence>
     <author>Ascensio System SIA</author>
     <version>9.12.1</version>
     <namespace>Onlyoffice</namespace>

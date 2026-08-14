@@ -1,5 +1,7 @@
 <?php
-/*
+/**
+ * @author Ascensio System SIA <integration@onlyoffice.com>
+ *
  * Copyright (C) Ascensio System SIA, 2009-2026
  *
  * This program is a free software product. You can redistribute it and/or

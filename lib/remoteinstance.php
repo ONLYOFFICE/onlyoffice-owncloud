@@ -82,11 +82,9 @@ class RemoteInstance {
             WHERE `remote` = ?
         "
 		);
-		$result = $select->execute([$remote]);
+		$result = $select->executeQuery([$remote]);
 
-		$dbremote = $result ? $select->fetch() : [];
-
-		return $dbremote;
+		return $result->fetchAssociative();
 	}
 
 	/**
@@ -106,7 +104,7 @@ class RemoteInstance {
             VALUES (?, ?, ?)
         "
 		);
-		return (bool)$insert->execute([$remote, $status === true ? 1 : 0, time()]);
+		return (bool)$insert->executeStatement([$remote, $status === true ? 1 : 0, time()]);
 	}
 
 	/**
@@ -126,7 +124,7 @@ class RemoteInstance {
             WHERE remote = ?
         "
 		);
-		return (bool)$update->execute([$status === true ? 1 : 0, time(), $remote]);
+		return (bool)$update->executeStatement([$status === true ? 1 : 0, time(), $remote]);
 	}
 
 	/**

@@ -1,5 +1,8 @@
 # Change Log
 
+## Changed
+- moved admin settings to a dedicated ONLYOFFICE section in the sidebar
+
 ## 9.12.1
 ## Added
 - plugin description and useful links in admin settings

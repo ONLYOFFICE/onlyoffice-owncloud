@@ -1,5 +1,7 @@
 <?php
-/*
+/**
+ * @author Ascensio System SIA <integration@onlyoffice.com>
+ *
  * Copyright (C) Ascensio System SIA, 2009-2026
  *
  * This program is a free software product. You can redistribute it and/or
@@ -34,14 +36,64 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-namespace OCA\Onlyoffice;
+namespace OCA\Onlyoffice\Panels\Admin;
 
-use OCP\User;
+use OCP\IL10N;
+use OCP\Settings\ISection;
 
-use OCA\Onlyoffice\Controller\SettingsController;
+/**
+ * Admin settings section for the ONLYOFFICE app
+ */
+class Section implements ISection {
+	/**
+	 * l10n service
+	 *
+	 * @var IL10N
+	 */
+	private $trans;
 
-User::checkAdminUser();
+	/**
+	 * Constructor
+	 *
+	 * @param IL10N $trans - l10n service
+	 */
+	public function __construct(IL10N $trans) {
+		$this->trans = $trans;
+	}
 
-$response = \OC::$server->query(SettingsController::class)->index();
+	/**
+	 * Get section ID
+	 *
+	 * @return string
+	 */
+	public function getID() {
+		return "onlyoffice";
+	}
 
-return $response->render();
+	/**
+	 * Get section name
+	 *
+	 * @return string
+	 */
+	public function getName() {
+		return $this->trans->t("ONLYOFFICE");
+	}
+
+	/**
+	 * Get priority order
+	 *
+	 * @return int
+	 */
+	public function getPriority() {
+		return 50;
+	}
+
+	/**
+	 * Get icon name
+	 *
+	 * @return string
+	 */
+	public function getIconName() {
+		return "app-dark";
+	}
+}

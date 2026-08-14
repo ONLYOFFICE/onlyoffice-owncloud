@@ -44,4 +44,10 @@ Moreover, any AI assistant, including local ones, can be effortlessly connected 
     <background-jobs>
         <job>OCA\Onlyoffice\Cron\EditorsCheck</job>
     </background-jobs>
+    <settings-sections>
+        <admin>OCA\Onlyoffice\Panels\Admin\Section</admin>
+    </settings-sections>
+    <settings>
+        <admin>OCA\Onlyoffice\Panels\Admin\Settings</admin>
+    </settings>
 </info>

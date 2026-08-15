@@ -68,7 +68,11 @@ class RemoteInstance {
 		);
 		$result = $select->execute([$remote]);
 
-		$dbremote = $result ? $select->fetch() : [];
+		if ($result instanceof \Doctrine\DBAL\Result) {
+			$dbremote = $result->fetchAssociative();
+		} else {
+			$dbremote = $result ? $select->fetch() : [];
+		}
 
 		return $dbremote;
 	}

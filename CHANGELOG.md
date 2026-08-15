@@ -1,5 +1,13 @@
 # Change Log
 
+## 9.12.2
+## Changed
+- ownCloud 11 (PHP 8.3) compatibility: allow installation on ownCloud 11 (max-version bumped to 11)
+- ownCloud 11 compatibility: support Doctrine DBAL 3 result API in KeyManager and RemoteInstance
+- ownCloud 11 compatibility: int return type for onlyoffice:documentserver occ command (Symfony Console 5+)
+- fix PHP 8.1+ deprecation (rtrim on null) when document server address is not configured
+- fix forcesave status check with native integer DB results on PHP 8.1+
+
 ## 9.12.1
 ## Added
 - plugin description and useful links in admin settings

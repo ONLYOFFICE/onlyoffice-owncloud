@@ -65,9 +65,9 @@ class KeyManager {
             WHERE `file_id` = ?
         "
 		);
-		$result = $select->execute([$fileId]);
+		$result = $select->executeQuery([$fileId]);
 
-		$keys = $result ? $select->fetch() : [];
+		$keys = $result->fetchAssociative();
 		$key = \is_array($keys) && isset($keys["key"]) ? $keys["key"] : "";
 
 		return $key;
@@ -90,7 +90,7 @@ class KeyManager {
             VALUES (?, ?)
         "
 		);
-		return (bool)$insert->execute([$fileId, $key]);
+		return (bool)$insert->executeStatement([$fileId, $key]);
 	}
 
 	/**
@@ -109,7 +109,7 @@ class KeyManager {
             WHERE `file_id` = ?
             " . ($unlock === false ? "AND `lock` != 1" : "")
 		);
-		return (bool)$delete->execute([$fileId]);
+		return (bool)$delete->executeStatement([$fileId]);
 	}
 
 	/**
@@ -129,7 +129,7 @@ class KeyManager {
             WHERE `file_id` = ?
         "
 		);
-		return (bool)$update->execute([$lock === true ? 1 : 0, $fileId]);
+		return (bool)$update->executeStatement([$lock === true ? 1 : 0, $fileId]);
 	}
 
 	/**
@@ -149,7 +149,7 @@ class KeyManager {
             WHERE `file_id` = ?
         "
 		);
-		return (bool)$update->execute([$fs === true ? 1 : 0, $fileId]);
+		return (bool)$update->executeStatement([$fs === true ? 1 : 0, $fileId]);
 	}
 
 	/**
@@ -168,9 +168,9 @@ class KeyManager {
             WHERE `file_id` = ?
         "
 		);
-		$result = $select->execute([$fileId]);
+		$result = $select->executeQuery([$fileId]);
 
-		$rows = $result ? $select->fetch() : [];
+		$rows = $result->fetchAssociative();
 		$fs = \is_array($rows) && isset($rows["fs"]) ? $rows["fs"] : "";
 
 		return $fs === "1";

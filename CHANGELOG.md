@@ -2,6 +2,7 @@
 
 ## Changed
 - compatible with ownCloud 11
+- moved admin settings to a dedicated ONLYOFFICE section in the sidebar
 
 ## 9.12.1
 ## Added

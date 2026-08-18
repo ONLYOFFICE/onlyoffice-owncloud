@@ -39,7 +39,6 @@
 namespace OCA\Onlyoffice\Controller;
 
 use OCP\AppFramework\Controller;
-use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IRequest;
@@ -49,7 +48,6 @@ use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\DocumentService;
 use OCA\Onlyoffice\FileVersions;
-use OCA\Onlyoffice\TemplateManager;
 
 /**
  * Settings controller for the administration page
@@ -115,49 +113,6 @@ class SettingsController extends Controller {
 		$this->logger = $logger;
 		$this->config = $config;
 		$this->crypt = $crypt;
-	}
-
-	/**
-	 * Print config section
-	 *
-	 * @return TemplateResponse
-	 */
-	public function index() {
-		$data = [
-			"documentserver" => $this->config->getDocumentServerUrl(true),
-			"documentserverInternal" => $this->config->getDocumentServerInternalUrl(true),
-			"storageUrl" => $this->config->getStorageUrl(),
-			"verifyPeerOff" => $this->config->getVerifyPeerOff(),
-			"secret" => $this->config->getDocumentServerSecret(true),
-			"jwtHeader" => $this->config->jwtHeader(true),
-			"demo" => $this->config->getDemoData(),
-			"currentServer" => $this->urlGenerator->getAbsoluteURL("/"),
-			"formats" => $this->config->formatsSetting(),
-			"sameTab" => $this->config->getSameTab(),
-			"preview" => $this->config->getPreview(),
-			"cronChecker" => $this->config->getCronChecker(),
-			"emailNotifications" => $this->config->getEmailNotifications(),
-			"versionHistory" => $this->config->getVersionHistory(),
-			"protection" => $this->config->getProtection(),
-			"encryption" => $this->config->checkEncryptionModule(),
-			"limitGroups" => $this->config->getLimitGroups(),
-			"chat" => $this->config->getCustomizationChat(),
-			"compactHeader" => $this->config->getCustomizationCompactHeader(),
-			"feedback" => $this->config->getCustomizationFeedback(),
-			"forcesave" => $this->config->getCustomizationForcesave(),
-			"liveViewOnShare" => $this->config->getLiveViewOnShare(),
-			"help" => $this->config->getCustomizationHelp(),
-			"successful" => $this->config->settingsAreSuccessful(),
-			"settingsError" => $this->config->getSettingsError(),
-			"plugins" => $this->config->getCustomizationPlugins(),
-			"macros" => $this->config->getCustomizationMacros(),
-			"reviewDisplay" => $this->config->getCustomizationReviewDisplay(),
-			"theme" => $this->config->getCustomizationTheme(),
-			"templates" => $this->getGlobalTemplates(),
-			"linkToDocs" => $this->config->getLinkToDocs(),
-			"unknownAuthor" => $this->config->getUnknownAuthor()
-		];
-		return new TemplateResponse($this->appName, "settings", $data, "blank");
 	}
 
 	/**
@@ -334,26 +289,5 @@ class SettingsController extends Controller {
 			"shareAttributesVersion" => $this->config->shareAttributesVersion()
 		];
 		return $result;
-	}
-
-	/**
-	 * Get global templates
-	 *
-	 * @return array
-	 */
-	private function getGlobalTemplates() {
-		$templates = [];
-		$templatesList = TemplateManager::getGlobalTemplates();
-
-		foreach ($templatesList as $templateItem) {
-			$template = [
-				"id" => $templateItem->getId(),
-				"name" => $templateItem->getName(),
-				"type" => TemplateManager::getTypeTemplate($templateItem->getMimeType())
-			];
-			array_push($templates, $template);
-		}
-
-		return $templates;
 	}
 }

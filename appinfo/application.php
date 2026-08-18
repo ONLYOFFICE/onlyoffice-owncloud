@@ -58,6 +58,8 @@ use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\Hookhandler;
 use OCA\Onlyoffice\Hooks;
 use OCA\Onlyoffice\Notifier;
+use OCA\Onlyoffice\Panels\Admin\Section;
+use OCA\Onlyoffice\Panels\Admin\Settings;
 use OCA\Onlyoffice\Preview;
 
 /**
@@ -228,6 +230,20 @@ class Application extends App {
 					$this->appConfig,
 					$this->crypt
 				);
+			}
+		);
+
+		\OC::$server->registerService(
+			Settings::class,
+			function () use ($container) {
+				return new Settings($this->appConfig, $container->query("URLGenerator"));
+			}
+		);
+
+		\OC::$server->registerService(
+			Section::class,
+			function () use ($container) {
+				return new Section($container->query("L10N"));
 			}
 		);
 

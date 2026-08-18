@@ -1,5 +1,7 @@
 <?php
-/*
+/**
+ * @author Ascensio System SIA <integration@onlyoffice.com>
+ *
  * Copyright (C) Ascensio System SIA, 2009-2026
  *
  * This program is a free software product. You can redistribute it and/or
@@ -82,11 +84,9 @@ class RemoteInstance {
             WHERE `remote` = ?
         "
 		);
-		$result = $select->execute([$remote]);
+		$result = $select->executeQuery([$remote]);
 
-		$dbremote = $result ? $select->fetch() : [];
-
-		return $dbremote;
+		return $result->fetchAssociative();
 	}
 
 	/**
@@ -106,7 +106,7 @@ class RemoteInstance {
             VALUES (?, ?, ?)
         "
 		);
-		return (bool)$insert->execute([$remote, $status === true ? 1 : 0, time()]);
+		return (bool)$insert->executeStatement([$remote, $status === true ? 1 : 0, time()]);
 	}
 
 	/**
@@ -126,7 +126,7 @@ class RemoteInstance {
             WHERE remote = ?
         "
 		);
-		return (bool)$update->execute([$status === true ? 1 : 0, time(), $remote]);
+		return (bool)$update->executeStatement([$status === true ? 1 : 0, time(), $remote]);
 	}
 
 	/**

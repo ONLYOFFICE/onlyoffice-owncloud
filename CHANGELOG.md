@@ -1,5 +1,6 @@
 # Change Log
 
+## 10.0.0
 ## Changed
 - compatible with ownCloud 11
 - moved admin settings to a dedicated ONLYOFFICE section in the sidebar

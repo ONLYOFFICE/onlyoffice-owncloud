@@ -482,6 +482,13 @@
   OCA.Onlyoffice.onRequestSelectSpreadsheet = function (event) {
     const recipientMimes = [
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.template",
+      "application/vnd.ms-excel",
+      "application/vnd.ms-excel.sheet.macroenabled.12",
+      "application/vnd.ms-excel.template.macroEnabled.12",
+      "application/vnd.oasis.opendocument.spreadsheet",
+      "application/vnd.oasis.opendocument.spreadsheet-template",
+      "text/csv",
     ];
 
     if (OCA.Onlyoffice.inframe) {

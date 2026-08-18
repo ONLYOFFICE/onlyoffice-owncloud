@@ -36,7 +36,7 @@ Moreover, any AI assistant, including local ones, can be effortlessly connected 
     <screenshot>https://raw.githubusercontent.com/ONLYOFFICE/onlyoffice-owncloud/master/screenshots/open.png</screenshot>
     <screenshot>https://raw.githubusercontent.com/ONLYOFFICE/onlyoffice-owncloud/master/screenshots/open_form.png</screenshot>
     <dependencies>
-        <owncloud min-version="10" max-version="10" />
+        <owncloud min-version="10" max-version="11" />
     </dependencies>
     <commands>
         <command>OCA\Onlyoffice\Command\DocumentServer</command>

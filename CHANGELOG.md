@@ -1,5 +1,8 @@
 # Change Log
 
+## Changed
+- compatible with ownCloud 11
+
 ## 9.12.1
 ## Added
 - plugin description and useful links in admin settings

@@ -183,8 +183,8 @@
               config.events.onRequestSaveAs = OCA.Onlyoffice.onRequestSaveAs;
               config.events.onRequestInsertImage =
                 OCA.Onlyoffice.onRequestInsertImage;
-              config.events.onRequestMailMergeRecipients =
-                OCA.Onlyoffice.onRequestMailMergeRecipients;
+              config.events.onRequestSelectSpreadsheet =
+                OCA.Onlyoffice.onRequestSelectSpreadsheet;
               config.events.onRequestSelectDocument =
                 OCA.Onlyoffice.onRequestSelectDocument;
               config.events.onRequestCompareFile =
@@ -479,7 +479,7 @@
     );
   };
 
-  OCA.Onlyoffice.onRequestMailMergeRecipients = function () {
+  OCA.Onlyoffice.onRequestSelectSpreadsheet = function (event) {
     const recipientMimes = [
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     ];
@@ -487,15 +487,18 @@
     if (OCA.Onlyoffice.inframe) {
       window.parent.postMessage(
         {
-          method: "editorRequestMailMergeRecipients",
+          method: "editorRequestSelectSpreadsheet",
           param: recipientMimes,
+          documentSelectionType: event.data.c,
         },
         "*"
       );
     } else {
       OC.dialogs.filepicker(
         t(OCA.Onlyoffice.AppName, "Select recipients"),
-        OCA.Onlyoffice.editorSetRecipient,
+        OCA.Onlyoffice.editorSetRequestedSpreadsheet.bind({
+          documentSelectionType: event.data.c,
+        }),
         false,
         recipientMimes,
         true
@@ -503,7 +506,8 @@
     }
   };
 
-  OCA.Onlyoffice.editorSetRecipient = function (filePath) {
+  OCA.Onlyoffice.editorSetRequestedSpreadsheet = function (filePath) {
+    const documentSelectionType = this.documentSelectionType;
     $.get(
       OC.generateUrl(
         "apps/" + OCA.Onlyoffice.AppName + "/ajax/url?filePath={filePath}",
@@ -519,8 +523,9 @@
           });
           return;
         }
+        response.c = documentSelectionType;
 
-        OCA.Onlyoffice.docEditor.setMailMergeRecipients(response);
+        OCA.Onlyoffice.docEditor.setRequestedSpreadsheet(response);
       }
     );
   };

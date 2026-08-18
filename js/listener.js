@@ -74,10 +74,17 @@
     );
   };
 
-  OCA.Onlyoffice.onRequestMailMergeRecipients = function (recipientMimes) {
+  OCA.Onlyoffice.onRequestSelectSpreadsheet = function (
+    recipientMimes,
+    documentSelectionType
+  ) {
     OC.dialogs.filepicker(
       t(OCA.Onlyoffice.AppName, "Select recipients"),
-      $("#onlyoffice-frame")[0].contentWindow.OCA.Onlyoffice.editorSetRecipient,
+      $(
+        "#onlyoffice-frame"
+      )[0].contentWindow.OCA.Onlyoffice.editorSetRequestedSpreadsheet.bind({
+        documentSelectionType,
+      }),
       false,
       recipientMimes,
       true
@@ -188,8 +195,11 @@
         case "editorRequestInsertImage":
           OCA.Onlyoffice.onRequestInsertImage(event.data.param);
           break;
-        case "editorRequestMailMergeRecipients":
-          OCA.Onlyoffice.onRequestMailMergeRecipients(event.data.param);
+        case "editorRequestSelectSpreadsheet":
+          OCA.Onlyoffice.onRequestSelectSpreadsheet(
+            event.data.param,
+            event.data.documentSelectionType
+          );
           break;
         case "editorRequestSelectDocument":
           OCA.Onlyoffice.onRequestSelectDocument(

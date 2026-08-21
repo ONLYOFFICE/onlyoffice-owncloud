@@ -446,21 +446,17 @@
       OC.dialogs.filepicker(
         t(OCA.Onlyoffice.AppName, "Insert image"),
         OCA.Onlyoffice.editorInsertImage,
-        false,
+        true,
         imageMimes,
         true
       );
     }
   };
 
-  OCA.Onlyoffice.editorInsertImage = function (filePath) {
-    $.get(
-      OC.generateUrl(
-        "apps/" + OCA.Onlyoffice.AppName + "/ajax/url?filePath={filePath}",
-        {
-          filePath,
-        }
-      ),
+  OCA.Onlyoffice.editorInsertImage = function (imagePaths) {
+    $.post(
+      OC.generateUrl("apps/" + OCA.Onlyoffice.AppName + "/ajax/image-urls"),
+      { imagePaths },
       function onSuccess(response) {
         if (response.error) {
           OCA.Onlyoffice.showMessage(response.error, {
@@ -473,7 +469,6 @@
         if (OCA.Onlyoffice.insertImageType) {
           response.c = OCA.Onlyoffice.insertImageType;
         }
-
         OCA.Onlyoffice.docEditor.insertImage(response);
       }
     );

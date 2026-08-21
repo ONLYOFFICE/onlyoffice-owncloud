@@ -4,6 +4,7 @@
 ## Changed
 - compatible with ownCloud 11
 - moved admin settings to a dedicated ONLYOFFICE section in the sidebar
+- allow inserting multiple images from Owncloud into the document at once
 
 ## 9.12.1
 ## Added

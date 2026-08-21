@@ -68,7 +68,7 @@
     OC.dialogs.filepicker(
       t(OCA.Onlyoffice.AppName, "Insert image"),
       $("#onlyoffice-frame")[0].contentWindow.OCA.Onlyoffice.editorInsertImage,
-      false,
+      true,
       imageMimes,
       true
     );

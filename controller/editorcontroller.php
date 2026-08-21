@@ -1266,6 +1266,81 @@ class EditorController extends Controller {
 	}
 
 	/**
+	 * Get presigned urls to image files
+	 *
+	 * @param string[] $imagePaths - image file paths
+	 *
+	 * @return array
+	 *
+	 * @NoAdminRequired
+	 */
+	public function imageUrls($imagePaths) {
+		$this->logger->debug("request image urls for: " . implode(", ", $imagePaths), ["app" => $this->appName]);
+
+		if (!$this->config->isUserAllowedToUse()) {
+			return ["error" => $this->trans->t("Not permitted")];
+		}
+
+		if (empty($imagePaths)) {
+			return ["error" => $this->trans->t("File not found")];
+		}
+
+		$user = $this->userSession->getUser();
+		$userId = $user->getUID();
+		$userFolder = $this->root->getUserFolder($userId);
+
+		$images = [];
+
+		foreach ($imagePaths as $imagePath) {
+			$file = $userFolder->get($imagePath);
+
+			if ($file === null) {
+				$this->logger->error("File for generate image url was not found: $imagePath", ["app" => $this->appName]);
+				continue;
+			}
+
+			$canDownload = true;
+
+			$fileStorage = $file->getStorage();
+			if ($fileStorage->instanceOfStorage("\OCA\Files_Sharing\SharedStorage")) {
+				$share = $fileStorage->getShare();
+				$canDownload = FileUtility::canShareDownload($share);
+			}
+
+			if (!$file->isReadable() || !$canDownload) {
+				$this->logger->error("File without permission: $imagePath", ["app" => $this->appName]);
+				continue;
+			}
+
+			$fileName = $file->getName();
+			$ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+			$images[] = [
+				"fileType" => $ext,
+				"url" => $this->getUrl($file, $user)
+			];
+		}
+
+		if (empty($images)) {
+			return ["error" => $this->trans->t("File not found")];
+		}
+
+		$result = [
+			"images" => $images
+		];
+
+		if (!empty($this->config->getDocumentServerSecret())) {
+			$now = time();
+			$result["iat"] = $now;
+			$result["exp"] = $now + $this->config->getJwtExpiration() * 60;
+			$token = \Firebase\JWT\JWT::encode($result, $this->config->getDocumentServerSecret(), "HS256");
+			$result["token"] = $token;
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Download method
 	 *
 	 * @param int $fileId - file identifier

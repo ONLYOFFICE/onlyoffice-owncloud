@@ -50,7 +50,7 @@
     displayName: oc_user.displayName,
     domain,
     email: oc_user.email,
-    provider: "ownCloud",
+    provider: "owncloud",
   };
 
   window.AscDesktopEditor.execCommand("portal:login", JSON.stringify(data));

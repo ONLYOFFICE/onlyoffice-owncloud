@@ -173,6 +173,6 @@ class KeyManager {
 		$rows = $result->fetchAssociative();
 		$fs = \is_array($rows) && isset($rows["fs"]) ? $rows["fs"] : "";
 
-		return $fs === "1";
+		return (string)$fs === "1";
 	}
 }

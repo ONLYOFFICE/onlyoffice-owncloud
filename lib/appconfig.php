@@ -484,7 +484,7 @@ class AppConfig {
 
 		$url = $this->config->getAppValue($this->appName, $this->_documentserver, "");
 		if (empty($url)) {
-			$url = $this->getSystemValue($this->_documentserver);
+			$url = $this->getSystemValue($this->_documentserver) ?? "";
 		}
 		if ($url !== "/") {
 			$url = rtrim($url, "/");

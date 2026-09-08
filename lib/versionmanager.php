@@ -131,8 +131,9 @@ class VersionManager {
 	public function getVersionFile($user, $sourceFile, $version) {
 		$userFolder = $this->rootFolder->getUserFolder($user->getUID());
 		$versionsFolder = $this->getVersionFolder($user);
+		$sourcePath = $userFolder->getById($sourceFile->getId())[0]->getPath();
 
-		$file = $versionsFolder->get($userFolder->getRelativePath($sourceFile->getPath()) . ".v" . $version);
+		$file = $versionsFolder->get($userFolder->getRelativePath($sourcePath) . ".v" . $version);
 		return $file;
 	}
 

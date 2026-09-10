@@ -6,6 +6,11 @@
 - moved admin settings to a dedicated ONLYOFFICE section in the sidebar
 - allow inserting multiple images from Owncloud into the document at once
 
+## Security
+- stop reporting the underlying connection error when checking the ONLYOFFICE Docs address, to prevent internal network probing
+- refuse to check an ONLYOFFICE Docs address that points at a reserved address or at a cloud metadata service
+- refuse to check an ONLYOFFICE Docs address in a private range unless `allow_local_address` is set in config.php
+
 ## 9.12.1
 ## Added
 - plugin description and useful links in admin settings

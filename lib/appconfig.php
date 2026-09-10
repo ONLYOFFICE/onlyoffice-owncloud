@@ -242,6 +242,13 @@ class AppConfig {
 	private $_verification = "verify_peer_off";
 
 	/**
+	 * The config key for allowing requests to addresses outside the public ranges
+	 *
+	 * @var string
+	 */
+	private $_allowLocalAddress = "allow_local_address";
+
+	/**
 	 * The config key for the secret key in jwt
 	 *
 	 * @var string
@@ -1200,6 +1207,17 @@ class AppConfig {
 		}
 
 		return $this->getSystemValue($this->_verification);
+	}
+
+	/**
+	 * Get whether requests to addresses outside the public ranges are allowed.
+	 *
+	 * @return bool
+	 */
+	public function getAllowLocalAddress() {
+		$value = $this->getSystemValue($this->_allowLocalAddress);
+
+		return filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) === true;
 	}
 
 	/**

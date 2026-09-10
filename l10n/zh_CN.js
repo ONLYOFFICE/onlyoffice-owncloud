@@ -147,6 +147,7 @@ OC.L10N.register(
     "Suggest a feature": "建议功能",
     "To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page.": "为确保 ONLYOFFICE 文档请求中重要参数的安全，请在“设置”页面设置密钥。",
     "Info": "信息",
-    "%1$s could not be saved. Please open the file again.": "%1$s 无法保存。请重新打开文件。"
+    "%1$s could not be saved. Please open the file again.": "%1$s 无法保存。请重新打开文件。",
+    "Could not connect to ONLYOFFICE Docs. See the server log for details.": "无法连接到 ONLYOFFICE Docs。详情请查看服务器日志。"
 },
 "nplurals=1; plural=0;");

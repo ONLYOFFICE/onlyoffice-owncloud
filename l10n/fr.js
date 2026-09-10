@@ -147,6 +147,7 @@ OC.L10N.register(
     "Suggest a feature": "Suggérer une fonctionnalité",
     "To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page.": "Pour garantir la sécurité des paramètres importants dans les requêtes ONLYOFFICE Docs, veuillez définir une clé secrète sur la page Paramètres.",
     "Info": "Information",
-    "%1$s could not be saved. Please open the file again.": "%1$s n'a pas pu être enregistré. Veuillez rouvrir le fichier."
+    "%1$s could not be saved. Please open the file again.": "%1$s n'a pas pu être enregistré. Veuillez rouvrir le fichier.",
+    "Could not connect to ONLYOFFICE Docs. See the server log for details.": "Impossible de se connecter à ONLYOFFICE Docs. Consultez le journal du serveur pour plus de détails."
 },
 "nplurals=2; plural=(n > 1);");

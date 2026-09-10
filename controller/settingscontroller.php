@@ -155,7 +155,7 @@ class SettingsController extends Controller {
 			$documentserver = $this->config->getDocumentServerUrl();
 			if (!empty($documentserver)) {
 				$documentService = new DocumentService($this->trans, $this->config);
-				list($error, $version) = $documentService->checkDocServiceUrl($this->urlGenerator, $this->crypt);
+				list($error, $version) = $documentService->checkDocServiceUrl($this->urlGenerator, $this->crypt, true);
 				$this->config->setSettingsError($error);
 			}
 

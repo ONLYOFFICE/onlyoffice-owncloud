@@ -2,20 +2,38 @@
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
  *
- * (c) Copyright Ascensio System SIA 2025
+ * Copyright (C) Ascensio System SIA, 2009-2026
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is a free software product. You can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License (AGPL)
+ * version 3 as published by the Free Software Foundation, together with the
+ * additional terms provided in the LICENSE file.
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * This program is distributed WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. For
+ * details, see the GNU AGPL at: https://www.gnu.org/licenses/agpl-3.0.html
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You can contact Ascensio System SIA by email at info@onlyoffice.com
+ * or by postal mail at 20A-6 Ernesta Birznieka-Upisha Street, Riga,
+ * LV-1050, Latvia, European Union.
  *
+ * The interactive user interfaces in modified versions of the Program
+ * are required to display Appropriate Legal Notices in accordance with
+ * Section 5 of the GNU AGPL version 3.
+ *
+ * No trademark rights are granted under this License.
+ *
+ * All non-code elements of the Product, including illustrations,
+ * icon sets, and technical writing content, are licensed under the
+ * Creative Commons Attribution-ShareAlike 4.0 International License:
+ * https://creativecommons.org/licenses/by-sa/4.0/legalcode
+ *
+ * This license applies only to such non-code elements and does not
+ * modify or replace the licensing terms applicable to the Program's
+ * source code, which remains licensed under the GNU Affero General
+ * Public License v3.
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
  */
 
 namespace OCA\Onlyoffice\Controller;
@@ -406,7 +424,7 @@ class EditorController extends Controller {
 				foreach ($currentUserGroups as $currentUserGroup) {
 					$group = $this->groupManager->get($currentUserGroup);
 					foreach ($group->getUsers() as $user) {
-						if (!\in_array($user, $users)) {
+						if (!\in_array($user, $users, true)) {
 							array_push($users, $user);
 						}
 					}
@@ -420,7 +438,7 @@ class EditorController extends Controller {
 		if (!$all) {
 			$accessList = $this->getAccessList($file);
 			foreach ($accessList as $accessUser) {
-				if (!\in_array($accessUser, $users)) {
+				if (!\in_array($accessUser, $users, true)) {
 					array_push($users, $accessUser);
 				}
 			}
@@ -505,7 +523,7 @@ class EditorController extends Controller {
 			$recipients = $this->userManager->getByEmail($email);
 			foreach ($recipients as $recipient) {
 				$recipientId = $recipient->getUID();
-				if (!\in_array($recipientId, $recipientIds)) {
+				if (!\in_array($recipientId, $recipientIds, true)) {
 					array_push($recipientIds, $recipientId);
 				}
 			}
@@ -563,7 +581,7 @@ class EditorController extends Controller {
 
 		foreach ($recipientIds as $recipientId) {
 			$recipient = $this->userManager->get($recipientId);
-			$isAvailable = \in_array($recipient, $accessList);
+			$isAvailable = \in_array($recipient, $accessList, true);
 
 			if (!$isAvailable
 				&& $file->getFileInfo()->getMountPoint() instanceof \OCA\Files_External\Config\ExternalMountPoint
@@ -1248,6 +1266,81 @@ class EditorController extends Controller {
 	}
 
 	/**
+	 * Get presigned urls to image files
+	 *
+	 * @param string[] $imagePaths - image file paths
+	 *
+	 * @return array
+	 *
+	 * @NoAdminRequired
+	 */
+	public function imageUrls($imagePaths) {
+		$this->logger->debug("request image urls for: " . implode(", ", $imagePaths), ["app" => $this->appName]);
+
+		if (!$this->config->isUserAllowedToUse()) {
+			return ["error" => $this->trans->t("Not permitted")];
+		}
+
+		if (empty($imagePaths)) {
+			return ["error" => $this->trans->t("File not found")];
+		}
+
+		$user = $this->userSession->getUser();
+		$userId = $user->getUID();
+		$userFolder = $this->root->getUserFolder($userId);
+
+		$images = [];
+
+		foreach ($imagePaths as $imagePath) {
+			$file = $userFolder->get($imagePath);
+
+			if ($file === null) {
+				$this->logger->error("File for generate image url was not found: $imagePath", ["app" => $this->appName]);
+				continue;
+			}
+
+			$canDownload = true;
+
+			$fileStorage = $file->getStorage();
+			if ($fileStorage->instanceOfStorage("\OCA\Files_Sharing\SharedStorage")) {
+				$share = $fileStorage->getShare();
+				$canDownload = FileUtility::canShareDownload($share);
+			}
+
+			if (!$file->isReadable() || !$canDownload) {
+				$this->logger->error("File without permission: $imagePath", ["app" => $this->appName]);
+				continue;
+			}
+
+			$fileName = $file->getName();
+			$ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+			$images[] = [
+				"fileType" => $ext,
+				"url" => $this->getUrl($file, $user)
+			];
+		}
+
+		if (empty($images)) {
+			return ["error" => $this->trans->t("File not found")];
+		}
+
+		$result = [
+			"images" => $images
+		];
+
+		if (!empty($this->config->getDocumentServerSecret())) {
+			$now = time();
+			$result["iat"] = $now;
+			$result["exp"] = $now + $this->config->getJwtExpiration() * 60;
+			$token = \Firebase\JWT\JWT::encode($result, $this->config->getDocumentServerSecret(), "HS256");
+			$result["token"] = $token;
+		}
+
+		return $result;
+	}
+
+	/**
 	 * Download method
 	 *
 	 * @param int $fileId - file identifier
@@ -1328,7 +1421,7 @@ class EditorController extends Controller {
 				$key,
 				false,
 				false,
-				$thumbnail,
+				$thumbnail
 			);
 			if (isset($response->error)) {
 				$documentService->processConvServResponceError($response->error);
@@ -1582,13 +1675,13 @@ class EditorController extends Controller {
 			}
 
 			foreach ($accessList as $accessUser) {
-				if (!\in_array($accessUser, $result)) {
+				if (!\in_array($accessUser, $result, true)) {
 					array_push($result, $accessUser);
 				}
 			}
 		}
 
-		if (!\in_array($file->getOwner(), $result)) {
+		if (!\in_array($file->getOwner(), $result, true)) {
 			array_push($result, $file->getOwner());
 		}
 
@@ -1625,9 +1718,10 @@ class EditorController extends Controller {
 	 * @return string
 	 */
 	private function getUserId($userId) {
-		if (str_contains($userId, "_")) {
-			$userIdExp = explode("_", $userId);
-			$userId = end($userIdExp);
+		$instanceId = $this->config->getSystemValue("instanceid", true);
+		$prefix = $instanceId . "_";
+		if (str_starts_with($userId, $prefix)) {
+			return substr($userId, strlen($prefix));
 		}
 		return $userId;
 	}

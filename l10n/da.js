@@ -135,6 +135,7 @@ OC.L10N.register(
     "Select file to insert text": "Vælg en fil for at indsætte tekst",
     "Select file": "Vælg fil",
     "Same as system": "Samme som system",
-    "Enable live-viewing mode when accessing file by public link" : "Aktivér livevisningstilstand ved adgang til fil via et offentligt link"
+    "Enable live-viewing mode when accessing file by public link" : "Aktivér livevisningstilstand ved adgang til fil via et offentligt link",
+    "Could not connect to ONLYOFFICE Docs. See the server log for details." : "Kunne ikke oprette forbindelse til ONLYOFFICE Docs. Se serverloggen for detaljer."
 },
 "nplurals=2; plural=(n > 1);");

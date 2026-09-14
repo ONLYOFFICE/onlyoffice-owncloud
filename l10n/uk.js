@@ -135,6 +135,7 @@ OC.L10N.register(
     "Select file to insert text": "Вибрати файл для вставки тексту",
     "Select file": "Вибрати файл",
     "Same as system": "Системна",
-    "Enable live-viewing mode when accessing file by public link" : "Активирайте режима на живо извеждане при достъп до файл чрез публична връзка"
+    "Enable live-viewing mode when accessing file by public link" : "Активирайте режима на живо извеждане при достъп до файл чрез публична връзка",
+    "Could not connect to ONLYOFFICE Docs. See the server log for details." : "Не вдалося підключитися до ONLYOFFICE Docs. Подробиці див. у журналі сервера."
 },
 "nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);");

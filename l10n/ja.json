@@ -145,6 +145,7 @@
     "Suggest a feature": "機能を提案",
     "To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page.": "ONLYOFFICE Docsリクエストの重要なパラメータのセキュリティを確保するため、設定ページでシークレットキーを設定してください。",
     "Info": "情報",
-    "%1$s could not be saved. Please open the file again.": "%1$sを保存できませんでした。ファイルを再度開いてください。"
+    "%1$s could not be saved. Please open the file again.": "%1$sを保存できませんでした。ファイルを再度開いてください。",
+    "Could not connect to ONLYOFFICE Docs. See the server log for details.": "ONLYOFFICE Docsに接続できませんでした。詳細はサーバーログを確認してください。"
 },"pluralForm" :"nplurals=1; plural=0;"
 }

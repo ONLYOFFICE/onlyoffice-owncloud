@@ -1,5 +1,16 @@
 # Change Log
 
+## 10.0.0
+## Changed
+- compatible with ownCloud 11
+- moved admin settings to a dedicated ONLYOFFICE section in the sidebar
+- allow inserting multiple images from ownCloud into the document at once
+
+## Security
+- stop reporting the underlying connection error when checking the ONLYOFFICE Docs address, to prevent internal network probing
+- refuse to check an ONLYOFFICE Docs address that points at a reserved address or at a cloud metadata service
+- refuse to check an ONLYOFFICE Docs address in a private range unless `allow_local_address` is set in config.php
+
 ## 9.12.1
 ## Added
 - plugin description and useful links in admin settings
@@ -31,7 +42,7 @@
 ## Added
 - support external link for reference data
 - support hwp, hwpx, pages, numbers, key formats
-- shardKey param to url for requests to Conversion API
+- shardkey param to url for requests to Conversion API
 - jwt expire configuration
 - system, contrast-dark and gray themes
 - close button

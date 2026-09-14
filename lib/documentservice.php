@@ -2,20 +2,38 @@
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
  *
- * (c) Copyright Ascensio System SIA 2025
+ * Copyright (C) Ascensio System SIA, 2009-2026
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is a free software product. You can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License (AGPL)
+ * version 3 as published by the Free Software Foundation, together with the
+ * additional terms provided in the LICENSE file.
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * This program is distributed WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. For
+ * details, see the GNU AGPL at: https://www.gnu.org/licenses/agpl-3.0.html
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You can contact Ascensio System SIA by email at info@onlyoffice.com
+ * or by postal mail at 20A-6 Ernesta Birznieka-Upisha Street, Riga,
+ * LV-1050, Latvia, European Union.
  *
+ * The interactive user interfaces in modified versions of the Program
+ * are required to display Appropriate Legal Notices in accordance with
+ * Section 5 of the GNU AGPL version 3.
+ *
+ * No trademark rights are granted under this License.
+ *
+ * All non-code elements of the Product, including illustrations,
+ * icon sets, and technical writing content, are licensed under the
+ * Creative Commons Attribution-ShareAlike 4.0 International License:
+ * https://creativecommons.org/licenses/by-sa/4.0/legalcode
+ *
+ * This license applies only to such non-code elements and does not
+ * modify or replace the licensing terms applicable to the Program's
+ * source code, which remains licensed under the GNU Affero General
+ * Public License v3.
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
  */
 
 namespace OCA\Onlyoffice;
@@ -136,7 +154,7 @@ class DocumentService {
 		}
 
 		$document_revision_id = self::generateRevisionId($document_revision_id);
-		$urlToConverter = $urlToConverter . "?shardKey=" . $document_revision_id;
+		$urlToConverter = $urlToConverter . "?shardkey=" . $document_revision_id;
 
 		if (empty($from_extension)) {
 			$from_extension = pathinfo($document_uri)["extension"];
@@ -258,9 +276,11 @@ class DocumentService {
 	/**
 	 * request health status
 	 *
+	 * @param array $opts - request options
+	 *
 	 * @return bool
 	 */
-	public function healthcheckRequest() {
+	public function healthcheckRequest($opts = null) {
 		$documentServerUrl = $this->config->getDocumentServerInternalUrl();
 
 		if (empty($documentServerUrl)) {
@@ -269,7 +289,7 @@ class DocumentService {
 
 		$urlHealthcheck = $documentServerUrl . "healthcheck";
 
-		$response = $this->request($urlHealthcheck);
+		$response = $this->request($urlHealthcheck, "get", $opts);
 
 		return $response === "true";
 	}
@@ -278,10 +298,11 @@ class DocumentService {
 	 * Send command
 	 *
 	 * @param string $method - type of command
+	 * @param array $opts - request options
 	 *
 	 * @return array
 	 */
-	public function commandRequest($method) {
+	public function commandRequest($method, $opts = null) {
 		$documentServerUrl = $this->config->getDocumentServerInternalUrl();
 
 		if (empty($documentServerUrl)) {
@@ -294,12 +315,11 @@ class DocumentService {
 			"c" => $method
 		];
 
-		$opts = [
-			"headers" => [
-				"Content-type" => "application/json"
-			],
-			"body" => json_encode($data)
-		];
+		if ($opts === null) {
+			$opts = [];
+		}
+		$opts["headers"]["Content-type"] = "application/json";
+		$opts["body"] = json_encode($data);
 
 		if (!empty($this->config->getDocumentServerSecret())) {
 			$now = time();
@@ -383,13 +403,86 @@ class DocumentService {
 			$opts["timeout"] = 60;
 		}
 
-		if ($method === "post") {
-			$response = $client->post($url, $opts);
-		} else {
-			$response = $client->get($url, $opts);
+		try {
+			if ($method === "post") {
+				$response = $client->post($url, $opts);
+			} else {
+				$response = $client->get($url, $opts);
+			}
+		} catch (\Exception $e) {
+			\OC::$server->getLogger()->logException(
+				$e,
+				["message" => "Request to Document Server failed: " . $url, "app" => self::$appName]
+			);
+			throw new \Exception($this->trans->t("Could not connect to ONLYOFFICE Docs. See the server log for details."));
 		}
 
 		return $response->getBody();
+	}
+
+	/**
+	 * Build the options for a request that checks the document server address
+	 *
+	 * @param string $url - address being checked
+	 * @param bool $restrictAddress - refuse an address outside the public ranges
+	 *
+	 * @return array
+	 */
+	private function checkRequestOptions($url, $restrictAddress) {
+		$opts = ["timeout" => 10];
+		if (!$restrictAddress) {
+			return $opts;
+		}
+
+		return $this->restrictToPublicAddress($url, $opts);
+	}
+
+	/**
+	 * Resolve the host of a request once, refuse it when it points outside the
+	 * public ranges and pin the result so that curl does not resolve it again.
+	 *
+	 * @param string $url - request address
+	 * @param array $opts - request options
+	 *
+	 * @return array
+	 */
+	private function restrictToPublicAddress($url, $opts) {
+		$host = rawurldecode((string)parse_url($url, PHP_URL_HOST));
+		if (empty($host)) {
+			return $opts;
+		}
+
+		$allowLocal = $this->config->getAllowLocalAddress();
+
+		$addresses = LocalAddressChecker::resolve($host);
+		if (empty($addresses)) {
+			\OC::$server->getLogger()->warning(
+				"Refused a request to an address that could not be resolved: $host",
+				["app" => self::$appName]
+			);
+			throw new \Exception($this->trans->t("Could not connect to ONLYOFFICE Docs. See the server log for details."));
+		}
+
+		foreach ($addresses as $address) {
+			if (LocalAddressChecker::isBlocked($address)
+				|| (!$allowLocal && LocalAddressChecker::isLocal($address))
+			) {
+				\OC::$server->getLogger()->warning(
+					"Refused a request to a local address: $host resolves to $address",
+					["app" => self::$appName]
+				);
+				throw new \Exception($this->trans->t("Could not connect to ONLYOFFICE Docs. See the server log for details."));
+			}
+		}
+
+		$scheme = parse_url($url, PHP_URL_SCHEME);
+		$port = parse_url($url, PHP_URL_PORT);
+		if (empty($port)) {
+			$port = $scheme === "https" ? 443 : 80;
+		}
+		$opts["curl"][CURLOPT_RESOLVE] = [$host . ":" . $port . ":" . implode(",", $addresses)];
+
+		return $opts;
 	}
 
 	/**
@@ -397,10 +490,11 @@ class DocumentService {
 	 *
 	 * @param OCP\IURLGenerator $urlGenerator - url generator
 	 * @param OCA\Onlyoffice\Crypt $crypt -crypt
+	 * @param bool $restrictAddress - refuse an address outside the public ranges
 	 *
 	 * @return array
 	 */
-	public function checkDocServiceUrl($urlGenerator, $crypt) {
+	public function checkDocServiceUrl($urlGenerator, $crypt, $restrictAddress = false) {
 		$logger = \OC::$server->getLogger();
 		$version = null;
 
@@ -415,18 +509,25 @@ class DocumentService {
 			return [$e->getMessage(), $version];
 		}
 
+		$documentServerUrl = $this->config->getDocumentServerInternalUrl();
+
 		try {
-			$healthcheckResponse = $this->healthcheckRequest();
+			$healthcheckResponse = $this->healthcheckRequest(
+				$this->checkRequestOptions($documentServerUrl, $restrictAddress)
+			);
 			if (!$healthcheckResponse) {
-				throw new \Exception($this->trans->t("Bad healthcheck status"));
+				throw new \Exception("Bad healthcheck status");
 			}
 		} catch (\Exception $e) {
 			$logger->logException($e, ["message" => "healthcheckRequest on check error", "app" => self::$appName]);
-			return [$e->getMessage(), $version];
+			return [$this->trans->t("Could not connect to ONLYOFFICE Docs. See the server log for details."), $version];
 		}
 
 		try {
-			$commandResponse = $this->commandRequest("version");
+			$commandResponse = $this->commandRequest(
+				"version",
+				$this->checkRequestOptions($documentServerUrl, $restrictAddress)
+			);
 
 			$logger->debug("commandRequest on check: " . json_encode($commandResponse), ["app" => self::$appName]);
 

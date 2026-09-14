@@ -123,7 +123,7 @@ Sometimes your network configuration might not allow the requests between instal
 The _Advanced server settings_ allows to set the ONLYOFFICE Document Server address for internal requests from ownCloud server and the returning ownCloud address for the internal requests from ONLYOFFICE Document Server.
 You need to enter them in the appropriate fields.
 
-Starting from version 7.2, JWT is enabled by default and the secret key is generated automatically to restrict the access to ONLYOFFICE Docs and for security reasons and data integrity.
+JWT is enabled by default and the secret key is generated automatically to restrict the access to ONLYOFFICE Docs and for security reasons and data integrity.
 Specify your own **Secret key** in the ownCloud administrative configuration.
 In the ONLYOFFICE Docs config file, specify the same secret key and enable the validation.
 
@@ -139,6 +139,42 @@ You can check the connection to ONLYOFFICE Document Server by using the followin
 `occ onlyoffice:documentserver --check`
 
 You will see a text either with information about the successful connection or the cause of the error.
+
+## Restricting the address of ONLYOFFICE Docs 🔒
+
+When the address of ONLYOFFICE Docs is saved on the administrative settings page, ownCloud checks whether it can be reached, and that check refuses some addresses instead of contacting them. Only the check that runs on save refuses them: the `occ onlyoffice:documentserver --check` command and the background job that verifies availability contact the address as before.
+
+Some addresses are always refused, because no document server can be reached at them: `0.0.0.0/8`, `::/128`, the link-local ranges `169.254.0.0/16` and `fe80::/10` (which contain the cloud metadata service at `169.254.169.254`), the multicast ranges `224.0.0.0/4` and `ff00::/8`, and `240.0.0.0/4`, `100::/64`, `192.0.0.0/24` and `198.18.0.0/15`. The metadata addresses of providers that do not use `169.254.169.254` are refused as well, namely `100.100.100.200` and `fd00:ec2::254`.
+
+The address is resolved before the check is sent and the result is pinned for it, so a name that resolves to one address when it is examined and to another when the request is sent cannot be used to reach a refused address. An address that cannot be resolved at all is refused too.
+
+The private ranges `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`, `127.0.0.0/8`, `fc00::/7` and `fec0::/10` are refused as well. ONLYOFFICE Docs is often reached at one of them over a container network, over a LAN, or on the same host as ownCloud, so allow them in `config.php` before saving such an address on the settings page:
+
+```php
+"onlyoffice" => [
+    "allow_local_address" => true
+],
+```
+
+Without that option an address in one of the private ranges cannot be saved on the settings page, and the save reports that ONLYOFFICE Docs could not be reached. An address that is already configured keeps working: only the check that runs on save refuses it.
+
+The addresses can also be written to `config.php` instead of being saved on the settings page:
+
+```php
+"onlyoffice" => [
+    "DocumentServerUrl" => "https://<documentserver>/",
+    "DocumentServerInternalUrl" => "http://<documentserver>/",
+    "StorageUrl" => "http://<owncloud>/"
+],
+```
+
+Addresses set this way are not sent through the settings page, so a private address can be used without allowing the private ranges. Nothing else refuses it: the background job keeps reporting the address as available, and the requests exchanged with ONLYOFFICE Docs while documents are edited are not restricted.
+
+An address saved on the settings page takes precedence over the one in `config.php`, so clear it there first if it has been saved before.
+
+The option is read from `config.php` alone, so it cannot be changed from the administrative settings page.
+
+These rules apply to the requests that check the address. The requests exchanged with ONLYOFFICE Docs while documents are edited and converted are not restricted this way. Restricting outbound connections from the ownCloud server at the network level, to the addresses it legitimately needs, remains the most reliable control and is worth doing regardless of this option.
 
 ## Enabling editing for ownCloud Web 🌐
 

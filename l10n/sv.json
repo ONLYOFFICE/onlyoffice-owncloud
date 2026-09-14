@@ -133,6 +133,7 @@
     "Select file to insert text": "Välj en fil för att infoga text",
     "Select file": "Välj fil",
     "Same as system": "Samma som systemet",
-    "Enable live-viewing mode when accessing file by public link" : "Aktivera livevisningsläge vid åtkomst till fil via offentlig länk"
+    "Enable live-viewing mode when accessing file by public link" : "Aktivera livevisningsläge vid åtkomst till fil via offentlig länk",
+    "Could not connect to ONLYOFFICE Docs. See the server log for details." : "Det gick inte att ansluta till ONLYOFFICE Docs. Se serverloggen för mer information."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

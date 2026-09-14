@@ -133,6 +133,7 @@
     "Select file to insert text" : "Seleccioneu el fitxer per inserir text",
     "Select file" : "Seleccioneu un fitxer",
     "Same as system" : "Igual que el sistema",
-    "Enable live-viewing mode when accessing file by public link" : "Habilita el mode de visualització en viu quan accedeixes al fitxer mitjançant l'enllaç públic"
+    "Enable live-viewing mode when accessing file by public link" : "Habilita el mode de visualització en viu quan accedeixes al fitxer mitjançant l'enllaç públic",
+    "Could not connect to ONLYOFFICE Docs. See the server log for details." : "No s'ha pogut connectar amb ONLYOFFICE Docs. Consulteu el registre del servidor per obtenir més detalls."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

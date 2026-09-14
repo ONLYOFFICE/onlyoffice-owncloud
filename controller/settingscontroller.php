@@ -2,26 +2,43 @@
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
  *
- * (c) Copyright Ascensio System SIA 2025
+ * Copyright (C) Ascensio System SIA, 2009-2026
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is a free software product. You can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License (AGPL)
+ * version 3 as published by the Free Software Foundation, together with the
+ * additional terms provided in the LICENSE file.
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * This program is distributed WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. For
+ * details, see the GNU AGPL at: https://www.gnu.org/licenses/agpl-3.0.html
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You can contact Ascensio System SIA by email at info@onlyoffice.com
+ * or by postal mail at 20A-6 Ernesta Birznieka-Upisha Street, Riga,
+ * LV-1050, Latvia, European Union.
  *
+ * The interactive user interfaces in modified versions of the Program
+ * are required to display Appropriate Legal Notices in accordance with
+ * Section 5 of the GNU AGPL version 3.
+ *
+ * No trademark rights are granted under this License.
+ *
+ * All non-code elements of the Product, including illustrations,
+ * icon sets, and technical writing content, are licensed under the
+ * Creative Commons Attribution-ShareAlike 4.0 International License:
+ * https://creativecommons.org/licenses/by-sa/4.0/legalcode
+ *
+ * This license applies only to such non-code elements and does not
+ * modify or replace the licensing terms applicable to the Program's
+ * source code, which remains licensed under the GNU Affero General
+ * Public License v3.
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
  */
 
 namespace OCA\Onlyoffice\Controller;
 
 use OCP\AppFramework\Controller;
-use OCP\AppFramework\Http\TemplateResponse;
 use OCP\IL10N;
 use OCP\ILogger;
 use OCP\IRequest;
@@ -31,7 +48,6 @@ use OCA\Onlyoffice\AppConfig;
 use OCA\Onlyoffice\Crypt;
 use OCA\Onlyoffice\DocumentService;
 use OCA\Onlyoffice\FileVersions;
-use OCA\Onlyoffice\TemplateManager;
 
 /**
  * Settings controller for the administration page
@@ -100,49 +116,6 @@ class SettingsController extends Controller {
 	}
 
 	/**
-	 * Print config section
-	 *
-	 * @return TemplateResponse
-	 */
-	public function index() {
-		$data = [
-			"documentserver" => $this->config->getDocumentServerUrl(true),
-			"documentserverInternal" => $this->config->getDocumentServerInternalUrl(true),
-			"storageUrl" => $this->config->getStorageUrl(),
-			"verifyPeerOff" => $this->config->getVerifyPeerOff(),
-			"secret" => $this->config->getDocumentServerSecret(true),
-			"jwtHeader" => $this->config->jwtHeader(true),
-			"demo" => $this->config->getDemoData(),
-			"currentServer" => $this->urlGenerator->getAbsoluteURL("/"),
-			"formats" => $this->config->formatsSetting(),
-			"sameTab" => $this->config->getSameTab(),
-			"preview" => $this->config->getPreview(),
-			"cronChecker" => $this->config->getCronChecker(),
-			"emailNotifications" => $this->config->getEmailNotifications(),
-			"versionHistory" => $this->config->getVersionHistory(),
-			"protection" => $this->config->getProtection(),
-			"encryption" => $this->config->checkEncryptionModule(),
-			"limitGroups" => $this->config->getLimitGroups(),
-			"chat" => $this->config->getCustomizationChat(),
-			"compactHeader" => $this->config->getCustomizationCompactHeader(),
-			"feedback" => $this->config->getCustomizationFeedback(),
-			"forcesave" => $this->config->getCustomizationForcesave(),
-			"liveViewOnShare" => $this->config->getLiveViewOnShare(),
-			"help" => $this->config->getCustomizationHelp(),
-			"successful" => $this->config->settingsAreSuccessful(),
-			"settingsError" => $this->config->getSettingsError(),
-			"plugins" => $this->config->getCustomizationPlugins(),
-			"macros" => $this->config->getCustomizationMacros(),
-			"reviewDisplay" => $this->config->getCustomizationReviewDisplay(),
-			"theme" => $this->config->getCustomizationTheme(),
-			"templates" => $this->getGlobalTemplates(),
-			"linkToDocs" => $this->config->getLinkToDocs(),
-			"unknownAuthor" => $this->config->getUnknownAuthor()
-		];
-		return new TemplateResponse($this->appName, "settings", $data, "blank");
-	}
-
-	/**
 	 * Save address settings
 	 *
 	 * @param string $documentserver - document service address
@@ -182,7 +155,7 @@ class SettingsController extends Controller {
 			$documentserver = $this->config->getDocumentServerUrl();
 			if (!empty($documentserver)) {
 				$documentService = new DocumentService($this->trans, $this->config);
-				list($error, $version) = $documentService->checkDocServiceUrl($this->urlGenerator, $this->crypt);
+				list($error, $version) = $documentService->checkDocServiceUrl($this->urlGenerator, $this->crypt, true);
 				$this->config->setSettingsError($error);
 			}
 
@@ -316,26 +289,5 @@ class SettingsController extends Controller {
 			"shareAttributesVersion" => $this->config->shareAttributesVersion()
 		];
 		return $result;
-	}
-
-	/**
-	 * Get global templates
-	 *
-	 * @return array
-	 */
-	private function getGlobalTemplates() {
-		$templates = [];
-		$templatesList = TemplateManager::getGlobalTemplates();
-
-		foreach ($templatesList as $templateItem) {
-			$template = [
-				"id" => $templateItem->getId(),
-				"name" => $templateItem->getName(),
-				"type" => TemplateManager::getTypeTemplate($templateItem->getMimeType())
-			];
-			array_push($templates, $template);
-		}
-
-		return $templates;
 	}
 }

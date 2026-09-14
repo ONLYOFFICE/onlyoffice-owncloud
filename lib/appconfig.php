@@ -2,20 +2,38 @@
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
  *
- * (c) Copyright Ascensio System SIA 2025
+ * Copyright (C) Ascensio System SIA, 2009-2026
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is a free software product. You can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License (AGPL)
+ * version 3 as published by the Free Software Foundation, together with the
+ * additional terms provided in the LICENSE file.
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * This program is distributed WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. For
+ * details, see the GNU AGPL at: https://www.gnu.org/licenses/agpl-3.0.html
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You can contact Ascensio System SIA by email at info@onlyoffice.com
+ * or by postal mail at 20A-6 Ernesta Birznieka-Upisha Street, Riga,
+ * LV-1050, Latvia, European Union.
  *
+ * The interactive user interfaces in modified versions of the Program
+ * are required to display Appropriate Legal Notices in accordance with
+ * Section 5 of the GNU AGPL version 3.
+ *
+ * No trademark rights are granted under this License.
+ *
+ * All non-code elements of the Product, including illustrations,
+ * icon sets, and technical writing content, are licensed under the
+ * Creative Commons Attribution-ShareAlike 4.0 International License:
+ * https://creativecommons.org/licenses/by-sa/4.0/legalcode
+ *
+ * This license applies only to such non-code elements and does not
+ * modify or replace the licensing terms applicable to the Program's
+ * source code, which remains licensed under the GNU Affero General
+ * Public License v3.
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
  */
 
 namespace OCA\Onlyoffice;
@@ -222,6 +240,13 @@ class AppConfig {
 	 * @var string
 	 */
 	private $_verification = "verify_peer_off";
+
+	/**
+	 * The config key for allowing requests to addresses outside the public ranges
+	 *
+	 * @var string
+	 */
+	private $_allowLocalAddress = "allow_local_address";
 
 	/**
 	 * The config key for the secret key in jwt
@@ -466,7 +491,7 @@ class AppConfig {
 
 		$url = $this->config->getAppValue($this->appName, $this->_documentserver, "");
 		if (empty($url)) {
-			$url = $this->getSystemValue($this->_documentserver);
+			$url = $this->getSystemValue($this->_documentserver) ?? "";
 		}
 		if ($url !== "/") {
 			$url = rtrim($url, "/");
@@ -1009,7 +1034,7 @@ class AppConfig {
 			"default-dark"
 		];
 
-		return in_array($value, $validThemes) ? $value : "default-light";
+		return in_array($value, $validThemes, true) ? $value : "default-light";
 	}
 
 	/**
@@ -1182,6 +1207,17 @@ class AppConfig {
 		}
 
 		return $this->getSystemValue($this->_verification);
+	}
+
+	/**
+	 * Get whether requests to addresses outside the public ranges are allowed.
+	 *
+	 * @return bool
+	 */
+	public function getAllowLocalAddress() {
+		$value = $this->getSystemValue($this->_allowLocalAddress);
+
+		return filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) === true;
 	}
 
 	/**
@@ -1400,14 +1436,14 @@ class AppConfig {
 						$result[$onlyOfficeFormat["name"]] = [
 							"mime" => $onlyOfficeFormat["mime"],
 							"type" => $onlyOfficeFormat["type"],
-							"edit" => in_array("edit", $onlyOfficeFormat["actions"]),
-							"editable" => in_array("lossy-edit", $onlyOfficeFormat["actions"]),
-							"conv" => in_array("auto-convert", $onlyOfficeFormat["actions"]),
-							"fillForms" => in_array("fill", $onlyOfficeFormat["actions"]),
-							"comment" => in_array("comment", $onlyOfficeFormat["actions"]),
+							"edit" => in_array("edit", $onlyOfficeFormat["actions"], true),
+							"editable" => in_array("lossy-edit", $onlyOfficeFormat["actions"], true),
+							"conv" => in_array("auto-convert", $onlyOfficeFormat["actions"], true),
+							"fillForms" => in_array("fill", $onlyOfficeFormat["actions"], true),
+							"comment" => in_array("comment", $onlyOfficeFormat["actions"], true),
 							"saveas" => $onlyOfficeFormat["convert"],
-							"review" => in_array("review", $onlyOfficeFormat["actions"]),
-							"modifyFilter" => in_array("customfilter", $onlyOfficeFormat["actions"]),
+							"review" => in_array("review", $onlyOfficeFormat["actions"], true),
+							"modifyFilter" => in_array("customfilter", $onlyOfficeFormat["actions"], true),
 						];
 						if (isset($additionalFormats[$onlyOfficeFormat["name"]])) {
 							$result[$onlyOfficeFormat["name"]] = array_merge($result[$onlyOfficeFormat["name"]], $additionalFormats[$onlyOfficeFormat["name"]]);

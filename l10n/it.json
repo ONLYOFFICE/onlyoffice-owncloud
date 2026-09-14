@@ -145,6 +145,7 @@
     "Suggest a feature": "Suggerisci una funzione",
     "To ensure the security of important parameters in ONLYOFFICE Docs requests, please set a Secret Key on the Settings page.": "Per garantire la sicurezza dei parametri importanti nelle richieste di ONLYOFFICE Docs, imposta una Chiave Segreta nella pagina delle Impostazioni.",
     "Info": "Info",
-    "%1$s could not be saved. Please open the file again.": "Non è stato possibile salvare %1$s. Apri nuovamente il file."
+    "%1$s could not be saved. Please open the file again.": "Non è stato possibile salvare %1$s. Apri nuovamente il file.",
+    "Could not connect to ONLYOFFICE Docs. See the server log for details.": "Impossibile connettersi a ONLYOFFICE Docs. Consultare il registro del server per i dettagli."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

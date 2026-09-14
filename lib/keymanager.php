@@ -2,20 +2,38 @@
 /**
  * @author Ascensio System SIA <integration@onlyoffice.com>
  *
- * (c) Copyright Ascensio System SIA 2025
+ * Copyright (C) Ascensio System SIA, 2009-2026
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * This program is a free software product. You can redistribute it and/or
+ * modify it under the terms of the GNU Affero General Public License (AGPL)
+ * version 3 as published by the Free Software Foundation, together with the
+ * additional terms provided in the LICENSE file.
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * This program is distributed WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. For
+ * details, see the GNU AGPL at: https://www.gnu.org/licenses/agpl-3.0.html
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * You can contact Ascensio System SIA by email at info@onlyoffice.com
+ * or by postal mail at 20A-6 Ernesta Birznieka-Upisha Street, Riga,
+ * LV-1050, Latvia, European Union.
  *
+ * The interactive user interfaces in modified versions of the Program
+ * are required to display Appropriate Legal Notices in accordance with
+ * Section 5 of the GNU AGPL version 3.
+ *
+ * No trademark rights are granted under this License.
+ *
+ * All non-code elements of the Product, including illustrations,
+ * icon sets, and technical writing content, are licensed under the
+ * Creative Commons Attribution-ShareAlike 4.0 International License:
+ * https://creativecommons.org/licenses/by-sa/4.0/legalcode
+ *
+ * This license applies only to such non-code elements and does not
+ * modify or replace the licensing terms applicable to the Program's
+ * source code, which remains licensed under the GNU Affero General
+ * Public License v3.
+ *
+ * SPDX-License-Identifier: AGPL-3.0-only
  */
 
 namespace OCA\Onlyoffice;
@@ -47,9 +65,9 @@ class KeyManager {
             WHERE `file_id` = ?
         "
 		);
-		$result = $select->execute([$fileId]);
+		$result = $select->executeQuery([$fileId]);
 
-		$keys = $result ? $select->fetch() : [];
+		$keys = $result->fetchAssociative();
 		$key = \is_array($keys) && isset($keys["key"]) ? $keys["key"] : "";
 
 		return $key;
@@ -72,7 +90,7 @@ class KeyManager {
             VALUES (?, ?)
         "
 		);
-		return (bool)$insert->execute([$fileId, $key]);
+		return (bool)$insert->executeStatement([$fileId, $key]);
 	}
 
 	/**
@@ -91,7 +109,7 @@ class KeyManager {
             WHERE `file_id` = ?
             " . ($unlock === false ? "AND `lock` != 1" : "")
 		);
-		return (bool)$delete->execute([$fileId]);
+		return (bool)$delete->executeStatement([$fileId]);
 	}
 
 	/**
@@ -111,7 +129,7 @@ class KeyManager {
             WHERE `file_id` = ?
         "
 		);
-		return (bool)$update->execute([$lock === true ? 1 : 0, $fileId]);
+		return (bool)$update->executeStatement([$lock === true ? 1 : 0, $fileId]);
 	}
 
 	/**
@@ -131,7 +149,7 @@ class KeyManager {
             WHERE `file_id` = ?
         "
 		);
-		return (bool)$update->execute([$fs === true ? 1 : 0, $fileId]);
+		return (bool)$update->executeStatement([$fs === true ? 1 : 0, $fileId]);
 	}
 
 	/**
@@ -150,11 +168,11 @@ class KeyManager {
             WHERE `file_id` = ?
         "
 		);
-		$result = $select->execute([$fileId]);
+		$result = $select->executeQuery([$fileId]);
 
-		$rows = $result ? $select->fetch() : [];
+		$rows = $result->fetchAssociative();
 		$fs = \is_array($rows) && isset($rows["fs"]) ? $rows["fs"] : "";
 
-		return $fs === "1";
+		return (string)$fs === "1";
 	}
 }

@@ -133,6 +133,7 @@
     "Select file to insert text": "Избери файл за вмъкване на текст",
     "Select file": "Избери файл",
     "Same as system": "Същото като в системата",
-    "Enable live-viewing mode when accessing file by public link" : "Активирайте режима на живо извеждане при достъп до файл чрез публична връзка"
+    "Enable live-viewing mode when accessing file by public link" : "Активирайте режима на живо извеждане при достъп до файл чрез публична връзка",
+    "Could not connect to ONLYOFFICE Docs. See the server log for details." : "Неуспешно свързване с ONLYOFFICE Docs. Вижте лога на сървъра за подробности."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

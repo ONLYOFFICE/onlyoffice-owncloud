@@ -138,6 +138,7 @@ OC.L10N.register(
     "Enable live-viewing mode when accessing file by public link" : "Włącz tryb podglądu na żywo podczas uzyskiwania dostępu do pliku za pomocą łącza publicznego",
     "Welcome to ONLYOFFICE Docs!": "Witaj w ONLYOFFICE Docs!",
     "Learn more": "Dowiedz się więcej",
-    "Suggest a feature": "Zasugeruj funkcję"
+    "Suggest a feature": "Zasugeruj funkcję",
+    "Could not connect to ONLYOFFICE Docs. See the server log for details.": "Nie można połączyć się z ONLYOFFICE Docs. Szczegóły znajdziesz w dzienniku serwera."
 },
 "nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);");

@@ -138,6 +138,7 @@ OC.L10N.register(
     "Enable live-viewing mode when accessing file by public link" : "Aktivera livevisningsläge vid åtkomst till fil via offentlig länk",
     "Welcome to ONLYOFFICE Docs!": "Welkom bij ONLYOFFICE Docs!",
     "Learn more": "Meer informatie",
-    "Suggest a feature": "Stel een functie voor"
+    "Suggest a feature": "Stel een functie voor",
+    "Could not connect to ONLYOFFICE Docs. See the server log for details.": "Er kon geen verbinding worden gemaakt met ONLYOFFICE Docs. Raadpleeg het serverlogboek voor meer informatie."
 },
 "nplurals=2; plural=(n != 1);");

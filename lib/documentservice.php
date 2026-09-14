@@ -276,9 +276,11 @@ class DocumentService {
 	/**
 	 * request health status
 	 *
+	 * @param array $opts - request options
+	 *
 	 * @return bool
 	 */
-	public function healthcheckRequest() {
+	public function healthcheckRequest($opts = null) {
 		$documentServerUrl = $this->config->getDocumentServerInternalUrl();
 
 		if (empty($documentServerUrl)) {
@@ -287,7 +289,7 @@ class DocumentService {
 
 		$urlHealthcheck = $documentServerUrl . "healthcheck";
 
-		$response = $this->request($urlHealthcheck);
+		$response = $this->request($urlHealthcheck, "get", $opts);
 
 		return $response === "true";
 	}
@@ -296,10 +298,11 @@ class DocumentService {
 	 * Send command
 	 *
 	 * @param string $method - type of command
+	 * @param array $opts - request options
 	 *
 	 * @return array
 	 */
-	public function commandRequest($method) {
+	public function commandRequest($method, $opts = null) {
 		$documentServerUrl = $this->config->getDocumentServerInternalUrl();
 
 		if (empty($documentServerUrl)) {
@@ -312,12 +315,11 @@ class DocumentService {
 			"c" => $method
 		];
 
-		$opts = [
-			"headers" => [
-				"Content-type" => "application/json"
-			],
-			"body" => json_encode($data)
-		];
+		if ($opts === null) {
+			$opts = [];
+		}
+		$opts["headers"]["Content-type"] = "application/json";
+		$opts["body"] = json_encode($data);
 
 		if (!empty($this->config->getDocumentServerSecret())) {
 			$now = time();
@@ -401,13 +403,86 @@ class DocumentService {
 			$opts["timeout"] = 60;
 		}
 
-		if ($method === "post") {
-			$response = $client->post($url, $opts);
-		} else {
-			$response = $client->get($url, $opts);
+		try {
+			if ($method === "post") {
+				$response = $client->post($url, $opts);
+			} else {
+				$response = $client->get($url, $opts);
+			}
+		} catch (\Exception $e) {
+			\OC::$server->getLogger()->logException(
+				$e,
+				["message" => "Request to Document Server failed: " . $url, "app" => self::$appName]
+			);
+			throw new \Exception($this->trans->t("Could not connect to ONLYOFFICE Docs. See the server log for details."));
 		}
 
 		return $response->getBody();
+	}
+
+	/**
+	 * Build the options for a request that checks the document server address
+	 *
+	 * @param string $url - address being checked
+	 * @param bool $restrictAddress - refuse an address outside the public ranges
+	 *
+	 * @return array
+	 */
+	private function checkRequestOptions($url, $restrictAddress) {
+		$opts = ["timeout" => 10];
+		if (!$restrictAddress) {
+			return $opts;
+		}
+
+		return $this->restrictToPublicAddress($url, $opts);
+	}
+
+	/**
+	 * Resolve the host of a request once, refuse it when it points outside the
+	 * public ranges and pin the result so that curl does not resolve it again.
+	 *
+	 * @param string $url - request address
+	 * @param array $opts - request options
+	 *
+	 * @return array
+	 */
+	private function restrictToPublicAddress($url, $opts) {
+		$host = rawurldecode((string)parse_url($url, PHP_URL_HOST));
+		if (empty($host)) {
+			return $opts;
+		}
+
+		$allowLocal = $this->config->getAllowLocalAddress();
+
+		$addresses = LocalAddressChecker::resolve($host);
+		if (empty($addresses)) {
+			\OC::$server->getLogger()->warning(
+				"Refused a request to an address that could not be resolved: $host",
+				["app" => self::$appName]
+			);
+			throw new \Exception($this->trans->t("Could not connect to ONLYOFFICE Docs. See the server log for details."));
+		}
+
+		foreach ($addresses as $address) {
+			if (LocalAddressChecker::isBlocked($address)
+				|| (!$allowLocal && LocalAddressChecker::isLocal($address))
+			) {
+				\OC::$server->getLogger()->warning(
+					"Refused a request to a local address: $host resolves to $address",
+					["app" => self::$appName]
+				);
+				throw new \Exception($this->trans->t("Could not connect to ONLYOFFICE Docs. See the server log for details."));
+			}
+		}
+
+		$scheme = parse_url($url, PHP_URL_SCHEME);
+		$port = parse_url($url, PHP_URL_PORT);
+		if (empty($port)) {
+			$port = $scheme === "https" ? 443 : 80;
+		}
+		$opts["curl"][CURLOPT_RESOLVE] = [$host . ":" . $port . ":" . implode(",", $addresses)];
+
+		return $opts;
 	}
 
 	/**
@@ -415,10 +490,11 @@ class DocumentService {
 	 *
 	 * @param OCP\IURLGenerator $urlGenerator - url generator
 	 * @param OCA\Onlyoffice\Crypt $crypt -crypt
+	 * @param bool $restrictAddress - refuse an address outside the public ranges
 	 *
 	 * @return array
 	 */
-	public function checkDocServiceUrl($urlGenerator, $crypt) {
+	public function checkDocServiceUrl($urlGenerator, $crypt, $restrictAddress = false) {
 		$logger = \OC::$server->getLogger();
 		$version = null;
 
@@ -433,18 +509,25 @@ class DocumentService {
 			return [$e->getMessage(), $version];
 		}
 
+		$documentServerUrl = $this->config->getDocumentServerInternalUrl();
+
 		try {
-			$healthcheckResponse = $this->healthcheckRequest();
+			$healthcheckResponse = $this->healthcheckRequest(
+				$this->checkRequestOptions($documentServerUrl, $restrictAddress)
+			);
 			if (!$healthcheckResponse) {
-				throw new \Exception($this->trans->t("Bad healthcheck status"));
+				throw new \Exception("Bad healthcheck status");
 			}
 		} catch (\Exception $e) {
 			$logger->logException($e, ["message" => "healthcheckRequest on check error", "app" => self::$appName]);
-			return [$e->getMessage(), $version];
+			return [$this->trans->t("Could not connect to ONLYOFFICE Docs. See the server log for details."), $version];
 		}
 
 		try {
-			$commandResponse = $this->commandRequest("version");
+			$commandResponse = $this->commandRequest(
+				"version",
+				$this->checkRequestOptions($documentServerUrl, $restrictAddress)
+			);
 
 			$logger->debug("commandRequest on check: " . json_encode($commandResponse), ["app" => self::$appName]);
 

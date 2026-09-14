@@ -3,3 +3,7 @@ ONLYOFFICE app for ownCloud uses code from the following 3rd party projects:
 JWT           - JSON Web Token implementation (https://github.com/firebase/php-jwt/blob/master/LICENSE)
 License:        BSD
 License File:   3rdparty/jwt/LICENSE
+
+IPLib         - IPv4, IPv6 addresses and ranges handling (https://github.com/mlocati/ip-lib/blob/master/LICENSE.txt)
+License:        MIT
+License File:   3rdparty/iplib/LICENSE

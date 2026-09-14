@@ -4,7 +4,7 @@
 ## Changed
 - compatible with ownCloud 11
 - moved admin settings to a dedicated ONLYOFFICE section in the sidebar
-- allow inserting multiple images from Owncloud into the document at once
+- allow inserting multiple images from ownCloud into the document at once
 
 ## Security
 - stop reporting the underlying connection error when checking the ONLYOFFICE Docs address, to prevent internal network probing
